@@ -1104,7 +1104,7 @@ RSpec.describe Plurimath::Math::Formula do
         end
 
         context "with compact formatter" do
-          let(:formatter) { CustomFormatter.new }
+          let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
 
           it "returns mathml string with formatted numbers using compact formatter" do
             expected_value = <<~MATHML
@@ -1155,7 +1155,7 @@ RSpec.describe Plurimath::Math::Formula do
         end
 
         context "with compact formatter" do
-          let(:formatter) { CustomFormatter.new }
+          let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
 
           it "returns OMML string with formatted numbers using compact formatter" do
             expected_value = <<~OMML
@@ -1199,7 +1199,7 @@ RSpec.describe Plurimath::Math::Formula do
         end
 
         context "with compact formatter" do
-          let(:formatter) { CustomFormatter.new }
+          let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
 
           it "returns html string with formatted numbers using compact formatter" do
             expected_value = "3>3>1^46;77 1>2>3^45;67"
@@ -1232,7 +1232,7 @@ RSpec.describe Plurimath::Math::Formula do
         end
 
         context "with compact formatter" do
-          let(:formatter) { CustomFormatter.new }
+          let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
 
           it "returns unicodemath string with formatted numbers using compact formatter" do
             expected_value = "3>3>1^46;77 1>2>3^45;67"
@@ -1265,7 +1265,7 @@ RSpec.describe Plurimath::Math::Formula do
         end
 
         context "with compact formatter" do
-          let(:formatter) { CustomFormatter.new }
+          let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
 
           it "returns latex string with formatted numbers using compact formatter" do
             expected_value = "3>3>1^46;77 1>2>3^45;67"
@@ -1298,7 +1298,7 @@ RSpec.describe Plurimath::Math::Formula do
         end
 
         context "with compact formatter" do
-          let(:formatter) { CustomFormatter.new }
+          let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
 
           it "returns asciimath string with formatted numbers using compact formatter" do
             expected_value = "3>3>1^46;77 1>2>3^45;67"
@@ -1323,12 +1323,43 @@ RSpec.describe Plurimath::Math::Formula do
       let(:received_formula) { [] }
       let(:received_numbers) { [] }
       let(:spy) do
-        SpyFormatter.new(
+        FormulaSpecFormatters::SpyFormatter.new(
           on_format: proc { |formula, number|
             received_formula << formula
             received_numbers << number
           },
         )
+      end
+      let(:format_number_spy_class) do
+        Class.new(Plurimath::Formatter::Standard) do
+          def initialize(on_format_number: nil)
+            super()
+            @on_format_number = on_format_number
+          end
+
+          def format_number(formula, number)
+            @on_format_number&.call(formula, number)
+            localized_number(number.value.to_s)
+          end
+        end
+      end
+      let(:format_number_spy) do
+        format_number_spy_class.new(
+          on_format_number: proc { |formula, number|
+            received_formula << formula
+            received_numbers << number
+          },
+        )
+      end
+
+      it "passes the root formula and number nodes to format_number" do
+        formula_obj.to_latex(formatter: format_number_spy)
+
+        expect(received_formula.first).to be_a(described_class)
+        expect(received_formula.first).to eq(formula_obj)
+        expect(received_numbers.first).to be_a(Plurimath::Math::Number)
+        expect(received_numbers.first.value).to eq("2024")
+        expect(received_numbers[1].value).to eq("1000000")
       end
 
       it "passes the root formula and number nodes to format" do
@@ -1373,7 +1404,7 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     describe "year formatter example from issue #294" do
-      let(:year_formatter) { YearFormatter.new }
+      let(:year_formatter) { FormulaSpecFormatters::YearFormatter.new }
 
       it "skips formatting for year-like numbers" do
         result = formula_obj.to_latex(formatter: year_formatter)
@@ -1412,35 +1443,37 @@ RSpec.describe Plurimath::Math::Formula do
   end
 end
 
-class CustomFormatter < Plurimath::Formatter::Standard
-  DEFAULT_OPTIONS = {
-    fraction_group_digits: 2,
-    fraction_group: ";",
-    group_digits: 1,
-    decimal: "^",
-    group: ">",
-  }.freeze
-end
+module FormulaSpecFormatters
+  class CustomFormatter < Plurimath::Formatter::Standard
+    DEFAULT_OPTIONS = {
+      fraction_group_digits: 2,
+      fraction_group: ";",
+      group_digits: 1,
+      decimal: "^",
+      group: ">",
+    }.freeze
+  end
 
-class YearFormatter < Plurimath::Formatter::Standard
-  def format(_formula, number)
-    int_value = Integer(number.value, exception: false)
-    if int_value && int_value > 1800 && int_value < 2200
-      number.value.to_s
-    else
-      localized_number(number.value.to_s)
+  class YearFormatter < Plurimath::Formatter::Standard
+    def format(_formula, number)
+      int_value = Integer(number.value, exception: false)
+      if int_value && int_value > 1800 && int_value < 2200
+        number.value.to_s
+      else
+        localized_number(number.value.to_s)
+      end
     end
   end
-end
 
-class SpyFormatter < Plurimath::Formatter::Standard
-  def initialize(on_format: nil)
-    super()
-    @on_format = on_format
-  end
+  class SpyFormatter < Plurimath::Formatter::Standard
+    def initialize(on_format: nil)
+      super()
+      @on_format = on_format
+    end
 
-  def format(formula, number)
-    @on_format&.call(formula, number)
-    localized_number(number.value.to_s)
+    def format(formula, number)
+      @on_format&.call(formula, number)
+      localized_number(number.value.to_s)
+    end
   end
 end

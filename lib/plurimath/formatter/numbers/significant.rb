@@ -4,135 +4,111 @@ module Plurimath
   module Formatter
     module Numbers
       class Significant < Base
-        attr_accessor :decimal, :significant
+        attr_reader :significant
 
         CANONICAL_DECIMAL = "."
+        EMPTY_STRING = ""
+        ZERO = "0"
 
-        def initialize(symbols)
+        def initialize(options)
           super
-          @decimal = symbols[:decimal]
-          @significant = symbols[:significant].to_i
-        end
-
-        def apply(string, int_format, frac_format)
-          return string if significant.zero?
-
-          chars = string.chars
-          return string if skip_significant_processing?(chars)
-
-          string = signify(chars)
-          integer, fraction = string.split(decimal)
-          string = [format_groups(int_format, integer)]
-          string << format_groups(frac_format, fraction) if fraction
-          string.join(decimal)
+          @significant = self.options.significant
         end
 
         def active?
           significant.positive?
         end
 
-        def apply_parts(integer, fraction)
-          previous_decimal = decimal
-          self.decimal = CANONICAL_DECIMAL
-          string = fraction.empty? ? integer : "#{integer}#{decimal}#{fraction}"
-          chars = string.chars
-          return [integer, fraction] if skip_significant_processing?(chars)
-
-          integer, fraction = signify(chars).split(decimal, 2)
-          [integer, fraction.to_s]
-        ensure
-          self.decimal = previous_decimal
+        def apply_parts(parts)
+          significant_parts(parts)
         end
 
         protected
 
+        def significant_parts(parts)
+          integer = parts.integer_digits
+          fraction = parts.fraction_digits
+          string = fraction.empty? ? integer : "#{integer}#{CANONICAL_DECIMAL}#{fraction}"
+          chars = string.chars
+          return parts if skip_significant_processing?(chars)
+
+          integer, fraction = signify(chars).split(CANONICAL_DECIMAL, 2)
+          parts.with_digits(
+            integer_digits: integer,
+            fraction_digits: fraction.to_s,
+          )
+        end
+
         def signify(chars)
           new_chars, frac_part, sig_count = process_chars(chars)
           if sig_count.positive?
-            new_chars << decimal unless frac_part
+            new_chars << CANONICAL_DECIMAL unless frac_part
           else
-            remain_chars = count_chars(chars, frac_part) - significant
+            remain_chars = digit_count(chars, fraction: frac_part) - significant
             if remain_chars.positive?
-              round_str(chars, new_chars, frac_part)
-              if frac_part
-                has_decimal = new_chars.include?(decimal)
-                if has_decimal
-                  actual_sig = count_significant_digits(new_chars)
-                  remain_chars = [significant - actual_sig, 0].max
-                else
-                  remain_chars = 0
-                  frac_part = false
-                end
-              end
+              round_chars(chars, new_chars, frac_part)
+              remain_chars = remaining_fraction_chars(new_chars) if frac_part
             end
-            new_chars << ("0" * remain_chars) unless frac_part && sig_char_count?(new_chars)
+            new_chars << (ZERO * remain_chars) unless frac_part && sig_char_count?(new_chars)
           end
           new_chars.join
         end
 
-        def round_str(chars, array, frac_part)
-          arr_len = array.length
-          char_ind = digit_sequence.digit?(chars[arr_len]) ? arr_len : arr_len.next
-          return unless char_ind < chars.length && digit_sequence.round_up?(chars[char_ind])
+        def round_chars(chars, result, frac_part)
+          char_index = round_char_index(chars, result.length)
+          return unless char_index < chars.length && digit_sequence.round_up?(chars[char_index])
 
-          frac_part = false if chars[arr_len] == decimal
-          carry = false
-          array.reverse!.each_with_index do |char, ind|
-            if char == decimal
-              array[ind] = ""
-              frac_part  = false
-              next
-            end
-            next unless digit_sequence.digit?(char)
-
-            if digit_sequence.max_digit?(char)
-              carry = true
-              array[ind] = frac_part ? "" : "0"
-            else
-              array[ind] = digit_sequence.next_digit(char)
-              carry = false
-              break
-            end
-          end
-          array << "1" if carry
-          array.reverse!
+          rounded = if frac_part
+                      increment_fractional(result.reverse)
+                    else
+                      increment_integer(result.reverse)
+                    end
+          result.replace(rounded.reverse)
         end
 
-        def count_chars(chars, fraction)
-          char_count = 0
-          chars.each do |char|
-            break if char == decimal && !fraction
+        def increment_fractional(reversed)
+          decimal_index = reversed.index(CANONICAL_DECIMAL)
+          return increment_integer(reversed) unless decimal_index
 
-            char_count += 1 if digit_sequence.digit?(char)
-          end
-          char_count
+          fraction = reversed[0...decimal_index]
+          integer = reversed[(decimal_index + 1)..]
+          fraction, carry = digit_sequence.increment_reversed(fraction, overflow: EMPTY_STRING)
+          return fraction + [CANONICAL_DECIMAL] + integer unless carry.positive?
+
+          integer = increment_integer(integer)
+          fraction + [EMPTY_STRING] + integer
         end
 
-        def format_groups(format, string)
-          format.format_groups(numeric_string(string, format))
+        def increment_integer(reversed)
+          digits, carry = digit_sequence.increment_reversed(reversed, overflow: ZERO)
+          digits << "1" if carry.positive?
+          digits
         end
 
-        def numeric_string(string, format)
-          string.split(format.separator).join
+        def round_char_index(chars, result_length)
+          digit_sequence.digit?(chars[result_length]) ? result_length : result_length.next
+        end
+
+        def remaining_fraction_chars(chars)
+          return 0 unless chars.include?(CANONICAL_DECIMAL)
+
+          [significant - digit_sequence.significant_digit_count(chars), 0].max
+        end
+
+        def digit_count(chars, fraction:)
+          stop_at = fraction ? nil : CANONICAL_DECIMAL
+          digit_sequence.digit_count(chars, stop_at: stop_at)
         end
 
         def sig_char_count?(chars)
-          start_counting = false
-          char_count = 0
-          chars.each do |char|
-            start_counting = true if digit_sequence.significant?(char)
-            next unless start_counting
-
-            char_count += 1 if digit_sequence.digit?(char)
-          end
-          char_count == significant
+          digit_sequence.significant_digit_count(chars) == significant
         end
 
         def process_chars(chars, sig_num: false, frac_part: false)
           sig_count = significant
           new_chars = []
           chars.each do |char|
-            frac_part ||= char == decimal
+            frac_part ||= char == CANONICAL_DECIMAL
             sig_num ||= digit_sequence.significant?(char)
             break if sig_count.zero?
 
@@ -147,20 +123,8 @@ module Plurimath
         end
 
         def skip_significant_processing?(chars)
-          chars.none? { |c| digit_sequence.significant?(c) } ||
-            count_chars(chars, true) == significant
-        end
-
-        def count_significant_digits(chars)
-          start_counting = false
-          char_count = 0
-          chars.each do |char|
-            start_counting = true if digit_sequence.significant?(char)
-            next unless start_counting
-
-            char_count += 1 if digit_sequence.digit?(char)
-          end
-          char_count
+          digit_sequence.significant_digit_count(chars).zero? ||
+            digit_count(chars, fraction: true) == significant
         end
       end
     end

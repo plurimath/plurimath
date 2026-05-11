@@ -5,10 +5,6 @@ require "spec_helper"
 RSpec.describe Plurimath::Formatter::Numbers::Fraction do
   let(:formatter) { described_class.new(symbols) }
   let(:symbols) { {} }
-  let(:result) { ["10"] }
-  let(:integer_formatter) do
-    double.tap { |d| allow(d).to receive(:format_groups).and_return("10") }
-  end
 
   describe "#initialize" do
     context "with default symbols" do
@@ -70,51 +66,49 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
     end
   end
 
-  describe "#apply" do
+  describe "#apply_parts" do
+    let(:parts) { Plurimath::Formatter::Numbers::Source.new(number).to_parts }
+    let(:number) { "10.5" }
+
     context "with zero precision" do
       let(:symbols) { { precision: 0 } }
 
-      it "returns empty string" do
-        result_arr = ["10"]
-        result = formatter.apply("123", result_arr, integer_formatter)
-        expect(result).to eq("")
+      it "removes the fraction digits" do
+        result = formatter.apply_parts(parts)
+
+        expect(result.fraction_digits).to eq("")
       end
     end
 
     context "with decimal base" do
       let(:symbols) { { decimal: ".", precision: 3 } }
 
-      it "formats fraction with zeros" do
-        result_arr = ["10"]
-        result = formatter.apply("5", result_arr, integer_formatter)
-        expect(result.start_with?(".")).to be(true)
-      end
-
       it "pads fraction to precision" do
-        result_arr = ["10"]
-        result = formatter.apply("1", result_arr, integer_formatter)
-        expect(result.start_with?(".")).to be(true)
-        expect(result.split(".").last.length).to be >= 1
+        result = formatter.apply_parts(parts)
+
+        expect(result.fraction_digits).to eq("500")
       end
     end
 
-    context "with custom decimal separator" do
-      let(:symbols) { { decimal: ",", precision: 2 } }
+    context "with non-decimal base" do
+      let(:symbols) { { base: 2, precision: 4 } }
 
-      it "uses custom separator" do
-        result_arr = ["10"]
-        result = formatter.apply("5", result_arr, integer_formatter)
-        expect(result.start_with?(",")).to be(true)
+      it "converts the fraction digits to the target base" do
+        result = formatter.apply_parts(parts)
+
+        expect(result.fraction_digits).to eq("1000")
       end
     end
 
-    context "with precision override" do
-      let(:symbols) { { precision: 3 } }
+    context "with digit count rounding" do
+      let(:symbols) { { precision: 1, digit_count: 3 } }
+      let(:number) { "999.9" }
 
-      it "uses provided precision over default" do
-        result_arr = ["10"]
-        result = formatter.apply("5", result_arr, integer_formatter)
-        expect(result).to be_a(String)
+      it "returns rounded integer digits without rendering groups" do
+        result = formatter.apply_parts(parts)
+
+        expect(result.integer_digits).to eq("1000")
+        expect(result.fraction_digits).to eq("")
       end
     end
   end

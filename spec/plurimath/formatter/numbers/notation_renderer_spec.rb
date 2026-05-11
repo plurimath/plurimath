@@ -13,10 +13,9 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
   describe "#render" do
     it "renders e notation with a custom exponent separator" do
       renderer = described_class.new(
-        { decimal: "@" },
+        decimal: "@",
         precision: 1,
-        exponent_sign: nil,
-        exponent_separator: :E,
+        e: :E,
         times: "x",
       )
 
@@ -25,10 +24,12 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
 
     it "renders scientific notation with explicit plus exponents" do
       renderer = described_class.new(
-        { decimal: ".", fraction_group: " ", fraction_group_digits: 3 },
+        decimal: ".",
+        fraction_group: " ",
+        fraction_group_digits: 3,
         precision: 4,
         exponent_sign: :plus,
-        exponent_separator: :e,
+        e: :e,
         times: "\u{d7}",
       )
 
@@ -37,10 +38,9 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
 
     it "renders engineering notation" do
       renderer = described_class.new(
-        { decimal: "," },
+        decimal: ",",
         precision: 2,
-        exponent_sign: nil,
-        exponent_separator: :e,
+        e: :e,
         times: :x,
       )
 
@@ -49,10 +49,8 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
 
     it "preserves zero precision in scientific notation" do
       renderer = described_class.new(
-        {},
         precision: 2,
-        exponent_sign: nil,
-        exponent_separator: :e,
+        e: :e,
         times: "\u{d7}",
       )
 

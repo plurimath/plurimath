@@ -16,12 +16,12 @@ module Plurimath
 
       def localized_number(number_string, locale:, precision:, format:)
         options = format_options(number_string, precision, format)
-        @twitter_cldr_reader = symbols_for(format)
+        @twitter_cldr_reader = options.to_h
         if Numbers::NotationRenderer.supported?(options.notation)
           return notation_renderer(options).render(number_string, options.notation)
         end
 
-        render_localized_number(number_string, options.precision)
+        render_localized_number(number_string, options)
       end
 
       private
@@ -38,28 +38,21 @@ module Plurimath
         @base_symbols.merge(format)
       end
 
-      def render_localized_number(num, precision)
+      def render_localized_number(num, options)
         Formatter::NumberFormatter.new(
           BigDecimal(num),
-          @twitter_cldr_reader,
-        ).format(
-          precision: precision,
-        )
+          options,
+        ).format
       end
 
       def notation_renderer(options)
-        Numbers::NotationRenderer.new(
-          @twitter_cldr_reader,
-          precision: options.precision,
-          exponent_sign: options.exponent_sign,
-          exponent_separator: options.exponent_separator,
-          times: options.times,
-        )
+        Numbers::NotationRenderer.new(options)
       end
 
       def format_options(number_string, precision, format)
         Numbers::FormatOptions.new(
           number_string,
+          symbols: symbols_for(format),
           format: format,
           precision: precision,
           precision_resolver: precision_resolver,

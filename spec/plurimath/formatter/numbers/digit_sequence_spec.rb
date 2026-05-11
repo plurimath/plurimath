@@ -25,6 +25,34 @@ RSpec.describe Plurimath::Formatter::Numbers::DigitSequence do
     end
   end
 
+  describe "#digit_count" do
+    it "counts digits in a character sequence" do
+      sequence = described_class.new(base: 10)
+
+      expect(sequence.digit_count("123.45".chars)).to eq(5)
+    end
+
+    it "stops counting at the requested character" do
+      sequence = described_class.new(base: 10)
+
+      expect(sequence.digit_count("123.45".chars, stop_at: ".")).to eq(3)
+    end
+  end
+
+  describe "#significant_digit_count" do
+    it "counts digits after the first non-zero digit" do
+      sequence = described_class.new(base: 10)
+
+      expect(sequence.significant_digit_count("0.01230".chars)).to eq(4)
+    end
+
+    it "returns zero when the sequence has no significant digits" do
+      sequence = described_class.new(base: 10)
+
+      expect(sequence.significant_digit_count("0.000".chars)).to eq(0)
+    end
+  end
+
   describe "#increment_reversed" do
     it "increments the first available reversed digit" do
       sequence = described_class.new(base: 10)

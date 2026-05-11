@@ -6,12 +6,9 @@ module Plurimath
       class NotationRenderer
         SUPPORTED_NOTATIONS = %i[e scientific engineering].freeze
 
-        def initialize(symbols, precision:, exponent_sign:, exponent_separator:, times:)
-          @symbols = symbols
-          @precision = precision || 0
-          @exponent_sign = exponent_sign
-          @exponent_separator = exponent_separator
-          @times = times
+        def initialize(options)
+          @options = FormatOptions.coerce(options)
+          @precision = @options.precision || 0
         end
 
         def render(number_string, notation)
@@ -31,15 +28,15 @@ module Plurimath
 
         private
 
-        attr_reader :symbols, :exponent_sign, :exponent_separator, :times
+        attr_reader :options
         attr_accessor :precision
 
         def render_e(number_string)
-          localized_notation_parts(number_string).join(exponent_separator.to_s)
+          localized_notation_parts(number_string).join(options.exponent_separator.to_s)
         end
 
         def render_scientific(number_string)
-          localized_notation_parts(number_string).join(" #{times} 10^")
+          localized_notation_parts(number_string).join(" #{options.times} 10^")
         end
 
         def render_engineering(number_string)
@@ -48,13 +45,13 @@ module Plurimath
           parts = notation_parts(number_string)
           move_decimal_for_engineering(parts, parts.last.to_i % 3)
           parts[0] = localize_number(parts[0])
-          parts.join(" #{times} 10^")
+          parts.join(" #{options.times} 10^")
         end
 
         def localize_number(number_string)
           Formatter::NumberFormatter.new(
             BigDecimal(number_string),
-            symbols,
+            options,
           ).format(
             precision: precision,
           )
@@ -83,7 +80,7 @@ module Plurimath
         def exponent_value(number_string)
           exponent_number = BigDecimal(number_string) - 1
           return exponent_number.to_i if exponent_number.negative?
-          return exponent_number.to_i if exponent_sign.to_s != "plus"
+          return exponent_number.to_i if options.exponent_sign.to_s != "plus"
 
           "+#{exponent_number.to_i}"
         end

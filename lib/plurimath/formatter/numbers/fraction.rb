@@ -6,43 +6,27 @@ module Plurimath
       class Fraction < Base
         attr_reader :decimal, :precision, :separator, :group
 
-        DEFAULT_PRECISION = 3
-        DEFAULT_STRINGS = { empty: "", zero: "0", dot: ".", f: "F" }.freeze
+        DEFAULT_PRECISION = FormatOptions::DEFAULT_FRACTION_PRECISION
+        DEFAULT_STRINGS = { empty: "", zero: "0", dot: "." }.freeze
 
-        def initialize(symbols = {})
+        def initialize(options = {})
           super
-          @group       = symbols[:fraction_group_digits]
-          @decimal     = symbols.fetch(:decimal, DEFAULT_STRINGS[:dot])
-          @int_group   = symbols[:group]
-          @separator   = symbols[:fraction_group].to_s
-          @precision   = symbols.fetch(:precision, DEFAULT_PRECISION)
-          @digit_count = symbols[:digit_count].to_i
+          @group = self.options.fraction_group_digits
+          @decimal = self.options.decimal
+          @int_group = self.options.group
+          @separator = self.options.fraction_group
+          @precision = self.options.precision || DEFAULT_PRECISION
+          @digit_count = self.options.digit_count
         end
 
-        def apply(fraction, result, integer_formatter)
-          precision = symbols[:precision] || @precision
-          @result = result
-          @integer_formatter = integer_formatter
-          return DEFAULT_STRINGS[:empty] unless precision.positive?
+        def apply_parts(parts)
+          precision = current_precision
+          return parts.with_digits(fraction_digits: DEFAULT_STRINGS[:empty]) unless precision.positive?
 
-          fraction = change_base(fraction) if !base_default? && fraction.match?(/[1-9]/)
-
-          number = if @digit_count.positive?
-                     digit_count_format(fraction)
-                   else
-                     format(fraction, precision)
-                   end
-          formatted_number = format_groups(number) if number && !number.empty?
-          formatted_number ? decimal + formatted_number : DEFAULT_STRINGS[:empty]
-        end
-
-        def raw_digits(fraction, integer)
-          precision = symbols[:precision] || @precision
-          return [integer, DEFAULT_STRINGS[:empty]] unless precision.positive?
-
-          @result = [integer]
+          @result = [parts.integer_digits]
           @integer_formatter = Numbers::RawIntegerFormatter.new
 
+          fraction = parts.fraction_digits
           fraction = change_base(fraction) if !base_default? && fraction.match?(/[1-9]/)
           number = if @digit_count.positive?
                      digit_count_format(fraction)
@@ -50,7 +34,10 @@ module Plurimath
                      format(fraction, precision)
                    end
 
-          [raw_integer, number.to_s]
+          parts.with_digits(
+            integer_digits: raw_integer,
+            fraction_digits: number.to_s,
+          )
         end
 
         def format(number, precision)
@@ -96,9 +83,9 @@ module Plurimath
         end
 
         def update_digit_count(number)
-          return @digit_count unless zeros_count_in(number) == @precision
+          return @digit_count unless zeros_count_in(number) == current_precision
 
-          @digit_count - @precision + 1
+          @digit_count - current_precision + 1
         end
 
         def zeros_count_in(number)
@@ -145,7 +132,7 @@ module Plurimath
           fraction = Rational(number.to_i, 10**number.length)
 
           base_result = []
-          digits = @precision || number.length
+          digits = current_precision || number.length
 
           digits.times do
             fraction *= base
@@ -164,6 +151,10 @@ module Plurimath
 
         def frac_digit_count
           @digit_count - raw_integer.length
+        end
+
+        def current_precision
+          options.precision || precision
         end
       end
     end

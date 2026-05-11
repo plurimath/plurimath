@@ -32,7 +32,7 @@ module Plurimath
         # Significant can still perform the final rounding pass.
         def significant_base_precision(number_string, format)
           source = Source.new(number_string)
-          base = format[:base] || Formatter::NumberFormatter::DEFAULT_BASE
+          base = format[:base] || Base::DEFAULT_BASE
           return unless target_base?(base)
 
           significant = format[:significant].to_i
@@ -52,8 +52,7 @@ module Plurimath
         end
 
         def target_base?(base)
-          Formatter::NumberFormatter::DEFAULT_BASE_PREFIXES.key?(base) &&
-            base != Formatter::NumberFormatter::DEFAULT_BASE
+          BaseNotation::DEFAULT_PREFIXES.key?(base) && base != Base::DEFAULT_BASE
         end
       end
     end

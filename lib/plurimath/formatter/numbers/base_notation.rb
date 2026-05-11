@@ -13,9 +13,9 @@ module Plurimath
 
         attr_reader :base
 
-        def initialize(symbols)
-          @symbols = symbols
-          @base = symbols[:base] || Base::DEFAULT_BASE
+        def initialize(options)
+          @options = FormatOptions.coerce(options)
+          @base = @options.base
           validate_base!
         end
 
@@ -23,7 +23,7 @@ module Plurimath
           rendered = upcase_hex? ? string.tr(Base::HEX_DIGITS, Base::HEX_DIGITS.upcase) : string
           return rendered if default?
 
-          return "#{rendered}#{symbols[:base_postfix]}" if symbols.key?(:base_postfix)
+          return "#{rendered}#{options.base_postfix}" if options.base_postfix?
 
           "#{base_prefix}#{rendered}"
         end
@@ -38,16 +38,16 @@ module Plurimath
 
         private
 
-        attr_reader :symbols
+        attr_reader :options
 
         def base_prefix
-          return symbols[:base_prefix].to_s if symbols.key?(:base_prefix)
+          return options.base_prefix if options.base_prefix?
 
           DEFAULT_PREFIXES[base]
         end
 
         def upcase_hex?
-          base == 16 && symbols[:hex_capital] == true
+          base == 16 && options.hex_capital == true
         end
 
         def validate_base!

@@ -14,7 +14,7 @@ module Plurimath
 
         def resolve
           locale_symbols
-            .merge(localizer_symbols)
+            .merge(localizer_symbols_hash)
             .merge(localize_number_symbols)
         end
 
@@ -24,6 +24,12 @@ module Plurimath
 
         def locale_symbols
           Formatter::SupportedLocales::LOCALES[locale.to_sym].dup
+        end
+
+        def localizer_symbols_hash
+          return {} unless localizer_symbols
+
+          localizer_symbols.respond_to?(:to_h) ? localizer_symbols.to_h : localizer_symbols
         end
 
         def localize_number_symbols
