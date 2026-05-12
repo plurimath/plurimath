@@ -12,28 +12,19 @@ module Plurimath
         DEFAULT_TIMES = "\u{d7}"
 
         attr_reader :exponent_separator, :exponent_sign, :notation, :symbols,
-                    :times
-        attr_accessor :precision
-
-        def self.coerce(options)
-          return options if options.is_a?(self)
-
-          new(symbols: options || {})
-        end
+                    :precision, :times
 
         def initialize(
-          number_string = nil,
+          source = nil,
           symbols: {},
-          format: nil,
           precision: nil,
           precision_resolver: nil
         )
           @symbols = symbols.dup
-          @format = format || @symbols
           @notation = symbol_option(:notation)
           @exponent_separator = symbol_option(:e) || DEFAULT_EXPONENT_SEPARATOR
           @times = symbol_option(:times) || DEFAULT_TIMES
-          @precision = resolve_precision(number_string, precision, precision_resolver)
+          @precision = resolve_precision(source, precision, precision_resolver)
           @exponent_sign = symbol_option(:exponent_sign)
         end
 
@@ -89,6 +80,10 @@ module Plurimath
           symbols[:number_sign]
         end
 
+        def notation_supported?
+          NotationRenderer.supported?(notation)
+        end
+
         def significant
           symbols[:significant].to_i
         end
@@ -99,21 +94,21 @@ module Plurimath
 
         private
 
-        attr_reader :format
-
-        def resolve_precision(number_string, precision, precision_resolver)
-          return precision || symbols[:precision] unless precision_resolver
+        def resolve_precision(source, precision, precision_resolver)
+          effective_precision = precision || symbols[:precision]
+          return effective_precision unless precision_resolver
 
           precision_resolver.resolve(
-            number_string,
-            precision: precision,
-            format: format,
-            notation: notation,
+            source,
+            precision: effective_precision,
+            base: base,
+            significant: significant,
+            notation_supported: notation_supported?,
           )
         end
 
         def symbol_option(key)
-          format[key]&.to_sym
+          symbols[key]&.to_sym
         end
       end
     end

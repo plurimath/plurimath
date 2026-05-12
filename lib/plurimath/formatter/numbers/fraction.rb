@@ -9,33 +9,31 @@ module Plurimath
         DEFAULT_PRECISION = FormatOptions::DEFAULT_FRACTION_PRECISION
         DEFAULT_STRINGS = { empty: "", zero: "0", dot: "." }.freeze
 
-        def initialize(options = {})
+        def initialize(options)
           super
           @group = self.options.fraction_group_digits
           @decimal = self.options.decimal
-          @int_group = self.options.group
           @separator = self.options.fraction_group
           @precision = self.options.precision || DEFAULT_PRECISION
           @digit_count = self.options.digit_count
         end
 
-        def apply_parts(parts)
-          precision = current_precision
+        def apply_parts(parts, precision: self.precision)
+          precision = precision.to_i
           return parts.with_digits(fraction_digits: DEFAULT_STRINGS[:empty]) unless precision.positive?
 
-          @result = [parts.integer_digits]
-          @integer_formatter = Numbers::RawIntegerFormatter.new
+          @integer_digits = parts.integer_digits
 
           fraction = parts.fraction_digits
-          fraction = change_base(fraction) if !base_default? && fraction.match?(/[1-9]/)
+          fraction = change_base(fraction, precision) if !base_default? && fraction.match?(/[1-9]/)
           number = if @digit_count.positive?
-                     digit_count_format(fraction)
+                     digit_count_format(fraction, precision)
                    else
                      format(fraction, precision)
                    end
 
           parts.with_digits(
-            integer_digits: raw_integer,
+            integer_digits: integer_digits,
             fraction_digits: number.to_s,
           )
         end
@@ -64,28 +62,28 @@ module Plurimath
           tokens.compact.join(separator)
         end
 
-        def digit_count_format(fraction)
-          integer = raw_integer + DEFAULT_STRINGS[:dot] + fraction
+        def digit_count_format(fraction, precision)
+          integer = integer_digits + DEFAULT_STRINGS[:dot] + fraction
           int_length = integer.length.pred # integer length; excluding the decimal point
           if int_length > @digit_count
-            # When digit_count is less than or equal to the integer length,
-            # omit the fractional part entirely and handle rounding in the integer
-            if @digit_count <= raw_integer.length
+            # When digit_count is within the integer length, omit the fraction
+            # and let the integer carry handle rounding.
+            if @digit_count <= integer_digits.length
               round_integer([], 1) if digit_sequence.round_up?(fraction[0])
               return DEFAULT_STRINGS[:empty]
             end
             round_base_string(fraction)
           elsif int_length < @digit_count
-            fraction + (DEFAULT_STRINGS[:zero] * (update_digit_count(fraction) - int_length))
+            fraction + (DEFAULT_STRINGS[:zero] * (update_digit_count(fraction, precision) - int_length))
           else
             fraction
           end
         end
 
-        def update_digit_count(number)
-          return @digit_count unless zeros_count_in(number) == current_precision
+        def update_digit_count(number, precision)
+          return @digit_count unless zeros_count_in(number) == precision
 
-          @digit_count - current_precision + 1
+          @digit_count - precision + 1
         end
 
         def zeros_count_in(number)
@@ -108,9 +106,8 @@ module Plurimath
 
         def round_integer(fraction_digits_reversed, carry = 1)
           incremented, carry = digit_sequence.increment_reversed(
-            raw_integer.chars.reverse,
+            integer_digits.chars.reverse,
             carry: carry,
-            skip: [decimal, @int_group],
           )
           incremented = incremented.reverse.join
           new_integer = [incremented]
@@ -118,23 +115,16 @@ module Plurimath
             fraction_digits_reversed.pop
             new_integer.insert(0, "1")
           end
-          @result[0] = @integer_formatter.format_groups(new_integer.join)
+          @integer_digits = new_integer.join
         end
 
-        def change_base(number)
-          # Convert fractional part from base 10 to target base using rational arithmetic
-          # to avoid floating-point rounding errors.
-          # Algorithm: repeatedly multiply fraction by base, extract integer part as next digit
-          # Represent the fractional part exactly as a rational number to avoid
-          # binary floating-point rounding errors when converting bases.
-          # Note: The input `number` is always in decimal (base 10) format,
-          # so we use 10 as the denominator base regardless of the target base.
+        def change_base(number, precision = self.precision)
+          # Keep the decimal fraction exact while converting to the target base.
           fraction = Rational(number.to_i, 10**number.length)
 
           base_result = []
-          digits = current_precision || number.length
 
-          digits.times do
+          precision.times do
             fraction *= base
             digit = fraction.to_i
             alpha_digit = HEX_ALPHANUMERIC[digit]
@@ -145,16 +135,12 @@ module Plurimath
           base_result.join
         end
 
-        def raw_integer
-          @result[0].delete(@int_group.to_s)
+        def integer_digits
+          @integer_digits
         end
 
         def frac_digit_count
-          @digit_count - raw_integer.length
-        end
-
-        def current_precision
-          options.precision || precision
+          @digit_count - integer_digits.length
         end
       end
     end

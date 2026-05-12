@@ -4,8 +4,8 @@ module Plurimath
   module Formatter
     module Numbers
       class SignRenderer
-        def initialize(options)
-          @options = FormatOptions.coerce(options)
+        def initialize(positive_sign = nil)
+          @positive_sign = positive_sign
         end
 
         def apply(number, rendered)
@@ -14,12 +14,12 @@ module Plurimath
 
         private
 
-        attr_reader :options
+        attr_reader :positive_sign
 
         def prefix(number)
           return "-" if number.negative?
 
-          "+" if options.number_sign&.to_sym == :plus
+          "+" if positive_sign&.to_sym == :plus
         end
       end
     end

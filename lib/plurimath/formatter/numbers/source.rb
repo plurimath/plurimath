@@ -6,7 +6,7 @@ module Plurimath
   module Formatter
     module Numbers
       class Source
-        attr_reader :exponent, :exponent_text, :fraction_digits,
+        attr_reader :decimal, :exponent, :exponent_text, :fraction_digits,
                     :integer_digits, :raw, :sign
 
         DEFAULT_INTEGER = "0"
@@ -14,6 +14,7 @@ module Plurimath
 
         def initialize(value)
           @raw = value.to_s
+          @decimal = BigDecimal(raw)
           @sign = raw.start_with?("-") ? -1 : 1
 
           mantissa, @exponent_text = unsigned_value.split("e", 2)
@@ -25,6 +26,16 @@ module Plurimath
           fraction_digits.length > exponent
         end
 
+        def decimal_precision
+          decimal_digits.last.length
+        end
+
+        def notation_precision
+          precision = integer_digits.length + fraction_digits.length - 1
+          precision += 1 if sign.negative?
+          [precision, 0].max
+        end
+
         def significant_digit_count
           significant_digits.length
         end
@@ -32,7 +43,7 @@ module Plurimath
         def target_base_integer_length(base)
           return decimal_parts_integer_length if base == Base::DEFAULT_BASE
 
-          integer = BigDecimal(raw).abs.to_i
+          integer = decimal.abs.to_i
           return 0 if integer.zero?
 
           integer.to_s(base).length
@@ -47,7 +58,6 @@ module Plurimath
             base: base || Base::DEFAULT_BASE,
             integer_digits: integer,
             fraction_digits: fraction,
-            source: self,
           )
         end
 

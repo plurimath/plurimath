@@ -4,20 +4,18 @@ module Plurimath
   module Formatter
     module Numbers
       class Parts
-        attr_reader :base, :fraction_digits, :integer_digits, :sign, :source
+        attr_reader :base, :fraction_digits, :integer_digits, :sign
 
         def initialize(
           sign:,
           base:,
           integer_digits:,
-          fraction_digits:,
-          source:
+          fraction_digits:
         )
           @sign = sign
           @base = base
           @integer_digits = normalize_integer(integer_digits)
           @fraction_digits = fraction_digits.to_s
-          @source = source
         end
 
         def fractional?
@@ -45,7 +43,6 @@ module Plurimath
             base: base,
             integer_digits: integer_digits,
             fraction_digits: fraction_digits,
-            source: source,
           )
         end
 

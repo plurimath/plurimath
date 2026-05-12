@@ -4,6 +4,13 @@ require "spec_helper"
 
 RSpec.describe Plurimath::Formatter::Numbers::Source do
   describe "#to_parts" do
+    it "keeps the raw value and decimal interpretation together" do
+      source = described_class.new("0123")
+
+      expect(source.raw).to eq("0123")
+      expect(source.decimal).to eq(BigDecimal("123"))
+    end
+
     it "normalizes exponent notation into decimal parts" do
       parts = described_class.new("1.230e2").to_parts
 
@@ -57,6 +64,29 @@ RSpec.describe Plurimath::Formatter::Numbers::Source do
       expect(described_class.new("0.123e3")).not_to be_fractional
       expect(described_class.new("0.12325e3")).to be_fractional
       expect(described_class.new("1e-3")).to be_fractional
+    end
+  end
+
+  describe "#decimal_precision" do
+    it "uses normalized decimal parts instead of raw exponent text" do
+      expect(described_class.new("123.450").decimal_precision).to eq(3)
+      expect(described_class.new("1.230e2").decimal_precision).to eq(1)
+      expect(described_class.new("0.123e3").decimal_precision).to eq(0)
+    end
+  end
+
+  describe "#notation_precision" do
+    it "counts coefficient digits from parsed source digits" do
+      expect(described_class.new("14000").notation_precision).to eq(4)
+      expect(described_class.new("1.23e4").notation_precision).to eq(2)
+    end
+
+    it "preserves existing negative coefficient padding" do
+      expect(described_class.new("-14000").notation_precision).to eq(5)
+    end
+
+    it "preserves zero scale for notation rendering" do
+      expect(described_class.new("0.00").notation_precision).to eq(2)
     end
   end
 

@@ -4,7 +4,8 @@ require "spec_helper"
 
 RSpec.describe Plurimath::Formatter::Numbers::Significant do
   let(:symbols) { { decimal: ".", significant: 2 } }
-  let(:formatter) { described_class.new(symbols) }
+  let(:options) { Plurimath::Formatter::Numbers::FormatOptions.new(symbols: symbols) }
+  let(:formatter) { described_class.new(options) }
 
   describe "#initialize" do
     it "stores significant digits" do

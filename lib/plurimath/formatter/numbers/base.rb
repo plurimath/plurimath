@@ -11,8 +11,8 @@ module Plurimath
 
         attr_accessor :base, :options
 
-        def initialize(options = {})
-          @options = FormatOptions.coerce(options)
+        def initialize(options)
+          @options = options
           @base = @options.base
         end
 
