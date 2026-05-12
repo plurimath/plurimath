@@ -6,7 +6,7 @@ module Plurimath
       class Integer < Base
         attr_reader :separator, :groups
 
-        def initialize(options = {})
+        def initialize(options)
           super
           @groups = self.options.group_digits
           @separator = self.options.group
