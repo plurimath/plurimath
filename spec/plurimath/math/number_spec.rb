@@ -140,6 +140,24 @@ RSpec.describe Plurimath::Math::Number do
 
         expect(result).to eql("1,234")
       end
+
+      it "does not resolve the configured formatter when explicit formatter is passed" do
+        configuration = instance_spy(Plurimath::Configuration)
+        formatter = Class.new do
+          def localized_number(number)
+            "explicit #{number}"
+          end
+        end.new
+
+        allow(Plurimath).to receive(:configuration).and_return(configuration)
+
+        result = described_class.new(first_value).to_latex(
+          options: { formatter: formatter },
+        )
+
+        expect(result).to eql("explicit 1234")
+        expect(configuration).not_to have_received(:number_formatter)
+      end
     end
   end
 

@@ -27,8 +27,8 @@ RSpec.describe Plurimath::Deprecation do
       end
 
       expect(Kernel).to have_received(:warn).once.with(
-        "[plurimath][DEPRECATION] #{feature} is deprecated. " \
-        "since 0.10. Use number_formatter.new_option instead. " \
+        "[plurimath][DEPRECATION] #{feature} is deprecated since 0.10. " \
+        "Use number_formatter.new_option instead. " \
         "Old option will be removed.",
       )
       expect(Plurimath::DeprecationError).to have_received(:new).once
