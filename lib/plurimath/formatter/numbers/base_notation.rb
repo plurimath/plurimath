@@ -14,7 +14,7 @@ module Plurimath
         attr_reader :base
 
         def initialize(options)
-          @options = FormatOptions.coerce(options)
+          @options = options
           @base = @options.base
           validate_base!
         end

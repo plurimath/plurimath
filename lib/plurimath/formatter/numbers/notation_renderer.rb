@@ -7,18 +7,19 @@ module Plurimath
         SUPPORTED_NOTATIONS = %i[e scientific engineering].freeze
 
         def initialize(options)
-          @options = FormatOptions.coerce(options)
-          @precision = @options.precision || 0
+          @options = options
+          @precision = (@options.precision || 0).to_i
+          @exponent_sign_renderer = SignRenderer.new(@options.exponent_sign)
         end
 
-        def render(number_string, notation)
+        def render(source, notation)
           case notation.to_sym
           when :e
-            render_e(number_string)
+            render_e(source)
           when :scientific
-            render_scientific(number_string)
+            render_scientific(source)
           when :engineering
-            render_engineering(number_string)
+            render_engineering(source)
           end
         end
 
@@ -28,71 +29,96 @@ module Plurimath
 
         private
 
-        attr_reader :options
-        attr_accessor :precision
+        attr_reader :exponent_sign_renderer, :options, :precision
 
-        def render_e(number_string)
-          localized_notation_parts(number_string).join(options.exponent_separator.to_s)
+        def render_e(source)
+          localized_notation_parts(source).join(options.exponent_separator.to_s)
         end
 
-        def render_scientific(number_string)
-          localized_notation_parts(number_string).join(" #{options.times} 10^")
+        def render_scientific(source)
+          localized_notation_parts(source).join(" #{options.times} 10^")
         end
 
-        def render_engineering(number_string)
-          self.precision = number_string.length - 1 unless precision.positive?
-
-          parts = notation_parts(number_string)
-          move_decimal_for_engineering(parts, parts.last.to_i % 3)
-          parts[0] = localize_number(parts[0])
+        def render_engineering(source)
+          parts = notation_parts(source)
+          parts = engineering_notation_parts(parts) unless source.decimal.zero?
+          parts[0] = localize_parts(source, parts[0], precision: engineering_precision(source))
           parts.join(" #{options.times} 10^")
         end
 
-        def localize_number(number_string)
-          Formatter::NumberFormatter.new(
-            BigDecimal(number_string),
+        def localize_parts(source, parts, precision:)
+          NumberRenderer.new(
+            source,
             options,
-          ).format(
+          ).format_parts(
+            parts,
             precision: precision,
           )
         end
 
-        def localized_notation_parts(number_string)
-          parts = notation_parts(number_string)
-          parts[0] = localize_number(parts[0])
-          parts << "0" if parts.length == 1
+        def localized_notation_parts(source)
+          parts = notation_parts(source)
+          parts[0] = localize_parts(source, parts[0], precision: precision)
+          parts[1] = render_exponent(parts[1])
           parts
         end
 
-        def notation_parts(number_string)
-          decimal = BigDecimal(number_string)
-          return [number_string, 0] if decimal.zero?
+        def notation_parts(source)
+          return [source.to_parts(base: options.base), 0] if source.decimal.zero?
 
-          parts = decimal.to_s("e").split("e")
-          parts[1] = exponent_value(parts[1])
-          coefficient = parts[0]
-          coefficient = coefficient.gsub(/0\.(\d)/, '\1.')
-          coefficient = coefficient.sub(".", "") if coefficient.start_with?(".")
-          parts[0] = coefficient.end_with?(".") ? coefficient[0..-2] : coefficient
-          parts
+          parts = source.to_parts(base: Base::DEFAULT_BASE)
+          digits, exponent = significant_digits_and_exponent(parts)
+          [
+            Parts.new(
+              sign: parts.sign,
+              base: options.base,
+              integer_digits: digits[0],
+              fraction_digits: digits[1..].to_s,
+            ),
+            exponent,
+          ]
         end
 
-        def exponent_value(number_string)
-          exponent_number = BigDecimal(number_string) - 1
-          return exponent_number.to_i if exponent_number.negative?
-          return exponent_number.to_i if options.exponent_sign.to_s != "plus"
+        def engineering_notation_parts(parts)
+          coefficient, exponent = parts
+          index = exponent % 3
+          exponent -= index
+          digits = "#{coefficient.integer_digits}#{coefficient.fraction_digits}"
+          integer_length = index + 1
+          integer_digits = digits[0...integer_length].to_s.ljust(integer_length, "0")
 
-          "+#{exponent_number.to_i}"
+          [
+            Parts.new(
+              sign: coefficient.sign,
+              base: options.base,
+              integer_digits: integer_digits,
+              fraction_digits: digits[integer_length..].to_s,
+            ),
+            render_exponent(exponent),
+          ]
         end
 
-        def move_decimal_for_engineering(parts, index)
-          return if index.zero?
+        def engineering_precision(source)
+          return precision if precision.positive?
 
-          parts.first.delete!(".")
-          parts.first.insert(index + 1, ".") unless parts.first[index + 2].nil?
-          exponent = parts[-1]
-          parts[-1] =
-            "#{'+' if exponent.to_s.start_with?('+')}#{exponent.to_i - index}"
+          [source.significant_digit_count - 1, 0].max
+        end
+
+        def significant_digits_and_exponent(parts)
+          if parts.integer_zero?
+            index = parts.fraction_digits.index(/[1-9]/)
+            [parts.fraction_digits[index..], -(index + 1)]
+          else
+            digits = "#{parts.integer_digits}#{parts.fraction_digits}"
+            index = digits.index(/[1-9]/)
+            [digits[index..], parts.integer_digits.length - index - 1]
+          end
+        end
+
+        def render_exponent(exponent)
+          return "0" if exponent.zero?
+
+          exponent_sign_renderer.apply(exponent, exponent.abs.to_s)
         end
       end
     end

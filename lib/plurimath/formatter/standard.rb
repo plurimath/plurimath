@@ -3,8 +3,6 @@
 module Plurimath
   module Formatter
     class Standard < Plurimath::NumberFormatter
-      attr_accessor :precision
-
       DEFAULT_OPTIONS = {
         fraction_group_digits: 3,
         exponent_sign: nil,
@@ -37,7 +35,6 @@ module Plurimath
 
       def set_default_options(options)
         options = options ? options.dup : {}
-        self.precision ||= options[:precision]
         apply_default_symbols(options)
         options
       end

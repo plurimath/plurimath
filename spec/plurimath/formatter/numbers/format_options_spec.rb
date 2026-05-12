@@ -3,25 +3,29 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
+  def build_source(number_string)
+    Plurimath::Formatter::Numbers::Source.new(number_string)
+  end
+
   describe "#initialize" do
     it "normalizes notation option values" do
       precision_resolver = double(resolve: 4)
+      source = build_source("14000")
+      symbols = {
+        decimal: "@",
+        group: "_",
+        group_digits: 2,
+        base: 16,
+        base_prefix: "16#",
+        number_sign: :plus,
+        notation: "scientific",
+        e: "E",
+        times: "x",
+        exponent_sign: "plus",
+      }
       options = described_class.new(
-        "14000",
-        symbols: {
-          decimal: "@",
-          group: "_",
-          group_digits: 2,
-          base: 16,
-          base_prefix: "16#",
-          number_sign: :plus,
-        },
-        format: {
-          notation: "scientific",
-          e: "E",
-          times: "x",
-          exponent_sign: "plus",
-        },
+        source,
+        symbols: symbols,
         precision: nil,
         precision_resolver: precision_resolver,
       )
@@ -31,6 +35,27 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       expect(options.times).to eq(:x)
       expect(options.exponent_sign).to eq(:plus)
       expect(options.precision).to eq(4)
+      expect(precision_resolver).to have_received(:resolve).with(
+        source,
+        precision: nil,
+        base: 16,
+        significant: 0,
+        notation_supported: true,
+      )
+    end
+
+    it "uses merged symbols for renderer options" do
+      options = described_class.new(
+        symbols: {
+          decimal: "@",
+          group: "_",
+          group_digits: 2,
+          base: 16,
+          base_prefix: "16#",
+          number_sign: :plus,
+        },
+      )
+
       expect(options.decimal).to eq("@")
       expect(options.group).to eq("_")
       expect(options.group_digits).to eq(2)
@@ -42,20 +67,22 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
 
     it "uses notation defaults and delegates precision resolution" do
       precision_resolver = double(resolve: 2)
-      format = {}
+      source = build_source("0.00")
+      symbols = {}
 
       options = described_class.new(
-        "0.00",
-        format: format,
+        source,
+        symbols: symbols,
         precision: nil,
         precision_resolver: precision_resolver,
       )
 
       expect(precision_resolver).to have_received(:resolve).with(
-        "0.00",
+        source,
         precision: nil,
-        format: format,
-        notation: nil,
+        base: 10,
+        significant: 0,
+        notation_supported: false,
       )
       expect(options.exponent_separator).to eq(:e)
       expect(options.times).to eq("\u{d7}")

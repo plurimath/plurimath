@@ -4,38 +4,31 @@ module Plurimath
   module Formatter
     module Numbers
       class PrecisionResolver
-        def resolve(number_string, precision:, format:, notation:)
+        def resolve(source, precision:, base:, significant:, notation_supported:)
           return precision if precision
 
-          significant_precision = significant_base_precision(number_string, format)
+          significant_precision = significant_base_precision(source, base, significant)
           return significant_precision if significant_precision
 
-          return notation_precision(number_string) if NotationRenderer.supported?(notation)
+          # Source owns input-derived digit lengths; this resolver only decides
+          # which precision rule wins. Plain decimal rendering preserves
+          # fractional scale, while notation precision controls coefficient
+          # digits after the leading digit.
+          return source.notation_precision if notation_supported
 
-          decimal_precision(number_string)
+          source.decimal_precision
         end
 
         private
-
-        def decimal_precision(number_string)
-          number_string.include?(".") ? number_string.sub(/^.*\./, "").size : 0
-        end
-
-        def notation_precision(number_string)
-          number_string.sub(".", "").size - 1
-        end
 
         # When precision is omitted, infer the target-base fractional digits
         # needed to satisfy :significant. Cap the count to the source significant
         # digits so base conversion does not invent precision for values like 0.1.
         # Add one extra digit when the source has more significant digits so
         # Significant can still perform the final rounding pass.
-        def significant_base_precision(number_string, format)
-          source = Source.new(number_string)
-          base = format[:base] || Base::DEFAULT_BASE
+        def significant_base_precision(source, base, significant)
           return unless target_base?(base)
 
-          significant = format[:significant].to_i
           return if significant.zero?
 
           return 0 unless source.fractional?

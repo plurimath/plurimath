@@ -48,6 +48,48 @@ RSpec.describe Plurimath::NumberFormatter do
         expect(described_class.new(:en).twitter_cldr_reader(locale: :en)[:decimal]).to eql(".")
       end
 
+      it "uses localizer symbols for notation options" do
+        custom_formatter = described_class.new(
+          :en,
+          localizer_symbols: {
+            notation: :scientific,
+            times: "x",
+            exponent_sign: :plus,
+          },
+        )
+
+        output_string = custom_formatter.localized_number(number)
+        expect(output_string).to eql("1.4000 x 10^+4")
+      end
+
+      it "uses localizer symbols for target-base significant precision" do
+        custom_formatter = described_class.new(
+          :en,
+          localizer_symbols: {
+            base: 16,
+            significant: 5,
+            group_digits: 10,
+            decimal: ".",
+          },
+        )
+
+        output_string = custom_formatter.localized_number("0.12325e3")
+        expect(output_string).to eql("0x7b.400")
+      end
+
+      it "uses Standard options for notation symbols" do
+        custom_formatter = Plurimath::Formatter::Standard.new(
+          options: {
+            notation: :scientific,
+            times: "x",
+            exponent_sign: :plus,
+          },
+        )
+
+        output_string = custom_formatter.localized_number(number)
+        expect(output_string).to eql("1.400'0 x 10^+4")
+      end
+
       it "matches notation: :basic with de locale localized without precision string" do
         format = { decimal: "*", notation: :basic, group_digits: 3 }
         output_string = formatter.localized_number(number, locale: locale,
@@ -98,6 +140,17 @@ RSpec.describe Plurimath::NumberFormatter do
         format = { notation: :scientific }
         output_string = formatter.localized_number("0.00", format: format)
         expect(output_string).to eql("0.00 × 10^0")
+      end
+
+      it "does not count exponent text as notation precision" do
+        format = { notation: :scientific }
+        output_string = formatter.localized_number("1.23e4", format: format)
+        expect(output_string).to eql("1.23 × 10^4")
+      end
+
+      it "uses normalized decimal precision for exponent input" do
+        output_string = formatter.localized_number("1.230e2")
+        expect(output_string).to eql("123.0")
       end
     end
 
@@ -462,7 +515,7 @@ RSpec.describe Plurimath::NumberFormatter do
                                                      format: {
                                                        number_sign: :plus, notation: :engineering
                                                      })
-          expect(output_string).to eql("-1.4236392390 × 10^3")
+          expect(output_string).to eql("-14.2363923900 × 10^3")
         end
       end
 

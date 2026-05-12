@@ -12,8 +12,9 @@ RSpec.describe Plurimath::Formatter::Numbers::PartsRenderer do
       fraction_group_digits: 3,
     }
   end
-  let(:integer_formatter) { Plurimath::Formatter::Numbers::Integer.new(symbols) }
-  let(:fraction_formatter) { Plurimath::Formatter::Numbers::Fraction.new(symbols) }
+  let(:options) { Plurimath::Formatter::Numbers::FormatOptions.new(symbols: symbols) }
+  let(:integer_formatter) { Plurimath::Formatter::Numbers::Integer.new(options) }
+  let(:fraction_formatter) { Plurimath::Formatter::Numbers::Fraction.new(options) }
   let(:renderer) do
     described_class.new(
       integer_formatter: integer_formatter,
@@ -28,7 +29,6 @@ RSpec.describe Plurimath::Formatter::Numbers::PartsRenderer do
         base: 10,
         integer_digits: "1234",
         fraction_digits: "5678",
-        source: nil,
       )
 
       expect(renderer.render(parts)).to eq("1,234.567 8")
@@ -40,7 +40,6 @@ RSpec.describe Plurimath::Formatter::Numbers::PartsRenderer do
         base: 10,
         integer_digits: "1234",
         fraction_digits: "",
-        source: nil,
       )
 
       expect(renderer.render(parts)).to eq("1,234")

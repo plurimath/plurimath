@@ -3,7 +3,8 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Formatter::Numbers::Integer do
-  let(:formatter) { described_class.new(symbols) }
+  let(:formatter) { described_class.new(options) }
+  let(:options) { Plurimath::Formatter::Numbers::FormatOptions.new(symbols: symbols) }
   let(:symbols) { {} }
 
   describe "#initialize" do
