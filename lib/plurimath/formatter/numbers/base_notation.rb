@@ -3,6 +3,8 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Applies base prefix/postfix notation after numeric digits have already
+      # been rendered.
       class BaseNotation
         DEFAULT_PREFIXES = {
           2 => "0b",

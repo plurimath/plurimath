@@ -3,6 +3,8 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Orchestrates Source and Parts through numeric transforms and final
+      # renderers; low-level digit rules stay in composed helpers.
       class NumberRenderer
         attr_reader :options, :source
 

@@ -3,6 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Renders already-transformed Parts into localized integer/fraction text.
       class PartsRenderer
         def initialize(integer_formatter:, fraction_formatter:)
           @integer_formatter = integer_formatter

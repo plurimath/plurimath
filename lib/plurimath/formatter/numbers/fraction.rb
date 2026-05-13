@@ -3,6 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Transforms fraction digits on Parts before localized rendering.
       class Fraction < Base
         attr_reader :decimal, :precision, :separator, :group
 
@@ -18,6 +19,8 @@ module Plurimath
           @digit_count = self.options.digit_count
         end
 
+        # Keep fraction preparation on structured parts; localized rendering and
+        # grouping happen later at the PartsRenderer boundary.
         def apply_parts(parts, precision: self.precision)
           precision = precision.to_i
           return parts.with_digits(fraction_digits: DEFAULT_STRINGS[:empty]) unless precision.positive?
@@ -62,6 +65,8 @@ module Plurimath
           tokens.compact.join(separator)
         end
 
+        # The digit_count option is a total visible-digit budget, so fraction
+        # rounding can carry back into the integer digits.
         def digit_count_format(fraction, precision)
           integer = integer_digits + DEFAULT_STRINGS[:dot] + fraction
           int_length = integer.length.pred # integer length; excluding the decimal point

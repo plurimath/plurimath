@@ -3,6 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Per-render view of merged formatter symbols and resolved precision.
       class FormatOptions
         DEFAULT_EXPONENT_SEPARATOR = :e
         DEFAULT_DECIMAL = "."

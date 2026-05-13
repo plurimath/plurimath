@@ -3,6 +3,8 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Shared base-digit helper for counting, rounding thresholds, next-digit
+      # lookup, and carry propagation.
       class DigitSequence
         attr_reader :base
 
@@ -22,23 +24,19 @@ module Plurimath
 
         def digit_count(chars, stop_at: nil)
           count = 0
-          chars.each do |char|
-            break if stop_at && char == stop_at
-
-            count += 1 if digit?(char)
-          end
+          each_countable_digit(chars, stop_at: stop_at) { count += 1 }
           count
         end
 
         def significant_digit_count(chars)
           start_counting = false
           count = 0
-          chars.each do |char|
-            start_counting = true if significant?(char)
-            next unless start_counting
 
-            count += 1 if digit?(char)
+          each_countable_digit(chars) do |char|
+            start_counting = true if significant?(char)
+            count += 1 if start_counting
           end
+
           count
         end
 
@@ -80,6 +78,17 @@ module Plurimath
           end
 
           [digits, carry]
+        end
+
+        private
+
+        def each_countable_digit(chars, stop_at: nil)
+          chars.each do |char|
+            break if stop_at && char == stop_at
+            next unless digit?(char)
+
+            yield(char)
+          end
         end
       end
     end
