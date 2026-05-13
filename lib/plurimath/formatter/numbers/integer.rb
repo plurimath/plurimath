@@ -3,6 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Converts integer digits to the target base and applies integer grouping.
       class Integer < Base
         attr_reader :separator, :groups
 

@@ -3,6 +3,8 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Normalized digit value object passed between transforms before
+      # localization.
       class Parts
         attr_reader :base, :fraction_digits, :integer_digits, :sign
 

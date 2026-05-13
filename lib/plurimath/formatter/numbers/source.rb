@@ -5,6 +5,8 @@ require "bigdecimal"
 module Plurimath
   module Formatter
     module Numbers
+      # Captures raw input, BigDecimal interpretation, and source digit metadata
+      # before formatter transforms run.
       class Source
         attr_reader :decimal, :exponent, :exponent_text, :fraction_digits,
                     :integer_digits, :raw, :sign

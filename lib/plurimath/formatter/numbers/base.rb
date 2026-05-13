@@ -3,6 +3,8 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Shared base for formatter helpers that need resolved options, target
+      # base state, and common digit operations.
       class Base
         HEX_DIGITS = "abcdef"
         HEX_ALPHANUMERIC = %w[0 1 2 3 4 5 6 7 8 9 a b c d e f].freeze

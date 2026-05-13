@@ -3,6 +3,8 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Builds e/scientific/engineering notation while delegating coefficient
+      # localization back through the structured renderer.
       class NotationRenderer
         SUPPORTED_NOTATIONS = %i[e scientific engineering].freeze
 

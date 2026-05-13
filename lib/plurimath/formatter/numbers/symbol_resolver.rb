@@ -3,6 +3,8 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Merges locale defaults, explicit symbols, and localize_number templates
+      # into a fresh symbol hash for one formatter call.
       class SymbolResolver
         LOCALIZE_NUMBER_REGEX = %r{(?<group>[^#])?(?<groupdigits>#+0)(?<decimal>.)(?<fractdigits>#+)(?<fractgroup>[^#])?}
 

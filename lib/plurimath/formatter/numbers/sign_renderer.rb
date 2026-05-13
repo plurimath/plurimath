@@ -3,6 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Applies the final sign prefix to already-rendered number text.
       class SignRenderer
         def initialize(positive_sign = nil)
           @positive_sign = positive_sign

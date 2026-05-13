@@ -3,6 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Chooses which precision source wins for one render call.
       class PrecisionResolver
         def resolve(source, precision:, base:, significant:, notation_supported:)
           return precision if precision

@@ -3,6 +3,7 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Applies significant-digit rounding on Parts before localized rendering.
       class Significant < Base
         attr_reader :significant
 
@@ -25,6 +26,8 @@ module Plurimath
 
         protected
 
+        # Apply significant-digit rules before localization so rounding never
+        # reparses grouped or decimal-localized output.
         def significant_parts(parts)
           integer = parts.integer_digits
           fraction = parts.fraction_digits
