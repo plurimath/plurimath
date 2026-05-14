@@ -338,8 +338,7 @@ module Plurimath
       def msqrt_to_sqrt(sqrt)
         children = content_children(sqrt)
         radicand = children.filter_map { |child| mml_to_plurimath(child) }
-        radicand = radicand.first if radicand.size == 1
-        Plurimath::Math::Function::Sqrt.new(radicand)
+        Plurimath::Math::Function::Sqrt.new(wrap_children(radicand))
       end
 
       # MathML element: <mroot> radicand index
