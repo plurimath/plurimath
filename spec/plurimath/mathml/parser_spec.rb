@@ -549,6 +549,67 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
+  context "contains mathml string of empty sqrt formula" do
+    let(:exp) do
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msqrt/>
+        </math>
+      MATHML
+    end
+
+    it "returns sqrt formula without an array radicand" do
+      expected_value = Plurimath::Math::Formula.new([
+                                                      Plurimath::Math::Function::Sqrt.new(nil),
+                                                    ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of sqrt formula with empty token radicand" do
+    let(:exp) do
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msqrt>
+            <mi></mi>
+          </msqrt>
+        </math>
+      MATHML
+    end
+
+    it "returns sqrt formula without an array radicand" do
+      expected_value = Plurimath::Math::Formula.new([
+                                                      Plurimath::Math::Function::Sqrt.new(nil),
+                                                    ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains mathml string of sqrt formula with multiple radicands" do
+    let(:exp) do
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <msqrt>
+            <mi>s</mi>
+            <mi>t</mi>
+          </msqrt>
+        </math>
+      MATHML
+    end
+
+    it "returns sqrt formula with the radicands grouped as a formula" do
+      expected_value = Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Sqrt.new(
+          Plurimath::Math::Formula.new([
+            Plurimath::Math::Symbols::Symbol.new("s"),
+            Plurimath::Math::Symbols::Symbol.new("t"),
+          ]),
+        ),
+      ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
   context "contains mathml mfenced tag and solid columnlines for table formula" do
     let(:exp) do
       <<~MATHML
