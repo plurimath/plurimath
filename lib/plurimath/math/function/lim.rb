@@ -28,6 +28,12 @@ module Plurimath
           "\\#{class_name}#{first_value}#{second_value}"
         end
 
+        def to_html(options:)
+          first_value = "<i>#{parameter_one.to_html(options: options)}</i>" if parameter_one
+          second_value = "<i>#{parameter_two.to_html(options: options)}</i>" if parameter_two
+          "<i>lim</i>#{first_value}#{second_value}"
+        end
+
         def to_mathml_without_math_tag(intent, options:)
           first_value = Utility.ox_element("mo") << "lim"
           return first_value unless any_value_exist?

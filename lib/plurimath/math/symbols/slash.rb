@@ -10,7 +10,7 @@ module Plurimath
           mathml: ["&#x2215;"],
           latex: [["divslash", "slash", "/", "&#x2215;"]],
           omml: ["&#x2215;"],
-          html: ["&#x2215;"],
+          html: ["&#x2215;", "/"],
         }.freeze
 
         # output methods

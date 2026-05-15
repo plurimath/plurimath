@@ -3,19 +3,15 @@
 module Plurimath
   class Html
     module TransformUtility
-      CANONICAL_HTML_SYMBOLS = {
-        "!" => "&#x21;",
-        "%" => "&#x25;",
-        "-" => "&#x2212;",
-        "/" => "&#x2215;",
-      }.freeze
+      module_function
 
+      # Raw Unicode symbols can reach this transform from literal HTML text.
+      # Keep Utility.symbols_class as the lookup path, trying the direct value
+      # first and then the HTML entity form used by the symbol tables.
       def symbol(symbol)
-        decoded_symbol = Utility.html_entity_to_unicode(symbol.to_s)
-        mapped_symbol = Utility.symbols_class(canonical_symbol(decoded_symbol), lang: :html)
-        return mapped_symbol unless mapped_symbol.instance_of?(Math::Symbols::Symbol)
-
-        Utility.symbols_class(decoded_symbol, lang: :html)
+        known_html_symbol(symbol) ||
+          known_html_symbol(Utility.string_to_html_entity(symbol.to_s)) ||
+          Math::Symbols::Symbol.new(symbol)
       end
 
       def append_expression(value, expression)
@@ -51,21 +47,22 @@ module Plurimath
         end
       end
 
-      def canonical_symbol(symbol)
-        CANONICAL_HTML_SYMBOLS.fetch(symbol) do
-          Utility.string_to_html_entity(symbol)
-        end
-      end
-
       def normalize_sub_sup_value(value)
         return Utility.filter_values(value) if value.is_a?(Array)
 
         value
       end
 
-      module_function :symbol, :append_expression, :sub_sup_value,
-                      :canonical_symbol, :normalize_sub_sup_value
-      private_class_method :canonical_symbol, :normalize_sub_sup_value
+      def known_html_symbol(symbol)
+        parsed_symbol = Utility.symbols_class(symbol, lang: :html)
+        return if generic_symbol?(parsed_symbol)
+
+        parsed_symbol
+      end
+
+      def generic_symbol?(symbol)
+        symbol.instance_of?(Math::Symbols::Symbol)
+      end
     end
   end
 end
