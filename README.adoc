@@ -696,8 +696,44 @@ right. Accepts an integer value.
 "32232.232131" => "32232.23 21 31"
 ====
 
+[[format_option_significant]]
 `significant`:: (`Numeric` value)
 Sets the number of significant digits to show, with the value rounded.
+Leading zeros before the first non-zero digit are not counted as significant.
++
+.Using significant digits
+[example]
+====
+"112"    with `significant: 2` => "110"
+"1999"   with `significant: 2` => "2,000"
+"0.1999" with `significant: 3` => "0.200"
+====
++
+Significant-digit rounding is applied before localized rendering. This means
+the formatter does not re-parse an already grouped or localized output string,
+so `decimal` and `group` may use the same symbol without changing which digits
+are rounded.
++
+.Using significant digits with overlapping decimal and group symbols
+[example]
+====
+"327428.7432878432992" with `decimal: ","`, `group_digits: 3`, `fraction_group_digits: 2`, `fraction_group: "'"`, `significant: 9`
+=> "327,428,74'3"
+====
++
+When `base` is not 10 and `precision` is omitted, Plurimath infers the
+fractional precision needed in the target base where possible. That inference
+is capped by the source number's significant digits, so finite converted values
+can keep required trailing zeros while repeating fractional conversions are not
+expanded only to fill the requested count.
++
+.Using significant digits with base conversion
+[example]
+====
+"48879"  with `base: 16, significant: 3, group_digits: 2, group: ","` => "0xbe,f0"
+"123.25" with `base: 16, significant: 5, group_digits: 10` => "0x7b.400"
+"0.1"    with `base: 16, significant: 5, group_digits: 10` => "0x0.1"
+====
 
 `notation`:: (`String` value)
 Specifies the mathematical notation to be used. Accepts the following values.
