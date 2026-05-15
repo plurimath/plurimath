@@ -403,6 +403,11 @@ priority, ordered from highest to lowest precedence:
 . The `localizer_symbols` hash in the creation of a `Plurimath::NumberFormatter`
 . The **default configuration** of the locale of the `Plurimath::NumberFormatter`
 
+`precision` is resolved separately: the `precision:` keyword passed to
+`localized_number` takes precedence, then the formatter instance's `precision`
+value, then any `precision` provided through the formatter symbols or `format`
+hash.
+
 
 [example]
 .Formatting a number to group every 2 digits
@@ -488,6 +493,9 @@ formatter = Plurimath::NumberFormatter.new(:en)
 The `Plurimath::NumberFormatter` object can be configured using either the
 `localize_number` or `localizer_symbols` options.
 
+`Plurimath::Formatter::Standard` exposes the same configuration through the
+`string_format` and `options` initializer arguments.
+
 
 [[localizer_symbols]]
 ===== Via "format options" using `localizer_symbols`
@@ -499,13 +507,16 @@ This Hash object is called the "format options Hash".
 
 Available options are explained below.
 
-NOTE: Each option takes an input of a certain specified type (`String` or
-`Numeric`). Using an input type other than the specified type will result in
-errors or incorrect output.
+NOTE: Each option takes an input of a certain specified type. Using an input
+type other than the specified type will result in errors or incorrect output.
 
 The values passed to `localizer_symbols` persist as long as the initialized
 `NumberFormatter` instance is accessible. It is therefore useful in scenarios
 when configuration will be static or changes are not required very often.
+
+The same option keys can be passed through `localizer_symbols`, through the
+per-call `format:` hash, or through `Plurimath::Formatter::Standard`'s
+`options:` argument.
 
 
 `decimal`:: (`String` value)
@@ -566,6 +577,19 @@ Accepts an integer value. (default is 3 in most locales.)
 "32232.232" => "3 22 32.232"
 ====
 
+`number_sign`:: (`Symbol` value)
+Controls whether positive numbers are rendered with an explicit sign. Use
+`:plus` to add a leading `+` to positive values. Negative values keep their
+normal `-` sign. The sign is applied before base prefixes and before notation
+rendering.
++
+.Showing a positive number sign
+[example]
+====
+"14236.39239" with `number_sign: :plus` => "+14,236.39239"
+"10" with `base: 2, number_sign: :plus, group_digits: 2, group: ","` => "+0b10,10"
+====
+
 `base`:: (`Numeric` value)
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Supported values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
@@ -606,17 +630,21 @@ This is applied after digit grouping.
 "255" with `base: 16, base_postfix: ""` => "ff"
 ====
 
-`hex_capital`:: (`Boolean` value)
-When `true` and `base: 16`, all characters in the range `a`-`f` in the converted output
-are rendered using uppercase letters. This includes both hexadecimal digits and any
-separators (such as `decimal`, `group`, `fraction_group`) that happen to be letters
-in the `a`-`f` range. The `base_prefix` and `base_postfix` values are never modified.
-It has no effect for other bases.
+`hex_capital`:: (`Boolean` or `:numbers_only` value)
+Controls uppercase rendering for hexadecimal output. When `true` and `base: 16`,
+all characters in the range `a`-`f` in the converted output are rendered using
+uppercase letters. This includes both hexadecimal digits and any separators
+(such as `decimal`, `group`, `fraction_group`) that happen to be letters in the
+`a`-`f` range. The `base_prefix` and `base_postfix` values are never modified.
++
+Use `:numbers_only` to uppercase generated hexadecimal digits without changing
+separator characters. It has no effect for other bases.
 +
 .Uppercase hexadecimal output
 [example]
 ====
 "48879" with `base: 16, hex_capital: true` => "0xBE,EF"
+"48879" with `base: 16, hex_capital: :numbers_only, group_digits: 2, group: "e"` => "0xBEeEF"
 ====
 +
 WARNING: If you use separator characters in the range `a`-`f` (such as `decimal: "d"` or `fraction_group: "f"`), those separators will also be uppercased when `hex_capital: true`. Choose separators outside this range (e.g., `".", ",", " ", "_"`) if you need them to remain unchanged.
@@ -809,12 +837,26 @@ These options are to be grouped under a single Hash object.
 ----
 {
   decimal: ",",             # replaces the decimal point with the passed string
-  group_digits: 2,          # groups integer part into passed integer
-  group: "'",               # places the string between grouped parts of the integer
-  fraction_group_digits: 3, # groups fraction part into passed integer
-  fraction_group: ",",      # places the string between grouped parts of the fraction
+  group_digits: 2,          # groups integer digits into groups of the passed size
+  group: "'",               # places the string between grouped integer digits
+  fraction_group_digits: 3, # groups fraction digits into groups of the passed size
+  fraction_group: ",",      # places the string between grouped fraction digits
+  number_sign: :plus,       # adds a plus sign to positive numbers
+  digit_count: 6,           # limits the total rendered digit count
+  significant: 4,           # limits the rendered significant digit count
+  precision: 2,             # controls rendered fractional precision
+  notation: :scientific,    # renders the number using the selected notation
+  e: "E",                   # sets the exponent marker for E notation
+  times: "x",               # sets the multiplication symbol for power notation
+  exponent_sign: :plus,     # adds a plus sign to positive exponents
+  base: 16,                 # renders the number in the selected base
+  base_prefix: "0x",        # prefixes non-decimal base output
+  base_postfix: nil,        # appends a base postfix instead of a prefix when set
+  hex_capital: :numbers_only, # uppercases generated hexadecimal digits only
 }
 ----
+
+Only include the keys needed for the formatter behavior being configured.
 
 
 [[localize_number]]
@@ -1167,13 +1209,15 @@ The steps to format numbers within a formula are:
 . Create a number formatter that can be configured;
 
 . Apply the number formatter to a formula through the `Formula.to_{format}`
-method using a `formatter` option, which serializes the formula into an math
-representation language.
+method using a `formatter` option, or configure a default formatter through
+`Plurimath.configure`.
 
 The formatter should be an instance of `Plurimath::NumberFormatter` or a custom
 formatter derived from `Plurimath::Formatter::Standard`. Custom formatters can
-define a `format(formula, number)` method to make context-aware formatting
-decisions based on the surrounding formula (see <<Contextual number formatting>>).
+define a `format_number(formula, number)` method to make context-aware
+formatting decisions based on the surrounding formula (see
+<<Contextual number formatting>>). Existing custom formatters that define
+`format(formula, number)` remain supported.
 
 The quick example below demonstrates how to format a number in a formula.
 
@@ -1227,6 +1271,47 @@ print formula.to_mathml(formatter: custom_formatter)
 ----
 ====
 
+[example]
+.Configuring a default number formatter for formula rendering
+====
+[source,ruby]
+----
+Plurimath.configure do |config|
+  config.number_formatter = Plurimath::Formatter::Standard.new
+end
+
+formula = Plurimath::Math.parse("10000 + 2000", :asciimath)
+formula.to_latex
+# => "10,000 + 2,000"
+----
+
+Passing `formatter:` to a formula serialization method takes precedence over
+the configured default formatter.
+====
+
+
+==== Deprecation notices
+
+Plurimath exposes deprecation behavior through the shared configuration object.
+The current number formatter arguments documented above remain supported; this
+setting controls how Plurimath emits deprecation notices when a deprecated
+feature is used.
+
+[source,ruby]
+----
+Plurimath.configure do |config|
+  config.deprecation.behavior = :warn
+end
+----
+
+Supported behaviors are:
+
+`warn`:: Default behavior. Emits one warning per deprecated feature.
+
+`raise`:: Raises `Plurimath::DeprecationError` instead of warning.
+
+`silence`:: Suppresses deprecation warnings.
+
 
 ==== Defining a number formatter
 
@@ -1267,15 +1352,29 @@ There are two types of number formatting configuration to change:
 
 . Overriding options through the `options` argument.
 
+.Syntax for creating a `Plurimath::Formatter::Standard` object
+[source,ruby]
+----
+formatter = Plurimath::Formatter::Standard.new(
+  locale: :en,
+  string_format: nil,
+  options: {},
+  precision: nil,
+)
+----
+
 The arguments are:
 
 `locale`:: (default: `:en` for English) a symbol or string value. The supported
 locales are listed in the link:/blog/2024-07-09-number-formatter[number formatter blog post].
 
-`options`:: (default: empty) a hash of options (`localizer_symbols`). The options
-are listed in the link:/blog/2024-07-09-number-formatter[number formatter blog post].
+`options`:: (default: empty) a hash of options. This is the
+`Plurimath::Formatter::Standard` alias for
+`Plurimath::NumberFormatter`'s `localizer_symbols` argument.
 
-`string_format`:: (default: `nil`, disabled) a string value (`localize_number`)
+`string_format`:: (default: `nil`, disabled) a string value. This is the
+`Plurimath::Formatter::Standard` alias for
+`Plurimath::NumberFormatter`'s `localize_number` argument.
 
 `precision`:: (default: `nil`, disabled) an integer value.
 
@@ -1318,7 +1417,7 @@ The custom formatter is to be subclassed from `Plurimath::Formatter::Standard`.
 [source,ruby]
 ----
 class MyCustomFormatter < Plurimath::Formatter::Standard <1>
-  def initialize(locale:, precision:, options:, string_format:) <2>
+  def initialize(locale: :en, precision: nil, options: {}, string_format: nil) <2>
     super
   end
 end
@@ -1333,7 +1432,7 @@ The default options of the custom formatter are set using the
 [source,ruby]
 ----
 class MyCustomFormatter < Plurimath::Formatter::Standard
-  def initialize(locale:, precision:, options:, string_format:)
+  def initialize(locale: :en, precision: nil, options: {}, string_format: nil)
     super
   end
 
@@ -1390,24 +1489,27 @@ In some cases, certain numbers within a formula should be formatted differently
 depending on their context. For example, a year like "2024" should not have digit
 grouping applied, while other numbers in the same formula should.
 
-The `format` method on the formatter receives both the root
+The `format_number` method on the formatter receives both the root
 `Plurimath::Math::Formula` tree and the current `Plurimath::Math::Number` node
 being processed, allowing context-aware formatting decisions.
 
-.Signature of the `format` method
+.Signature of the `format_number` method
 [source,ruby]
 ----
-def format(formula, number)
+def format_number(formula, number)
   # formula: the root Plurimath::Math::Formula containing the full equation
   # number:  the Plurimath::Math::Number node currently being formatted
   # returns: a formatted string
 end
 ----
 
-Formatters that do not define `format` will fall back to `localized_number`, so
-existing formatters continue to work without changes.
+Formula rendering uses the first formatter method available in this order:
+`format_number(formula, number)`, then `format(formula, number)`, then
+`localized_number(number.value.to_s)`. This keeps existing custom formatters
+working while giving new custom formatters a method name specific to formula
+number formatting.
 
-To implement contextual formatting, define a `format` method in a custom
+To implement contextual formatting, define a `format_number` method in a custom
 formatter subclass.
 
 .Creating a year-aware formatter that skips digit grouping for year-like numbers
@@ -1416,7 +1518,7 @@ formatter subclass.
 [source,ruby]
 ----
 class YearFormatter < Plurimath::Formatter::Standard
-  def format(formula, number) <1>
+  def format_number(formula, number) <1>
     int_value = Integer(number.value, exception: false)
     if int_value && int_value > 1800 && int_value < 2200 <2>
       number.value.to_s
@@ -1431,7 +1533,7 @@ formula = Plurimath::Math.parse("2024 + 1000000", :asciimath)
 formula.to_latex(formatter: formatter)
 # => "2024 + 1,000,000" <4>
 ----
-<1> Define `format` to receive the formula tree and number node.
+<1> Define `format_number` to receive the formula tree and number node.
 <2> Detect year-like numbers and return them unformatted.
 <3> Call `localized_number` to apply locale-based formatting for other numbers.
 <4> "2024" is left as-is, while "1000000" is formatted with digit grouping.
@@ -1441,8 +1543,8 @@ formula.to_latex(formatter: formatter)
 [[standard_configuration]]
 === Default number formatting configuration
 
-The default configuration for formatting numbers is as follows, set in the
-`Plurimath::Formatter::Standard` class.
+The effective default configuration for `Plurimath::Formatter::Standard` is as
+follows.
 
 |===
 |Option key |Description |Value
@@ -1457,7 +1559,11 @@ The default configuration for formatting numbers is as follows, set in the
 
 |`exponent_sign`
 |The sign used for the exponent part of the number
-|`"plus"`
+|`nil`
+
+|`number_sign`
+|The sign used for positive numbers
+|`nil`
 
 |`fraction_group`
 |The character used to separate groups of digits in the fraction part
@@ -1481,7 +1587,23 @@ The default configuration for formatting numbers is as follows, set in the
 
 |`precision`
 |The number of decimal places to display
-|`0`
+|`nil`
+
+|`base`
+|The numeric base used to render the number
+|`10`
+
+|`base_prefix`
+|The prefix used for non-decimal bases
+|standard prefix for the selected base
+
+|`base_postfix`
+|The postfix used for non-decimal bases
+|`nil`
+
+|`hex_capital`
+|Whether hexadecimal output is capitalized
+|`nil`
 
 |`decimal`
 |The character used as the decimal separator
@@ -1496,7 +1618,7 @@ The default configuration for formatting numbers is as follows, set in the
 |`"x"`
 
 |`e`
-|The character used for exponentiation
+|The character used for E notation
 |`"e"`
 
 |===
