@@ -1539,11 +1539,25 @@ RSpec.describe Plurimath::Html::Parser do
       end
     end
 
-    context "contains MathML" do
+    context "contains a math wrapper element" do
       let(:string) { "<math><mi>x</mi></math>" }
 
-      it "does not parse it as HTML math" do
-        expect { formula }.to raise_error(Parslet::ParseFailed)
+      it "treats it as a transparent HTML wrapper" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Text.new("x"),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains a custom wrapper that starts with math" do
+      let(:string) { "<mathematics>x</mathematics>" }
+
+      it "treats it as a transparent HTML wrapper" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Text.new("x"),
+                                                      ])
+        expect(formula).to eq(expected_value)
       end
     end
 

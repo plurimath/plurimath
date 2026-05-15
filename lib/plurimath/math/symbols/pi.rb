@@ -10,7 +10,7 @@ module Plurimath
           mathml: ["&#x3c0;", "&#x1d70b;"],
           latex: ["pi", "uppi", "&#x3c0;", "&#x1d70b;"],
           omml: ["&#x3c0;", "&#x1d70b;"],
-          html: ["&#x3C0;", "&#x1d70b;"],
+          html: ["&#x3C0;", "&#x3c0;", "&#x1d70b;"],
         }.freeze
 
         # output methods
