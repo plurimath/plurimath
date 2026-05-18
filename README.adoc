@@ -404,9 +404,9 @@ priority, ordered from highest to lowest precedence:
 . The **default configuration** of the locale of the `Plurimath::NumberFormatter`
 
 `precision` is resolved separately: the `precision:` keyword passed to
-`localized_number` takes precedence, then the formatter instance's `precision`
-value, then any `precision` provided through the formatter symbols or `format`
-hash.
+`localized_number`, which defaults to the formatter instance's `precision`
+value, takes precedence over any `precision` provided through the formatter
+symbols or `format` hash.
 
 
 [example]
@@ -577,15 +577,18 @@ Accepts an integer value. (default is 3 in most locales.)
 "32232.232" => "3 22 32.232"
 ====
 
-`number_sign`:: (`Symbol` value)
+`number_sign`:: (`Symbol` or `String` value)
 Controls whether positive numbers are rendered with an explicit sign. Use
-`:plus` to add a leading `+` to positive values. Negative values keep their
-normal `-` sign. The sign is applied before base prefixes and before notation
-rendering.
+`:plus` or `"plus"` to add a leading `+` to positive values. Negative values
+keep their normal `-` sign. The sign is applied before base prefixes and before
+notation rendering.
 +
 .Showing a positive number sign
 [example]
 ====
+When `base` is used, the input string is still the source decimal value; `base`
+controls the rendered output base.
+
 "14236.39239" with `number_sign: :plus` => "+14,236.39239"
 "10" with `base: 2, number_sign: :plus, group_digits: 2, group: ","` => "+0b10,10"
 ====
@@ -617,10 +620,12 @@ When omitted, standard prefixes are used (`0b` for base 2, `0o` for base 8, `0x`
 "255" with `base: 16, base_prefix: ""`   => "ff"
 ====
 
-`base_postfix`:: (`String` value)
+`base_postfix`:: (`String` or `nil` value)
 If present, a postfix is appended to the converted number instead of using any base prefix.
 This is applied after digit grouping.
-`nil` or an empty string can be used to omit the postfix.
+Because the formatter checks whether the `base_postfix` key is present, setting
+it to `nil` or an empty string omits both the postfix and the default base
+prefix.
 +
 .Using postfix notation
 [example]
@@ -643,7 +648,7 @@ separator characters. It has no effect for other bases.
 .Uppercase hexadecimal output
 [example]
 ====
-"48879" with `base: 16, hex_capital: true` => "0xBE,EF"
+"48879" with `base: 16, hex_capital: true, group_digits: 2` => "0xBE,EF"
 "48879" with `base: 16, hex_capital: :numbers_only, group_digits: 2, group: "e"` => "0xBEeEF"
 ====
 +
@@ -652,9 +657,9 @@ WARNING: If you use separator characters in the range `a`-`f` (such as `decimal:
 .Separator uppercasing behavior
 [example]
 ====
-"48879" with `base: 16, hex_capital: true, group: "g"` => "0xBEgEF" (g remains lowercase)
+"48879" with `base: 16, hex_capital: true, group_digits: 2, group: "g"` => "0xBEgEF" (g remains lowercase)
 
-"48879" with `base: 16, hex_capital: true, group: "f"` => "0xBEFEF" (f separator becomes F)
+"48879" with `base: 16, hex_capital: true, group_digits: 2, group: "f"` => "0xBEFEF" (f separator becomes F)
 ====
 
 NOTE: When `base` is not 10, both the integer and fractional parts are converted to the specified base.
@@ -815,12 +820,12 @@ modes: `scientific` and `engineering`). Defaults to `×`.
 ----
 ====
 
-`exponent_sign`:: (`String` value)
+`exponent_sign`:: (`Symbol` or `String` value)
 Whether to use a plus sign to indicate positive exponents, in exponent-based
 notation (used in the modes: `e`, `scientific`, `engineering`). Legal values
 are:
 
-`plus`::: The `+` symbol is used.
+`:plus`, `"plus"`::: The `+` symbol is used.
 +
 .Using the plus sign to indicate positive exponents
 [example]
@@ -850,8 +855,8 @@ These options are to be grouped under a single Hash object.
   times: "x",               # sets the multiplication symbol for power notation
   exponent_sign: :plus,     # adds a plus sign to positive exponents
   base: 16,                 # renders the number in the selected base
-  base_prefix: "0x",        # prefixes non-decimal base output
-  base_postfix: nil,        # appends a base postfix instead of a prefix when set
+  base_prefix: "0x",        # prefixes non-decimal base output when no postfix key is present
+  base_postfix: "_16",      # appends a postfix and takes precedence over base_prefix
   hex_capital: :numbers_only, # uppercases generated hexadecimal digits only
 }
 ----
@@ -1508,6 +1513,9 @@ Formula rendering uses the first formatter method available in this order:
 `localized_number(number.value.to_s)`. This keeps existing custom formatters
 working while giving new custom formatters a method name specific to formula
 number formatting.
+
+New custom formatters should define `format_number`; the `format` fallback
+exists for compatibility with existing custom formatters.
 
 To implement contextual formatting, define a `format_number` method in a custom
 formatter subclass.
