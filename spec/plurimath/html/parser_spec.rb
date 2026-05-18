@@ -1523,6 +1523,14 @@ RSpec.describe Plurimath::Html::Parser do
       end
     end
 
+    context "contains a malformed unquoted attribute" do
+      let(:string) { "<span < bad>x</span>" }
+
+      it "does not accept the malformed HTML wrapper" do
+        expect { formula }.to raise_error(Parslet::ParseFailed)
+      end
+    end
+
     context "contains a mismatched wrapper tag" do
       let(:string) { "<i>x</x>" }
 

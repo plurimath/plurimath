@@ -223,6 +223,9 @@ module Plurimath
         TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
       end
 
+      # Parslet emits separate shapes for each sub/sup value combination and
+      # trailing expression form. Keep this cluster mechanical: build the
+      # sub/sup node, then append the remaining expression in input order.
       rule(sub_sup: simple(:sub_sup),
            sup_value: sequence(:sup_value),
            expression: simple(:expression)) do

@@ -111,6 +111,7 @@ module Plurimath
       rule(:tag_parse) do
         parse_sub_sup_tags("table") |
           parse_sub_sup_tags("tr") |
+          # Formula has no header-cell node; HTML <th> is parsed as Td.
           parse_sub_sup_tags(%w[td th], "td") |
           wrapped_tag(sequence.as(:sequence))
       end
@@ -187,7 +188,7 @@ module Plurimath
       end
 
       def tag_attributes
-        (quoted_attribute_value | match["^>"]).repeat
+        (quoted_attribute_value | match["^<>"]).repeat
       end
 
       def quoted_attribute_value
