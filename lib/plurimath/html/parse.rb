@@ -184,7 +184,11 @@ module Plurimath
       def html_tag_name(tag_name)
         return match["a-zA-Z"] >> match["a-zA-Z0-9:._-"].repeat unless tag_name
 
-        case_insensitive_string(tag_name)
+        case_insensitive_string(tag_name) >> tag_name_boundary
+      end
+
+      def tag_name_boundary
+        match["\\s/>"].present?
       end
 
       def tag_attributes

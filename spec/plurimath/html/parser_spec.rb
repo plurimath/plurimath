@@ -1264,6 +1264,10 @@ RSpec.describe Plurimath::Html::Parser do
             Plurimath::Math::Symbols::Times.new,
           ],
           [
+            "1 × 2",
+            Plurimath::Math::Symbols::Times.new,
+          ],
+          [
             "1 &sdot; 2",
             Plurimath::Math::Symbols::Cdot.new,
           ],
@@ -1520,6 +1524,33 @@ RSpec.describe Plurimath::Html::Parser do
                                                         Plurimath::Math::Function::Text.new("b"),
                                                       ])
         expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains a custom tag that starts with br" do
+      let(:string) { "<bravo>x</bravo>" }
+
+      it "treats it as a transparent HTML wrapper" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Text.new("x"),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains a self-closing custom tag that starts with br" do
+      let(:string) { "<bravo/>x" }
+
+      it "does not parse it as an HTML line break" do
+        expect { formula }.to raise_error(Parslet::ParseFailed)
+      end
+    end
+
+    context "contains a table cell tag that starts with td" do
+      let(:string) { "<table><tr><tdx>1</td></tr></table>" }
+
+      it "does not parse it as a table cell" do
+        expect { formula }.to raise_error(Parslet::ParseFailed)
       end
     end
 
