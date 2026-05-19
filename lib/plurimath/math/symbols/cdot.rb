@@ -9,7 +9,7 @@ module Plurimath
           mathml: ["&#x22c5;"],
           latex: [["cdot", "&#x22c5;"], parsing_wrapper(["*"], lang: :latex)],
           omml: ["&#x22c5;"],
-          html: ["&#x22c5;"],
+          html: ["&#x22c5;", "&sdot;"],
         }.freeze
 
         # output methods

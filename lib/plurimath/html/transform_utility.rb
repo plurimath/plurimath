@@ -5,13 +5,10 @@ module Plurimath
     module TransformUtility
       module_function
 
-      # Raw Unicode symbols can reach this transform from literal HTML text.
-      # Keep Utility.symbols_class as the lookup path, trying the direct value
-      # first and then the HTML entity form used by the symbol tables.
+      HTML_ENTITY = /\A&(?:#x[0-9a-f]+|#\d+|[a-z][a-z0-9]+);\z/i
+
       def symbol(symbol)
-        known_html_symbol(symbol) ||
-          known_html_symbol(Utility.string_to_html_entity(symbol.to_s)) ||
-          Math::Symbols::Symbol.new(symbol)
+        Utility.symbols_class(normalize_symbol(symbol), lang: :html)
       end
 
       def append_expression(value, expression)
@@ -53,15 +50,11 @@ module Plurimath
         value
       end
 
-      def known_html_symbol(symbol)
-        parsed_symbol = Utility.symbols_class(symbol, lang: :html)
-        return if generic_symbol?(parsed_symbol)
+      def normalize_symbol(symbol)
+        symbol = symbol.to_s
+        return symbol if symbol.match?(HTML_ENTITY)
 
-        parsed_symbol
-      end
-
-      def generic_symbol?(symbol)
-        symbol.instance_of?(Math::Symbols::Symbol)
+        Utility.string_to_html_entity(symbol)
       end
     end
   end
