@@ -1308,6 +1308,88 @@ RSpec.describe Plurimath::Asciimath::Parser do
       end
     end
 
+    context "when locale uses comma as the decimal separator" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :fr
+          example.run
+        end
+      end
+
+      context "when contains decimal comma" do
+        let(:string) { "1,2" }
+
+        it "returns formula" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1,2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
+      context "when contains leading decimal comma" do
+        let(:string) { ",2" }
+
+        it "returns formula" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new(",2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
+      context "when contains a spaced comma separator" do
+        let(:string) { "(1 , 2)" }
+
+        it "returns formula" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Function::Fenced.new(
+                                                            Plurimath::Math::Symbols::Paren::Lround.new,
+                                                            [
+                                                              Plurimath::Math::Number.new("1"),
+                                                              Plurimath::Math::Symbols::Comma.new,
+                                                              Plurimath::Math::Number.new("2"),
+                                                            ],
+                                                            Plurimath::Math::Symbols::Paren::Rround.new,
+                                                          ),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
+      context "when contains spaced table cells" do
+        let(:string) { "([1 , 2], [3 , 4])" }
+
+        it "returns formula" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Function::Table.new(
+                                                            [
+                                                              Plurimath::Math::Function::Tr.new([
+                                                                                                  Plurimath::Math::Function::Td.new([
+                                                                                                                                      Plurimath::Math::Number.new("1"),
+                                                                                                                                    ]),
+                                                                                                  Plurimath::Math::Function::Td.new([
+                                                                                                                                      Plurimath::Math::Number.new("2"),
+                                                                                                                                    ]),
+                                                                                                ]),
+                                                              Plurimath::Math::Function::Tr.new([
+                                                                                                  Plurimath::Math::Function::Td.new([
+                                                                                                                                      Plurimath::Math::Number.new("3"),
+                                                                                                                                    ]),
+                                                                                                  Plurimath::Math::Function::Td.new([
+                                                                                                                                      Plurimath::Math::Number.new("4"),
+                                                                                                                                    ]),
+                                                                                                ]),
+                                                            ],
+                                                            Plurimath::Math::Symbols::Paren::Lround.new,
+                                                            Plurimath::Math::Symbols::Paren::Rround.new,
+                                                          ),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+    end
+
     context "when contains numeric value" do
       let(:string) { ".1" }
 

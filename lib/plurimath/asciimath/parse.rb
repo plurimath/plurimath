@@ -10,8 +10,8 @@ module Plurimath
       rule(:comma)  { str(",") >> space? }
       rule(:space?) { space.maybe }
       rule(:number) do
-        (match("[0-9]").repeat(1) >> str(".") >> match("[0-9]").repeat(1)).as(:number) |
-          match("[0-9]").repeat(1).as(:number) |
+        decimal_number.as(:number) |
+          digits.as(:number) |
           str(".").as(:symbol)
       end
 
@@ -77,13 +77,13 @@ module Plurimath
         sub_sup_classes |
           binary_classes |
           ternary_classes |
+          number |
           hash_to_expression(Constants.precompile_constants) |
           (match(/[0-9]/).as(:number) >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
           ((str("left").absent? >> str("right").absent?) >> match["a-zA-Z"].as(:symbol)) |
-          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?ℒℛᑕᑐ]/).as(:symbol) |
-          number
+          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?ℒℛᑕᑐ]/).as(:symbol)
       end
 
       rule(:power_base) do
@@ -138,7 +138,6 @@ module Plurimath
       rule(:iteration) do
         ternary_classes_rules |
           (table.as(:table) >> power_base.maybe) |
-          comma.as(:comma) |
           mod |
           (sequence.as(:sequence) >> space? >> str("//").as(:symbol)) |
           (str("color") >> color_value.as(:color) >> sequence.as(:color_value)) |
@@ -146,6 +145,7 @@ module Plurimath
           (power_base_rules >> power_base) |
           power_base_rules |
           sequence.as(:sequence) |
+          comma.as(:comma) |
           space
       end
 
@@ -169,6 +169,28 @@ module Plurimath
           expression = str(expression).as(name) if expression.is_a?(type)
           expression | str(expr_string).as(name)
         end
+      end
+
+      def digits
+        match("[0-9]").repeat(1)
+      end
+
+      def decimal_number
+        (digits >> decimal_marker >> digits) | leading_decimal_number
+      end
+
+      def decimal_marker
+        str(decimal)
+      end
+
+      def leading_decimal_number
+        return str("").absent? if decimal == "."
+
+        decimal_marker >> digits
+      end
+
+      def decimal
+        Plurimath.configuration.decimal
       end
 
       def read_text

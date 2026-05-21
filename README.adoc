@@ -160,6 +160,30 @@ asciimath = "sin(1)"
 formula = Plurimath::Math.parse(asciimath, :asciimath)
 ----
 
+==== AsciiMath localized decimal input
+
+AsciiMath input can use the configured locale decimal marker. Use scoped
+configuration when only one parse should use the locale override.
+
+[source,ruby]
+----
+formula = Plurimath.with_configuration do |config|
+  config.locale = :fr
+  Plurimath::Math.parse("1,2", :asciimath)
+end
+----
+
+When the locale decimal marker is a comma, unspaced digit-comma-digit input is
+read as a decimal number. Commas used as AsciiMath separators should be written
+with spaces around the comma.
+
+[source,asciimath]
+----
+1,2      # decimal number
+,2       # leading decimal marker
+1 , 2    # comma separator
+----
+
 ==== MathML Formula example
 
 [source,ruby]
