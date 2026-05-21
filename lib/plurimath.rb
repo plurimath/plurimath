@@ -41,7 +41,14 @@ module Plurimath
     yield(configuration)
   end
 
-  module_function :mml_adapter, :configuration, :configure
+  def with_configuration
+    previous_configuration = configuration.dup
+    yield(configuration)
+  ensure
+    @configuration = previous_configuration
+  end
+
+  module_function :mml_adapter, :configuration, :configure, :with_configuration
 end
 
 default_adapter =
