@@ -22,6 +22,69 @@ RSpec.describe Plurimath::Latex::Parser do
       end
     end
 
+    context "when locale uses comma as the decimal separator" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :fr
+          example.run
+        end
+      end
+
+      context "when contains decimal comma" do
+        let(:string) { "1,2" }
+
+        it "returns formula" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1,2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
+      context "when contains leading comma" do
+        let(:string) { ",2" }
+
+        it "returns formula" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Symbols::Comma.new,
+                                                          Plurimath::Math::Number.new("2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+    end
+
+    context "when locale uses Arabic decimal separator" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :ar
+          example.run
+        end
+      end
+
+      context "when contains localized decimal marker" do
+        let(:string) { "1٫2" }
+
+        it "returns formula" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1٫2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
+      context "when contains entity-encoded localized decimal marker" do
+        let(:string) { "1&#x66b;2" }
+
+        it "returns formula with decoded decimal marker" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1٫2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+    end
+
     context "contains simple nested values" do
       let(:string) do
         <<~LATEX

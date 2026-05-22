@@ -5,7 +5,7 @@ module Plurimath
     class Transform < Parslet::Transform
       rule(base: simple(:base))       { base }
       rule(over: simple(:over))       { over }
-      rule(number: simple(:num))      { Math::Number.new(num) }
+      rule(number: simple(:num))      { Math::Number.new(Utility.html_entity_to_unicode(num.to_s)) }
       rule(power: simple(:power))     { power }
       rule(unary: simple(:unary))     { Utility.get_class(unary).new }
       rule(space: simple(:space))     { Math::Function::Text.new(" ") }
@@ -188,7 +188,7 @@ module Plurimath
            number: simple(:number)) do
         Math::Function::Power.new(
           power,
-          Math::Number.new(number),
+          Math::Number.new(Utility.html_entity_to_unicode(number.to_s)),
         )
       end
 
@@ -428,7 +428,7 @@ module Plurimath
       rule(number: simple(:number),
            subscript: simple(:subscript)) do
         Math::Function::Base.new(
-          Math::Number.new(number),
+          Math::Number.new(Utility.html_entity_to_unicode(number.to_s)),
           subscript,
         )
       end
@@ -436,7 +436,7 @@ module Plurimath
       rule(number: simple(:number),
            supscript: simple(:supscript)) do
         Math::Function::Power.new(
-          Math::Number.new(number),
+          Math::Number.new(Utility.html_entity_to_unicode(number.to_s)),
           supscript,
         )
       end
@@ -445,7 +445,7 @@ module Plurimath
            subscript: simple(:subscript),
            supscript: simple(:supscript)) do
         Math::Function::PowerBase.new(
-          Math::Number.new(number),
+          Math::Number.new(Utility.html_entity_to_unicode(number.to_s)),
           subscript,
           supscript,
         )

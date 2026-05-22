@@ -30,6 +30,68 @@ RSpec.describe Plurimath::Html::Parser do
       end
     end
 
+    context "when locale uses comma as the decimal separator" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :fr
+          example.run
+        end
+      end
+
+      context "when contains decimal comma" do
+        let(:string) { "1,2" }
+
+        it "returns abstract parsed tree" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1,2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
+      context "when contains decimal comma inside a tag" do
+        let(:string) { "<span>1,2</span>" }
+
+        it "returns abstract parsed tree" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1,2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+    end
+
+    context "when locale uses Arabic decimal separator" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :ar
+          example.run
+        end
+      end
+
+      context "when contains localized decimal marker" do
+        let(:string) { "1٫2" }
+
+        it "returns abstract parsed tree" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1٫2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
+      context "when contains localized decimal marker inside a tag" do
+        let(:string) { "<span>1٫2</span>" }
+
+        it "returns abstract parsed tree" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1٫2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+    end
+
     context "contains sum with sub and sup values" do
       let(:string) { "&sum;<sub>d</sub><sup>prod</sup>" }
 

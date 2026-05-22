@@ -101,7 +101,7 @@ module Plurimath
           (rparen.absent? >> symbol_class_commands) |
           (slash >> math_operators_classes) |
           match["a-zA-Z"].as(:symbols) |
-          (match["0-9"].repeat(0) >> str(".").maybe >> match["0-9"].repeat(1)).as(:number) |
+          (match["0-9"].repeat(0) >> decimal_marker.maybe >> match["0-9"].repeat(1)).as(:number) |
           match["0-9"].repeat(1).as(:number) |
           (str("\\\\").as("\\\\") >> match(/\s/).repeat) |
           str("\\ ").as(:space) |
@@ -195,6 +195,12 @@ module Plurimath
           expression = str(expression).as(name) if expression.is_a?(type)
           expression | str(expr_string).as(name)
         end
+      end
+
+      def decimal_marker
+        # Latex::Parser entity-encodes input before Parslet sees it, so
+        # non-ASCII locale markers must match that encoded parser input.
+        str(Utility.string_to_html_entity(Plurimath.configuration.decimal))
       end
 
       def hash_to_expression(hash)

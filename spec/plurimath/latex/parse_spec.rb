@@ -7,6 +7,21 @@ RSpec.describe Plurimath::Latex::Parse do
                                                                        ""))
     end
 
+    context "when locale decimal marker is encoded before parsing" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :ar
+          example.run
+        end
+      end
+
+      let(:string) { "1&#x66b;2" }
+
+      it "parses the encoded configured marker as part of the number" do
+        expect(formula[:number]).to eq("1&#x66b;2")
+      end
+    end
+
     context "contains command with single argument" do
       let(:string) do
         <<~LATEX

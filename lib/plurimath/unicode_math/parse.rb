@@ -35,7 +35,7 @@ module Plurimath
       rule(:op_opener) { open_paren | op_open_unicode | op_open_paren | op_open }
       rule(:op_closer) { op_close_unicode | close_paren | op_close_paren | op_close }
 
-      rule(:op_decimal) { str(",") | str(".") }
+      rule(:op_decimal) { decimal_marker | str(",") | str(".") }
       rule(:diacritics) { (char.as(:char) >> diacritics.as(:diacritics)) | char.as(:char) }
       rule(:open_paren) { (op_masked_open >> (op_closer | op_opener)).as(:open_paren) | op_masked_open }
 
@@ -242,6 +242,12 @@ module Plurimath
       end
 
       root :expression
+
+      def decimal_marker
+        # UnicodeMath::Parser entity-encodes input before Parslet sees it, so
+        # non-ASCII locale markers must match that encoded parser input.
+        str(Utility.string_to_html_entity(Plurimath.configuration.decimal))
+      end
     end
   end
 end

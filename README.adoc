@@ -160,10 +160,12 @@ asciimath = "sin(1)"
 formula = Plurimath::Math.parse(asciimath, :asciimath)
 ----
 
-==== AsciiMath localized decimal input
+==== Localized decimal input
 
-AsciiMath input can use the configured locale decimal marker. Use scoped
-configuration when only one parse should use the locale override.
+AsciiMath, LaTeX, HTML, and UnicodeMath input use the configured locale decimal
+marker from `Plurimath::Formatter::SupportedLocales::LOCALES` when parsing
+numbers. Use scoped configuration when only one parse should use the locale
+override.
 
 [source,ruby]
 ----
@@ -174,14 +176,50 @@ end
 ----
 
 When the locale decimal marker is a comma, unspaced digit-comma-digit input is
-read as a decimal number. Commas used as AsciiMath separators should be written
-with spaces around the comma.
+read as a decimal number.
 
 [source,asciimath]
 ----
 1,2      # decimal number
 1 , 2    # comma separator
 ----
+
+AsciiMath uses commas for expression and table separators, so separator commas
+must be written with spaces around them when the configured decimal marker is a
+comma.
+
+HTML can use the same configured decimal marker inside plain text or tags.
+
+[source,html]
+----
+1,2
+<span>1,2</span>
+----
+
+Locales are not limited to full stop and comma markers. For example, Arabic and
+Persian locales use the Arabic decimal separator.
+
+[source,ruby]
+----
+formula = Plurimath.with_configuration do |config|
+  config.locale = :ar
+  Plurimath::Math.parse("1٫2", :unicodemath)
+end
+----
+
+LaTeX ordinary spaces are removed during parser preprocessing, so `1, 2` is
+equivalent to `1,2` for this parser. With a comma decimal marker, only
+digit-comma-digit is parsed as a decimal number; a leading comma remains a comma
+symbol followed by a number.
+
+[source,latex]
+----
+1,2
+----
+
+UnicodeMath keeps accepting its existing full stop and comma decimal markers,
+and also accepts the configured locale marker for locales that use a different
+decimal symbol.
 
 ==== MathML Formula example
 

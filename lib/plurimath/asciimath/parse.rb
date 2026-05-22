@@ -10,7 +10,7 @@ module Plurimath
       rule(:comma)  { str(",") >> space? }
       rule(:space?) { space.maybe }
       rule(:number) do
-        (match("[0-9]").repeat(1) >> str(Plurimath.configuration.decimal) >> match("[0-9]").repeat(1)).as(:number) |
+        (match("[0-9]").repeat(1) >> decimal_marker >> match("[0-9]").repeat(1)).as(:number) |
           match("[0-9]").repeat(1).as(:number) |
           str(".").as(:symbol)
       end
@@ -78,7 +78,7 @@ module Plurimath
           binary_classes |
           ternary_classes |
           hash_to_expression(Constants.precompile_constants) |
-          (match(/[0-9]/).as(:number) >> (str(Plurimath.configuration.decimal) >> match("[0-9]")).absent? >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
+          (match(/[0-9]/).as(:number) >> (decimal_marker >> match("[0-9]")).absent? >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
           ((str("left").absent? >> str("right").absent?) >> match["a-zA-Z"].as(:symbol)) |
@@ -194,6 +194,10 @@ module Plurimath
         when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
         when :special_fonts then first_value.as(:bold_fonts)
         end
+      end
+
+      def decimal_marker
+        str(Plurimath.configuration.decimal)
       end
 
       def unary_functions(first_value)
