@@ -1395,8 +1395,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-                                                        Plurimath::Math::Symbols::Period.new,
-                                                        Plurimath::Math::Number.new("1"),
+                                                        Plurimath::Math::Number.new(".1"),
                                                       ])
         expect(formula).to eq(expected_value)
       end
@@ -1420,8 +1419,7 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
                                                         Plurimath::Math::Symbols::Minus.new,
-                                                        Plurimath::Math::Symbols::Period.new,
-                                                        Plurimath::Math::Number.new("1"),
+                                                        Plurimath::Math::Number.new(".1"),
                                                       ])
         expect(formula).to eq(expected_value)
       end

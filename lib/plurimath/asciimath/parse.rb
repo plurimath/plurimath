@@ -77,13 +77,14 @@ module Plurimath
         sub_sup_classes |
           binary_classes |
           ternary_classes |
-          number |
+          decimal_number.as(:number) |
           hash_to_expression(Constants.precompile_constants) |
           (match(/[0-9]/).as(:number) >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
           ((str("left").absent? >> str("right").absent?) >> match["a-zA-Z"].as(:symbol)) |
-          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?ℒℛᑕᑐ]/).as(:symbol)
+          match(/[^\[{(\\\/@;:.,'"|\]})0-9a-zA-Z\-><$%^&*_=+!`~\s?ℒℛᑕᑐ]/).as(:symbol) |
+          number
       end
 
       rule(:power_base) do
@@ -176,17 +177,11 @@ module Plurimath
       end
 
       def decimal_number
-        (digits >> decimal_marker >> digits) | leading_decimal_number
+        digits.maybe >> decimal_marker >> digits
       end
 
       def decimal_marker
         str(decimal)
-      end
-
-      def leading_decimal_number
-        return str("").absent? if decimal == "."
-
-        decimal_marker >> digits
       end
 
       def decimal
