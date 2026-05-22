@@ -2,7 +2,7 @@
 
 module Plurimath
   class Asciimath
-    class Parse < Parslet::Parser
+    class Parse < Parsanol::Parser
       rule(:td)     { expression.as(:td) }
       rule(:base)   { str("__|").absent? >> str("_") }
       rule(:power)  { str("^") }
@@ -31,12 +31,44 @@ module Plurimath
         arr_to_expression(Constants::TERNARY_CLASSES, :ternary_class)
       end
 
+      rule(:underbrace_unary_classes) do
+        arr_to_expression(strings_by_length(%w[underbrace ubrace]), :unary_class)
+      end
+
+      rule(:regular_unary_classes) do
+        classes = Constants::UNARY_CLASSES - %w[underbrace ubrace]
+        arr_to_expression(strings_by_length(classes), :unary_class)
+      end
+
+      rule(:unary_classes_rules) do
+        (underbrace_unary_classes >> space? >> str("_").as(:symbol)).as(:unary) |
+          (underbrace_unary_classes >> space? >> sequence.maybe).as(:unary) |
+          (regular_unary_classes.as(:power_base) >> space? >> power_base).as(:unary) |
+          (regular_unary_classes >> space? >> sequence.maybe).as(:unary)
+      end
+
       rule(:binary_classes) do
         arr_to_expression(Constants::BINARY_CLASSES, :binary_class)
       end
 
       rule(:sub_sup_classes) do
         arr_to_expression(Constants::SUB_SUP_CLASSES, :binary_class)
+      end
+
+      rule(:font_styles) do
+        arr_to_expression(
+          strings_by_length(Constants::FONT_STYLES),
+          :fonts_class,
+        ) >> space? >> sequence.as(:fonts_value)
+      end
+
+      rule(:special_bold_alphabets) do
+        arr_to_expression(strings_by_length(Constants::SPECIAL_BOLD_ALPHABETS), :bold_fonts)
+      end
+
+      rule(:symbol_classes) do
+        (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) |
+          arr_to_expression(strings_by_length(Constants.symbols_array), :symbol)
       end
 
       rule(:open_table) do
@@ -63,7 +95,7 @@ module Plurimath
 
       rule(:left_right) do
         (str("left") >> space? >> left_right_open_paren.as(:left) >> space? >> (iteration.maybe >> sequence.maybe).as(:left_right_value) >> space? >> str("right") >> space? >> left_right_close_paren.as(:right)) |
-          ((table.as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac) >> expression) |
+          ((table.as(:numerator) >> space? >> single_slash >> space? >> iteration.as(:denominator)).as(:frac) >> expression) |
           (table.as(:table) >> power_base.maybe >> expression.maybe)
       end
 
@@ -125,8 +157,12 @@ module Plurimath
       end
 
       rule(:frac) do
-        (sequence.as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac) |
-          ((power_base_rules | power_base).as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac)
+        (sequence.as(:numerator) >> space? >> single_slash >> space? >> iteration.as(:denominator)).as(:frac) |
+          ((power_base_rules | power_base).as(:numerator) >> space? >> single_slash >> space? >> iteration.as(:denominator)).as(:frac)
+      end
+
+      rule(:single_slash) do
+        str("//").absent? >> str("/") >> str("/").absent?
       end
 
       rule(:mod) do
@@ -171,6 +207,10 @@ module Plurimath
         end
       end
 
+      def strings_by_length(strings)
+        strings.sort_by { |string| -string.length }
+      end
+
       def read_text
         dynamic do |_sour, context|
           rparen = Constants::PARENTHESIS[context.captures[:paren].to_sym]
@@ -206,7 +246,7 @@ module Plurimath
             (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         else
           (first_value.as(:unary_class).as(:power_base) >> space? >> power_base).as(:unary) |
-            (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
+          (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         end
       end
     end

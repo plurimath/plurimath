@@ -7,7 +7,7 @@ module Plurimath
         attr_accessor :parameter_one, :hide_function_name
 
         def initialize(parameter_one = nil)
-          parameter_one  = parameter_one.to_s if parameter_one.is_a?(Parslet::Slice)
+          parameter_one = parameter_one.to_s if parameter_one.is_a?(Parsanol::Slice)
           @parameter_one = parameter_one
           method(:post_initialize).call if methods.include?(:post_initialize)
           Utility.validate_left_right(variables.map { |var| get(var) })

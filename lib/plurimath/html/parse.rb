@@ -2,7 +2,7 @@
 
 module Plurimath
   class Html
-    class Parse < Parslet::Parser
+    class Parse < Parsanol::Parser
       rule(:space)   { match["\s"].repeat(1) }
       rule(:unary)   { array_to_expression(Constants::UNARY_CLASSES, :unary) }
       rule(:binary)  { str("lim").as(:binary) }

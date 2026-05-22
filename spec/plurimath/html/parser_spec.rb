@@ -1701,7 +1701,7 @@ RSpec.describe Plurimath::Html::Parser do
       let(:string) { "<sup>sth" }
 
       it "returns abstract parsed tree" do
-        expect { formula }.to raise_error(Parslet::ParseFailed)
+        expect { formula }.to raise_error(Parsanol::ParseFailed)
       end
     end
   end

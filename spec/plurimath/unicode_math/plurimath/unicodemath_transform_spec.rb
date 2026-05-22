@@ -19,7 +19,7 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
           if UNICODEMATH_SKIPABLE_EXAMPLES.include?(index)
             expect do
               formula
-            end.to raise_error(Parslet::ParseFailed,
+            end.to raise_error(Parsanol::ParseFailed,
                                Regexp.compile("Expected one of \\["))
           else
             expect(formula).to eq(UnicodeMathTransformValues.const_get(constant))

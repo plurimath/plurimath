@@ -210,6 +210,10 @@ module Plurimath
           @@symbols ||= reverse_sort_hash(SYMBOLS.merge(symbols_hash))
         end
 
+        def class_symbols_constants
+          @@class_symbols ||= reverse_sort_hash(symbols_hash)
+        end
+
         def parenthesis
           @@parens ||= { "\\(" => "\\)", "\\[" => "\\]", "\\{" => "\\}" }
           rejected_paren(:close?).each do |paren, klass|

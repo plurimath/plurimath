@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "json"
-
 module Plurimath
   class Html
     class Parser
@@ -15,7 +13,6 @@ module Plurimath
 
       def parse
         nodes = Parse.new.parse(normalized_text)
-        nodes = JSON.parse(nodes.to_json, symbolize_names: true)
         transformed_tree = Transform.new.apply(nodes)
         return transformed_tree if transformed_tree.is_a?(Math::Formula)
 

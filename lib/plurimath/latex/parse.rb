@@ -2,19 +2,7 @@
 
 module Plurimath
   class Latex
-    class Parse < Parslet::Parser
-      rule(:base)          { str("_") }
-      rule(:power)         { str("^") }
-      rule(:slash)         { str("\\") }
-      rule(:under_over)    { slash >> underover_classes }
-      rule(:array_args)    { str("{") >> expression.as(:args) >> str("}") }
-      rule(:array_begin)   do
-        str("\\begin{") >> str("array").as(:environment) >> str("}")
-      end
-      rule(:optional_args) do
-        (str("[") >> intermediate_exp.maybe.as(:options) >> str("]")).maybe
-      end
-
+    class Parse < Parsanol::Parser
       rule(:color) do
         (str("{") >> (str("}").absent? >> any).repeat.as(:symbol) >> str("}")) |
           any.as(:symbol)
