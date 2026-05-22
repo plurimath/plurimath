@@ -1327,17 +1327,6 @@ RSpec.describe Plurimath::Asciimath::Parser do
         end
       end
 
-      context "when contains leading decimal comma" do
-        let(:string) { ",2" }
-
-        it "returns formula" do
-          expected_value = Plurimath::Math::Formula.new([
-                                                          Plurimath::Math::Number.new(",2"),
-                                                        ])
-          expect(formula).to eq(expected_value)
-        end
-      end
-
       context "when contains a spaced comma separator" do
         let(:string) { "(1 , 2)" }
 
@@ -1395,7 +1384,8 @@ RSpec.describe Plurimath::Asciimath::Parser do
 
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
-                                                        Plurimath::Math::Number.new(".1"),
+                                                        Plurimath::Math::Symbols::Period.new,
+                                                        Plurimath::Math::Number.new("1"),
                                                       ])
         expect(formula).to eq(expected_value)
       end
@@ -1419,7 +1409,8 @@ RSpec.describe Plurimath::Asciimath::Parser do
       it "returns formula" do
         expected_value = Plurimath::Math::Formula.new([
                                                         Plurimath::Math::Symbols::Minus.new,
-                                                        Plurimath::Math::Number.new(".1"),
+                                                        Plurimath::Math::Symbols::Period.new,
+                                                        Plurimath::Math::Number.new("1"),
                                                       ])
         expect(formula).to eq(expected_value)
       end

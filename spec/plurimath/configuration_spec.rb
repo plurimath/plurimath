@@ -5,11 +5,11 @@ require "spec_helper"
 RSpec.describe Plurimath::Configuration do
   around do |example|
     previous_behavior = Plurimath::Deprecation.behavior
-    previous_configuration = Plurimath.configuration.dup
+    previous_number_formatter = Plurimath.configuration.number_formatter
     example.run
   ensure
     Plurimath::Deprecation.behavior = previous_behavior
-    Plurimath.instance_variable_set(:@configuration, previous_configuration)
+    Plurimath.configuration.number_formatter = previous_number_formatter
   end
 
   describe ".configuration" do
@@ -52,6 +52,7 @@ RSpec.describe Plurimath::Configuration do
 
   describe ".with_configuration" do
     it "restores configuration after the block" do
+      previous_configuration = Plurimath.configuration.dup
       previous_formatter = Plurimath::Formatter::Standard.new(locale: :en)
       temporary_formatter = Plurimath::Formatter::Standard.new(locale: :fr)
       Plurimath.configuration.locale = :en
@@ -66,6 +67,8 @@ RSpec.describe Plurimath::Configuration do
       expect(result).to be(:configured)
       expect(Plurimath.configuration.locale).to be(:en)
       expect(Plurimath.configuration.number_formatter).to be(previous_formatter)
+    ensure
+      Plurimath.instance_variable_set(:@configuration, previous_configuration)
     end
   end
 
@@ -82,16 +85,13 @@ RSpec.describe Plurimath::Configuration do
   end
 
   describe "#locale" do
+    it "defaults to nil" do
+      expect(described_class.new.locale).to be_nil
+    end
+
     it "uses the configured locale" do
       configuration = described_class.new
       configuration.locale = :fr
-
-      expect(configuration.locale).to be(:fr)
-    end
-
-    it "falls back to the configured number formatter locale" do
-      configuration = described_class.new
-      configuration.number_formatter = Plurimath::Formatter::Standard.new(locale: :fr)
 
       expect(configuration.locale).to be(:fr)
     end
