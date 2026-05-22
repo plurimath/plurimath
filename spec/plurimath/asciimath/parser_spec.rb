@@ -1379,6 +1379,26 @@ RSpec.describe Plurimath::Asciimath::Parser do
       end
     end
 
+    context "when locale uses Arabic decimal separator" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :ar
+          example.run
+        end
+      end
+
+      context "when contains localized decimal marker" do
+        let(:string) { "1٫2" }
+
+        it "returns formula" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1٫2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+    end
+
     context "when contains numeric value" do
       let(:string) { ".1" }
 

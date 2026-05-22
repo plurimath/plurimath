@@ -75,7 +75,7 @@ module Plurimath
       rule(:symbol_text_or_tag) do
         tag_parse |
           html_entity.as(:symbol) |
-          (match["0-9"].repeat(1) >> str(".") >> match["0-9"].repeat(1)).as(:number) |
+          (match["0-9"].repeat(1) >> decimal_marker >> match["0-9"].repeat(1)).as(:number) |
           match["0-9"].repeat(1).as(:number) |
           match["a-zA-Z"].as(:text) |
           match["^0-9a-zA-Z<>(){}\\[\\]\s"].as(:symbol)
@@ -137,6 +137,10 @@ module Plurimath
         return str(string) if name.nil?
 
         str(string).as(name)
+      end
+
+      def decimal_marker
+        str(Plurimath.configuration.decimal)
       end
 
       def parse_tag(opts, tag_name = nil, capture_name: nil)

@@ -185,7 +185,7 @@ module Plurimath
 
       rule(decimal: simple(:decimal),
            whole: simple(:whole)) do
-        Math::Number.new("#{decimal}#{whole.value}")
+        Math::Number.new(Utility.html_entity_to_unicode("#{decimal}#{whole.value}"))
       end
 
       rule(positive: simple(:positive),
@@ -2222,7 +2222,7 @@ module Plurimath
       rule(whole: simple(:whole),
            decimal: simple(:decimal),
            fractional: simple(:fractional)) do
-        Math::Number.new("#{whole.value}#{decimal}#{fractional.value}")
+        Math::Number.new(Utility.html_entity_to_unicode("#{whole.value}#{decimal}#{fractional.value}"))
       end
 
       rule(factor: simple(:factor),
