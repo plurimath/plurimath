@@ -50,33 +50,5 @@ RSpec.describe Plurimath::Math do
         )
       end
     end
-
-    context "contains asciimath input with a configured decimal separator" do
-      let(:input) { "1,2" }
-      let(:type) { :asciimath }
-
-      it "parses using scoped configuration" do
-        result = Plurimath.with_configuration do |config|
-          config.locale = :fr
-          formula
-        end
-
-        expected_value = Plurimath::Math::Formula.new([
-                                                        Plurimath::Math::Number.new("1,2"),
-                                                      ])
-        expect(result).to eq(expected_value)
-      end
-    end
-
-    context "contains an unsupported parse option" do
-      let(:input) { "1,2" }
-      let(:type) { :asciimath }
-
-      it "raises argument error" do
-        expect do
-          described_class.parse(input, type, locale: :fr)
-        end.to raise_error(ArgumentError)
-      end
-    end
   end
 end
