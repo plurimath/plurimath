@@ -164,8 +164,13 @@ formula = Plurimath::Math.parse(asciimath, :asciimath)
 
 AsciiMath, LaTeX, HTML, and UnicodeMath input use the configured locale decimal
 marker from `Plurimath::Formatter::SupportedLocales::LOCALES` when parsing
-numbers. Use scoped configuration when only one parse should use the locale
+numbers. Use `Plurimath.configure` for persistent defaults, or
+`Plurimath.with_configuration` when only one parse should use the locale
 override.
+
+For AsciiMath, LaTeX, and HTML, the configured marker is the decimal marker.
+When a locale uses a non-full-stop marker, `1.2` is parsed as `1`, `.`, and
+`2`, not as one decimal number.
 
 [source,ruby]
 ----
@@ -217,9 +222,13 @@ symbol followed by a number.
 1,2
 ----
 
-UnicodeMath keeps accepting its existing full stop and comma decimal markers,
-and also accepts the configured locale marker for locales that use a different
-decimal symbol.
+UnicodeMath is different: it keeps its existing full stop and comma decimal
+grammar, including leading markers such as `.2` and `,2`, and also accepts the
+configured locale marker.
+
+Localized decimal parsing preserves the parsed number text, such as `1,2` or
+`1٫2`. Number formatter input remains canonical decimal input; locale decimal
+and grouping symbols are applied when formatting output.
 
 ==== MathML Formula example
 
