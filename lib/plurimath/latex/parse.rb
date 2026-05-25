@@ -259,6 +259,16 @@ module Plurimath
         (str("{") >> slash >> str("color").as(:binary) >> color.as(:first_value) >> (sequence >> iteration.maybe).as(:second_value).maybe >> str("}")) |
           (slash >> str("color").as(:binary) >> color.as(:first_value) >> expression.as(:second_value).maybe)
       end
+
+      def run_with_context(input, reporter, consume_all)
+        context = Parsanol::Atoms::Context.new(
+          reporter,
+          parser_class: self.class,
+          adaptive_cache_threshold: 0,
+        )
+
+        apply(input, context, consume_all)
+      end
     end
   end
 end

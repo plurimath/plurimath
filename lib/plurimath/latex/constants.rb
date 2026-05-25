@@ -204,14 +204,15 @@ module Plurimath
         "[": "[",
         "]": "]",
       }.freeze
+      TRIE_TERMINAL = :__terminal__
 
       class << self
         def symbols_constants
           @@symbols ||= reverse_sort_hash(SYMBOLS.merge(symbols_hash))
         end
 
-        def class_symbols_constants
-          @@class_symbols ||= reverse_sort_hash(symbols_hash)
+        def symbols_constants_trie
+          @@symbols_trie ||= build_symbols_trie(symbols_constants)
         end
 
         def parenthesis
@@ -242,6 +243,25 @@ module Plurimath
 
         def reverse_sort_hash(hash)
           hash.sort_by { |str, _| -str.length }.to_h
+        end
+
+        def build_symbols_trie(constants)
+          constants.each_with_object({}) do |(value, type), trie|
+            symbol_literals(value, type).each do |literal|
+              node = trie
+              literal.each_char do |char|
+                node = (node[char] ||= {})
+              end
+              node[TRIE_TERMINAL] ||= [value, type]
+            end
+          end
+        end
+
+        def symbol_literals(value, type)
+          value = value.to_s
+          return [value, "\\#{value}"] if type == :operant
+
+          ["\\#{value}"]
         end
       end
     end

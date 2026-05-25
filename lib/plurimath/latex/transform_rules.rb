@@ -771,7 +771,7 @@ module Plurimath
               Math::Function::PowerBase.new(
                 binary,
                 subscript,
-                subscript,
+                supscript,
               )
             end
           end

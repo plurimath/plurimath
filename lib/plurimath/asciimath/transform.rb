@@ -886,20 +886,25 @@ module Plurimath
       end
 
       rule(table: simple(:table),
-           expr: sequence(:expr)) do
-        Math::Formula.new([table] + expr.flatten.compact)
-      end
-
-      rule(table: simple(:table),
            left_right: simple(:left_right)) do
         Math::Formula.new([table, left_right])
       end
 
       rule(table: simple(:table),
-           expr: simple(:expr)) do
-        formula_array = [table]
-        formula_array << expr unless expr.to_s.strip.empty?
-        Math::Formula.new(formula_array)
+           expr: subtree(:expr)) do
+        expr_values = Array(expr).flatten.compact
+        expr_values.reject! { |value| value.to_s.strip.empty? }
+
+        table_value = table
+        if expr_values.first.is_a?(Math::Symbols::Paren)
+          table_value = Math::Function::Fenced.new(
+            Math::Symbols::Paren::OpenParen.new,
+            [table_value],
+            expr_values.shift,
+          )
+        end
+
+        Math::Formula.new([table_value] + expr_values)
       end
 
       rule(table: simple(:table),
@@ -970,6 +975,32 @@ module Plurimath
             Utility.asciimath_symbol_object(rparen),
           ),
         ] + expr.flatten.compact
+      end
+
+      rule(table: simple(:table),
+           rparen: simple(:rparen),
+           expr: simple(:expr)) do
+        expr_values = [expr]
+        expr_values.reject! { |value| value.to_s.strip.empty? }
+
+        [
+          Math::Function::Fenced.new(
+            Math::Symbols::Paren::OpenParen.new,
+            [table],
+            Utility.asciimath_symbol_object(rparen),
+          ),
+        ] + expr_values
+      end
+
+      rule(table: simple(:table),
+           rparen: simple(:rparen)) do
+        [
+          Math::Function::Fenced.new(
+            Math::Symbols::Paren::OpenParen.new,
+            [table],
+            Utility.asciimath_symbol_object(rparen),
+          ),
+        ]
       end
 
       rule(left: simple(:left),

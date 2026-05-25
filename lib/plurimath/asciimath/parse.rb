@@ -31,22 +31,6 @@ module Plurimath
         arr_to_expression(Constants::TERNARY_CLASSES, :ternary_class)
       end
 
-      rule(:underbrace_unary_classes) do
-        arr_to_expression(strings_by_length(%w[underbrace ubrace]), :unary_class)
-      end
-
-      rule(:regular_unary_classes) do
-        classes = Constants::UNARY_CLASSES - %w[underbrace ubrace]
-        arr_to_expression(strings_by_length(classes), :unary_class)
-      end
-
-      rule(:unary_classes_rules) do
-        (underbrace_unary_classes >> space? >> str("_").as(:symbol)).as(:unary) |
-          (underbrace_unary_classes >> space? >> sequence.maybe).as(:unary) |
-          (regular_unary_classes.as(:power_base) >> space? >> power_base).as(:unary) |
-          (regular_unary_classes >> space? >> sequence.maybe).as(:unary)
-      end
-
       rule(:binary_classes) do
         arr_to_expression(Constants::BINARY_CLASSES, :binary_class)
       end
@@ -55,20 +39,9 @@ module Plurimath
         arr_to_expression(Constants::SUB_SUP_CLASSES, :binary_class)
       end
 
-      rule(:font_styles) do
-        arr_to_expression(
-          strings_by_length(Constants::FONT_STYLES),
-          :fonts_class,
-        ) >> space? >> sequence.as(:fonts_value)
-      end
-
-      rule(:special_bold_alphabets) do
-        arr_to_expression(strings_by_length(Constants::SPECIAL_BOLD_ALPHABETS), :bold_fonts)
-      end
-
-      rule(:symbol_classes) do
+      rule(:precompiled_constant) do
         (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) |
-          arr_to_expression(strings_by_length(Constants.symbols_array), :symbol)
+          indexed_precompiled_constant
       end
 
       rule(:open_table) do
@@ -109,7 +82,7 @@ module Plurimath
         sub_sup_classes |
           binary_classes |
           ternary_classes |
-          hash_to_expression(Constants.precompile_constants) |
+          precompiled_constant |
           (match(/[0-9]/).as(:number) >> (decimal_marker >> match("[0-9]")).absent? >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
@@ -207,8 +180,61 @@ module Plurimath
         end
       end
 
-      def strings_by_length(strings)
-        strings.sort_by { |string| -string.length }
+      def indexed_precompiled_constant
+        dynamic do |source, _context|
+          value, type = longest_precompiled_constant(source)
+          value ? precompiled_constant_parser(value, type) : str("").absent?
+        end
+      end
+
+      def longest_precompiled_constant(source)
+        node = Constants.precompile_constants_trie
+        match = nil
+        pos = source.bytepos
+        terminal = Constants::TRIE_TERMINAL
+
+        while source.chars_left.positive?
+          node = node[source.consume(1).to_s]
+          break unless node
+
+          match = node[terminal] if node.key?(terminal)
+        end
+
+        source.bytepos = pos
+        match
+      end
+
+      def precompiled_constant_parser(value, type)
+        first_value = str(value)
+
+        case type
+        when :symbol then first_value.as(:symbol)
+        when :unary_class then unary_functions(value)
+        when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
+        when :special_fonts then first_value.as(:bold_fonts)
+        end
+      end
+
+      def unary_functions(value)
+        first_value = str(value)
+
+        if %w[underbrace ubrace].include?(value)
+          (first_value.as(:unary_class) >> space? >> str("_").as(:symbol)).as(:unary) |
+            (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
+        else
+          (first_value.as(:unary_class).as(:power_base) >> space? >> power_base).as(:unary) |
+            (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
+        end
+      end
+
+      def run_with_context(input, reporter, consume_all)
+        context = Parsanol::Atoms::Context.new(
+          reporter,
+          parser_class: self.class,
+          adaptive_cache_threshold: 0,
+        )
+
+        apply(input, context, consume_all)
       end
 
       def read_text
@@ -218,36 +244,8 @@ module Plurimath
         end
       end
 
-      def hash_to_expression(arr)
-        type = arr.first.class
-        @@expression ||= arr.reduce do |expression, expr_string|
-          expression = dynamic_parser_rules(expression) if expression.is_a?(type)
-          expression | dynamic_parser_rules(expr_string)
-        end
-      end
-
-      def dynamic_parser_rules(expr)
-        first_value = str(expr.first.to_s)
-        case expr.last
-        when :symbol then (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | first_value.as(:symbol)
-        when :unary_class then unary_functions(first_value)
-        when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
-        when :special_fonts then first_value.as(:bold_fonts)
-        end
-      end
-
       def decimal_marker
         str(Plurimath.configuration.decimal)
-      end
-
-      def unary_functions(first_value)
-        if ["'underbrace'", "'ubrace'"].include?(first_value.to_s)
-          (first_value.as(:unary_class) >> space? >> str("_").as(:symbol)).as(:unary) |
-            (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
-        else
-          (first_value.as(:unary_class).as(:power_base) >> space? >> power_base).as(:unary) |
-          (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
-        end
       end
     end
   end
