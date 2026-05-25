@@ -49,12 +49,47 @@ RSpec.describe Plurimath::Html::Parser do
         end
       end
 
+      context "when contains decimal full stop" do
+        let(:string) { "1.2" }
+
+        it "returns abstract parsed tree" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1"),
+                                                          Plurimath::Math::Symbols::Period.new,
+                                                          Plurimath::Math::Number.new("2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
       context "when contains decimal comma inside a tag" do
         let(:string) { "<span>1,2</span>" }
 
         it "returns abstract parsed tree" do
           expected_value = Plurimath::Math::Formula.new([
                                                           Plurimath::Math::Number.new("1,2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+    end
+
+    context "when locale uses full stop as the decimal separator" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :en
+          example.run
+        end
+      end
+
+      context "when contains Arabic decimal marker" do
+        let(:string) { "1٫2" }
+
+        it "returns abstract parsed tree" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1"),
+                                                          Plurimath::Math::Symbols::Symbol.new("٫"),
+                                                          Plurimath::Math::Number.new("2"),
                                                         ])
           expect(formula).to eq(expected_value)
         end

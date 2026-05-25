@@ -4,6 +4,28 @@ RSpec.describe Plurimath::Math do
   describe ".initialize" do
     subject(:formula) { described_class.parse(input, type) }
 
+    context "when persistent configuration sets a locale" do
+      let(:input) { "1,2" }
+      let(:type) { "asciimath" }
+
+      around do |example|
+        previous_locale = Plurimath.configuration.locale
+        Plurimath.configure do |config|
+          config.locale = :fr
+        end
+        example.run
+      ensure
+        Plurimath.configuration.locale = previous_locale
+      end
+
+      it "uses the configured locale while parsing through the facade" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Number.new("1,2"),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
     context "contains incorrect type with parseable input of asciimath" do
       let(:input) { "sin(d)" }
       let(:type) { "wrong_type" }

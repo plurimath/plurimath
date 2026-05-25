@@ -39,6 +39,17 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
         end
       end
 
+      context "when contains leading decimal full stop" do
+        let(:string) { ".2" }
+
+        it "matches formula structure of UnicodeMath" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new(".2"),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
       context "when locale uses comma as the decimal separator" do
         around do |example|
           Plurimath.with_configuration do |config|
