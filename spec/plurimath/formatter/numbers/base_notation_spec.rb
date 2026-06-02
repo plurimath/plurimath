@@ -26,10 +26,16 @@ RSpec.describe Plurimath::Formatter::Numbers::BaseNotation do
       expect(notation.apply("ff")).to eq("16#ff")
     end
 
-    it "uses base_postfix before prefix when present" do
-      notation = described_class.new(options(base: 16, base_prefix: "0x", base_postfix: "h"))
+    it "uses base_postfix without the default prefix when provided alone" do
+      notation = described_class.new(options(base: 16, base_postfix: "h"))
 
       expect(notation.apply("ff")).to eq("ffh")
+    end
+
+    it "combines explicit base_prefix and base_postfix when both are provided" do
+      notation = described_class.new(options(base: 16, base_prefix: "0x", base_postfix: "h"))
+
+      expect(notation.apply("ff")).to eq("0xffh")
     end
 
     it "keeps the existing whole-rendered-string hex capitalization behavior" do

@@ -725,7 +725,9 @@ When omitted, standard prefixes are used (`0b` for base 2, `0o` for base 8, `0x`
 ====
 
 `base_postfix`:: (`String` or `nil` value)
-If present, a postfix is appended to the converted number instead of using any base prefix.
+If present without `base_prefix`, a postfix is appended to the converted number
+instead of using the default base prefix. When `base_prefix` is also provided,
+the prefix and postfix are both rendered.
 This is applied after digit grouping.
 Because the formatter checks whether the `base_postfix` key is present, setting
 it to `nil` or an empty string omits both the postfix and the default base
@@ -735,6 +737,7 @@ prefix.
 [example]
 ====
 "255" with `base: 16, base_postfix: "_16"` => "ff_16"
+"255" with `base: 16, base_prefix: "16#", base_postfix: "_16"` => "16#ff_16"
 "255" with `base: 16, base_postfix: nil` => "ff"
 "255" with `base: 16, base_postfix: ""` => "ff"
 ====
