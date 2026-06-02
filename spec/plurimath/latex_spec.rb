@@ -33,6 +33,21 @@ RSpec.describe Plurimath::Latex do
       end
     end
 
+    context "contains shared-prefix commands" do
+      it "matches the longest symbol command first" do
+        expectations = {
+          "\\sinh{1}" => "\\sinh{1}",
+          "\\sin{1}" => "\\sin{1}",
+          "\\cosh{1}" => "\\cosh{1}",
+          "\\cos{1}" => "\\cos{1}",
+        }
+
+        expectations.each do |input, latex|
+          expect(described_class.new(input).to_formula.to_latex).to eq(latex)
+        end
+      end
+    end
+
     context "contains examples from plurimath/plurimath#355" do
       let(:string) do
         'H^\beta \left(d_1,\ldots,d_M\right) = \left(H^{\beta_1}\left(d_1\right),\ldots,H^{\beta_M}\left(d_M\right)\right)^t'

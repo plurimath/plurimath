@@ -41,7 +41,7 @@ module Plurimath
 
       rule(:precompiled_constant) do
         (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) |
-          indexed_precompiled_constant
+          precompiled_constant_choice
       end
 
       rule(:open_table) do
@@ -180,44 +180,25 @@ module Plurimath
         end
       end
 
-      def indexed_precompiled_constant
-        dynamic do |source, _context|
-          value, type = longest_precompiled_constant(source)
-          value ? precompiled_constant_parser(value, type) : str("").absent?
+      def precompiled_constant_choice
+        @precompiled_constant_choice ||= Constants.precompile_constants.reduce do |expression, (literal, type)|
+          expression = dynamic_parser_rules(expression.first, expression.last) if expression.is_a?(Array)
+          expression | dynamic_parser_rules(literal, type)
         end
       end
 
-      def longest_precompiled_constant(source)
-        node = Constants.precompile_constants_trie
-        match = nil
-        pos = source.bytepos
-        terminal = Constants::TRIE_TERMINAL
-
-        while source.chars_left.positive?
-          node = node[source.consume(1).to_s]
-          break unless node
-
-          match = node[terminal] if node.key?(terminal)
-        end
-
-        source.bytepos = pos
-        match
-      end
-
-      def precompiled_constant_parser(value, type)
-        first_value = str(value)
+      def dynamic_parser_rules(literal, type)
+        first_value = str(literal.to_s)
 
         case type
         when :symbol then first_value.as(:symbol)
-        when :unary_class then unary_functions(value)
+        when :unary_class then unary_functions(first_value, literal.to_s)
         when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
         when :special_fonts then first_value.as(:bold_fonts)
         end
       end
 
-      def unary_functions(value)
-        first_value = str(value)
-
+      def unary_functions(first_value, value)
         if %w[underbrace ubrace].include?(value)
           (first_value.as(:unary_class) >> space? >> str("_").as(:symbol)).as(:unary) |
             (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)

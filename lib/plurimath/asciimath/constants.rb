@@ -83,7 +83,6 @@ module Plurimath
       SPECIAL_BOLD_ALPHABETS = %w[ZZ RR QQ NN CC].freeze
       BINARY_CLASSES = %w[underset stackrel overset frac root].freeze
       SKIP_INPUT_PARENS = ["[", "]", "{", "}", "(", ")", "(:", ":)"].freeze
-      TRIE_TERMINAL = :__terminal__
 
       class << self
         def precompile_constants
@@ -103,25 +102,9 @@ module Plurimath
           @@symbols ||= Utility.symbols_hash(:asciimath).keys.concat(parens_symbols)
         end
 
-        def precompile_constants_trie
-          @precompile_constants_trie ||= build_constants_trie(precompile_constants)
-        end
-
         def parens_symbols
           Utility.parens_hash(:asciimath).keys.delete_if do |sym|
             SKIP_INPUT_PARENS.include?(sym)
-          end
-        end
-
-        private
-
-        def build_constants_trie(constants)
-          constants.each_with_object({}) do |(value, type), trie|
-            node = trie
-            value.each_char do |char|
-              node = (node[char] ||= {})
-            end
-            node[TRIE_TERMINAL] = [value, type]
           end
         end
       end

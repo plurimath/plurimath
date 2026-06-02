@@ -102,7 +102,7 @@ module Plurimath
           rule(:symbol_class_commands) do
             (str("&#x") >> match["0-9a-fA-F"].repeat >> str(";")).as(:unicode_symbols) |
               str("\\;").as(:three_per_em_space) |
-              indexed_symbol_class_command |
+              symbol_class_command_choice(rule_constants.call.symbols_constants) |
               under_over |
               environment |
               numeric_values
@@ -208,40 +208,15 @@ module Plurimath
             end
           end
 
-          def hash_to_expression(hash)
-            rule_cache[:expression] ||= {}.compare_by_identity
-            rule_cache[:expression][hash] ||= hash.reduce do |expression, (key, value)|
+          def symbol_class_command_choice(hash)
+            rule_cache[:symbol_class_command_choice] ||= {}.compare_by_identity
+            rule_cache[:symbol_class_command_choice][hash] ||= hash.reduce do |expression, (value, type)|
               if expression.is_a?(Array)
                 expression = dynamic_rules(expression.first,
                                            expression.last)
               end
-              expression | dynamic_rules(key, value)
+              expression | dynamic_rules(value, type)
             end
-          end
-
-          def indexed_symbol_class_command
-            dynamic do |source, _context|
-              value, type = longest_symbol_class_command(source)
-              value ? dynamic_rules(value, type) : str("").absent?
-            end
-          end
-
-          def longest_symbol_class_command(source)
-            constants = self.class.constants_class
-            node = constants.symbols_constants_trie
-            match = nil
-            pos = source.bytepos
-            terminal = constants.const_get(:TRIE_TERMINAL)
-
-            while source.chars_left.positive?
-              node = node[source.consume(1).to_s]
-              break unless node
-
-              match = node[terminal] if node.key?(terminal)
-            end
-
-            source.bytepos = pos
-            match
           end
 
           def dynamic_rules(expr, name)
