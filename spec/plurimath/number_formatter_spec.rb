@@ -715,7 +715,7 @@ RSpec.describe Plurimath::NumberFormatter do
       end
 
       context "base_postfix option" do
-        it "uses base_postfix instead of prefix when provided" do
+        it "uses base_postfix without the default prefix when provided alone" do
           output_string = formatter.localized_number("255",
                                                      format: base_format_defaults.merge(
                                                        base: 16, base_postfix: "_16",
@@ -730,11 +730,11 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("BE,EF_h")
         end
 
-        it "base_postfix takes precedence even if base_prefix is also provided" do
+        it "combines base_prefix and base_postfix when both are provided" do
           output_string = formatter.localized_number("255",
                                                      format: base_format_defaults.merge(base: 16, base_prefix: "0x",
                                                                                         base_postfix: "h"))
-          expect(output_string).to eql("ffh")
+          expect(output_string).to eql("0xffh")
         end
       end
 
@@ -761,7 +761,7 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("2,55")
         end
 
-        it "base_postfix takes precedence even if base_prefix is also provided" do
+        it "does not add prefix or postfix when base is 10" do
           output_string = formatter.localized_number("255",
                                                      format: base_format_defaults.merge(base: 10, base_prefix: "y^",
                                                                                         base_postfix: "_x"))
@@ -1427,7 +1427,7 @@ RSpec.describe Plurimath::NumberFormatter do
           end
         end
 
-        context "base_postfix with negative numbers and precedence over base_prefix" do
+        context "base_postfix with negative numbers and optional base_prefix" do
           it "uses base_postfix instead of prefix for a negative number" do
             output_string = formatter.localized_number("-255",
                                                        format: base_format_defaults.merge(
@@ -1436,11 +1436,11 @@ RSpec.describe Plurimath::NumberFormatter do
             expect(output_string).to eql("-ff_16")
           end
 
-          it "base_postfix still takes precedence when both base_prefix and base_postfix are provided" do
+          it "combines base_prefix and base_postfix when both are provided" do
             output_string = formatter.localized_number("255",
                                                        format: base_format_defaults.merge(base: 16, base_prefix: "0x",
                                                                                           base_postfix: "h"))
-            expect(output_string).to eql("ffh")
+            expect(output_string).to eql("0xffh")
           end
         end
 

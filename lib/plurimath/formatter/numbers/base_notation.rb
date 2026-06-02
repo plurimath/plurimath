@@ -25,9 +25,7 @@ module Plurimath
           rendered = upcase_hex? ? string.tr(Base::HEX_DIGITS, Base::HEX_DIGITS.upcase) : string
           return rendered if default?
 
-          return "#{rendered}#{options.base_postfix}" if options.base_postfix?
-
-          "#{base_prefix}#{rendered}"
+          "#{base_prefix}#{rendered}#{base_postfix}"
         end
 
         def default?
@@ -43,9 +41,16 @@ module Plurimath
         attr_reader :options
 
         def base_prefix
+          return "" if options.base_postfix? && !options.base_prefix?
           return options.base_prefix if options.base_prefix?
 
           DEFAULT_PREFIXES[base]
+        end
+
+        def base_postfix
+          return "" unless options.base_postfix?
+
+          options.base_postfix.to_s
         end
 
         def upcase_hex?
