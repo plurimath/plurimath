@@ -98,6 +98,42 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       expect(options.group_digits).to eq(3)
       expect(options.digit_count).to eq(0)
       expect(options.significant).to eq(0)
+      expect(options.padding).to eq("0")
+      expect(options.padding_digits).to eq(0)
+      expect(options.padding_group_digits).to eq(0)
+    end
+
+    it "uses configured integer padding options" do
+      options = described_class.new(
+        symbols: {
+          padding: " ",
+          padding_digits: 6,
+        },
+      )
+
+      expect(options.padding).to eq(" ")
+      expect(options.padding_digits).to eq(6)
+      expect(options.padding_group_digits).to eq(0)
+    end
+
+    it "uses only the first configured padding character" do
+      options = described_class.new(symbols: { padding: "xy", padding_digits: 4 })
+
+      expect(options.padding).to eq("x")
+    end
+
+    it "rejects mutually exclusive padding width options" do
+      expect do
+        described_class.new(
+          symbols: {
+            padding_digits: 6,
+            padding_group_digits: 4,
+          },
+        )
+      end.to raise_error(
+        Plurimath::ConfigurationError,
+        /padding_digits.*padding_group_digits/,
+      )
     end
   end
 end

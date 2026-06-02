@@ -888,6 +888,105 @@ RSpec.describe Plurimath::NumberFormatter do
         end
       end
 
+      context "integer padding" do
+        it "pads integer digits to a fixed width before grouping" do
+          output_string = formatter.localized_number(
+            "32",
+            format: base_format_defaults.merge(
+              padding_digits: 6,
+              group_digits: 3,
+              group: " ",
+            ),
+          )
+
+          expect(output_string).to eql("000 032")
+        end
+
+        it "uses custom integer padding characters" do
+          output_string = formatter.localized_number(
+            "32",
+            format: base_format_defaults.merge(
+              padding: " ",
+              padding_digits: 6,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("    32")
+        end
+
+        it "pads integer digits to the next configured multiple" do
+          output_string = formatter.localized_number(
+            "32123",
+            format: base_format_defaults.merge(
+              padding_group_digits: 4,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("00032123")
+        end
+
+        it "pads converted hexadecimal digits without including the prefix" do
+          output_string = formatter.localized_number(
+            "-255",
+            format: base_format_defaults.merge(
+              base: 16,
+              padding_digits: 4,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("-0x00ff")
+        end
+
+        it "pads converted binary digits to a group multiple" do
+          output_string = formatter.localized_number(
+            "10",
+            format: base_format_defaults.merge(
+              base: 2,
+              padding_group_digits: 8,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("0b00001010")
+        end
+
+        it "pads after digit_count rounding carries into the integer" do
+          output_string = formatter.localized_number(
+            "255.9",
+            format: base_format_defaults.merge(
+              base: 16,
+              digit_count: 2,
+              padding_digits: 4,
+              group_digits: 10,
+              fraction_group_digits: 0,
+              fraction_group: "",
+              decimal: ".",
+            ),
+            precision: 4,
+          )
+
+          expect(output_string).to eql("0x0100")
+        end
+
+        it "rejects mutually exclusive padding width options" do
+          expect do
+            formatter.localized_number(
+              "32",
+              format: base_format_defaults.merge(
+                padding_digits: 6,
+                padding_group_digits: 4,
+              ),
+            )
+          end.to raise_error(
+            Plurimath::ConfigurationError,
+            /padding_digits.*padding_group_digits/,
+          )
+        end
+      end
+
       context "base conversion digit_count rounding edge cases" do
         # These specs intentionally use argument combinations that force
         # digit_count-based rounding of non-decimal fractional parts in

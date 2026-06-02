@@ -5,12 +5,16 @@ module Plurimath
     module Numbers
       # Converts integer digits to the target base and applies integer grouping.
       class Integer < Base
-        attr_reader :separator, :groups
+        attr_reader :separator, :groups, :padding, :padding_digits,
+                    :padding_group_digits
 
         def initialize(options)
           super
           @groups = self.options.group_digits
           @separator = self.options.group
+          @padding = self.options.padding
+          @padding_digits = self.options.padding_digits
+          @padding_group_digits = self.options.padding_group_digits
         end
 
         def apply(number)
@@ -19,6 +23,7 @@ module Plurimath
 
         def format_groups(string)
           string = capitalize_hex_digits(string)
+          string = pad_integer(string)
           tokens = []
 
           until string.empty?
@@ -37,6 +42,25 @@ module Plurimath
           return number if base_default?
 
           number.to_i.to_s(base)
+        end
+
+        private
+
+        def pad_integer(string)
+          target_width = padding_target_width(string)
+          return string unless target_width > string.length
+
+          string.rjust(target_width, padding)
+        end
+
+        def padding_target_width(string)
+          return padding_digits if padding_digits.positive?
+          return string.length unless padding_group_digits.positive?
+
+          remainder = string.length % padding_group_digits
+          return string.length if remainder.zero?
+
+          string.length + padding_group_digits - remainder
         end
       end
     end

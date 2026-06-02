@@ -566,6 +566,40 @@ Accepts an integer value. (default is 3 in most locales.)
 "32232.232" => "3 22 32.232"
 ====
 
+`padding`:: (`String` value)
+Character to use when padding the integer portion. Defaults to `0`.
++
+.Using spaces as integer padding
+[example]
+====
+"32" with `padding_digits: 6, padding: " "` => "    32"
+====
+
+`padding_digits`:: (`Numeric` value)
+Minimum number of integer digits to render. Missing integer digits are inserted
+before grouping using the configured `padding` character. Mutually exclusive
+with `padding_group_digits`.
++
+.Padding to a fixed integer width
+[example]
+====
+"32"    with `padding_digits: 6` => "000032"
+"32123" with `padding_digits: 6` => "032123"
+"32"    with `padding_digits: 6, group_digits: 3, group: " "` => "000 032"
+====
+
+`padding_group_digits`:: (`Numeric` value)
+Pads the integer portion to the lowest multiple of the configured digit count.
+Missing integer digits are inserted before grouping using the configured
+`padding` character. Mutually exclusive with `padding_digits`.
++
+.Padding to an integer width multiple
+[example]
+====
+"32"    with `padding_group_digits: 4` => "0032"
+"32123" with `padding_group_digits: 4` => "00032123"
+====
+
 `base`:: (`Numeric` value)
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Supported values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
@@ -1434,6 +1468,18 @@ The default configuration for formatting numbers is as follows, set in the
 |`group_digits`
 |The number of digits in each group of the integer part
 |`3`
+
+|`padding`
+|The character used to pad the integer part
+|`"0"`
+
+|`padding_digits`
+|The minimum number of integer digits to display
+|`0`
+
+|`padding_group_digits`
+|The multiple of integer digits to pad to
+|`0`
 
 |`significant`
 |The number of significant digits to display

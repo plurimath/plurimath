@@ -49,6 +49,16 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
         expect(formatter.separator).to eq(":")
       end
     end
+
+    context "with integer padding" do
+      let(:symbols) { { padding: " ", padding_digits: 6, padding_group_digits: 0 } }
+
+      it "sets padding options" do
+        expect(formatter.padding).to eq(" ")
+        expect(formatter.padding_digits).to eq(6)
+        expect(formatter.padding_group_digits).to eq(0)
+      end
+    end
   end
 
   describe "#apply" do
@@ -228,6 +238,36 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "returns empty string" do
         result = formatter.format_groups("")
         expect(result).to eq("")
+      end
+    end
+
+    context "with explicit padding digits" do
+      let(:symbols) { { group_digits: 3, group: " ", padding_digits: 6 } }
+
+      it "pads before applying integer grouping" do
+        result = formatter.format_groups("32")
+
+        expect(result).to eq("000 032")
+      end
+    end
+
+    context "with custom padding" do
+      let(:symbols) { { group_digits: 10, padding_digits: 6, padding: " " } }
+
+      it "uses the configured padding character" do
+        result = formatter.format_groups("32")
+
+        expect(result).to eq("    32")
+      end
+    end
+
+    context "with padding group digits" do
+      let(:symbols) { { group_digits: 10, padding_group_digits: 4 } }
+
+      it "pads to the next configured multiple" do
+        result = formatter.format_groups("32123")
+
+        expect(result).to eq("00032123")
       end
     end
   end

@@ -16,6 +16,8 @@ module Plurimath
         "expected one of #{@supported.inspect}"
       when :missing_deprecation_feature
         "deprecation feature must be provided"
+      when :mutually_exclusive_formatter_options
+        "formatter options are mutually exclusive: #{@supported.inspect}"
       else
         "invalid Plurimath configuration"
       end
