@@ -16,8 +16,9 @@ module Plurimath
         "expected one of #{@supported.inspect}"
       when :missing_deprecation_feature
         "deprecation feature must be provided"
-      when :mutually_exclusive_formatter_options
-        "formatter options are mutually exclusive: #{@supported.inspect}"
+      when :conflicting_formatter_options
+        "formatter options cannot be used together: choose either " \
+        ":padding_digits or :padding_group_digits"
       else
         "invalid Plurimath configuration"
       end

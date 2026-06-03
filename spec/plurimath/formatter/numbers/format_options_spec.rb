@@ -122,7 +122,24 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       expect(options.padding).to eq("x")
     end
 
-    it "rejects mutually exclusive padding width options" do
+    it "falls back to zero padding when the configured padding is blank" do
+      options = described_class.new(symbols: { padding: "", padding_digits: 4 })
+
+      expect(options.padding).to eq("0")
+    end
+
+    it "allows a padding group width when fixed-width padding is absent" do
+      options = described_class.new(
+        symbols: {
+          padding_group_digits: 4,
+        },
+      )
+
+      expect(options.padding_digits).to eq(0)
+      expect(options.padding_group_digits).to eq(4)
+    end
+
+    it "rejects padding width options that are used together" do
       expect do
         described_class.new(
           symbols: {
@@ -132,7 +149,23 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
         )
       end.to raise_error(
         Plurimath::ConfigurationError,
-        /padding_digits.*padding_group_digits/,
+        "formatter options cannot be used together: choose either " \
+        ":padding_digits or :padding_group_digits",
+      )
+    end
+
+    it "rejects padding width options that are both provided with non-positive values" do
+      expect do
+        described_class.new(
+          symbols: {
+            padding_digits: -6,
+            padding_group_digits: -4,
+          },
+        )
+      end.to raise_error(
+        Plurimath::ConfigurationError,
+        "formatter options cannot be used together: choose either " \
+        ":padding_digits or :padding_group_digits",
       )
     end
   end

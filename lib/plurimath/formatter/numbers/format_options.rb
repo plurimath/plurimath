@@ -128,10 +128,10 @@ module Plurimath
         end
 
         def validate_padding_options!
-          return unless padding_digits.positive? && padding_group_digits.positive?
+          return unless symbols.key?(:padding_digits) && symbols.key?(:padding_group_digits)
 
           raise Plurimath::ConfigurationError.new(
-            :mutually_exclusive_formatter_options,
+            :conflicting_formatter_options,
             supported: %i[padding_digits padding_group_digits],
           )
         end

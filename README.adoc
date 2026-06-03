@@ -577,7 +577,7 @@ Character to use when padding the integer portion. Defaults to `0`.
 
 `padding_digits`:: (`Numeric` value)
 Minimum number of integer digits to render. Missing integer digits are inserted
-before grouping using the configured `padding` character. Mutually exclusive
+before grouping using the configured `padding` character. Do not use it together
 with `padding_group_digits`.
 +
 Padding is applied before integer grouping, so padding characters are grouped
@@ -594,7 +594,7 @@ with the rest of the integer digits.
 `padding_group_digits`:: (`Numeric` value)
 Pads the integer portion to the lowest multiple of the configured digit count.
 Missing integer digits are inserted before grouping using the configured
-`padding` character. Mutually exclusive with `padding_digits`.
+`padding` character. Do not use it together with `padding_digits`.
 +
 .Padding to an integer width multiple
 [example]

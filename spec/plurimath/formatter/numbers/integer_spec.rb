@@ -51,7 +51,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
     end
 
     context "with integer padding" do
-      let(:symbols) { { padding: " ", padding_digits: 6, padding_group_digits: 0 } }
+      let(:symbols) { { padding: " ", padding_digits: 6 } }
 
       it "sets padding options" do
         expect(formatter.padding).to eq(" ")
@@ -268,6 +268,50 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
         result = formatter.format_groups("32123")
 
         expect(result).to eq("00032123")
+      end
+
+      it "keeps strings that already match the configured multiple" do
+        result = formatter.format_groups("1234")
+
+        expect(result).to eq("1234")
+      end
+    end
+
+    context "with fixed-width padding that is not needed" do
+      let(:symbols) { { group_digits: 10, padding_digits: 3 } }
+
+      it "keeps wider integer strings unchanged" do
+        result = formatter.format_groups("12345")
+
+        expect(result).to eq("12345")
+      end
+    end
+
+    context "with zero and padding group digits" do
+      let(:symbols) { { group_digits: 10, padding_group_digits: 4 } }
+
+      it "pads zero to the configured multiple" do
+        result = formatter.format_groups("0")
+
+        expect(result).to eq("0000")
+      end
+    end
+
+    context "with numbers-only hex capitalization and custom padding" do
+      let(:symbols) do
+        {
+          base: 16,
+          group_digits: 10,
+          hex_capital: :numbers_only,
+          padding: "f",
+          padding_digits: 5,
+        }
+      end
+
+      it "does not uppercase the custom padding character" do
+        result = formatter.format_groups("beef")
+
+        expect(result).to eq("fBEEF")
       end
     end
   end

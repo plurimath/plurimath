@@ -953,6 +953,119 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("0b00001010")
         end
 
+        it "does not pad when the integer already satisfies the fixed width" do
+          output_string = formatter.localized_number(
+            "123456",
+            format: base_format_defaults.merge(
+              padding_digits: 4,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("123456")
+        end
+
+        it "does not pad when converted digits already satisfy the group multiple" do
+          output_string = formatter.localized_number(
+            "15",
+            format: base_format_defaults.merge(
+              base: 2,
+              padding_group_digits: 4,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("0b1111")
+        end
+
+        it "pads zero in hexadecimal to a configured group multiple" do
+          output_string = formatter.localized_number(
+            "0",
+            format: base_format_defaults.merge(
+              base: 16,
+              padding_group_digits: 4,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("0x0000")
+        end
+
+        it "keeps padding inside postfix notation" do
+          output_string = formatter.localized_number(
+            "255",
+            format: base_format_defaults.merge(
+              base: 16,
+              padding_digits: 4,
+              base_postfix: "h",
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("00ffh")
+        end
+
+        it "keeps custom padding lowercase in numbers-only hex capitalization" do
+          output_string = formatter.localized_number(
+            "48879",
+            format: base_format_defaults.merge(
+              base: 16,
+              padding: "f",
+              padding_digits: 5,
+              hex_capital: :numbers_only,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("0xfBEEF")
+        end
+
+        it "rejects padding width options even when fixed-width padding is disabled" do
+          expect do
+            formatter.localized_number(
+              "32",
+              format: base_format_defaults.merge(
+                padding_digits: 0,
+                padding_group_digits: 4,
+                group_digits: 10,
+              ),
+            )
+          end.to raise_error(
+            Plurimath::ConfigurationError,
+            "formatter options cannot be used together: choose either " \
+            ":padding_digits or :padding_group_digits",
+          )
+        end
+
+        it "ignores a negative fixed-width padding option when it is used alone" do
+          output_string = formatter.localized_number(
+            "32",
+            format: base_format_defaults.merge(
+              padding_digits: -6,
+              group_digits: 10,
+            ),
+          )
+
+          expect(output_string).to eql("32")
+        end
+
+        it "rejects padding width options that are both provided with negative values" do
+          expect do
+            formatter.localized_number(
+              "32",
+              format: base_format_defaults.merge(
+                padding_digits: -6,
+                padding_group_digits: -4,
+                group_digits: 10,
+              ),
+            )
+          end.to raise_error(
+            Plurimath::ConfigurationError,
+            "formatter options cannot be used together: choose either " \
+            ":padding_digits or :padding_group_digits",
+          )
+        end
+
         it "pads after digit_count rounding carries into the integer" do
           output_string = formatter.localized_number(
             "255.9",
@@ -971,7 +1084,7 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("0x0100")
         end
 
-        it "rejects mutually exclusive padding width options" do
+        it "rejects padding width options that are used together" do
           expect do
             formatter.localized_number(
               "32",
@@ -982,7 +1095,8 @@ RSpec.describe Plurimath::NumberFormatter do
             )
           end.to raise_error(
             Plurimath::ConfigurationError,
-            /padding_digits.*padding_group_digits/,
+            "formatter options cannot be used together: choose either " \
+            ":padding_digits or :padding_group_digits",
           )
         end
       end
