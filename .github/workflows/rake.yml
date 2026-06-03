@@ -20,5 +20,8 @@ jobs:
         echo "---" >> .bundle/config
         echo 'BUNDLE_BUILD__RUBY___LL: "--with-cflags=-std=gnu17"' >> .bundle/config
         cat .bundle/config
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+          echo 'BINDGEN_EXTRA_CLANG_ARGS=-IC:/msys64/ucrt64/include -IC:/msys64/mingw64/include -IC:/msys64/usr/include' >> "$GITHUB_ENV"
+        fi
     secrets:
       pat_token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
