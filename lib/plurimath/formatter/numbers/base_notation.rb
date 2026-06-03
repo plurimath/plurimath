@@ -41,15 +41,13 @@ module Plurimath
         attr_reader :options
 
         def base_prefix
-          return "" if options.base_postfix? && !options.base_prefix?
           return options.base_prefix if options.base_prefix?
+          return "" if options.base_postfix?
 
           DEFAULT_PREFIXES[base]
         end
 
         def base_postfix
-          return "" unless options.base_postfix?
-
           options.base_postfix.to_s
         end
 
