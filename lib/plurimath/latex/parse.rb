@@ -3,6 +3,18 @@
 module Plurimath
   class Latex
     class Parse < Parsanol::Parser
+      rule(:base)          { str("_") }
+      rule(:power)         { str("^") }
+      rule(:slash)         { str("\\") }
+      rule(:under_over)    { slash >> underover_classes }
+      rule(:array_args)    { str("{") >> expression.as(:args) >> str("}") }
+      rule(:array_begin)   do
+        str("\\begin{") >> str("array").as(:environment) >> str("}")
+      end
+      rule(:optional_args) do
+        (str("[") >> intermediate_exp.maybe.as(:options) >> str("]")).maybe
+      end
+
       rule(:color) do
         (str("{") >> (str("}").absent? >> any).repeat.as(:symbol) >> str("}")) |
           any.as(:symbol)
@@ -186,7 +198,7 @@ module Plurimath
       end
 
       def decimal_marker
-        # Latex::Parser entity-encodes input before Parslet sees it, so
+        # Latex::Parser entity-encodes input before the parser sees it, so
         # non-ASCII locale markers must match that encoded parser input.
         str(Utility.string_to_html_entity(Plurimath.configuration.decimal))
       end
@@ -258,16 +270,6 @@ module Plurimath
       def color_rules
         (str("{") >> slash >> str("color").as(:binary) >> color.as(:first_value) >> (sequence >> iteration.maybe).as(:second_value).maybe >> str("}")) |
           (slash >> str("color").as(:binary) >> color.as(:first_value) >> expression.as(:second_value).maybe)
-      end
-
-      def run_with_context(input, reporter, consume_all)
-        context = Parsanol::Atoms::Context.new(
-          reporter,
-          parser_class: self.class,
-          adaptive_cache_threshold: 0,
-        )
-
-        apply(input, context, consume_all)
       end
     end
   end

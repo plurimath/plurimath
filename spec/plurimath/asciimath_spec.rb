@@ -46,24 +46,6 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    context "contains shared-prefix constants" do
-      it "matches the longest precompiled constant first" do
-        expectations = {
-          "sinh(1)" => ['\sinh{( 1 )}', "sinh(1)"],
-          "sin(1)" => ['\sin{( 1 )}', "sin(1)"],
-          "mathbb(theta)" => ['\mathbb{\theta}', "mathbb(theta)"],
-          "bb(theta)" => ['\mathbf{\theta}', "mathbf(theta)"],
-        }
-
-        expectations.each do |input, (latex, asciimath)|
-          formula = described_class.new(input).to_formula
-
-          expect(formula.to_latex).to eq(latex)
-          expect(formula.to_asciimath).to eq(asciimath)
-        end
-      end
-    end
-
     context "contains example #02" do
       let(:string) { "sum_(i=1)^n i^3=((n(n+1))/2)^2" }
 

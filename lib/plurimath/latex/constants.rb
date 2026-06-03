@@ -204,6 +204,7 @@ module Plurimath
         "[": "[",
         "]": "]",
       }.freeze
+
       class << self
         def symbols_constants
           @@symbols ||= reverse_sort_hash(SYMBOLS.merge(symbols_hash))

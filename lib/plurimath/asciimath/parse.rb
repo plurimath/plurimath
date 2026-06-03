@@ -39,11 +39,6 @@ module Plurimath
         arr_to_expression(Constants::SUB_SUP_CLASSES, :binary_class)
       end
 
-      rule(:precompiled_constant) do
-        (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) |
-          precompiled_constant_choice
-      end
-
       rule(:open_table) do
         arr_to_expression(Constants::TABLE_PARENTHESIS.keys, :table_left)
       end
@@ -68,7 +63,7 @@ module Plurimath
 
       rule(:left_right) do
         (str("left") >> space? >> left_right_open_paren.as(:left) >> space? >> (iteration.maybe >> sequence.maybe).as(:left_right_value) >> space? >> str("right") >> space? >> left_right_close_paren.as(:right)) |
-          ((table.as(:numerator) >> space? >> single_slash >> space? >> iteration.as(:denominator)).as(:frac) >> expression) |
+          ((table.as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac) >> expression) |
           (table.as(:table) >> power_base.maybe >> expression.maybe)
       end
 
@@ -82,7 +77,7 @@ module Plurimath
         sub_sup_classes |
           binary_classes |
           ternary_classes |
-          precompiled_constant |
+          hash_to_expression(Constants.precompile_constants) |
           (match(/[0-9]/).as(:number) >> (decimal_marker >> match("[0-9]")).absent? >> str(",").as(:comma)).repeat(1).as(:comma_separated) |
           quoted_text |
           (str("d").as(:d) >> str("x").as(:x)).as(:intermediate_exp) |
@@ -130,12 +125,8 @@ module Plurimath
       end
 
       rule(:frac) do
-        (sequence.as(:numerator) >> space? >> single_slash >> space? >> iteration.as(:denominator)).as(:frac) |
-          ((power_base_rules | power_base).as(:numerator) >> space? >> single_slash >> space? >> iteration.as(:denominator)).as(:frac)
-      end
-
-      rule(:single_slash) do
-        str("//").absent? >> str("/") >> str("/").absent?
+        (sequence.as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac) |
+          ((power_base_rules | power_base).as(:numerator) >> space? >> match(/(?<!\/)\/(?!\/)/) >> space? >> iteration.as(:denominator)).as(:frac)
       end
 
       rule(:mod) do
@@ -180,48 +171,38 @@ module Plurimath
         end
       end
 
-      def precompiled_constant_choice
-        @precompiled_constant_choice ||= Constants.precompile_constants.reduce do |expression, (literal, type)|
-          expression = dynamic_parser_rules(expression.first, expression.last) if expression.is_a?(Array)
-          expression | dynamic_parser_rules(literal, type)
+      def read_text
+        dynamic do |_sour, context|
+          rparen = Constants::PARENTHESIS[context.captures[:paren].to_sym]
+          match("[^#{rparen}]").repeat
         end
       end
 
-      def dynamic_parser_rules(literal, type)
-        first_value = str(literal.to_s)
+      def hash_to_expression(arr)
+        type = arr.first.class
+        @@expression ||= arr.reduce do |expression, expr_string|
+          expression = dynamic_parser_rules(expression) if expression.is_a?(type)
+          expression | dynamic_parser_rules(expr_string)
+        end
+      end
 
-        case type
-        when :symbol then first_value.as(:symbol)
-        when :unary_class then unary_functions(first_value, literal.to_s)
+      def dynamic_parser_rules(expr)
+        first_value = str(expr.first.to_s)
+        case expr.last
+        when :symbol then (str("\\").as(:slash) >> match("\s").repeat >> str("\n")) | first_value.as(:symbol)
+        when :unary_class then unary_functions(first_value)
         when :fonts then first_value.as(:fonts_class) >> space? >> sequence.as(:fonts_value)
         when :special_fonts then first_value.as(:bold_fonts)
         end
       end
 
-      def unary_functions(first_value, value)
-        if %w[underbrace ubrace].include?(value)
+      def unary_functions(first_value)
+        if ["'underbrace'", "'ubrace'"].include?(first_value.to_s)
           (first_value.as(:unary_class) >> space? >> str("_").as(:symbol)).as(:unary) |
             (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         else
           (first_value.as(:unary_class).as(:power_base) >> space? >> power_base).as(:unary) |
-            (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
-        end
-      end
-
-      def run_with_context(input, reporter, consume_all)
-        context = Parsanol::Atoms::Context.new(
-          reporter,
-          parser_class: self.class,
-          adaptive_cache_threshold: 0,
-        )
-
-        apply(input, context, consume_all)
-      end
-
-      def read_text
-        dynamic do |_sour, context|
-          rparen = Constants::PARENTHESIS[context.captures[:paren].to_sym]
-          match("[^#{rparen}]").repeat
+          (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         end
       end
 
