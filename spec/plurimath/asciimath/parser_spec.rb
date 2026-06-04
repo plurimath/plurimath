@@ -1327,6 +1327,42 @@ RSpec.describe Plurimath::Asciimath::Parser do
         end
       end
 
+      context "when contains unspaced comma in a fenced expression" do
+        let(:string) { "(1,2,3)" }
+
+        it "parses the first comma as a decimal marker" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Function::Fenced.new(
+                                                            Plurimath::Math::Symbols::Paren::Lround.new,
+                                                            [
+                                                              Plurimath::Math::Number.new("1,2"),
+                                                              Plurimath::Math::Symbols::Comma.new,
+                                                              Plurimath::Math::Number.new("3"),
+                                                            ],
+                                                            Plurimath::Math::Symbols::Paren::Rround.new,
+                                                          ),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
+      context "when contains unspaced comma in square brackets" do
+        let(:string) { "[1,2]" }
+
+        it "parses the comma as a decimal marker" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Function::Fenced.new(
+                                                            Plurimath::Math::Symbols::Paren::Lsquare.new,
+                                                            [
+                                                              Plurimath::Math::Number.new("1,2"),
+                                                            ],
+                                                            Plurimath::Math::Symbols::Paren::Rsquare.new,
+                                                          ),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
+
       context "when contains decimal full stop" do
         let(:string) { "1.2" }
 

@@ -2,7 +2,9 @@ require "spec_helper"
 
 RSpec.describe Plurimath::Math do
   describe ".initialize" do
-    subject(:formula) { described_class.parse(input, type) }
+    subject(:formula) { described_class.parse(input, type, **parse_options) }
+
+    let(:parse_options) { {} }
 
     context "when persistent configuration sets a locale" do
       let(:input) { "1,2" }
@@ -23,6 +25,113 @@ RSpec.describe Plurimath::Math do
                                                         Plurimath::Math::Number.new("1,2"),
                                                       ])
         expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when locale is passed as a parse option" do
+      let(:input) { "1,2" }
+      let(:type) { "asciimath" }
+      let(:parse_options) { { locale: :fr } }
+
+      it "uses the locale while parsing through the facade" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Number.new("1,2"),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when locale is passed as a parse option for other localized parsers" do
+      it "uses locale for HTML input" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Number.new("1,2"),
+                                                      ])
+
+        expect(described_class.parse("1,2", :html, locale: :fr)).to eq(expected_value)
+      end
+
+      it "uses locale for LaTeX input" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Number.new("1,2"),
+                                                      ])
+
+        expect(described_class.parse("1,2", :latex, locale: :fr)).to eq(expected_value)
+      end
+
+      it "uses locale for UnicodeMath input" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Number.new("1٫2"),
+                                                      ])
+
+        expect(described_class.parse("1٫2", :unicode, locale: :ar)).to eq(expected_value)
+      end
+    end
+
+    context "when locale is passed as a parse option with persistent configuration" do
+      it "uses the parse option without mutating the shared configuration" do
+        previous_locale = Plurimath.configuration.locale
+        Plurimath.configuration.locale = :en
+
+        localized = described_class.parse("1,2", :asciimath, locale: :fr)
+        defaulted = described_class.parse("1,2", :asciimath)
+
+        expect(localized).to eq(
+          Plurimath::Math::Formula.new([
+                                         Plurimath::Math::Number.new("1,2"),
+                                       ]),
+        )
+        expect(defaulted.to_asciimath).to eq("1 , 2")
+        expect(Plurimath.configuration.locale).to be(:en)
+      ensure
+        Plurimath.configuration.locale = previous_locale
+      end
+
+      it "uses an explicit nil locale without mutating the shared configuration" do
+        previous_locale = Plurimath.configuration.locale
+        Plurimath.configuration.locale = :fr
+
+        defaulted = described_class.parse("1,2", :asciimath, locale: nil)
+
+        expect(defaulted.to_asciimath).to eq("1 , 2")
+        expect(Plurimath.configuration.locale).to be(:fr)
+      ensure
+        Plurimath.configuration.locale = previous_locale
+      end
+    end
+
+    context "when an unknown parse option is provided" do
+      let(:input) { "1,2" }
+      let(:type) { "asciimath" }
+      let(:parse_options) { { local: :fr } }
+
+      it "raises a parse option error" do
+        expect { formula }.to raise_error(
+          Plurimath::Math::ParseOptionError,
+          "unknown parse option: :local; supported parse options are :locale",
+        )
+      end
+    end
+
+    context "when a parse option is unsupported by the parser type" do
+      it "raises a parse option error" do
+        expect do
+          described_class.parse("<math></math>", :mathml, locale: :fr)
+        end.to raise_error(
+          Plurimath::Math::ParseOptionError,
+          "parse option :locale is not supported for :mathml; " \
+          "supported input types are :asciimath, :html, :latex, :unicode",
+        )
+      end
+    end
+
+    context "when an unsupported locale is provided" do
+      it "raises a formatter locale error" do
+        expect do
+          described_class.parse("1,2", :asciimath, locale: :unknown)
+        end.to raise_error(
+          Plurimath::Formatter::UnsupportedLocale,
+          /\[plurimath\] Unsupported locale :unknown\./,
+        )
       end
     end
 
