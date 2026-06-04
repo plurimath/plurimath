@@ -11,15 +11,7 @@ module Plurimath
     end
 
     def decimal
-      Formatter::SupportedLocales::LOCALES
-        .fetch(locale_key, {})
-        .fetch(:decimal, DEFAULT_DECIMAL)
-    end
-
-    private
-
-    def locale_key
-      locale.respond_to?(:to_sym) ? locale.to_sym : locale
+      Formatter::SupportedLocales.decimal_for(locale, default: DEFAULT_DECIMAL)
     end
   end
 end

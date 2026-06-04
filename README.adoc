@@ -162,11 +162,10 @@ formula = Plurimath::Math.parse(asciimath, :asciimath)
 
 ==== Localized decimal input
 
-AsciiMath, LaTeX, HTML, and UnicodeMath input use the configured locale decimal
-marker from `Plurimath::Formatter::SupportedLocales::LOCALES` when parsing
-numbers. Use `Plurimath.configure` for persistent defaults, or
-`Plurimath.with_configuration` when only one parse should use the locale
-override.
+AsciiMath, LaTeX, HTML, and UnicodeMath input can use a locale decimal marker
+from `Plurimath::Formatter::SupportedLocales::LOCALES` when parsing numbers.
+Pass `locale:` to `Plurimath::Math.parse` for one parse, or use
+`Plurimath.configure` for persistent defaults.
 
 For AsciiMath, LaTeX, and HTML, the configured marker is the decimal marker.
 When a locale uses a non-full-stop marker, `1.2` is parsed as `1`, `.`, and
@@ -174,10 +173,7 @@ When a locale uses a non-full-stop marker, `1.2` is parsed as `1`, `.`, and
 
 [source,ruby]
 ----
-formula = Plurimath.with_configuration do |config|
-  config.locale = :fr
-  Plurimath::Math.parse("1,2", :asciimath)
-end
+formula = Plurimath::Math.parse("1,2", :asciimath, locale: :fr)
 ----
 
 When the locale decimal marker is a comma, unspaced digit-comma-digit input is
@@ -206,20 +202,20 @@ Persian locales use the Arabic decimal separator.
 
 [source,ruby]
 ----
-formula = Plurimath.with_configuration do |config|
-  config.locale = :ar
-  Plurimath::Math.parse("1٫2", :unicodemath)
-end
+formula = Plurimath::Math.parse("1٫2", :unicode, locale: :ar)
 ----
 
 LaTeX ordinary spaces are removed during parser preprocessing, so `1, 2` is
 equivalent to `1,2` for this parser. With a comma decimal marker, only
 digit-comma-digit is parsed as a decimal number; a leading comma remains a comma
-symbol followed by a number.
+symbol followed by a number. To write a comma separator between two digits,
+wrap the comma or the following value in a group, such as `1{,}2` or `1,{}2`.
 
 [source,latex]
 ----
-1,2
+1,2      % decimal number
+1{,}2    % comma separator
+1,{}2    % comma separator
 ----
 
 UnicodeMath is different: it keeps its existing full stop and comma decimal

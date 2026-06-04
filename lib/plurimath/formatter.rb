@@ -6,6 +6,7 @@ module Plurimath
     autoload :NumberFormatter, "#{__dir__}/formatter/number_formatter"
     autoload :SupportedLocales, "#{__dir__}/formatter/supported_locales"
     autoload :UnsupportedBase, "#{__dir__}/errors/formatter/unsupported_base"
+    autoload :UnsupportedLocale, "#{__dir__}/errors/formatter/unsupported_locale"
     autoload :Numbers, "#{__dir__}/formatter/numbers"
     autoload :Standard, "#{__dir__}/formatter/standard"
   end

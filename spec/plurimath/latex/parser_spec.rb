@@ -65,6 +65,25 @@ RSpec.describe Plurimath::Latex::Parser do
           expect(formula).to eq(expected_value)
         end
       end
+
+      context "when contains a grouped comma separator between digits" do
+        let(:string) { "\\left(1{,}2\\right)" }
+
+        it "returns formula with comma separator" do
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Formula.new([
+                                                                                         Plurimath::Math::Function::Left.new("("),
+                                                                                         Plurimath::Math::Formula.new([
+                                                                                                                         Plurimath::Math::Number.new("1"),
+                                                                                                                         Plurimath::Math::Symbols::Comma.new,
+                                                                                                                         Plurimath::Math::Number.new("2"),
+                                                                                                                       ]),
+                                                                                         Plurimath::Math::Function::Right.new(")"),
+                                                                                       ]),
+                                                        ])
+          expect(formula).to eq(expected_value)
+        end
+      end
     end
 
     context "when locale uses full stop as the decimal separator" do

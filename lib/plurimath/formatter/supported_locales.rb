@@ -101,6 +101,33 @@ module Plurimath
         zh: { decimal: ".", group: "," },
         zu: { decimal: ".", group: "," },
       }.freeze
+
+      class << self
+        def decimal_for(locale, default:)
+          symbols_for(locale).fetch(:decimal, default)
+        end
+
+        def symbols_for(locale)
+          locale_key = key_for(locale)
+          return {} unless locale_key
+
+          LOCALES.fetch(locale_key)
+        end
+
+        def key_for!(locale)
+          locale_key = key_for(locale)
+          return locale_key if locale.nil? || locale_key
+
+          raise UnsupportedLocale.new(locale, LOCALES.keys)
+        end
+
+        def key_for(locale)
+          return locale if LOCALES.key?(locale)
+
+          symbol_key = locale.to_sym if locale.respond_to?(:to_sym)
+          symbol_key if LOCALES.key?(symbol_key)
+        end
+      end
     end
   end
 end
