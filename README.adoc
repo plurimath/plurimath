@@ -186,8 +186,8 @@ read as a decimal number.
 ----
 
 AsciiMath uses commas for expression and table separators, so separator commas
-must be written with spaces around them when the configured decimal marker is a
-comma.
+between digit tokens should be written with spaces around them when the
+configured decimal marker is a comma.
 
 HTML can use the same configured decimal marker inside plain text or tags.
 

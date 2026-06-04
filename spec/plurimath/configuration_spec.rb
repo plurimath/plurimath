@@ -53,18 +53,23 @@ RSpec.describe Plurimath::Configuration do
   describe ".with_configuration" do
     it "restores configuration after the block" do
       previous_configuration = Plurimath.configuration.dup
+      original_configuration = Plurimath.configuration
       previous_formatter = Plurimath::Formatter::Standard.new(locale: :en)
       temporary_formatter = Plurimath::Formatter::Standard.new(locale: :fr)
       Plurimath.configuration.locale = :en
       Plurimath.configuration.number_formatter = previous_formatter
+      yielded_config = nil
 
       result = Plurimath.with_configuration do |config|
+        yielded_config = config
         config.locale = :fr
         config.number_formatter = temporary_formatter
         :configured
       end
 
       expect(result).to be(:configured)
+      expect(yielded_config).not_to be(original_configuration)
+      expect(Plurimath.configuration).to be(original_configuration)
       expect(Plurimath.configuration.locale).to be(:en)
       expect(Plurimath.configuration.number_formatter).to be(previous_formatter)
     ensure
