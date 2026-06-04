@@ -42,7 +42,9 @@ module Plurimath
   end
 
   def with_configuration
-    previous_configuration = configuration.dup
+    # Swap the global config to an isolated copy so block mutations are scoped.
+    previous_configuration = configuration
+    @configuration = previous_configuration.dup
     yield(configuration)
   ensure
     @configuration = previous_configuration
