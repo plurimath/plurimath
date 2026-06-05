@@ -32,6 +32,18 @@ RSpec.describe Plurimath::Formatter::Numbers::BaseNotation do
       expect(notation.apply("ff")).to eq("ffh")
     end
 
+    it "uses base_postfix nil without the default prefix when provided" do
+      notation = described_class.new(options(base: 16, base_postfix: nil))
+
+      expect(notation.apply("ff")).to eq("ff")
+    end
+
+    it "uses an empty base_postfix without the default prefix when provided" do
+      notation = described_class.new(options(base: 16, base_postfix: ""))
+
+      expect(notation.apply("ff")).to eq("ff")
+    end
+
     it "combines explicit base_prefix and base_postfix when both are provided" do
       notation = described_class.new(options(base: 16, base_prefix: "0x", base_postfix: "h"))
 
