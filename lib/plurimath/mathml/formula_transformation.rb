@@ -27,8 +27,14 @@ module Plurimath
       # before building the Plurimath AST.
       def content_children(node)
         ordered_children(node).reject do |child|
-          child.is_a?(Mml::V4::Malignmark) || child.is_a?(Mml::V4::Maligngroup)
+          whitespace_child?(child) ||
+            child.is_a?(Mml::V4::Malignmark) ||
+            child.is_a?(Mml::V4::Maligngroup)
         end
+      end
+
+      def whitespace_child?(child)
+        child.is_a?(String) && child.strip.empty?
       end
 
       def default_fenced_open(fenced)

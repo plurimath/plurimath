@@ -41,6 +41,36 @@ RSpec.describe Plurimath::Mathml do
     end
   end
 
+  describe "MathML round-tripping" do
+    around do |example|
+      adapter = Mml::V4::Configuration.adapter
+      Mml::V4::Configuration.adapter = :nokogiri
+      example.run
+    ensure
+      Mml::V4::Configuration.adapter = adapter
+    end
+
+    it "ignores adapter-exposed pretty-print whitespace in compound script expressions" do
+      expressions = [
+        "y^2 = x^3",
+        "y^2 = x^3 + ax + b",
+        "x^3 + b",
+        "x^2 + y^2 + z^2",
+        "x_1 + y",
+        "x_1^2 + y",
+      ]
+
+      aggregate_failures do
+        expressions.each do |expression|
+          mathml = Plurimath::Math.parse(expression, "asciimath").to_mathml
+          round_tripped = Plurimath::Math.parse(mathml, "mathml").to_mathml
+
+          expect(round_tripped).to be_xml_equivalent_to(mathml)
+        end
+      end
+    end
+  end
+
   describe ".to_asciimath .to_latex .to_mathml" do
     subject(:formula) { described_class.new(string).to_formula }
 
