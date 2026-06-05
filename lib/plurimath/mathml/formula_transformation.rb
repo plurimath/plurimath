@@ -8,8 +8,16 @@ module Plurimath
       # Use each_mixed_content to get children in document order.
       def ordered_children(node)
         children = []
-        node.each_mixed_content { |child| children << child }
+        node.each_mixed_content do |child|
+          next if whitespace_text_child?(child)
+
+          children << child
+        end
         children
+      end
+
+      def whitespace_text_child?(child)
+        child.is_a?(String) && child.strip.empty?
       end
 
       def text_value(value)
@@ -222,10 +230,17 @@ module Plurimath
       end
 
       def split_multiscript_children(children, post_element_count)
+        pre_children = Array(children[(post_element_count + 1)..])
+          .reject { |child| prescript_marker?(child) }
+
         [
           convert_multiscript_children(children[1..post_element_count]),
-          convert_multiscript_children(children[(post_element_count + 1)..]),
+          convert_multiscript_children(pre_children),
         ]
+      end
+
+      def prescript_marker?(child)
+        child.is_a?(Mml::V4::Mprescripts)
       end
 
       def split_script_pairs(children, compact: false)
