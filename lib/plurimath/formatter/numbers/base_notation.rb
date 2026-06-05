@@ -42,6 +42,7 @@ module Plurimath
 
         def base_prefix
           return options.base_prefix if options.base_prefix?
+          # A postfix without an explicit prefix opts out of the default prefix.
           return "" if options.base_postfix?
 
           DEFAULT_PREFIXES[base]

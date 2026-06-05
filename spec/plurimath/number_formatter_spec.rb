@@ -723,6 +723,22 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("ff_16")
         end
 
+        it "uses base_postfix nil without the default prefix when provided" do
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, base_postfix: nil,
+                                                     ))
+          expect(output_string).to eql("ff")
+        end
+
+        it "uses an empty base_postfix without the default prefix when provided" do
+          output_string = formatter.localized_number("255",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16, base_postfix: "",
+                                                     ))
+          expect(output_string).to eql("ff")
+        end
+
         it "uppercases hex digits even when base_postfix is used" do
           output_string = formatter.localized_number("48879",
                                                      format: base_format_defaults.merge(base: 16, base_postfix: "_h",
@@ -1437,10 +1453,10 @@ RSpec.describe Plurimath::NumberFormatter do
           end
 
           it "combines base_prefix and base_postfix when both are provided" do
-            output_string = formatter.localized_number("255",
+            output_string = formatter.localized_number("-255",
                                                        format: base_format_defaults.merge(base: 16, base_prefix: "0x",
                                                                                           base_postfix: "h"))
-            expect(output_string).to eql("0xffh")
+            expect(output_string).to eql("-0xffh")
           end
         end
 
