@@ -166,6 +166,27 @@ RSpec.describe Plurimath::Mathml do
         it_behaves_like "pretty MathML operand order"
       end
 
+      context "contains mmultiscripts tag with prescripts Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mmultiscripts>
+                <mi>X</mi>
+                <mi>b</mi>
+                <mi>a</mi>
+                <mprescripts/>
+                <mi>d</mi>
+                <mi>c</mi>
+              </mmultiscripts>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "\\ _(d)^(c)X_(b)^(a)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
       context "contains mfrac tag Mathml" do
         let(:string) do
           <<~MATHML

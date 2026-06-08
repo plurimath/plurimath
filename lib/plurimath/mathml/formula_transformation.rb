@@ -212,7 +212,7 @@ module Plurimath
       end
 
       def convert_multiscript_child(child)
-        return Math::Function::None.new if child.is_a?(Mml::V4::None) || child.is_a?(Mml::V3::None)
+        return Math::Function::None.new if child.is_a?(Mml::Base::None)
         return Math::Function::None.new if child.respond_to?(:value) && Array(child.value).join.empty?
 
         mml_to_plurimath(child) || Math::Function::None.new
@@ -240,7 +240,7 @@ module Plurimath
       end
 
       def prescript_marker?(child)
-        child.is_a?(Mml::V4::Mprescripts)
+        child.is_a?(Mml::Base::Mprescripts)
       end
 
       def split_script_pairs(children, compact: false)
