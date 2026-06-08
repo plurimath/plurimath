@@ -41,6 +41,447 @@ RSpec.describe Plurimath::Mathml do
     end
   end
 
+  describe "MathML round-tripping" do
+    shared_examples "pretty MathML operand order" do
+      subject(:formula) { described_class.new(string).to_formula }
+
+      it "compares MathML and AsciiMath string" do
+        expect(formula.to_asciimath).to eq(asciimath)
+        next unless round_trip
+
+        round_tripped = described_class.new(formula.to_mathml).to_formula
+        expect(round_tripped.to_asciimath).to eq(asciimath)
+      end
+    end
+
+    shared_examples "pretty MathML round-tripping" do |adapter_name|
+      let(:round_trip) { true }
+
+      around do |example|
+        adapter = Mml::V4::Configuration.adapter
+        Mml::V4::Configuration.adapter = adapter_name
+        example.run
+      ensure
+        Mml::V4::Configuration.adapter = adapter
+      end
+
+      context "contains generated AsciiMath expressions" do
+        it "round-trips pretty-printed MathML" do
+          expressions = [
+            "y^2",
+            "y^2 = x^3",
+            "y^2 = x^3 + ax + b",
+            "x^3 + b",
+            "x^2 + y^2 + z^2",
+            "x_1",
+            "x_1 + y",
+            "x_1^2 + y",
+            "a + b + c + d",
+            "a/b + c",
+            "sqrt(x) + y",
+            "frac(a+b)(c+d) + sqrt(x^2 + y^2)",
+            "root(3)(x^2 + y^2)",
+            "sum_(k=0)^m a_k + prod_(j=1)^n b_j",
+            "sum_(i=1)^n i^3=((n(n+1))/2)^2",
+          ]
+
+          aggregate_failures do
+            expressions.each do |expression|
+              mathml = Plurimath::Math.parse(expression, "asciimath").to_mathml
+              round_tripped = Plurimath::Math.parse(mathml, "mathml").to_mathml
+
+              expect(round_tripped).to be_xml_equivalent_to(mathml)
+            end
+          end
+        end
+      end
+
+      context "contains mrow tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mrow>
+                <mi>x</mi>
+                <mo>+</mo>
+                <mi>y</mi>
+              </mrow>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "x + y" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains msup tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <msup>
+                <mi>x</mi>
+                <mn>2</mn>
+              </msup>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "x^(2)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains msub tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <msub>
+                <mi>x</mi>
+                <mn>1</mn>
+              </msub>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "x_(1)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains msubsup tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <msubsup>
+                <mi>x</mi>
+                <mn>1</mn>
+                <mn>2</mn>
+              </msubsup>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "x_(1)^(2)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mfrac tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mfrac>
+                <mrow>
+                  <mi>a</mi>
+                  <mo>+</mo>
+                  <mi>b</mi>
+                </mrow>
+                <mrow>
+                  <mi>c</mi>
+                  <mo>+</mo>
+                  <mi>d</mi>
+                </mrow>
+              </mfrac>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "frac(a + b)(c + d)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mfrac tag with alignment markers Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mfrac>
+                <maligngroup/>
+                <mi>a</mi>
+                <malignmark edge="right"/>
+                <mi>b</mi>
+              </mfrac>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "frac(a)(b)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains msqrt tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <msqrt>
+                <msup>
+                  <mi>x</mi>
+                  <mn>2</mn>
+                </msup>
+                <mo>+</mo>
+                <msup>
+                  <mi>y</mi>
+                  <mn>2</mn>
+                </msup>
+              </msqrt>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "sqrt(x^(2) + y^(2))" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mroot tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mroot>
+                <mrow>
+                  <mi>x</mi>
+                  <mo>+</mo>
+                  <mi>y</mi>
+                </mrow>
+                <mn>3</mn>
+              </mroot>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "root(3)(x + y)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mover tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mover accent="true">
+                <mi>x</mi>
+                <mo>^</mo>
+              </mover>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "hat(x)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains munder tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <munder accentunder="true">
+                <mo>&#x2211;</mo>
+                <mi>i</mi>
+              </munder>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "sum_(i)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains munderover tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <munderover>
+                <mo>&#x2211;</mo>
+                <mi>i</mi>
+                <mi>n</mi>
+              </munderover>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "sum_(i)^(n)" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mfenced tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mfenced open="[" close="]" separators=",">
+                <mi>x</mi>
+                <mi>y</mi>
+              </mfenced>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "[x y]" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mphantom tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mphantom>
+                <mi>x</mi>
+              </mphantom>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "\\ " }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains menclose tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <menclose notation="box">
+                <mi>x</mi>
+              </menclose>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "x" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains merror tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <merror>
+                <mtext>Error</mtext>
+              </merror>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mpadded tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mpadded height="1em" depth="0em" width="2em">
+                <mi>x</mi>
+              </mpadded>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "x" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mtable tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mtable>
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>2</mn>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mn>3</mn>
+                  </mtd>
+                  <mtd>
+                    <mn>4</mn>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "[[1, 2], [3, 4]]" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains semantics tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <semantics>
+                <mrow>
+                  <mi>x</mi>
+                  <mo>+</mo>
+                  <mi>y</mi>
+                </mrow>
+                <annotation encoding="application/x-tex">x + y</annotation>
+              </semantics>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "x + y" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mstack tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mstack>
+                <mn>12</mn>
+                <mn>34</mn>
+              </mstack>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "stackrel(12 34)()" }
+        let(:round_trip) { false }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains mscarries tag Mathml" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mscarries>
+                <mn>1</mn>
+              </mscarries>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { "1" }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+    end
+
+    %i[ox oga nokogiri].each do |adapter_name|
+      context "with #{adapter_name} adapter" do
+        it_behaves_like "pretty MathML round-tripping", adapter_name
+      end
+    end
+  end
+
   describe ".to_asciimath .to_latex .to_mathml" do
     subject(:formula) { described_class.new(string).to_formula }
 
