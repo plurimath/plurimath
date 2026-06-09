@@ -35,7 +35,7 @@ module Plurimath
       # before building the Plurimath AST.
       def content_children(node)
         ordered_children(node).reject do |child|
-          child.is_a?(Mml::V4::Malignmark) || child.is_a?(Mml::V4::Maligngroup)
+          child.is_a?(Mml::Base::Malignmark) || child.is_a?(Mml::Base::Maligngroup)
         end
       end
 
@@ -70,11 +70,11 @@ module Plurimath
       end
 
       def ms_token_element?(node)
-        node.is_a?(Mml::V4::Mi) ||
-          node.is_a?(Mml::V4::Mn) ||
-          node.is_a?(Mml::V4::Mo) ||
-          node.is_a?(Mml::V4::Ms) ||
-          node.is_a?(Mml::V4::Mtext)
+        node.is_a?(Mml::Base::Mi) ||
+          node.is_a?(Mml::Base::Mn) ||
+          node.is_a?(Mml::Base::Mo) ||
+          node.is_a?(Mml::Base::Ms) ||
+          node.is_a?(Mml::Base::Mtext)
       end
 
       def normalize_phantom_child(child)
