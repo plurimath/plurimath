@@ -474,7 +474,26 @@ RSpec.describe Plurimath::Mathml do
         end
 
         let(:asciimath) { "stackrel(12 34)()" }
+        # Round-trip disabled: mstack output MathML structure differs from input
         let(:round_trip) { false }
+
+        it_behaves_like "pretty MathML operand order"
+      end
+
+      context "contains pretty-printed MathML with significant whitespace between elements" do
+        let(:string) do
+          <<~MATHML
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+              <mrow>
+                <mi> x </mi>
+                <mo> + </mo>
+                <mi> y </mi>
+              </mrow>
+            </math>
+          MATHML
+        end
+
+        let(:asciimath) { " x  +  y " }
 
         it_behaves_like "pretty MathML operand order"
       end
