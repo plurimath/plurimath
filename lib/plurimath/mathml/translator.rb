@@ -474,8 +474,6 @@ module Plurimath
       def msgroup_to_msgroup(sgroup)
         content = ordered_children(sgroup).filter_map do |child|
           if child.is_a?(String)
-            next if child.strip.empty?
-
             Plurimath::Math::Function::Text.new(child)
           else
             mml_to_plurimath(child)
