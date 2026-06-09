@@ -2,21 +2,30 @@
 
 module Plurimath
   module Deprecation
-    BEHAVIORS = %i[warn raise silence].freeze
-    DEFAULT_BEHAVIOR = :warn
+    BEHAVIORS = %i[collect raise silence].freeze
+    DEFAULT_BEHAVIOR = :collect
 
     class << self
       def warn(feature:, message: nil, replacement: nil, since: nil, remove_in: nil)
         feature = validate_feature(feature)
-        return if behavior == :warn && emitted_features[feature]
+        return if behavior == :collect && emitted_features[feature]
 
-        emit(
+        notice = build_notice(
           feature: feature,
           message: message,
           replacement: replacement,
           since: since,
           remove_in: remove_in,
         )
+
+        case behavior
+        when :silence
+          nil
+        when :raise
+          raise notice
+        when :collect
+          emitted_features[feature] = notice
+        end
       end
 
       def behavior
@@ -27,31 +36,24 @@ module Plurimath
         @behavior = validate_behavior(behavior)
       end
 
+      def notices
+        emitted_features.values
+      end
+
+      def clear!
+        @emitted_features = {}
+      end
+
       private
 
-      def emit(feature:, message:, replacement:, since:, remove_in:)
-        case behavior
-        when :silence
-          nil
-        when :raise
-          raise DeprecationError.new(
-            feature: feature,
-            message: message,
-            replacement: replacement,
-            since: since,
-            remove_in: remove_in,
-          )
-        when :warn
-          error = DeprecationError.new(
-            feature: feature,
-            message: message,
-            replacement: replacement,
-            since: since,
-            remove_in: remove_in,
-          )
-          Kernel.warn(error.message)
-          emitted_features[feature] = true
-        end
+      def build_notice(feature:, message:, replacement:, since:, remove_in:)
+        DeprecationError.new(
+          feature: feature,
+          message: message,
+          replacement: replacement,
+          since: since,
+          remove_in: remove_in,
+        )
       end
 
       def emitted_features
