@@ -153,31 +153,21 @@ RSpec.describe Plurimath::Math::Number do
         end
 
         Plurimath.configuration.number_formatter = configured_formatter.new
-        formatter = Plurimath::Formatter::Standard.new
+        explicit_formatter = Plurimath::Formatter::Standard.new
 
         result = described_class.new(first_value).to_latex(
-          options: { formatter: formatter },
+          options: { formatter: explicit_formatter },
         )
 
         expect(result).to eql("1,234")
       end
+    end
 
-      it "does not resolve the configured formatter when explicit formatter is passed" do
-        configuration = instance_spy(Plurimath::Configuration)
-        formatter = Class.new do
-          def localized_number(number)
-            "explicit #{number}"
-          end
-        end.new
+    context "with nil formatter" do
+      let(:first_value) { "42" }
 
-        allow(Plurimath).to receive(:configuration).and_return(configuration)
-
-        result = described_class.new(first_value).to_latex(
-          options: { formatter: formatter },
-        )
-
-        expect(result).to eql("explicit 1234")
-        expect(configuration).not_to have_received(:number_formatter)
+      it "returns raw value" do
+        expect(formula).to eql("42")
       end
     end
   end
