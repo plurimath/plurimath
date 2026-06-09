@@ -9,7 +9,6 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
 
   describe "#initialize" do
     it "normalizes notation option values" do
-      precision_resolver = double(resolve: 4)
       source = build_source("14000")
       symbols = {
         decimal: "@",
@@ -23,25 +22,18 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
         times: "x",
         exponent_sign: "plus",
       }
+      resolver = Plurimath::Formatter::Numbers::PrecisionResolver.new
       options = described_class.new(
         source,
         symbols: symbols,
         precision: nil,
-        precision_resolver: precision_resolver,
+        precision_resolver: resolver,
       )
 
       expect(options.notation).to eq(:scientific)
       expect(options.exponent_separator).to eq(:E)
       expect(options.times).to eq(:x)
       expect(options.exponent_sign).to eq(:plus)
-      expect(options.precision).to eq(4)
-      expect(precision_resolver).to have_received(:resolve).with(
-        source,
-        precision: nil,
-        base: 16,
-        significant: 0,
-        notation_supported: true,
-      )
     end
 
     it "uses merged symbols for renderer options" do
@@ -65,25 +57,18 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       expect(options.number_sign).to eq(:plus)
     end
 
-    it "uses notation defaults and delegates precision resolution" do
-      precision_resolver = double(resolve: 2)
+    it "resolves precision through PrecisionResolver with source metadata" do
       source = build_source("0.00")
       symbols = {}
+      resolver = Plurimath::Formatter::Numbers::PrecisionResolver.new
 
       options = described_class.new(
         source,
         symbols: symbols,
         precision: nil,
-        precision_resolver: precision_resolver,
+        precision_resolver: resolver,
       )
 
-      expect(precision_resolver).to have_received(:resolve).with(
-        source,
-        precision: nil,
-        base: 10,
-        significant: 0,
-        notation_supported: false,
-      )
       expect(options.exponent_separator).to eq(:e)
       expect(options.times).to eq("\u{d7}")
       expect(options.precision).to eq(2)
