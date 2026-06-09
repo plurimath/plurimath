@@ -9,6 +9,7 @@ module Plurimath
         fraction_group: "'",
         number_sign: nil,
         notation: :basic,
+        padding: "0",
         group_digits: 3,
         significant: 0,
         digit_count: 0,
@@ -47,6 +48,7 @@ module Plurimath
           fraction_group
           exponent_sign
           group_digits
+          padding
           number_sign
           significant
           notation

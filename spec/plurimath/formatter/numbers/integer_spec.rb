@@ -49,6 +49,16 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
         expect(formatter.separator).to eq(":")
       end
     end
+
+    context "with integer padding" do
+      let(:symbols) { { padding: " ", padding_digits: 6 } }
+
+      it "sets padding options" do
+        expect(formatter.padding).to eq(" ")
+        expect(formatter.padding_digits).to eq(6)
+        expect(formatter.padding_group_digits).to eq(0)
+      end
+    end
   end
 
   describe "#apply" do
@@ -228,6 +238,80 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "returns empty string" do
         result = formatter.format_groups("")
         expect(result).to eq("")
+      end
+    end
+
+    context "with explicit padding digits" do
+      let(:symbols) { { group_digits: 3, group: " ", padding_digits: 6 } }
+
+      it "pads before applying integer grouping" do
+        result = formatter.format_groups("32")
+
+        expect(result).to eq("000 032")
+      end
+    end
+
+    context "with custom padding" do
+      let(:symbols) { { group_digits: 10, padding_digits: 6, padding: " " } }
+
+      it "uses the configured padding character" do
+        result = formatter.format_groups("32")
+
+        expect(result).to eq("    32")
+      end
+    end
+
+    context "with padding group digits" do
+      let(:symbols) { { group_digits: 10, padding_group_digits: 4 } }
+
+      it "pads to the next configured multiple" do
+        result = formatter.format_groups("32123")
+
+        expect(result).to eq("00032123")
+      end
+
+      it "keeps strings that already match the configured multiple" do
+        result = formatter.format_groups("1234")
+
+        expect(result).to eq("1234")
+      end
+    end
+
+    context "with fixed-width padding that is not needed" do
+      let(:symbols) { { group_digits: 10, padding_digits: 3 } }
+
+      it "keeps wider integer strings unchanged" do
+        result = formatter.format_groups("12345")
+
+        expect(result).to eq("12345")
+      end
+    end
+
+    context "with zero and padding group digits" do
+      let(:symbols) { { group_digits: 10, padding_group_digits: 4 } }
+
+      it "pads zero to the configured multiple" do
+        result = formatter.format_groups("0")
+
+        expect(result).to eq("0000")
+      end
+    end
+
+    context "with numbers-only hex capitalization and custom padding" do
+      let(:symbols) do
+        {
+          base: 16,
+          group_digits: 10,
+          hex_capital: :numbers_only,
+          padding: "f",
+          padding_digits: 5,
+        }
+      end
+
+      it "does not uppercase the custom padding character" do
+        result = formatter.format_groups("beef")
+
+        expect(result).to eq("fBEEF")
       end
     end
   end

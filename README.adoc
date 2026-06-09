@@ -659,6 +659,44 @@ controls the rendered output base.
 "10" with `base: 2, number_sign: :plus, group_digits: 2, group: ","` => "+0b10,10"
 ====
 
+`padding`:: (`String` value)
+Character to use when padding the integer portion. Defaults to `0`.
++
+.Using spaces as integer padding
+[example]
+====
+"32" with `padding_digits: 6, padding: " ", group: ""` => "    32"
+====
+
+`padding_digits`:: (`Numeric` value)
+Minimum number of integer digits to render. Missing integer digits are inserted
+before grouping using the configured `padding` character. Do not use it together
+with `padding_group_digits`.
++
+Padding is applied before integer grouping, so padding characters are grouped
+with the rest of the integer digits.
++
+.Padding to a fixed integer width
+[example]
+====
+"32"    with `padding_digits: 6, group: ""` => "000032"
+"32123" with `padding_digits: 6, group: ""` => "032123"
+"32"    with `padding_digits: 6, group_digits: 3, group: " "` => "000 032"
+====
+
+`padding_group_digits`:: (`Numeric` value)
+Pads the integer portion to the lowest multiple of the configured digit count.
+Missing integer digits are inserted before grouping using the configured
+`padding` character. Do not use it together with `padding_digits`.
++
+.Padding to an integer width multiple
+[example]
+====
+"32"    with `padding_group_digits: 4, group: ""` => "0032"
+"32123" with `padding_group_digits: 4, group: ""` => "00032123"
+====
+====
+
 `base`:: (`Numeric` value)
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Supported values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
@@ -737,7 +775,10 @@ as decimal `0.75` for the fractional part) and converts that real value to the r
 ===== Base conversion with other formatting options
 
 Base conversion works seamlessly with other formatting options such as `precision`, `digit_count`,
-`fraction_group`, `fraction_group_digits`, and `significant`.
+`fraction_group`, `fraction_group_digits`, `significant`, and integer padding.
++
+Integer padding is applied after `digit_count` rounding, so padding can add
+integer digits after the total visible-digit budget has been resolved.
 
 .Base conversion with precision
 [example]
@@ -1661,6 +1702,18 @@ follows.
 |`group_digits`
 |The number of digits in each group of the integer part
 |`3`
+
+|`padding`
+|The character used to pad the integer part
+|`"0"`
+
+|`padding_digits`
+|The minimum number of integer digits to display
+|`0`
+
+|`padding_group_digits`
+|The multiple of integer digits to pad to
+|`0`
 
 |`significant`
 |The number of significant digits to display

@@ -10,6 +10,7 @@ module Plurimath
         DEFAULT_FRACTION_PRECISION = 3
         DEFAULT_GROUP = ","
         DEFAULT_GROUP_DIGITS = 3
+        DEFAULT_PADDING = "0"
         DEFAULT_TIMES = "\u{d7}"
 
         attr_reader :exponent_separator, :exponent_sign, :notation, :symbols,
@@ -27,6 +28,7 @@ module Plurimath
           @times = symbol_option(:times) || DEFAULT_TIMES
           @precision = resolve_precision(source, precision, precision_resolver)
           @exponent_sign = symbol_option(:exponent_sign)
+          validate_padding_options!
         end
 
         def base
@@ -81,6 +83,19 @@ module Plurimath
           symbols[:number_sign]
         end
 
+        def padding
+          value = symbols.fetch(:padding, DEFAULT_PADDING).to_s
+          value.empty? ? DEFAULT_PADDING : value[0]
+        end
+
+        def padding_digits
+          symbols[:padding_digits].to_i
+        end
+
+        def padding_group_digits
+          symbols[:padding_group_digits].to_i
+        end
+
         def notation_supported?
           NotationRenderer.supported?(notation)
         end
@@ -110,6 +125,15 @@ module Plurimath
 
         def symbol_option(key)
           symbols[key]&.to_sym
+        end
+
+        def validate_padding_options!
+          return unless symbols.key?(:padding_digits) && symbols.key?(:padding_group_digits)
+
+          raise Plurimath::ConfigurationError.new(
+            :conflicting_formatter_options,
+            supported: %i[padding_digits padding_group_digits],
+          )
         end
       end
     end
