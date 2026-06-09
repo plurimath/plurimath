@@ -1299,23 +1299,34 @@ the configured default formatter.
 
 Plurimath exposes deprecation behavior through the shared configuration object.
 The current number formatter arguments documented above remain supported; this
-setting controls how Plurimath emits deprecation notices when a deprecated
+setting controls how Plurimath handles deprecation notices when a deprecated
 feature is used.
 
 [source,ruby]
 ----
 Plurimath.configure do |config|
-  config.deprecation.behavior = :warn
+  config.deprecation.behavior = :collect
+end
+
+# Retrieve collected notices after parsing
+Plurimath::Deprecation.notices.each do |notice|
+  puts notice.to_s  # => "[plurimath][DEPRECATION] ..."
+  puts notice.severity  # => :warning
+  puts notice.feature   # => "feature_name"
 end
 ----
 
 Supported behaviors are:
 
-`warn`:: Default behavior. Emits one warning per deprecated feature.
+`collect`:: Default behavior. Collects deprecation notices in
+`Plurimath::Deprecation.notices` for the caller to retrieve. Each notice is a
+`Plurimath::DeprecationError` with `severity`, `feature`, `replacement`,
+`since`, `remove_in`, and `to_s`.
 
-`raise`:: Raises `Plurimath::DeprecationError` instead of warning.
+`raise`:: Raises `Plurimath::DeprecationError` immediately when a deprecated
+feature is used.
 
-`silence`:: Suppresses deprecation warnings.
+`silence`:: Suppresses deprecation notices entirely.
 
 
 ==== Defining a number formatter
