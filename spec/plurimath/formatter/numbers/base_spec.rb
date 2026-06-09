@@ -3,7 +3,8 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Formatter::Numbers::Base do
-  let(:base) { described_class.new(symbols) }
+  let(:base) { described_class.new(options) }
+  let(:options) { Plurimath::Formatter::Numbers::FormatOptions.new(symbols: symbols) }
   let(:symbols) { {} }
 
   describe "#initialize" do
@@ -14,8 +15,9 @@ RSpec.describe Plurimath::Formatter::Numbers::Base do
         expect(base.base).to eq(10)
       end
 
-      it "stores symbols" do
-        expect(base.symbols).to eq({})
+      it "stores options" do
+        expect(base.options).to be_a(Plurimath::Formatter::Numbers::FormatOptions)
+        expect(base.options.to_h).to eq({})
       end
     end
 

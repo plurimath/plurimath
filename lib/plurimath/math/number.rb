@@ -98,7 +98,9 @@ module Plurimath
         end
         return value unless formatter
 
-        if formatter.respond_to?(:format)
+        if formatter.respond_to?(:format_number)
+          formatter.format_number(options[:formula], self)
+        elsif formatter.respond_to?(:format)
           formatter.format(options[:formula], self)
         elsif formatter.respond_to?(:localized_number)
           formatter.localized_number(value.to_s)

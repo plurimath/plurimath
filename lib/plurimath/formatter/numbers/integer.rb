@@ -3,15 +3,14 @@
 module Plurimath
   module Formatter
     module Numbers
+      # Converts integer digits to the target base and applies integer grouping.
       class Integer < Base
         attr_reader :separator, :groups
 
-        DEFAULT_SEPARATOR = ","
-
-        def initialize(symbols = {})
+        def initialize(options)
           super
-          @groups    = symbols[:group_digits] || 3
-          @separator = symbols[:group] || DEFAULT_SEPARATOR
+          @groups = self.options.group_digits
+          @separator = self.options.group
         end
 
         def apply(number)
@@ -19,6 +18,7 @@ module Plurimath
         end
 
         def format_groups(string)
+          string = capitalize_hex_digits(string)
           tokens = []
 
           until string.empty?
