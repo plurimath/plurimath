@@ -29,6 +29,23 @@ RSpec.describe Plurimath::Math::Number do
     end
   end
 
+  describe "nil formatter handling" do
+    subject(:number) { described_class.new("42") }
+    let(:nil_options) { { formatter: nil } }
+
+    it "returns value from to_latex" do
+      expect(number.to_latex(options: nil_options)).to eq("42")
+    end
+
+    it "returns value from to_html" do
+      expect(number.to_html(options: nil_options)).to eq("42")
+    end
+
+    it "returns value from to_unicodemath" do
+      expect(number.to_unicodemath(options: nil_options)).to eq("42")
+    end
+  end
+
   describe ".==" do
     subject(:number) { described_class.new(value) }
 
