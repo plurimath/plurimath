@@ -229,6 +229,15 @@ RSpec.describe Plurimath::Math::Function::Lim do
       described_class.new(first_value, second_value).to_html(options: {})
     end
 
+    context "contains no values" do
+      let(:first_value) { nil }
+      let(:second_value) { nil }
+
+      it "returns html string" do
+        expect(formula).to eql("<i>lim</i>")
+      end
+    end
+
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
       let(:second_value) do
@@ -241,7 +250,7 @@ RSpec.describe Plurimath::Math::Function::Lim do
       end
 
       it "returns html string" do
-        expect(formula).to eql("<i>n</i><i><i>&prod;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to eql("<i>lim</i><i>n</i><i><i>&prod;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
 
@@ -250,7 +259,7 @@ RSpec.describe Plurimath::Math::Function::Lim do
       let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
       it "returns html string" do
-        expect(formula).to eql("<i>70</i><i>n</i>")
+        expect(formula).to eql("<i>lim</i><i>70</i><i>n</i>")
       end
     end
 
@@ -273,7 +282,7 @@ RSpec.describe Plurimath::Math::Function::Lim do
       end
 
       it "returns html string" do
-        expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i><i><i>&prod;</i><sub>&</sub><sup>so</sup></i>")
+        expect(formula).to eql("<i>lim</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i><i><i>&prod;</i><sub>&</sub><sup>so</sup></i>")
       end
     end
   end

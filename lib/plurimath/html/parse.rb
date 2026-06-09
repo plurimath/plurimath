@@ -6,11 +6,12 @@ module Plurimath
       rule(:space)   { match["\s"].repeat(1) }
       rule(:unary)   { array_to_expression(Constants::UNARY_CLASSES, :unary) }
       rule(:binary)  { str("lim").as(:binary) }
+      rule(:linebreak) { parse_void_tag("br").as(:linebreak) }
       rule(:sub_tag) { parse_sub_sup_tags("sub") }
       rule(:sup_tag) { parse_sub_sup_tags("sup") }
 
       rule(:mod) do
-        (parse_tag(:open) >> str("mod").as(:binary) >> parse_tag(:close)) |
+        wrapped_tag(str("mod").as(:binary)) |
           str("mod").as(:binary)
       end
 
@@ -27,12 +28,12 @@ module Plurimath
       end
 
       rule(:open_paren) do
-        (parse_tag(:open) >> lparen >> parse_tag(:close)) |
+        wrapped_tag(lparen) |
           lparen
       end
 
       rule(:close_paren) do
-        (parse_tag(:open) >> rparen >> parse_tag(:close)) |
+        wrapped_tag(rparen) |
           rparen
       end
 
@@ -57,12 +58,12 @@ module Plurimath
       end
 
       rule(:unary_functions) do
-        (parse_tag(:open) >> unary >> parse_tag(:close)) |
+        wrapped_tag(unary) |
           unary
       end
 
       rule(:binary_functions) do
-        (parse_tag(:open) >> binary >> parse_tag(:close)) |
+        wrapped_tag(binary) |
           binary
       end
 
@@ -73,11 +74,11 @@ module Plurimath
 
       rule(:symbol_text_or_tag) do
         tag_parse |
-          (str("&") >> match["a-zA-Z0-9"].repeat(2) >> str(";")).as(:symbol) |
+          html_entity.as(:symbol) |
           (match["0-9"].repeat(1) >> str(".") >> match["0-9"].repeat(1)).as(:number) |
           match["0-9"].repeat(1).as(:number) |
           match["a-zA-Z"].as(:text) |
-          match["^0-9a-zA-Z<>/(){}\\[\\]\s"].as(:symbol)
+          match["^0-9a-zA-Z<>(){}\\[\\]\s"].as(:symbol)
       end
 
       rule(:intermediate_exp) do
@@ -85,6 +86,7 @@ module Plurimath
           (symbol_text_or_tag.as(:sub_sup) >> sub_sup_tags) |
           sub_sup |
           parse_classes |
+          linebreak |
           symbol_text_or_tag |
           space
       end
@@ -109,8 +111,9 @@ module Plurimath
       rule(:tag_parse) do
         parse_sub_sup_tags("table") |
           parse_sub_sup_tags("tr") |
-          parse_sub_sup_tags("td") |
-          (parse_tag(:open) >> sequence.as(:sequence) >> parse_tag(:close))
+          # Formula has no header-cell node; HTML <th> is parsed as Td.
+          parse_sub_sup_tags(%w[td th], "td") |
+          wrapped_tag(sequence.as(:sequence))
       end
 
       rule(:expression) do
@@ -136,15 +139,71 @@ module Plurimath
         str(string).as(name)
       end
 
-      def parse_tag(opts)
+      def parse_tag(opts, tag_name = nil, capture_name: nil)
         tag = str("<")
         tag = tag >> str("/") if opts == :close
-        tag = tag >> match(/\w+/).repeat
+        name_expression = html_tag_name(tag_name)
+        name_expression = name_expression.capture(capture_name) if capture_name
+        tag = tag >> name_expression
+        tag = tag >> tag_attributes if opts == :open
         tag >> str(">")
       end
 
-      def parse_sub_sup_tags(tag)
-        str("<#{tag}>") >> sequence.as(:"#{tag}_value") >> str("</#{tag}>")
+      def parse_void_tag(tag_name)
+        str("<") >> html_tag_name(tag_name) >> tag_attributes >> str(">")
+      end
+
+      def html_entity
+        (str("&#x") >> match["0-9a-fA-F"].repeat(1) >> str(";")) |
+          (str("&#") >> match["0-9"].repeat(1) >> str(";")) |
+          (str("&") >> match["a-zA-Z"] >> match["a-zA-Z0-9"].repeat >> str(";"))
+      end
+
+      def parse_sub_sup_tags(tag_names, transform_name = tag_names)
+        Array(tag_names).map do |tag_name|
+          parse_tag(:open, tag_name) >>
+            sequence.as(:"#{transform_name}_value") >>
+            parse_tag(:close, tag_name)
+        end.reduce(:|)
+      end
+
+      def wrapped_tag(expression)
+        scope do
+          parse_tag(:open, capture_name: :html_tag_name) >>
+            expression >>
+            matching_close_tag
+        end
+      end
+
+      def matching_close_tag
+        dynamic do |_source, context|
+          parse_tag(:close, context.captures[:html_tag_name].to_s)
+        end
+      end
+
+      def html_tag_name(tag_name)
+        return match["a-zA-Z"] >> match["a-zA-Z0-9:._-"].repeat unless tag_name
+
+        case_insensitive_string(tag_name) >> tag_name_boundary
+      end
+
+      def tag_name_boundary
+        match["\\s/>"].present?
+      end
+
+      def tag_attributes
+        (quoted_attribute_value | match["^<>"]).repeat
+      end
+
+      def quoted_attribute_value
+        (str('"') >> match['^"'].repeat >> str('"')) |
+          (str("'") >> match["^'"].repeat >> str("'"))
+      end
+
+      def case_insensitive_string(value)
+        value.chars
+          .map { |char| char.match?(/[A-Za-z]/) ? match["#{char.downcase}#{char.upcase}"] : str(char) }
+          .reduce(:>>)
       end
     end
   end

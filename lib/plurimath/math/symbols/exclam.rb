@@ -10,7 +10,7 @@ module Plurimath
           mathml: ["&#x21;"],
           latex: [["exclam", "!", "&#x21;"]],
           omml: ["&#x21;"],
-          html: ["&#x21;"],
+          html: ["&#x21;", "!"],
         }.freeze
 
         # output methods

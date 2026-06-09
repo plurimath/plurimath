@@ -38,6 +38,8 @@ module Plurimath
       SUB_SUP_CLASSES = {
         "&prod;": :prod,
         "&sum;": :sum,
+        "&#x220f;": :prod,
+        "&#x2211;": :sum,
         log: :log,
         lim: :lim,
         "∏": :prod,

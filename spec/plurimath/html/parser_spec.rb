@@ -3,8 +3,10 @@ require "spec_helper"
 RSpec.describe Plurimath::Html::Parser do
   describe ".parse" do
     subject(:formula) do
-      described_class.new(string.gsub(/\s/, "")).parse
+      described_class.new(parser_input).parse
     end
+
+    let(:parser_input) { string.gsub(/\s/, "") }
 
     context "basic parse rules for single character tag" do
       let(:string) { "<i>&sum;</i>" }
@@ -212,7 +214,7 @@ RSpec.describe Plurimath::Html::Parser do
 
       it "returns abstract parsed tree" do
         expected_value = Plurimath::Math::Formula.new([
-                                                        Plurimath::Math::Symbols::Symbol.new("ϑ"),
+                                                        Plurimath::Math::Symbols::Vartheta.new,
                                                         Plurimath::Math::Formula.new([
                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
                                                                                        Plurimath::Math::Function::Text.new("t"),
@@ -355,7 +357,7 @@ RSpec.describe Plurimath::Html::Parser do
                                                         Plurimath::Math::Function::Power.new(
                                                           Plurimath::Math::Function::Text.new("a"),
                                                           Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Symbols::Symbol.new("-"),
+                                                                                         Plurimath::Math::Symbols::Minus.new,
                                                                                          Plurimath::Math::Number.new("2"),
                                                                                        ]),
                                                         ),
@@ -372,7 +374,7 @@ RSpec.describe Plurimath::Html::Parser do
                                                         Plurimath::Math::Function::Base.new(
                                                           Plurimath::Math::Function::Text.new("a"),
                                                           Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Symbols::Symbol.new("-"),
+                                                                                         Plurimath::Math::Symbols::Minus.new,
                                                                                          Plurimath::Math::Number.new("2"),
                                                                                        ]),
                                                         ),
@@ -389,7 +391,7 @@ RSpec.describe Plurimath::Html::Parser do
                                                         Plurimath::Math::Function::Power.new(
                                                           Plurimath::Math::Function::Text.new("a"),
                                                           Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Symbols::Symbol.new("-"),
+                                                                                         Plurimath::Math::Symbols::Minus.new,
                                                                                          Plurimath::Math::Function::Text.new("n"),
                                                                                        ]),
                                                         ),
@@ -406,7 +408,7 @@ RSpec.describe Plurimath::Html::Parser do
                                                         Plurimath::Math::Function::Base.new(
                                                           Plurimath::Math::Function::Text.new("a"),
                                                           Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Symbols::Symbol.new("-"),
+                                                                                         Plurimath::Math::Symbols::Minus.new,
                                                                                          Plurimath::Math::Function::Text.new("n"),
                                                                                        ]),
                                                         ),
@@ -456,7 +458,7 @@ RSpec.describe Plurimath::Html::Parser do
     end
 
     context "contains HTML math example #20" do
-      let(:string) { "<i>f</i>(<i>x</x>)" }
+      let(:string) { "<i>f</i>(<i>x</i>)" }
 
       it "returns abstract parsed tree" do
         expected_value = Plurimath::Math::Formula.new([
@@ -472,7 +474,7 @@ RSpec.describe Plurimath::Html::Parser do
     end
 
     context "contains HTML math example #21" do
-      let(:string) { "<i>f</i>(<i>g</i>(<i>x</x>))" }
+      let(:string) { "<i>f</i>(<i>g</i>(<i>x</i>))" }
 
       it "returns abstract parsed tree" do
         expected_value = Plurimath::Math::Formula.new([
@@ -498,7 +500,7 @@ RSpec.describe Plurimath::Html::Parser do
       it "returns abstract parsed tree" do
         expected_value = Plurimath::Math::Formula.new([
                                                         Plurimath::Math::Function::Text.new("f"),
-                                                        Plurimath::Math::Symbols::Symbol.new("&sum;"),
+                                                        Plurimath::Math::Symbols::Sum.new,
                                                         Plurimath::Math::Formula.new([
                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
                                                                                        Plurimath::Math::Function::Text.new("n"),
@@ -557,7 +559,7 @@ RSpec.describe Plurimath::Html::Parser do
 
       it "returns abstract parsed tree" do
         expected_value = Plurimath::Math::Formula.new([
-                                                        Plurimath::Math::Symbols::Symbol.new("&omega;"),
+                                                        Plurimath::Math::Symbols::Omega.new,
                                                       ])
         expect(formula).to eq(expected_value)
       end
@@ -568,7 +570,7 @@ RSpec.describe Plurimath::Html::Parser do
 
       it "returns abstract parsed tree" do
         expected_value = Plurimath::Math::Formula.new([
-                                                        Plurimath::Math::Symbols::Symbol.new("&Omega;"),
+                                                        Plurimath::Math::Symbols::UpcaseOmega.new,
                                                       ])
         expect(formula).to eq(expected_value)
       end
@@ -579,9 +581,9 @@ RSpec.describe Plurimath::Html::Parser do
 
       it "returns abstract parsed tree" do
         expected_value = Plurimath::Math::Formula.new([
-                                                        Plurimath::Math::Symbols::Symbol.new("α"),
-                                                        Plurimath::Math::Symbols::Symbol.new("β"),
-                                                        Plurimath::Math::Symbols::Symbol.new("γ"),
+                                                        Plurimath::Math::Symbols::Alpha.new,
+                                                        Plurimath::Math::Symbols::Upbeta.new,
+                                                        Plurimath::Math::Symbols::Gamma.new,
                                                       ])
         expect(formula).to eq(expected_value)
       end
@@ -601,14 +603,14 @@ RSpec.describe Plurimath::Html::Parser do
     end
 
     context "contains HTML math example #29" do
-      let(:string) { "<i>f</i><sup>-1</sup>(<i>x</x>)" }
+      let(:string) { "<i>f</i><sup>-1</sup>(<i>x</i>)" }
 
       it "returns abstract parsed tree" do
         expected_value = Plurimath::Math::Formula.new([
                                                         Plurimath::Math::Function::Power.new(
                                                           Plurimath::Math::Function::Text.new("f"),
                                                           Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Symbols::Symbol.new("-"),
+                                                                                         Plurimath::Math::Symbols::Minus.new,
                                                                                          Plurimath::Math::Number.new("1"),
                                                                                        ]),
                                                         ),
@@ -1249,6 +1251,350 @@ RSpec.describe Plurimath::Html::Parser do
                                                           Plurimath::Math::Function::Text.new("d"),
                                                         ),
                                                         Plurimath::Math::Symbols::Paren::Rround.new,
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains fake HTML math operator entities" do
+      it "parses multiplication, division, and dot operators" do
+        operator_examples = [
+          [
+            "1 &times; 2",
+            Plurimath::Math::Symbols::Times.new,
+          ],
+          [
+            "1 × 2",
+            Plurimath::Math::Symbols::Times.new,
+          ],
+          [
+            "1 &sdot; 2",
+            Plurimath::Math::Symbols::Cdot.new,
+          ],
+          [
+            "1 ⋅ 2",
+            Plurimath::Math::Symbols::Cdot.new,
+          ],
+          [
+            "1 / 2",
+            Plurimath::Math::Symbols::Slash.new,
+          ],
+          [
+            "1 &divide; 2",
+            Plurimath::Math::Symbols::Div.new,
+          ],
+        ]
+
+        operator_examples.each do |input, operator|
+          parsed_formula = described_class.new(input).parse
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new("1"),
+                                                          operator,
+                                                          Plurimath::Math::Number.new("2"),
+                                                        ])
+          expect(parsed_formula).to eq(expected_value)
+        end
+      end
+
+      it "parses equation and inequality entities" do
+        operator_examples = [
+          [
+            "1 &lt; 2",
+            "1",
+            Plurimath::Math::Symbols::Less.new,
+          ],
+          [
+            "1 &le; 2",
+            "1",
+            Plurimath::Math::Symbols::Le.new,
+          ],
+          [
+            "3 &gt; 2",
+            "3",
+            Plurimath::Math::Symbols::Greater.new,
+          ],
+          [
+            "3 &ge; 2",
+            "3",
+            Plurimath::Math::Symbols::Ge.new,
+          ],
+          [
+            "1 &ne; 2",
+            "1",
+            Plurimath::Math::Symbols::Ne.new,
+          ],
+        ]
+
+        operator_examples.each do |input, first_value, operator|
+          parsed_formula = described_class.new(input).parse
+          expected_value = Plurimath::Math::Formula.new([
+                                                          Plurimath::Math::Number.new(first_value),
+                                                          operator,
+                                                          Plurimath::Math::Number.new("2"),
+                                                        ])
+          expect(parsed_formula).to eq(expected_value)
+        end
+      end
+
+      it "parses ASCII punctuation through symbol classes when available" do
+        operator_examples = [
+          [
+            "-123",
+            [
+              Plurimath::Math::Symbols::Minus.new,
+              Plurimath::Math::Number.new("123"),
+            ],
+          ],
+          [
+            "4!",
+            [
+              Plurimath::Math::Number.new("4"),
+              Plurimath::Math::Symbols::Exclam.new,
+            ],
+          ],
+          [
+            "30%",
+            [
+              Plurimath::Math::Number.new("30"),
+              Plurimath::Math::Symbols::Percent.new,
+            ],
+          ],
+        ]
+
+        operator_examples.each do |input, expected_symbols|
+          expect(described_class.new(input).parse).to eq(
+            Plurimath::Math::Formula.new(expected_symbols),
+          )
+        end
+      end
+    end
+
+    context "contains fake HTML math logic and quantified entities" do
+      it "parses logic operators" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Symbols::Lnot.new,
+                                                        Plurimath::Math::Function::Text.new("p"),
+                                                        Plurimath::Math::Symbols::Land.new,
+                                                        Plurimath::Math::Function::Text.new("q"),
+                                                        Plurimath::Math::Symbols::Lor.new,
+                                                        Plurimath::Math::Function::Text.new("r"),
+                                                      ])
+
+        expect(described_class.new("&not;<i>p</i>&and;<i>q</i>&or;<i>r</i>").parse).to eq(expected_value)
+      end
+
+      it "parses quantified and infinity entities" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Symbols::Aa.new,
+                                                        Plurimath::Math::Function::Text.new("x"),
+                                                        Plurimath::Math::Symbols::Ee.new,
+                                                        Plurimath::Math::Function::Text.new("y"),
+                                                        Plurimath::Math::Symbols::Oo.new,
+                                                      ])
+
+        expect(described_class.new("&forall;<i>x</i>&exist;<i>y</i>&infin;").parse).to eq(expected_value)
+      end
+    end
+
+    context "contains semantic HTML with attributes" do
+      let(:string) { '<span class="math"><var>x</var><sup>2</sup></span>' }
+      let(:parser_input) { string }
+
+      it "returns abstract parsed tree" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Power.new(
+                                                          Plurimath::Math::Function::Text.new("x"),
+                                                          Plurimath::Math::Number.new("2"),
+                                                        ),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains uppercase semantic tags" do
+      let(:string) { "<VAR>&#x2211;</VAR><SUB>i</SUB>" }
+
+      it "returns abstract parsed tree" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Sum.new(
+                                                          Plurimath::Math::Function::Text.new("i"),
+                                                        ),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains an HTML line break" do
+      let(:string) { "a<br/>b" }
+
+      it "returns abstract parsed tree" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Text.new("a"),
+                                                        Plurimath::Math::Function::Linebreak.new,
+                                                        Plurimath::Math::Function::Text.new("b"),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains table sections, header cells, and attributes" do
+      let(:string) { '<table class="matrix"><tbody><tr><th>x</th><td data-column="2">y</td></tr></tbody></table>' }
+      let(:parser_input) { string }
+
+      it "returns abstract parsed tree" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Table.new([
+                                                                                               Plurimath::Math::Function::Tr.new([
+                                                                                                                                   Plurimath::Math::Function::Td.new([
+                                                                                                                                                                       Plurimath::Math::Function::Text.new("x"),
+                                                                                                                                                                     ]),
+                                                                                                                                   Plurimath::Math::Function::Td.new([
+                                                                                                                                                                       Plurimath::Math::Function::Text.new("y"),
+                                                                                                                                                                     ]),
+                                                                                                                                 ]),
+                                                                                             ]),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains header cells without attributes" do
+      let(:string) { "<table><tr><th>x</th><td>y</td></tr></table>" }
+
+      it "aliases header cells to table cells" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Table.new([
+                                                                                               Plurimath::Math::Function::Tr.new([
+                                                                                                                                   Plurimath::Math::Function::Td.new([
+                                                                                                                                                                       Plurimath::Math::Function::Text.new("x"),
+                                                                                                                                                                     ]),
+                                                                                                                                   Plurimath::Math::Function::Td.new([
+                                                                                                                                                                       Plurimath::Math::Function::Text.new("y"),
+                                                                                                                                                                     ]),
+                                                                                                                                 ]),
+                                                                                             ]),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains custom wrapper elements" do
+      let(:string) { '<math-field data-input="html"><var>x</var><sup>2</sup></math-field>' }
+      let(:parser_input) { string }
+
+      it "treats custom elements as transparent HTML wrappers" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Power.new(
+                                                          Plurimath::Math::Function::Text.new("x"),
+                                                          Plurimath::Math::Number.new("2"),
+                                                        ),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains nested semantic wrappers with whitespace" do
+      let(:string) { '<section class="math"><p><em>a</em><sub>1</sub>+<strong>b</strong><sup>2</sup></p></section>' }
+      let(:parser_input) { string }
+
+      it "parses supported HTML wrappers and keeps math semantics" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Base.new(
+                                                          Plurimath::Math::Function::Text.new("a"),
+                                                          Plurimath::Math::Number.new("1"),
+                                                        ),
+                                                        Plurimath::Math::Symbols::Plus.new,
+                                                        Plurimath::Math::Function::Power.new(
+                                                          Plurimath::Math::Function::Text.new("b"),
+                                                          Plurimath::Math::Number.new("2"),
+                                                        ),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains HTML line break attributes" do
+      let(:string) { 'a<br class="line">b' }
+      let(:parser_input) { string }
+
+      it "parses the HTML line break" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Text.new("a"),
+                                                        Plurimath::Math::Function::Linebreak.new,
+                                                        Plurimath::Math::Function::Text.new("b"),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains a custom tag that starts with br" do
+      let(:string) { "<bravo>x</bravo>" }
+
+      it "treats it as a transparent HTML wrapper" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Text.new("x"),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains a self-closing custom tag that starts with br" do
+      let(:string) { "<bravo/>x" }
+
+      it "does not parse it as an HTML line break" do
+        expect { formula }.to raise_error(Parslet::ParseFailed)
+      end
+    end
+
+    context "contains a table cell tag that starts with td" do
+      let(:string) { "<table><tr><tdx>1</td></tr></table>" }
+
+      it "does not parse it as a table cell" do
+        expect { formula }.to raise_error(Parslet::ParseFailed)
+      end
+    end
+
+    context "contains a malformed unquoted attribute" do
+      let(:string) { "<span < bad>x</span>" }
+
+      it "does not accept the malformed HTML wrapper" do
+        expect { formula }.to raise_error(Parslet::ParseFailed)
+      end
+    end
+
+    context "contains a mismatched wrapper tag" do
+      let(:string) { "<i>x</x>" }
+
+      it "does not accept the HTML wrapper" do
+        expect { formula }.to raise_error(Parslet::ParseFailed)
+      end
+    end
+
+    context "contains a mismatched table cell tag" do
+      let(:string) { "<table><tr><td>x</th></tr></table>" }
+
+      it "does not accept the table structure" do
+        expect { formula }.to raise_error(Parslet::ParseFailed)
+      end
+    end
+
+    context "contains a math wrapper element" do
+      let(:string) { "<math><mi>x</mi></math>" }
+
+      it "treats it as a transparent HTML wrapper" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Text.new("x"),
+                                                      ])
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "contains a custom wrapper that starts with math" do
+      let(:string) { "<mathematics>x</mathematics>" }
+
+      it "treats it as a transparent HTML wrapper" do
+        expected_value = Plurimath::Math::Formula.new([
+                                                        Plurimath::Math::Function::Text.new("x"),
                                                       ])
         expect(formula).to eq(expected_value)
       end

@@ -3,7 +3,8 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Formatter::Numbers::Integer do
-  let(:formatter) { described_class.new(symbols) }
+  let(:formatter) { described_class.new(options) }
+  let(:options) { Plurimath::Formatter::Numbers::FormatOptions.new(symbols: symbols) }
   let(:symbols) { {} }
 
   describe "#initialize" do
@@ -165,6 +166,15 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "applies both base conversion and custom formatting" do
         result = formatter.apply("4095")
         expect(result).to eq("fff")
+      end
+    end
+
+    context "with numbers-only hex capitalization" do
+      let(:symbols) { { base: 16, group_digits: 2, group: "e", hex_capital: :numbers_only } }
+
+      it "capitalizes generated hex digits without changing separators" do
+        result = formatter.apply("48879")
+        expect(result).to eq("BEeEF")
       end
     end
   end

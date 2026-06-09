@@ -338,7 +338,7 @@ RSpec.describe Plurimath::Html::Parse do
     end
 
     context "contains HTML math example #20" do
-      let(:string) { "<i>f</i>(<i>x</x>)" }
+      let(:string) { "<i>f</i>(<i>x</i>)" }
 
       it "returns abstract parsed tree" do
         int_exp = formula[:parse_parenthesis]
@@ -351,7 +351,7 @@ RSpec.describe Plurimath::Html::Parse do
     end
 
     context "contains HTML math example #21" do
-      let(:string) { "<i>f</i>(<i>g</i>(<i>x</x>))" }
+      let(:string) { "<i>f</i>(<i>g</i>(<i>x</i>))" }
 
       it "returns abstract parsed tree" do
         first_value        = formula[:parse_parenthesis]
@@ -456,7 +456,7 @@ RSpec.describe Plurimath::Html::Parse do
     end
 
     context "contains HTML math example #29" do
-      let(:string) { "<i>f</i><sup>-1</sup>(<i>x</x>)" }
+      let(:string) { "<i>f</i><sup>-1</sup>(<i>x</i>)" }
 
       it "returns abstract parsed tree" do
         sup_value   = formula[:sup_value]

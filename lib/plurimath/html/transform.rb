@@ -5,15 +5,28 @@ module Plurimath
     class Transform < Parslet::Transform
       rule(text: simple(:text))      { Math::Function::Text.new(text) }
       rule(unary: simple(:unary))    { Utility.get_class(unary).new }
-      rule(symbol: simple(:symbol))  do
-        Utility.symbols_class(symbol, lang: :html)
-      end
-      rule(number: simple(:number))  { Math::Number.new(number) }
+      rule(symbol: simple(:symbol)) { TransformUtility.symbol(symbol) }
+      rule(number: simple(:number)) { Math::Number.new(number) }
+      rule(linebreak: simple(:_linebreak)) { Math::Function::Linebreak.new }
       rule(expression: simple(:exp)) { exp }
+
+      rule(linebreak: simple(:_linebreak),
+           expression: simple(:expr)) do
+        [
+          Math::Function::Linebreak.new,
+          expr,
+        ]
+      end
+
+      rule(linebreak: simple(:_linebreak),
+           expression: sequence(:expr)) do
+        [Math::Function::Linebreak.new] + expr
+      end
 
       rule(expression: sequence(:exp))    { exp }
       rule(sequence: simple(:sequence))   { sequence }
       rule(tr_value: simple(:tr_value))   { Math::Function::Tr.new([tr_value]) }
+      rule(tr_value: sequence(:tr_value)) { Math::Function::Tr.new(tr_value) }
       rule(td_value: simple(:td_value))   { Math::Function::Td.new([td_value]) }
       rule(sequence: sequence(:sequence)) { sequence }
       rule(td_value: sequence(:td_value)) { Math::Function::Td.new(td_value) }
@@ -71,6 +84,22 @@ module Plurimath
         )
       end
 
+      rule(td_value: simple(:td_value),
+           expression: simple(:expr)) do
+        [
+          Math::Function::Td.new([td_value]),
+          expr,
+        ]
+      end
+
+      rule(td_value: simple(:td_value),
+           expression: sequence(:expr)) do
+        expr.insert(
+          0,
+          Math::Function::Td.new([td_value]),
+        )
+      end
+
       rule(unary_function: simple(:unary_function),
            sequence: simple(:sequence)) do
         Math::Formula.new(
@@ -104,14 +133,14 @@ module Plurimath
       rule(symbol: simple(:symbol),
            expression: simple(:expr)) do
         [
-          Utility.symbols_class(symbol, lang: :html),
+          TransformUtility.symbol(symbol),
           expr,
         ]
       end
 
       rule(symbol: simple(:symbol),
            expression: sequence(:expr)) do
-        [Utility.symbols_class(symbol, lang: :html)] + expr
+        [TransformUtility.symbol(symbol)] + expr
       end
 
       rule(number: simple(:number),
@@ -145,135 +174,208 @@ module Plurimath
       rule(symbol: simple(:symbol),
            parse_parenthesis: simple(:parse_paren)) do
         [
-          Utility.symbols_class(symbol, lang: :html),
+          TransformUtility.symbol(symbol),
           parse_paren,
         ]
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: simple(:sub_value)) do
-        if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = sub_value
-          sub_sup
-        else
-          Math::Function::Base.new(
-            sub_sup,
-            sub_value,
-          )
-        end
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value)) do
-        if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = Utility.filter_values(sub_value)
-          sub_sup
-        else
-          Math::Function::Base.new(
-            sub_sup,
-            Utility.filter_values(sub_value),
-          )
-        end
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sup_value: simple(:sup_value)) do
-        if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_two = sup_value
-          sub_sup
-        else
-          Math::Function::Power.new(
-            sub_sup,
-            sup_value,
-          )
-        end
+        TransformUtility.sub_sup_value(sub_sup, sup_value: sup_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sup_value: sequence(:sup_value)) do
-        if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_two = Utility.filter_values(sup_value)
-          sub_sup
-        else
-          Math::Function::Power.new(
-            sub_sup,
-            Utility.filter_values(sup_value),
-          )
-        end
+        TransformUtility.sub_sup_value(sub_sup, sup_value: sup_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: simple(:sub_value),
            sup_value: simple(:sup_value)) do
-        if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = sub_value
-          sub_sup.parameter_two = sup_value
-          sub_sup
-        else
-          Math::Function::PowerBase.new(
-            sub_sup,
-            sub_value,
-            sup_value,
-          )
-        end
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: simple(:sub_value),
            sup_value: sequence(:sup_value)) do
-        if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = sub_value
-          sub_sup.parameter_two = Utility.filter_values(sup_value)
-          sub_sup
-        else
-          Math::Function::PowerBase.new(
-            sub_sup,
-            sub_value,
-            Utility.filter_values(sup_value),
-          )
-        end
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value),
            sup_value: simple(:sup_value)) do
-        if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = Utility.filter_values(sub_value)
-          sub_sup.parameter_two = sup_value
-          sub_sup
-        else
-          Math::Function::PowerBase.new(
-            sub_sup,
-            Utility.filter_values(sub_value),
-            sup_value,
-          )
-        end
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value),
            sup_value: sequence(:sup_value)) do
-        if Utility.sub_sup_method?(sub_sup)
-          sub_sup.parameter_one = Utility.filter_values(sub_value)
-          sub_sup.parameter_two = Utility.filter_values(sup_value)
-          sub_sup
-        else
-          Math::Function::PowerBase.new(
-            sub_sup,
-            Utility.filter_values(sub_value),
-            Utility.filter_values(sup_value),
-          )
-        end
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
+      end
+
+      # Parslet emits separate shapes for each sub/sup value combination and
+      # trailing expression form. Keep this cluster mechanical: build the
+      # sub/sup node, then append the remaining expression in input order.
+      rule(sub_sup: simple(:sub_sup),
+           sup_value: sequence(:sup_value),
+           expression: simple(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: simple(:sub_value),
+           expression: simple(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: simple(:sub_value),
+           expression: sequence(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: sequence(:sub_value),
+           expression: simple(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: sequence(:sub_value),
+           expression: sequence(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sup_value: simple(:sup_value),
+           expression: simple(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sup_value: simple(:sup_value),
+           expression: sequence(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sup_value: sup_value),
+          expression,
+        )
       end
 
       rule(sub_sup: simple(:sub_sup),
            sup_value: sequence(:sup_value),
-           expression: simple(:expression)) do
-        power = Math::Function::Power.new(
-          sub_sup,
-          Utility.filter_values(sup_value),
+           expression: sequence(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sup_value: sup_value),
+          expression,
         )
-        [power, expression]
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: simple(:sub_value),
+           sup_value: simple(:sup_value),
+           expression: simple(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: simple(:sub_value),
+           sup_value: simple(:sup_value),
+           expression: sequence(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: simple(:sub_value),
+           sup_value: sequence(:sup_value),
+           expression: simple(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: simple(:sub_value),
+           sup_value: sequence(:sup_value),
+           expression: sequence(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: sequence(:sub_value),
+           sup_value: simple(:sup_value),
+           expression: simple(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: sequence(:sub_value),
+           sup_value: simple(:sup_value),
+           expression: sequence(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: sequence(:sub_value),
+           sup_value: sequence(:sup_value),
+           expression: simple(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          expression,
+        )
+      end
+
+      rule(sub_sup: simple(:sub_sup),
+           sub_value: sequence(:sub_value),
+           sup_value: sequence(:sup_value),
+           expression: sequence(:expression)) do
+        TransformUtility.append_expression(
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          expression,
+        )
       end
 
       rule(lparen: simple(:lparen),

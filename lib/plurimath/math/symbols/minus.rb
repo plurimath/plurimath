@@ -10,7 +10,7 @@ module Plurimath
           mathml: ["&#x2212;", "-"],
           latex: [["minus", "-", "&#x2212;"]],
           omml: ["&#x2212;"],
-          html: ["&#x2212;"],
+          html: ["&#x2212;", "-"],
         }.freeze
 
         # output methods

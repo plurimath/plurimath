@@ -10,7 +10,7 @@ module Plurimath
           mathml: ["&#x25;"],
           latex: [["percent", "%", "&#x25;"]],
           omml: ["&#x25;"],
-          html: ["&#x25;"],
+          html: ["&#x25;", "%"],
         }.freeze
 
         # output methods
