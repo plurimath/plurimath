@@ -202,7 +202,7 @@ module Plurimath
             (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         else
           (first_value.as(:unary_class).as(:power_base) >> space? >> power_base).as(:unary) |
-          (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
+            (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         end
       end
 
