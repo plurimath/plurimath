@@ -319,7 +319,9 @@ Division uses `Float` arithmetic, and pole detection is exact: `cot(0)` raises
 a division-by-zero error, while `sec(pi/2)` returns a large finite number
 because the floating-point value of `pi/2` is not exactly the pole.
 
-Binding values must be real `Numeric` values.
+Binding values must be real `Numeric` values. `pi` is a reserved constant in
+every input syntax and always resolves to its numeric value; bindings such as
+`pi: 3` are ignored rather than overriding it.
 
 Missing variables raise
 `Plurimath::Math::Evaluation::MissingVariableError`. Binding values that are
