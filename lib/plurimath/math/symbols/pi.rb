@@ -37,6 +37,10 @@ module Plurimath
         def to_html(**)
           "&#x3C0;"
         end
+
+        def evaluate(_evaluator)
+          ::Math::PI
+        end
       end
     end
   end
