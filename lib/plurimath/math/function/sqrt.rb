@@ -42,6 +42,10 @@ module Plurimath
         def to_unicodemath(options:)
           "√#{unicodemath_parens(parameter_one, options: options)}"
         end
+
+        def evaluate(evaluator)
+          ::Math.sqrt(evaluator.evaluate_node(parameter_one))
+        end
       end
     end
   end
