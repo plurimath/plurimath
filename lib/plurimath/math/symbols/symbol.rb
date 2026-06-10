@@ -108,6 +108,13 @@ module Plurimath
           false
         end
 
+        def evaluate(evaluator)
+          name = value.to_s
+          evaluator.unsupported(self) if name.empty?
+
+          evaluator.value_for(name)
+        end
+
         def omml_nodes(_, options:)
           Array(t_tag(options: options))
         end

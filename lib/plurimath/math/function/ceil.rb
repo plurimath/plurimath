@@ -39,6 +39,10 @@ module Plurimath
           "#{first_value}#{parameter_one&.to_unicodemath(options: options)}#{second_value}"
         end
 
+        def evaluate(evaluator)
+          evaluator.evaluate_node(parameter_one).ceil
+        end
+
         def line_breaking(obj)
           parameter_one.line_breaking(obj)
           if obj.value_exist?

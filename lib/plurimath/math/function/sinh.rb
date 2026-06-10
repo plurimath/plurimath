@@ -7,6 +7,10 @@ module Plurimath
         def validate_function_formula
           false
         end
+
+        def evaluate(evaluator)
+          ::Math.sinh(evaluator.evaluate_node(parameter_one))
+        end
       end
     end
   end

@@ -54,6 +54,14 @@ module Plurimath
           object.left_right_wrapper == left_right_wrapper
       end
 
+      def evaluate(bindings = {}, **keyword_bindings)
+        unless bindings.respond_to?(:to_hash)
+          raise ArgumentError, "bindings must be a Hash-like object"
+        end
+
+        Evaluation::Evaluator.new(self, bindings.to_hash.merge(keyword_bindings)).evaluate
+      end
+
       def to_asciimath(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
         options[:formula] ||= self

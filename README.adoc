@@ -286,6 +286,54 @@ formula = Plurimath::Math.parse(omml, :omml)
 ----
 
 
+=== Evaluating formulas
+
+`Plurimath::Math::Formula#evaluate` computes numeric results from supported
+semantic formula trees.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("sqrt(a^2+b^2)", :asciimath)
+formula.evaluate(a: 3, b: 4)
+# => 5.0
+----
+
+Variable bindings can use string or symbol keys.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("a+b-c*d", :asciimath)
+formula.evaluate("a" => 10, b: 5, c: 2, d: 3)
+# => 9
+----
+
+Evaluation supports numeric literals, variables, addition, subtraction,
+multiplication, division, fractions, powers, grouping, square roots, `pi`,
+roots, absolute values, floor/ceiling, `sin`, `cos`, `tan`, inverse trig,
+reciprocal trig, hyperbolic trig, `ln`, and `exp`. Trigonometric functions use
+radians.
+
+Chained powers follow the parsed tree structure, so `2^3^2` evaluates as
+`(2^3)^2`; use explicit grouping such as `2^(3^2)` for right association.
+Division uses `Float` arithmetic, and pole detection is exact: `cot(0)` raises
+a division-by-zero error, while `sec(pi/2)` returns a large finite number
+because the floating-point value of `pi/2` is not exactly the pole.
+
+Binding values must be real `Numeric` values.
+
+Missing variables raise
+`Plurimath::Math::Evaluation::MissingVariableError`. Binding values that are
+not real numbers raise `Plurimath::Math::Evaluation::InvalidBindingError`.
+Division by zero raises `Plurimath::Math::Evaluation::DivisionByZeroError`.
+Math domain violations such as `ln(-1)`, including results that are not real
+numbers, raise `Plurimath::Math::Evaluation::MathDomainError`. Evaluations
+that do not produce a finite number, such as `ln(0)`, raise
+`Plurimath::Math::Evaluation::NonFiniteResultError`. Unsupported expressions,
+including equations that would require solving, raise
+`Plurimath::Math::Evaluation::UnsupportedExpressionError`. All evaluation
+errors subclass `Plurimath::Math::Evaluation::Error`.
+
+
 === Converting to other formats
 
 Once you have a `Plurimath::Math::Formula` object, you can convert it to
