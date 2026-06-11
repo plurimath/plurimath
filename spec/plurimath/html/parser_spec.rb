@@ -1639,7 +1639,7 @@ RSpec.describe Plurimath::Html::Parser do
       let(:string) { "<bravo/>x" }
 
       it "does not parse it as an HTML line break" do
-        expect { formula }.to raise_error(Parslet::ParseFailed)
+        expect { formula }.to raise_error(Parsanol::ParseFailed)
       end
     end
 
@@ -1647,7 +1647,7 @@ RSpec.describe Plurimath::Html::Parser do
       let(:string) { "<table><tr><tdx>1</td></tr></table>" }
 
       it "does not parse it as a table cell" do
-        expect { formula }.to raise_error(Parslet::ParseFailed)
+        expect { formula }.to raise_error(Parsanol::ParseFailed)
       end
     end
 
@@ -1655,7 +1655,7 @@ RSpec.describe Plurimath::Html::Parser do
       let(:string) { "<span < bad>x</span>" }
 
       it "does not accept the malformed HTML wrapper" do
-        expect { formula }.to raise_error(Parslet::ParseFailed)
+        expect { formula }.to raise_error(Parsanol::ParseFailed)
       end
     end
 
@@ -1663,7 +1663,7 @@ RSpec.describe Plurimath::Html::Parser do
       let(:string) { "<i>x</x>" }
 
       it "does not accept the HTML wrapper" do
-        expect { formula }.to raise_error(Parslet::ParseFailed)
+        expect { formula }.to raise_error(Parsanol::ParseFailed)
       end
     end
 
@@ -1671,7 +1671,7 @@ RSpec.describe Plurimath::Html::Parser do
       let(:string) { "<table><tr><td>x</th></tr></table>" }
 
       it "does not accept the table structure" do
-        expect { formula }.to raise_error(Parslet::ParseFailed)
+        expect { formula }.to raise_error(Parsanol::ParseFailed)
       end
     end
 
@@ -1701,7 +1701,7 @@ RSpec.describe Plurimath::Html::Parser do
       let(:string) { "<sup>sth" }
 
       it "returns abstract parsed tree" do
-        expect { formula }.to raise_error(Parslet::ParseFailed)
+        expect { formula }.to raise_error(Parsanol::ParseFailed)
       end
     end
   end

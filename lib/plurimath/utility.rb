@@ -414,7 +414,7 @@ module Plurimath
       end
 
       def td_value(td_object)
-        str_classes = [String, Parslet::Slice]
+        str_classes = [String, Parsanol::Slice]
         if str_classes.include?(td_object.class) && td_object.to_s.empty?
           return Math::Function::Text.new(nil)
         end
@@ -448,7 +448,7 @@ lang: nil)
       end
 
       def symbols_class(string, lang:, table: false)
-        return string unless string.is_a?(String) || string.is_a?(Parslet::Slice)
+        return string unless string.is_a?(String) || string.is_a?(Parsanol::Slice)
         return latex_table_curly_paren(string) if table && lang == :latex
 
         all_symbols_classes(lang)[string.to_s.strip]&.new ||

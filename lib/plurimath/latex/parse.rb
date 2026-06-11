@@ -2,7 +2,7 @@
 
 module Plurimath
   class Latex
-    class Parse < Parslet::Parser
+    class Parse < Parsanol::Parser
       rule(:base)          { str("_") }
       rule(:power)         { str("^") }
       rule(:slash)         { str("\\") }
@@ -198,7 +198,7 @@ module Plurimath
       end
 
       def decimal_marker
-        # Latex::Parser entity-encodes input before Parslet sees it, so
+        # Latex::Parser entity-encodes input before the parser sees it, so
         # non-ASCII locale markers must match that encoded parser input.
         str(Utility.string_to_html_entity(Plurimath.configuration.decimal))
       end

@@ -11,7 +11,7 @@ module Plurimath
 
       module ClassMethods
         def rule(name, &block)
-          Parslet::Parser.rule(name, &block)
+          Parsanol::Parser.rule(name, &block)
         end
       end
     end

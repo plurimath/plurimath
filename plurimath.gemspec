@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "omml", "~> 0.2.0"
   spec.add_dependency "ostruct"
   spec.add_dependency "ox"
-  spec.add_dependency "parslet"
+  spec.add_dependency "parsanol"
   spec.add_dependency "thor"
   spec.add_dependency "unitsml", "~> 0.6.4"
 end

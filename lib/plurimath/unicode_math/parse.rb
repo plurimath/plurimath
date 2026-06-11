@@ -2,7 +2,7 @@
 
 module Plurimath
   class UnicodeMath
-    class Parse < Parslet::Parser
+    class Parse < Parsanol::Parser
       include ParsingRules::Masked
       include ParsingRules::SubSup
       include ParsingRules::CommonRules
