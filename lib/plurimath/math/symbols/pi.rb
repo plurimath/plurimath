@@ -10,7 +10,7 @@ module Plurimath
           mathml: ["&#x3c0;", "&#x1d70b;"],
           latex: ["pi", "uppi", "&#x3c0;", "&#x1d70b;"],
           omml: ["&#x3c0;", "&#x1d70b;"],
-          html: ["&#x3C0;", "&#x1d70b;"],
+          html: ["&#x3C0;", "&#x1d70b;", "π", "𝜋"],
         }.freeze
 
         # output methods
@@ -38,7 +38,7 @@ module Plurimath
           "&#x3C0;"
         end
 
-        def evaluate(_evaluator)
+        def reserved_constant
           ::Math::PI
         end
       end

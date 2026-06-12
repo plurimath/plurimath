@@ -143,6 +143,103 @@ RSpec.describe Plurimath::Math::Formula do
       expect_numeric_result(evaluate("a/b", :latex, a: 6, b: 3), 2.0)
     end
 
+    it "evaluates logarithms" do
+      cases = {
+        ["log(100)", :asciimath] => 2.0,
+        ["log_2(8)", :asciimath] => 3.0,
+        ["log_2^3(8)", :asciimath] => 27.0,
+        ['\lg{1000}', :latex] => 3.0,
+      }
+
+      aggregate_failures do
+        cases.each do |(source, type), expected|
+          expect_numeric_result(evaluate(source, type), expected)
+        end
+      end
+    end
+
+    it "raises for bare functions without operands" do
+      expect { evaluate('\lg', :latex) }
+        .to raise_error(
+          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          "unsupported expression: missing operand",
+        )
+    end
+
+    it "evaluates discrete and aggregate functions" do
+      cases = {
+        "7 mod 3" => 1,
+        "-7 mod 3" => 2,
+        "(-7) mod 3" => 2,
+        "7 mod (-3)" => -2,
+        "max(2,3,1)" => 3,
+        "min(2,3,1)" => 1,
+        "gcd(12,8)" => 4,
+        "lcm(4,6)" => 12,
+        "sum_(i=1)^3 i" => 6,
+        "prod_(i=1)^4 i" => 24,
+        "sum_(i=3)^2 i" => 0,
+        "prod_(i=3)^2 i" => 1,
+      }
+
+      aggregate_failures do
+        cases.each do |source, expected|
+          expect_numeric_result(evaluate(source), expected)
+        end
+      end
+    end
+
+    it "scopes iteration indexes without leaking into outer bindings" do
+      expect(evaluate("sum_(i=1)^3 (i*x)", :asciimath, x: 2, i: 100)).to eq(12)
+    end
+
+    it "raises for invalid discrete function arguments" do
+      cases = {
+        "gcd(2.5,2)" => [
+          Plurimath::Math::Evaluation::MathDomainError,
+          "gcd requires integer arguments",
+        ],
+        "7 mod 0" => [
+          Plurimath::Math::Evaluation::DivisionByZeroError,
+          "divided by 0",
+        ],
+        "sum_(i=1)^2.5 i" => [
+          Plurimath::Math::Evaluation::MathDomainError,
+          "iteration bounds must be integers",
+        ],
+        "sum_(pi=1)^3 2" => [
+          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          "unsupported expression: reserved constant as iteration index",
+        ],
+        "sum_(i=1)^9999999 i" => [
+          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          "unsupported expression: iteration range larger than 1000000 steps",
+        ],
+        "log_0(8)" => [
+          Plurimath::Math::Evaluation::MathDomainError,
+          "log base must be a positive number other than 1",
+        ],
+        "log_1(8)" => [
+          Plurimath::Math::Evaluation::MathDomainError,
+          "log base must be a positive number other than 1",
+        ],
+        "max 2,3" => [
+          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          "unsupported expression: malformed token",
+        ],
+        "7 mod -3" => [
+          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          "unsupported expression: Symbols::Minus",
+        ],
+      }
+
+      aggregate_failures do
+        cases.each do |source, (error, message)|
+          expect { evaluate(source) }.to raise_error(error, message)
+        end
+      end
+    end
+
     it "evaluates supported trigonometric and exponential functions" do
       cases = {
         "sin(0)" => 0.0,
@@ -245,13 +342,36 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     it "does not let bindings override reserved constants" do
+      cases = [
+        ["pi", :asciimath],
+        ["<h4>&#x3c0;</h4>", :html],
+        ["<h4>π</h4>", :html],
+      ]
+
+      aggregate_failures do
+        cases.each do |source, type|
+          expect_numeric_result(
+            evaluate(source, type, pi: 3, "π" => 3),
+            Math::PI,
+          )
+        end
+      end
+    end
+
+    it "treats plain-text pi names as variables in unicode-capable markups" do
       sources = {
-        asciimath: "pi",
         mathml: mathml("<mi>pi</mi>"),
         omml: omml(omml_text("pi")),
       }
 
-      expect_sources_to_evaluate(sources, Math::PI, pi: 3)
+      expect_sources_to_evaluate(sources, 3, pi: 3)
+    end
+
+    it "treats HTML letters as individual identifiers" do
+      expect_numeric_result(
+        evaluate("<h4>pi r^2</h4>", :html, p: 2, i: 3, r: 4),
+        96,
+      )
     end
 
     it "requires hash-like bindings" do
@@ -357,19 +477,31 @@ RSpec.describe Plurimath::Math::Formula do
         )
     end
 
-    it "raises for implicit multiplication instead of guessing" do
-      expect { evaluate("2a", :asciimath, a: 3) }
-        .to raise_error(
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
-          "unsupported expression: symbol `a`",
-        )
+    it "evaluates implicit multiplication by juxtaposition" do
+      cases = {
+        "2a" => 6,
+        "2(a+b)" => 10,
+        "(a+b)(a-b)" => 5,
+        "2 pi" => 2 * Math::PI,
+        "pi r^2" => Math::PI * 16,
+        "2cos(0)" => 2.0,
+      }
+
+      aggregate_failures do
+        cases.each do |source, expected|
+          expect_numeric_result(
+            evaluate(source, :asciimath, a: 3, b: 2, r: 4),
+            expected,
+          )
+        end
+      end
     end
 
     it "raises for unsupported semantic nodes" do
-      expect { evaluate("sum_(i=1)^3 i", :asciimath, i: 1) }
+      expect { evaluate("int_0^1 x dx", :asciimath, x: 1) }
         .to raise_error(
           Plurimath::Math::Evaluation::UnsupportedExpressionError,
-          "unsupported expression: Function::Sum",
+          "unsupported expression: Function::Int",
         )
     end
 
@@ -400,6 +532,15 @@ RSpec.describe Plurimath::Math::Formula do
         [Plurimath::Math::Symbols::Paren::Lround.new,
          Plurimath::Math::Number.new("1")] =>
           "unsupported expression: unmatched parenthesis",
+        [Plurimath::Math::Symbols::Paren::Lround.new,
+         Plurimath::Math::Number.new("2"),
+         Plurimath::Math::Symbols::Equal.new,
+         Plurimath::Math::Number.new("2"),
+         Plurimath::Math::Symbols::Paren::Rround.new] =>
+          "unsupported expression: equation",
+        [Plurimath::Math::Number.new("2"),
+         Plurimath::Math::Number.new("3")] =>
+          "unsupported expression: number `3`",
         [Plurimath::Math::Number.new("x")] =>
           "unsupported expression: number `x`",
         [Plurimath::Math::Symbols::Symbol.new("")] =>

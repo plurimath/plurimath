@@ -12,6 +12,16 @@ module Plurimath
           second_value: "supscript",
         }.freeze
 
+        def evaluate(evaluator)
+          if parameter_one.nil? || parameter_two.nil? || parameter_three.nil?
+            evaluator.unsupported(self)
+          end
+
+          Evaluation::Iteration
+            .new(evaluator, parameter_one, parameter_two, parameter_three)
+            .accumulate(1, :*)
+        end
+
         def initialize(parameter_one = nil,
                        parameter_two = nil,
                        parameter_three = nil,

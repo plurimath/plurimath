@@ -370,6 +370,10 @@ module Plurimath
         false
       end
 
+      def reserved_constant
+        nil
+      end
+
       def unicodemath_parens(field, options:)
         paren = field.to_unicodemath(options: options)
         return paren if field.is_a?(Math::Function::Fenced)

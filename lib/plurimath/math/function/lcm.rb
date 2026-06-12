@@ -8,6 +8,15 @@ module Plurimath
           false
         end
 
+        def evaluate(evaluator)
+          values = evaluator.function_arguments(parameter_one)
+          unless values.all?(Integer)
+            raise Evaluation::MathDomainError, "lcm requires integer arguments"
+          end
+
+          values.reduce(:lcm)
+        end
+
         def to_asciimath(options:)
           first_value = " #{asciimath_value(options: options)}" if parameter_one
           "lcm#{first_value}"

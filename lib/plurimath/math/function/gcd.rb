@@ -8,6 +8,15 @@ module Plurimath
           false
         end
 
+        def evaluate(evaluator)
+          values = evaluator.function_arguments(parameter_one)
+          unless values.all?(Integer)
+            raise Evaluation::MathDomainError, "gcd requires integer arguments"
+          end
+
+          values.reduce(:gcd)
+        end
+
         def to_omml_without_math_tag(display_style, options:)
           array = []
           array << r_element("gcd", rpr_tag: false) unless hide_function_name

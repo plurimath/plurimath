@@ -247,6 +247,27 @@ roots, absolute values, floor/ceiling, `sin`, `cos`, `tan`, inverse trig,
 reciprocal trig, hyperbolic trig, `ln`, and `exp`. Trigonometric functions use
 radians.
 
+Logarithms evaluate with `ln`, `lg`, and `log` — `log` defaults to base 10,
+`log_b` uses the subscript base (which must be positive and not 1), and a
+superscript such as `log_2^3(8)` raises the result to that power. `mod`,
+`max`, `min`, `gcd`, and `lcm` are supported (`gcd`/`lcm` require integer
+arguments), as are bounded `sum` and `prod` with integer bounds — empty
+ranges follow the standard conventions of `0` for sums and `1` for products,
+the iteration index shadows any outer binding of the same name, and ranges
+are limited to 1,000,000 steps.
+
+The constant is each syntax's recognized pi symbol: textual `pi` in
+AsciiMath, LaTeX, and UnicodeMath, and the `π`/`&#x3c0;` forms everywhere,
+including HTML. Markups that can write `π` distinctly treat plain-text `pi`
+as an ordinary variable, so MathML `<mi>pi</mi>` and OMML text runs resolve
+through bindings. In HTML input, letters are individual identifiers, so
+plain `pi` means `p*i`.
+
+Implicit multiplication by juxtaposition is supported for adjacent operands,
+so `2a`, `2(a+b)`, `(a+b)(a-b)`, and `pi r^2` multiply. Two adjacent numeric
+literals such as `2 3` raise instead, because that shape usually indicates a
+split number literal.
+
 Chained powers follow the parsed tree structure, so `2^3^2` evaluates as
 `(2^3)^2`; use explicit grouping such as `2^(3^2)` for right association.
 Division uses `Float` arithmetic, and pole detection is exact: `cot(0)` raises
