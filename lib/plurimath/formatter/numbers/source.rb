@@ -13,9 +13,13 @@ module Plurimath
 
         DEFAULT_INTEGER = "0"
         EMPTY_STRING = ""
+        # Stricter than BigDecimal(), which tolerates underscores, surrounding
+        # junk after partial parses, and Infinity/NaN spellings.
+        NUMERIC_PATTERN = /\A[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?\z/
 
         def initialize(value)
           @raw = value.to_s
+          validate_numeric!(value)
           @decimal = BigDecimal(raw)
           @sign = raw.start_with?("-") ? -1 : 1
 
@@ -33,9 +37,13 @@ module Plurimath
         end
 
         def notation_precision
-          precision = integer_digits.length + fraction_digits.length - 1
-          precision += 1 if sign.negative?
-          [precision, 0].max
+          # A zero coefficient keeps the source's stated fraction width.
+          return fraction_digits.length if decimal.zero?
+
+          # The coefficient's fraction width is its significant-digit count
+          # minus the single leading digit; the sign and leading zeros carry
+          # no precision.
+          [significant_digit_count - 1, 0].max
         end
 
         def significant_digit_count
@@ -70,6 +78,13 @@ module Plurimath
         end
 
         private
+
+        def validate_numeric!(value)
+          valid_type = value.is_a?(Numeric) || value.is_a?(String)
+          return if valid_type && NUMERIC_PATTERN.match?(raw)
+
+          raise Plurimath::Formatter::InvalidNumber, value
+        end
 
         def decimal_parts_integer_length
           parts = to_parts

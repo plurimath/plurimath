@@ -2,10 +2,11 @@
 
 module Plurimath
   class ConfigurationError < Error
-    def initialize(type, value: nil, supported: nil)
+    def initialize(type, value: nil, supported: nil, option: nil)
       @type = type
       @value = value
       @supported = supported
+      @option = option
       super(message)
     end
 
@@ -19,6 +20,9 @@ module Plurimath
       when :conflicting_formatter_options
         "formatter options cannot be used together: choose either " \
         ":padding_digits or :padding_group_digits"
+      when :invalid_formatter_option
+        "invalid value #{@value.inspect} for formatter option " \
+        "#{@option.inspect}#{" (expected #{@supported})" if @supported}"
       else
         "invalid Plurimath configuration"
       end

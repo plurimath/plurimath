@@ -65,14 +65,13 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
       renderer = described_class.new(
         options(
           decimal: ".",
-          precision: 0,
           e: :e,
           times: :x,
         ),
       )
 
-      expect(renderer.render(source("-14000"), :engineering)).to eq("-14.0000 x 10^3")
-      expect(renderer.render(source("1.23e4"), :engineering)).to eq("12.30 x 10^3")
+      expect(renderer.render(source("-14000"), :engineering)).to eq("-14.000 x 10^3")
+      expect(renderer.render(source("1.23e4"), :engineering)).to eq("12.3 x 10^3")
     end
 
     it "preserves zero precision in scientific notation" do
