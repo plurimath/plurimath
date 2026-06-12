@@ -4,21 +4,6 @@ module Plurimath
   module Math
     module Evaluation
       class Evaluator
-        MULTIPLY_OPERATORS = [
-          Symbols::Cdot,
-          Symbols::Times,
-        ].freeze
-
-        MULTIPLY_SYMBOL_VALUES = ["*", "⋅", "×"].freeze
-        PLUS_SYMBOL_VALUES = ["+"].freeze
-        MINUS_SYMBOL_VALUES = ["-", "−"].freeze
-        DIVIDE_SYMBOL_VALUES = ["/", "∕", "÷"].freeze
-        POWER_SYMBOL_VALUES = ["^"].freeze
-
-        DIVIDE_OPERATORS = [
-          Symbols::Div,
-        ].freeze
-
         RESERVED_BINDINGS = { "pi" => ::Math::PI }.freeze
 
         def initialize(formula, bindings = {})
@@ -137,10 +122,10 @@ module Plurimath
           def parse_additive
             result = parse_multiplicative
             until eof?
-              if plus_operator?(current)
+              if current.plus_operator?
                 advance
                 result += parse_multiplicative
-              elsif minus_operator?(current)
+              elsif current.minus_operator?
                 advance
                 result -= parse_multiplicative
               else
@@ -153,10 +138,10 @@ module Plurimath
           def parse_multiplicative
             result = parse_unary
             until eof?
-              if multiply_operator?(current)
+              if current.multiply_operator?
                 advance
                 result *= parse_unary
-              elsif divide_operator?(current)
+              elsif current.divide_operator?
                 advance
                 result = evaluator.divide(result, parse_unary)
               else
@@ -167,10 +152,10 @@ module Plurimath
           end
 
           def parse_unary
-            if plus_operator?(current)
+            if current&.plus_operator?
               advance
               parse_unary
-            elsif minus_operator?(current)
+            elsif current&.minus_operator?
               advance
               -parse_unary
             else
@@ -182,18 +167,18 @@ module Plurimath
           # trees parsers build for source chains like `2^3^2`.
           def parse_power
             result = parse_operand
-            while power_operator?(current)
+            while current&.power_operator?
               advance
-              result **= parse_exponent
+              result = evaluator.real_result(result**parse_exponent)
             end
             result
           end
 
           def parse_exponent
-            if plus_operator?(current)
+            if current&.plus_operator?
               advance
               parse_exponent
-            elsif minus_operator?(current)
+            elsif current&.minus_operator?
               advance
               -parse_exponent
             else
@@ -231,35 +216,6 @@ module Plurimath
             node.is_a?(Function::UnaryFunction) &&
               node.parameter_one.nil? &&
               current.is_a?(Function::Fenced)
-          end
-
-          def plus_operator?(node)
-            node.is_a?(Symbols::Plus) ||
-              symbol_value?(node, PLUS_SYMBOL_VALUES)
-          end
-
-          def minus_operator?(node)
-            node.is_a?(Symbols::Minus) ||
-              symbol_value?(node, MINUS_SYMBOL_VALUES)
-          end
-
-          def multiply_operator?(node)
-            MULTIPLY_OPERATORS.any? { |operator| node.is_a?(operator) } ||
-              symbol_value?(node, MULTIPLY_SYMBOL_VALUES)
-          end
-
-          def divide_operator?(node)
-            DIVIDE_OPERATORS.any? { |operator| node.is_a?(operator) } ||
-              symbol_value?(node, DIVIDE_SYMBOL_VALUES)
-          end
-
-          def power_operator?(node)
-            node.is_a?(Symbols::Hat) ||
-              symbol_value?(node, POWER_SYMBOL_VALUES)
-          end
-
-          def symbol_value?(node, values)
-            node.instance_of?(Symbols::Symbol) && values.include?(node.value)
           end
 
           def current

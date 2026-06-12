@@ -11,6 +11,10 @@ module Plurimath
           html: ["&#x302;", "^"],
         }.freeze
 
+        def power_operator?
+          true
+        end
+
         # output methods
         def to_latex(**)
           "^"
