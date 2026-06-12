@@ -24,7 +24,7 @@ module Plurimath
     )
       locale = supported_locale(locale)
       source = Formatter::Numbers::Source.new(number_string)
-      options = format_options(source, locale, precision, format)
+      options = format_options(source, locale, precision, validated_format(format))
 
       if options.notation_supported?
         return notation_renderer(options).render(source, options.notation)
@@ -76,7 +76,23 @@ module Plurimath
     end
 
     def supported_locale(locale)
+      return :en if locale.nil?
+
       Formatter::SupportedLocales::LOCALES.key?(locale.to_sym) ? locale.to_sym : :en
+    end
+
+    def validated_format(format)
+      return {} if format.nil?
+      unless format.is_a?(Hash)
+        raise Plurimath::ConfigurationError.new(
+          :invalid_formatter_option,
+          option: :format,
+          value: format,
+          supported: "a Hash of formatter options",
+        )
+      end
+
+      format
     end
   end
 end

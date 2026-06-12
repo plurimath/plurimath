@@ -26,15 +26,18 @@ module Plurimath
           render_precision = precision || options.precision || source_precision
           parts = source.to_parts(
             base: options.base,
-            precision: render_precision,
+            precision: decimal_precision_for(render_precision),
           )
           format_parts(parts, precision: render_precision)
         end
 
         def format_parts(parts, precision:)
-          parts = parts.with_digits(
-            fraction_digits: parts.fraction_digits[0...precision.to_i].to_s,
-          )
+          decimal_precision = decimal_precision_for(precision)
+          unless decimal_precision.nil?
+            parts = parts.with_digits(
+              fraction_digits: parts.fraction_digits[0...decimal_precision.to_i].to_s,
+            )
+          end
           parts = renderable_parts(parts, precision: precision)
 
           parts = significant_format.apply_parts(parts) if significant_format.active?
@@ -59,6 +62,15 @@ module Plurimath
           return 0 if source.decimal.fix == source.decimal
 
           source.fraction_digits.length
+        end
+
+        # Precision budgets target-base digits, so the decimal fraction must
+        # stay intact until Fraction#change_base generates them; truncating
+        # decimal digits first loses value (0.07 in hex became 0x0.0).
+        def decimal_precision_for(precision)
+          return precision if options.base == Base::DEFAULT_BASE
+
+          nil
         end
       end
     end

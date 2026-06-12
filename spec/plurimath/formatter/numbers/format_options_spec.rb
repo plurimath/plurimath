@@ -78,6 +78,119 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       end
     end
 
+    it "normalizes numeric string and symbol forms for count options" do
+      valid_forms = [4, "4", :"4"]
+      valid_forms.each do |value|
+        # padding_digits and padding_group_digits are mutually exclusive, so
+        # the second instance carries the latter.
+        options = described_class.new(
+          symbols: {
+            significant: value,
+            digit_count: value,
+            group_digits: value,
+            fraction_group_digits: value,
+            padding_digits: value,
+          },
+        )
+        group_padded = described_class.new(symbols: { padding_group_digits: value })
+
+        expect(options.significant).to eq(4)
+        expect(options.digit_count).to eq(4)
+        expect(options.group_digits).to eq(4)
+        expect(options.fraction_group_digits).to eq(4)
+        expect(options.padding_digits).to eq(4)
+        expect(group_padded.padding_group_digits).to eq(4)
+      end
+    end
+
+    it "rejects junk, boolean, float, and negative count values" do
+      invalid_values = ["abc", true, 1.5, -1, ""]
+      invalid_values.each do |value|
+        expect { described_class.new(symbols: { significant: value }).significant }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :significant/),
+              "expected significant to reject #{value.inspect}"
+        expect { described_class.new(symbols: { digit_count: value }).digit_count }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :digit_count/),
+              "expected digit_count to reject #{value.inspect}"
+        expect { described_class.new(symbols: { group_digits: value }).group_digits }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :group_digits/),
+              "expected group_digits to reject #{value.inspect}"
+        expect { described_class.new(symbols: { fraction_group_digits: value }).fraction_group_digits }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :fraction_group_digits/),
+              "expected fraction_group_digits to reject #{value.inspect}"
+        expect { described_class.new(symbols: { padding_digits: value }).padding_digits }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :padding_digits/),
+              "expected padding_digits to reject #{value.inspect}"
+        expect { described_class.new(symbols: { padding_group_digits: value }).padding_group_digits }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :padding_group_digits/),
+              "expected padding_group_digits to reject #{value.inspect}"
+      end
+    end
+
+    it "rejects invalid precision values" do
+      ["abc", true, false, 1.5, "", -1, "-2"].each do |value|
+        expect do
+          described_class.new(symbols: { precision: value })
+        end.to raise_error(
+          Plurimath::ConfigurationError,
+          /formatter option :precision/,
+        ), "expected precision to reject #{value.inspect}"
+      end
+    end
+
+    it "treats explicit nil separators as disabled" do
+      expect(described_class.new(symbols: { decimal: nil }).decimal).to be_nil
+      expect(described_class.new(symbols: { group: nil }).group).to eq("")
+    end
+
+    it "rejects boolean separator values" do
+      booleans = [true, false]
+      booleans.each do |value|
+        expect { described_class.new(symbols: { decimal: value }).decimal }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :decimal/)
+        expect { described_class.new(symbols: { group: value }).group }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :group/)
+        expect { described_class.new(symbols: { fraction_group: value }).fraction_group }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :fraction_group/)
+        expect { described_class.new(symbols: { padding: value }).padding }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :padding/)
+        expect { described_class.new(symbols: { base_prefix: value }).base_prefix }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :base_prefix/)
+        expect { described_class.new(symbols: { base_postfix: value }).base_postfix }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :base_postfix/)
+      end
+    end
+
+    it "rejects boolean values for symbol-typed options" do
+      booleans = [true, false]
+      booleans.each do |value|
+        # notation, e, times, and exponent_sign are read at construction.
+        expect { described_class.new(symbols: { notation: value }) }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :notation/)
+        expect { described_class.new(symbols: { e: value }) }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :e/)
+        expect { described_class.new(symbols: { times: value }) }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :times/)
+        expect { described_class.new(symbols: { exponent_sign: value }) }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :exponent_sign/)
+        expect { described_class.new(symbols: { number_sign: value }).number_sign }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :number_sign/)
+      end
+    end
+
+    it "normalizes numeric base forms and leaves unsupported values raw" do
+      expect(described_class.new(symbols: { base: "16" }).base).to eq(16)
+      expect(described_class.new(symbols: { base: :"16" }).base).to eq(16)
+      expect(described_class.new(symbols: { base: nil }).base).to eq(10)
+      # Unsupported values stay raw so BaseNotation reports them.
+      expect(described_class.new(symbols: { base: "abc" }).base).to eq("abc")
+    end
+
+    it "tracks whether precision was explicitly provided" do
+      expect(described_class.new(symbols: { precision: 2 })).to be_explicit_precision
+      expect(described_class.new(symbols: {})).not_to be_explicit_precision
+    end
+
     it "resolves precision through PrecisionResolver with source metadata" do
       source = build_source("0.00")
       symbols = {}
