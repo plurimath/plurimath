@@ -611,6 +611,56 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("0xBE,EF")
         end
 
+        it "accepts symbol and string forms of true (as delivered by attribute parsers)" do
+          string = "true"
+          [string, string.to_sym].each do |value|
+            output_string = formatter.localized_number("48879",
+                                                       format: base_format_defaults.merge(
+                                                         base: 16,
+                                                         hex_capital: value,
+                                                         group: "e",
+                                                       ))
+            expect(output_string).to eql("0xBEEEF"),
+                                     "expected hex_capital #{value.inspect} to uppercase the whole string"
+          end
+        end
+
+        it "accepts the string form of numbers_only" do
+          output_string = formatter.localized_number("48879",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16,
+                                                       hex_capital: "numbers_only",
+                                                       group: "e",
+                                                     ))
+          expect(output_string).to eql("0xBEeEF")
+        end
+
+        it "treats false in any form as disabled" do
+          string = "false"
+          [false, string, string.to_sym].each do |value|
+            output_string = formatter.localized_number("48879",
+                                                       format: base_format_defaults.merge(
+                                                         base: 16, hex_capital: value,
+                                                       ))
+            expect(output_string).to eql("0xbe,ef"),
+                                     "expected hex_capital #{value.inspect} to disable uppercasing"
+          end
+        end
+
+        it "renders the U+ Unicode style with symbol true (plurimath/plurimath#432)" do
+          value = "true"
+          output_string = formatter.localized_number("23456",
+                                                     format: base_format_defaults.merge(
+                                                       base: 16,
+                                                       base_prefix: "U+",
+                                                       group: "",
+                                                       padding_group_digits: 4,
+                                                       hex_capital: value.to_sym,
+                                                       significant: 4,
+                                                     ))
+          expect(output_string).to eql("U+5BA0")
+        end
+
         it "does not affect non-hex bases" do
           output_string = formatter.localized_number("10",
                                                      format: base_format_defaults.merge(

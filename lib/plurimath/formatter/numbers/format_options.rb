@@ -76,7 +76,13 @@ module Plurimath
         end
 
         def hex_capital
-          symbols[:hex_capital]
+          # Attribute-parsing callers deliver the value as a Symbol or String
+          # (:true, "numbers_only"), so it cannot be compared raw against
+          # true/:numbers_only.
+          case symbols[:hex_capital].to_s
+          when "true" then true
+          when "numbers_only" then :numbers_only
+          end
         end
 
         def number_sign

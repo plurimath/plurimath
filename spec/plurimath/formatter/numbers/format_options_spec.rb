@@ -57,6 +57,27 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       expect(options.number_sign).to eq(:plus)
     end
 
+    it "normalizes hex_capital option values" do
+      expectations = { true => true, false => nil, nil => nil, 1 => nil }
+      string_forms = {
+        "true" => true,
+        "numbers_only" => :numbers_only,
+        "false" => nil,
+        "TRUE" => nil,
+      }
+      string_forms.each do |string, expected|
+        expectations[string] = expected
+        expectations[string.to_sym] = expected
+      end
+
+      expectations.each do |value, expected|
+        options = described_class.new(symbols: { hex_capital: value })
+
+        expect(options.hex_capital).to eq(expected),
+                                       "expected hex_capital #{value.inspect} to normalize to #{expected.inspect}"
+      end
+    end
+
     it "resolves precision through PrecisionResolver with source metadata" do
       source = build_source("0.00")
       symbols = {}

@@ -752,6 +752,10 @@ uppercase letters. This includes both hexadecimal digits and any separators
 Use `:numbers_only` to uppercase generated hexadecimal digits without changing
 separator characters. It has no effect for other bases.
 +
+Both values are also accepted as their `String` or `Symbol` equivalents
+(`"true"`, `:true`, `"numbers_only"`). Matching is case-sensitive; any other
+value (including any form of `false`) disables uppercasing.
++
 .Uppercase hexadecimal output
 [example]
 ====
