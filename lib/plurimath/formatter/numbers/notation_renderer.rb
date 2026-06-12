@@ -44,7 +44,11 @@ module Plurimath
         def render_engineering(source)
           parts = notation_parts(source)
           parts = engineering_notation_parts(parts) unless source.decimal.zero?
-          parts[0] = localize_parts(source, parts[0], precision: engineering_precision(source))
+          parts[0] = localize_parts(
+            source,
+            parts[0],
+            precision: engineering_precision(source, parts[0]),
+          )
           parts.join(" #{options.times} 10^")
         end
 
@@ -100,10 +104,26 @@ module Plurimath
           ]
         end
 
-        def engineering_precision(source)
-          return precision if precision.positive?
+        # The inferred budget covers the source's significant digits; the
+        # engineering shift moves up to two of them into the integer part, so
+        # the fraction budget must subtract the shifted integer width. Only an
+        # explicitly requested precision (including 0) is taken as a literal
+        # fraction width.
+        def engineering_precision(source, coefficient)
+          return precision if options.explicit_precision?
+          # Zero sources skip the engineering shift; the resolved precision
+          # already carries their stated fraction width.
+          return precision if source.decimal.zero?
 
-          [source.significant_digit_count - 1, 0].max
+          integer_length = coefficient.integer_digits.length
+          budget = [options.significant, options.digit_count].max
+          return [source.significant_digit_count - integer_length, 0].max unless budget.positive?
+
+          fraction_budget = [budget - integer_length, 0].max
+          # Leave one digit for Significant's rounding pass when the source
+          # carries more digits than the requested budget.
+          fraction_budget += 1 if source.significant_digit_count > budget
+          fraction_budget
         end
 
         def significant_digits_and_exponent(parts)

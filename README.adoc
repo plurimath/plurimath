@@ -513,7 +513,7 @@ formatter = Plurimath::NumberFormatter.new(
 <1> Locale to be used for number formatting.
 <2> String pattern to define the number formatting.
 <3> Hash containing relevant options for number formatting.
-<4> Number of decimal places to round.
+<4> Number of decimal places to keep; the fraction is truncated, not rounded.
 
 Where,
 
@@ -534,7 +534,8 @@ options for number formatting. Use either `localize_number` or
 See <<localizer_symbols,format options hash>> for details.
 
 `precision: <precision-number>`:: (optional, default `nil`)
-Number of decimal places to round. Accepts an integer value.
+Number of decimal places to keep; the fraction is truncated, not
+rounded. Accepts an integer value.
 +
 .Specifying a precision of 6 digits
 [example]
@@ -570,6 +571,25 @@ The `localizer_symbols` key is used to set the number formatting pattern
 through a Hash object containing specified options.
 
 This Hash object is called the "format options Hash".
+
+Option values follow a common handling policy:
+
+* Count options (`precision`, `significant`, `digit_count`, `group_digits`,
+  `fraction_group_digits`, `padding_digits`, `padding_group_digits`) accept an
+  `Integer` or its `String`/`Symbol` numeric equivalent (`"4"`). Any other
+  value, including negative numbers, raises `Plurimath::ConfigurationError`.
+* Separator options (`decimal`, `group`, `fraction_group`, `base_prefix`,
+  `base_postfix`) accept free-form strings. An explicitly passed `nil`
+  disables the separator — for `decimal` this renders the digits without a
+  decimal mark, and output correctness is then the caller's responsibility.
+  For `padding`, `nil` falls back to the default `0` pad character instead.
+  Boolean values raise `Plurimath::ConfigurationError`.
+* Enumerated options (`notation`, `number_sign`, `exponent_sign`,
+  `hex_capital`) accept their documented values as `Symbol` or `String`;
+  unrecognized `String`/`Symbol` values fall back to the default behavior.
+  Boolean values raise `Plurimath::ConfigurationError`, except for
+  `hex_capital`, where `true`/`false` are documented values.
+* Invalid number input raises `Plurimath::Formatter::InvalidNumber`.
 
 Available options are explained below.
 
@@ -695,11 +715,11 @@ Missing integer digits are inserted before grouping using the configured
 "32"    with `padding_group_digits: 4, group: ""` => "0032"
 "32123" with `padding_group_digits: 4, group: ""` => "00032123"
 ====
-====
 
 `base`:: (`Numeric` value)
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Supported values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
+The value is also accepted as its `String` or `Symbol` equivalent (`"16"`).
 Passing any other value for `base` raises `Plurimath::Formatter::UnsupportedBase`.
 +
 .Rendering numbers in different bases
@@ -1031,8 +1051,11 @@ In this example it is `' '` (a space).
 ----
 formatter = Plurimath::NumberFormatter.new(:en, localize_number: "#,##0.### ###")
 formatter.localized_number("1234.56789")
-# => "1,234.568 9"
+# => "1,234.567 89"
 ----
+
+NOTE: A space used as a group or fraction-group delimiter in the
+`localize_number` pattern is emitted as U+00A0 NO-BREAK SPACE in the output.
 ====
 
 
@@ -1056,7 +1079,7 @@ formatter.localized_number(
 ----
 <1> The number to be formatted.
 <2> The locale to be used for number formatting.
-<3> The number of decimal places to round the number to.
+<3> The number of decimal places to keep; the fraction is truncated, not rounded.
 <4> Hash containing the relevant options for number formatting.
 
 Where,
@@ -1069,8 +1092,8 @@ Value is a symbol.
 Overrides the locale set during the creation of the `NumberFormatter` object. If
 not provided, the locale of the `NumberFormatter` instance will be used.
 
-`precision: <precision-number>`:: (optional) The number of decimal places to round the
-number to. If not provided, the precision of the `NumberFormatter` instance will
+`precision: <precision-number>`:: (optional) The number of decimal places to keep
+(the fraction is truncated, not rounded). If not provided, the precision of the `NumberFormatter` instance will
 be used.
 
 `format: <format-hash>`:: (optional, default `{}`) A Hash containing the relevant
@@ -1079,7 +1102,8 @@ configuration of the `NumberFormatter`.
 Takes a Hash in the form of the <<localizer_symbols,format options hash>>.
 
 `precision: <precision-number>`::
-Number of decimal places to round. Accepts an integer value.
+Number of decimal places to keep; the fraction is truncated, not
+rounded. Accepts an integer value.
 +
 .Specifying a precision of 6 digits
 [example]

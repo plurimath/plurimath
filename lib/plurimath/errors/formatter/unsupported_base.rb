@@ -5,9 +5,7 @@ module Plurimath
     class UnsupportedBase < Plurimath::Error
       def initialize(base, supported_bases)
         @base = base
-        @supported = supported_bases.keys.map do |key|
-          key.to_s.inspect
-        end.join(", ")
+        @supported = supported_bases.keys.join(", ")
       end
 
       def to_s
