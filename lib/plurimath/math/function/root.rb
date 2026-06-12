@@ -53,7 +53,10 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          evaluator.evaluate_node(parameter_two)**evaluator.divide(1.0, evaluator.evaluate_node(parameter_one))
+          evaluator.power(
+            evaluator.evaluate_node(parameter_two),
+            evaluator.divide(1.0, evaluator.evaluate_node(parameter_one)),
+          )
         end
       end
     end

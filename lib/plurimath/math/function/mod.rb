@@ -10,6 +10,21 @@ module Plurimath
           second_value: "argument",
         }.freeze
 
+        def evaluate(evaluator)
+          evaluator.modulo(
+            evaluator.evaluate_node(parameter_one),
+            evaluator.evaluate_node(parameter_two),
+          )
+        end
+
+        # `-a mod b` negates the dividend, matching `(-a) mod b`.
+        def evaluate_negated(evaluator)
+          evaluator.modulo(
+            -evaluator.evaluate_node(parameter_one),
+            evaluator.evaluate_node(parameter_two),
+          )
+        end
+
         def to_asciimath(options:)
           first_value = parameter_one&.to_asciimath(options: options)
           second_value = parameter_two&.to_asciimath(options: options)

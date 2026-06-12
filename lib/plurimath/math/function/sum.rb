@@ -13,6 +13,16 @@ module Plurimath
           third_value: "term",
         }.freeze
 
+        def evaluate(evaluator)
+          if parameter_one.nil? || parameter_two.nil? || parameter_three.nil?
+            evaluator.unsupported(self)
+          end
+
+          Evaluation::Iteration
+            .new(evaluator, parameter_one, parameter_two, parameter_three)
+            .accumulate(0, :+)
+        end
+
         def initialize(parameter_one = nil,
                        parameter_two = nil,
                        parameter_three = nil,

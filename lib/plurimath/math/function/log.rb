@@ -10,6 +10,25 @@ module Plurimath
           second_value: "supscript",
         }.freeze
 
+        # `log` carries its base/exponent but not its argument; the parser
+        # binds the following fenced group via #evaluate_with_argument, so a
+        # bare `log` is unsupported.
+        def evaluate(evaluator)
+          evaluator.unsupported(self)
+        end
+
+        def evaluate_with_argument(evaluator, argument)
+          base = parameter_one ? evaluator.evaluate_node(parameter_one) : 10
+          unless base.positive? && base != 1
+            raise Evaluation::MathDomainError,
+                  "log base must be a positive number other than 1"
+          end
+
+          result = ::Math.log(evaluator.evaluate_node(argument), base)
+          result = evaluator.power(result, evaluator.evaluate_node(parameter_two)) if parameter_two
+          result
+        end
+
         def to_asciimath(options:)
           if parameter_one
             first_value = "_#{wrapped(parameter_one,
