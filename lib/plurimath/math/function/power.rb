@@ -84,7 +84,10 @@ module Plurimath
         # `(2^3)^2`, whether it came from explicit MathML nesting or a
         # left-nested source chain.
         def evaluate(evaluator)
-          evaluator.evaluate_node(parameter_one)**evaluator.evaluate_node(parameter_two)
+          evaluator.power(
+            evaluator.evaluate_node(parameter_one),
+            evaluator.evaluate_node(parameter_two),
+          )
         end
 
         def line_breaking(obj)

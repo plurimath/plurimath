@@ -8,6 +8,10 @@ module Plurimath
           false
         end
 
+        def evaluate(evaluator)
+          evaluator.function_arguments(parameter_one).min
+        end
+
         def to_omml_without_math_tag(display_style, options:)
           array = []
           array << r_element("min", rpr_tag: false) unless hide_function_name

@@ -123,7 +123,12 @@ module Plurimath
           value == "/"
         end
 
+        # Symbol classes that represent constants (e.g. Pi) override
+        # #reserved_constant; everything else resolves through bindings.
         def evaluate(evaluator)
+          constant = reserved_constant
+          return constant if constant
+
           name = value.to_s
           evaluator.unsupported(self) if name.empty?
 
