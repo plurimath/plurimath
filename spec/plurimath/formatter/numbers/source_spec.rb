@@ -81,8 +81,8 @@ RSpec.describe Plurimath::Formatter::Numbers::Source do
       expect(described_class.new("1.23e4").notation_precision).to eq(2)
     end
 
-    it "preserves existing negative coefficient padding" do
-      expect(described_class.new("-14000").notation_precision).to eq(5)
+    it "ignores the sign when counting coefficient digits" do
+      expect(described_class.new("-14000").notation_precision).to eq(4)
     end
 
     it "preserves zero scale for notation rendering" do

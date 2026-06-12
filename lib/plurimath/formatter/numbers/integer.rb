@@ -24,6 +24,9 @@ module Plurimath
         def format_groups(string)
           string = capitalize_hex_digits(string)
           string = pad_integer(string)
+          # group_digits: 0 disables grouping, mirroring fraction grouping.
+          return string unless groups.positive?
+
           tokens = []
 
           until string.empty?
