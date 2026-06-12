@@ -13,6 +13,10 @@ module Plurimath
           html: ["&#x2215;", "/"],
         }.freeze
 
+        def divide_operator?
+          true
+        end
+
         # output methods
         def to_latex(**)
           "/"

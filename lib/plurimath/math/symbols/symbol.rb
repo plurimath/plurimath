@@ -108,6 +108,21 @@ module Plurimath
           false
         end
 
+        # Some parser paths emit basic operators as generic symbols instead
+        # of their semantic classes, so the generic symbol answers from its
+        # own value.
+        def minus_operator?
+          value == "-"
+        end
+
+        def multiply_operator?
+          value == "*"
+        end
+
+        def divide_operator?
+          value == "/"
+        end
+
         def evaluate(evaluator)
           name = value.to_s
           evaluator.unsupported(self) if name.empty?

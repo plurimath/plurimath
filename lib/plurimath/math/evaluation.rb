@@ -3,45 +3,17 @@
 module Plurimath
   module Math
     module Evaluation
+      errors_dir = File.expand_path("../errors/evaluation", __dir__)
+
       autoload :Evaluator, "#{__dir__}/evaluation/evaluator"
-
-      class Error < StandardError; end
-
-      class MissingVariableError < Error
-        def initialize(name)
-          super("Missing value for variable `#{name}`.")
-        end
-      end
-
-      class UnsupportedExpressionError < Error
-        def initialize(message)
-          super("Unsupported expression: #{message}.")
-        end
-      end
-
-      class DivisionByZeroError < Error
-        def initialize
-          super("Cannot divide by zero.")
-        end
-      end
-
-      class InvalidBindingError < Error
-        def initialize(name, value)
-          super("Value for variable `#{name}` must be a real number, got #{value.class}.")
-        end
-      end
-
-      class MathDomainError < Error
-        def initialize(message)
-          super("Math domain error: #{message}.")
-        end
-      end
-
-      class NonFiniteResultError < Error
-        def initialize
-          super("Evaluation did not produce a finite number.")
-        end
-      end
+      autoload :Error, "#{errors_dir}/error"
+      autoload :MissingVariableError, "#{errors_dir}/missing_variable_error"
+      autoload :UnsupportedExpressionError,
+               "#{errors_dir}/unsupported_expression_error"
+      autoload :DivisionByZeroError, "#{errors_dir}/division_by_zero_error"
+      autoload :InvalidBindingError, "#{errors_dir}/invalid_binding_error"
+      autoload :MathDomainError, "#{errors_dir}/math_domain_error"
+      autoload :NonFiniteResultError, "#{errors_dir}/non_finite_result_error"
     end
   end
 end

@@ -12,6 +12,10 @@ module Plurimath
           html: ["&#xf7;"],
         }.freeze
 
+        def divide_operator?
+          true
+        end
+
         # output methods
         def to_latex(**)
           "\\div"
