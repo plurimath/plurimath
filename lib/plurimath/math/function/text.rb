@@ -66,6 +66,13 @@ module Plurimath
           false
         end
 
+        def evaluate(evaluator)
+          name = parameter_one.to_s.strip
+          evaluator.unsupported(self) if name.empty?
+
+          evaluator.value_for(name)
+        end
+
         def to_asciimath_math_zone(spacing, _, _, options:)
           "#{spacing}#{to_asciimath(options: options)} text\n"
         end

@@ -80,6 +80,13 @@ module Plurimath
           end
         end
 
+        # Nested Power trees evaluate literally: `Power(Power(2, 3), 2)` is
+        # `(2^3)^2`, whether it came from explicit MathML nesting or a
+        # left-nested source chain.
+        def evaluate(evaluator)
+          evaluator.evaluate_node(parameter_one)**evaluator.evaluate_node(parameter_two)
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?

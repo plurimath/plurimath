@@ -13,6 +13,10 @@ module Plurimath
           html: ["&#x2b;", "+"],
         }.freeze
 
+        def plus_operator?
+          true
+        end
+
         # output methods
         def to_latex(**)
           "+"

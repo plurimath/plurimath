@@ -51,6 +51,10 @@ module Plurimath
           second_value = parameter_two.to_unicodemath(options: options) if parameter_two
           "√(#{first_value}&#{second_value})"
         end
+
+        def evaluate(evaluator)
+          evaluator.evaluate_node(parameter_two)**evaluator.divide(1.0, evaluator.evaluate_node(parameter_one))
+        end
       end
     end
   end

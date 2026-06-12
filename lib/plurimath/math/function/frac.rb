@@ -89,6 +89,13 @@ module Plurimath
           "#{first_value}∕#{second_value}" if self.options&.key?(:ldiv)
         end
 
+        def evaluate(evaluator)
+          evaluator.divide(
+            evaluator.evaluate_node(parameter_one),
+            evaluator.evaluate_node(parameter_two),
+          )
+        end
+
         def line_breaking(obj)
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
