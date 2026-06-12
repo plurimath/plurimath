@@ -139,6 +139,10 @@ RSpec.describe Plurimath::Math::Formula do
       expect_sources_to_evaluate(sources, 5.0, a: 3, b: 4)
     end
 
+    it "evaluates LaTeX slash division" do
+      expect_numeric_result(evaluate("a/b", :latex, a: 6, b: 3), 2.0)
+    end
+
     it "evaluates supported trigonometric and exponential functions" do
       cases = {
         "sin(0)" => 0.0,
@@ -261,7 +265,7 @@ RSpec.describe Plurimath::Math::Formula do
       expect { evaluate("a+b+c", :asciimath, a: 2, b: 3) }
         .to raise_error(
           Plurimath::Math::Evaluation::MissingVariableError,
-          "Missing value for variable `c`.",
+          "missing value for variable `c`",
         )
     end
 
@@ -273,7 +277,7 @@ RSpec.describe Plurimath::Math::Formula do
           expect { evaluate(source, :asciimath, a: 1, b: 2) }
             .to raise_error(
               Plurimath::Math::Evaluation::DivisionByZeroError,
-              "Cannot divide by zero.",
+              "divided by 0",
             )
         end
       end
@@ -287,7 +291,7 @@ RSpec.describe Plurimath::Math::Formula do
           expect { evaluate(source) }
             .to raise_error(
               Plurimath::Math::Evaluation::MathDomainError,
-              /\AMath domain error: /,
+              /out of domain/,
             )
         end
       end
@@ -301,7 +305,7 @@ RSpec.describe Plurimath::Math::Formula do
           expect { evaluate(source) }
             .to raise_error(
               Plurimath::Math::Evaluation::NonFiniteResultError,
-              "Evaluation did not produce a finite number.",
+              "result is not a finite number",
             )
         end
       end
@@ -318,7 +322,8 @@ RSpec.describe Plurimath::Math::Formula do
           expect { evaluate("a+b", :asciimath, a: value, b: 3) }
             .to raise_error(
               Plurimath::Math::Evaluation::InvalidBindingError,
-              "Value for variable `a` must be a real number, got #{class_name}.",
+              "wrong value for variable `a` " \
+              "(given #{class_name}, expected a real number)",
             )
         end
       end
@@ -338,7 +343,7 @@ RSpec.describe Plurimath::Math::Formula do
           expect { evaluate(source) }
             .to raise_error(
               Plurimath::Math::Evaluation::MathDomainError,
-              "Math domain error: result is not a real number.",
+              "result is not a real number",
             )
         end
       end
@@ -348,7 +353,7 @@ RSpec.describe Plurimath::Math::Formula do
       expect { evaluate("a+b=c", :asciimath, a: 2, b: 3, c: 5) }
         .to raise_error(
           Plurimath::Math::Evaluation::UnsupportedExpressionError,
-          "Unsupported expression: equation.",
+          "unsupported expression: equation",
         )
     end
 
@@ -356,7 +361,7 @@ RSpec.describe Plurimath::Math::Formula do
       expect { evaluate("2a", :asciimath, a: 3) }
         .to raise_error(
           Plurimath::Math::Evaluation::UnsupportedExpressionError,
-          "Unsupported expression: symbol `a`.",
+          "unsupported expression: symbol `a`",
         )
     end
 
@@ -364,8 +369,54 @@ RSpec.describe Plurimath::Math::Formula do
       expect { evaluate("sum_(i=1)^3 i", :asciimath, i: 1) }
         .to raise_error(
           Plurimath::Math::Evaluation::UnsupportedExpressionError,
-          "Unsupported expression: Function::Sum.",
+          "unsupported expression: Function::Sum",
         )
+    end
+
+    it "raises when a flat power token produces a non-real number" do
+      formula = described_class.new(
+        [
+          Plurimath::Math::Number.new("1"),
+          Plurimath::Math::Symbols::Symbol.new("/"),
+          Plurimath::Math::Function::Fenced.new(
+            nil, [Plurimath::Math::Number.new("-4")], nil
+          ),
+          Plurimath::Math::Symbols::Hat.new,
+          Plurimath::Math::Function::Frac.new(
+            Plurimath::Math::Number.new("1"), Plurimath::Math::Number.new("2")
+          ),
+        ],
+      )
+
+      expect { formula.evaluate }
+        .to raise_error(
+          Plurimath::Math::Evaluation::MathDomainError,
+          "result is not a real number",
+        )
+    end
+
+    it "raises with clear messages for unsupported token shapes" do
+      cases = {
+        [Plurimath::Math::Symbols::Paren::Lround.new,
+         Plurimath::Math::Number.new("1")] =>
+          "unsupported expression: unmatched parenthesis",
+        [Plurimath::Math::Number.new("x")] =>
+          "unsupported expression: number `x`",
+        [Plurimath::Math::Symbols::Symbol.new("")] =>
+          "unsupported expression: Symbols::Symbol",
+        [Plurimath::Math::Function::Text.new("")] =>
+          "unsupported expression: Function::Text",
+      }
+
+      aggregate_failures do
+        cases.each do |value, message|
+          expect { described_class.new(value).evaluate }
+            .to raise_error(
+              Plurimath::Math::Evaluation::UnsupportedExpressionError,
+              message,
+            )
+        end
+      end
     end
 
     it "raises for empty expressions" do
@@ -374,7 +425,7 @@ RSpec.describe Plurimath::Math::Formula do
       expect { formula.evaluate }
         .to raise_error(
           Plurimath::Math::Evaluation::UnsupportedExpressionError,
-          "Unsupported expression: empty expression.",
+          "unsupported expression: empty expression",
         )
     end
   end

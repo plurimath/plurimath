@@ -13,6 +13,10 @@ module Plurimath
           html: ["&#x2212;"],
         }.freeze
 
+        def minus_operator?
+          true
+        end
+
         # output methods
         def to_latex(**)
           "-"

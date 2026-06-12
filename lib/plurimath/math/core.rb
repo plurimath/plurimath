@@ -350,6 +350,26 @@ module Plurimath
         false
       end
 
+      def plus_operator?
+        false
+      end
+
+      def minus_operator?
+        false
+      end
+
+      def multiply_operator?
+        false
+      end
+
+      def divide_operator?
+        false
+      end
+
+      def power_operator?
+        false
+      end
+
       def unicodemath_parens(field, options:)
         paren = field.to_unicodemath(options: options)
         return paren if field.is_a?(Math::Function::Fenced)
