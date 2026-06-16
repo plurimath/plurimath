@@ -65,6 +65,7 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
       renderer = described_class.new(
         options(
           decimal: ".",
+          precision: 0,
           e: :e,
           times: :x,
         ),

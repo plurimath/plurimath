@@ -1931,8 +1931,14 @@ RSpec.describe Plurimath::NumberFormatter do
           expect(output_string).to eql("15")
         end
 
-        it "disables grouping when group is explicitly nil" do
+        it "falls back to default grouping when group is explicitly nil" do
+          # Released 0.10.7 behavior; use group: "" to disable grouping.
           output_string = formatter.localized_number("1234567", format: { group: nil })
+          expect(output_string).to eql("1,234,567")
+        end
+
+        it "disables grouping when group is an empty string" do
+          output_string = formatter.localized_number("1234567", format: { group: "" })
           expect(output_string).to eql("1234567")
         end
 
@@ -1997,6 +2003,24 @@ RSpec.describe Plurimath::NumberFormatter do
           output_string = formatter.localized_number("123456789",
                                                      format: { notation: :engineering })
           expect(output_string).to eql("123.456789 × 10^6")
+        end
+
+        it "honors a digit_count budget for e and scientific coefficients" do
+          expect(
+            formatter.localized_number("12345.678", format: { notation: :e, digit_count: 4 }),
+          ).to eql("1.235e4")
+          expect(
+            formatter.localized_number("12345.678", format: { notation: :scientific, digit_count: 4 }),
+          ).to eql("1.235 × 10^4")
+        end
+
+        it "honors a significant budget for e and scientific coefficients" do
+          expect(
+            formatter.localized_number("12345.678", format: { notation: :e, significant: 4 }),
+          ).to eql("1.235e4")
+          expect(
+            formatter.localized_number("12345.678", format: { notation: :scientific, significant: 4 }),
+          ).to eql("1.235 × 10^4")
         end
       end
 

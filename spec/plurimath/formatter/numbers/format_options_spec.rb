@@ -138,9 +138,14 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       end
     end
 
-    it "treats explicit nil separators as disabled" do
+    it "treats an explicit nil decimal as disabled" do
       expect(described_class.new(symbols: { decimal: nil }).decimal).to be_nil
-      expect(described_class.new(symbols: { group: nil }).group).to eq("")
+    end
+
+    it "falls back to the default separator for an explicit nil group" do
+      # Released 0.10.7 behavior; "" disables grouping instead.
+      expect(described_class.new(symbols: { group: nil }).group).to eq(",")
+      expect(described_class.new(symbols: { group: "" }).group).to eq("")
     end
 
     it "rejects boolean separator values" do
