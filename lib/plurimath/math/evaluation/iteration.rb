@@ -37,12 +37,12 @@ module Plurimath
           if index.is_a?(Core) && index.reserved_constant
             evaluator.unsupported("reserved constant as iteration index")
           end
-          unless index.instance_of?(Symbols::Symbol) &&
-              !index.value.to_s.empty? && tokens[1].is_a?(Symbols::Equal)
+          name = index.is_a?(Core) ? index.variable_name : nil
+          unless name && tokens[1].is_a?(Symbols::Equal)
             evaluator.unsupported("malformed iteration bounds")
           end
 
-          [index.value.to_s, evaluator.evaluate_nodes(tokens[2..])]
+          [name, evaluator.evaluate_nodes(tokens[2..])]
         end
 
         def validate_bounds(from, to)

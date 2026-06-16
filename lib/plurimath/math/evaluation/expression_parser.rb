@@ -107,6 +107,7 @@ module Plurimath
           return bind_argument(node) if next_argument?(node)
           return bind_log_argument(node) if log_argument?(node)
 
+          node = bind_nary_body(node) if nary_body?(node)
           evaluator.evaluate_node(node)
         end
 
@@ -130,6 +131,25 @@ module Plurimath
 
         def bind_argument(node)
           evaluator.evaluate_node(node.class.new(next_token))
+        end
+
+        # MathML/OMML n-ary Sum/Prod carry their bounds but leave the body as
+        # the following sibling token; AsciiMath binds a single operand as the
+        # body, so we match by adopting the next operand as parameter_three.
+        def nary_body?(node)
+          (node.is_a?(Function::Sum) || node.is_a?(Function::Prod)) &&
+            node.parameter_three.nil? &&
+            node.parameter_one && node.parameter_two &&
+            !eof? && operand_start?(current)
+        end
+
+        # The body is a single following operand; if that operand is itself a
+        # sibling-body Sum/Prod (e.g. nested MathML `sum sum …`), complete it
+        # recursively so the inner body binds too.
+        def bind_nary_body(node)
+          body = next_token
+          body = bind_nary_body(body) if nary_body?(body)
+          node.class.new(node.parameter_one, node.parameter_two, body)
         end
 
         def log_argument?(node)

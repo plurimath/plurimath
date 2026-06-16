@@ -322,12 +322,12 @@ ranges follow the standard conventions of `0` for sums and `1` for products,
 the iteration index shadows any outer binding of the same name, and ranges
 are limited to 1,000,000 steps.
 
-The constant is each syntax's recognized pi symbol: textual `pi` in
-AsciiMath, LaTeX, and UnicodeMath, and the `π`/`&#x3c0;` forms everywhere,
-including HTML. Markups that can write `π` distinctly treat plain-text `pi`
-as an ordinary variable, so MathML `<mi>pi</mi>` and OMML text runs resolve
-through bindings. In HTML input, letters are individual identifiers, so
-plain `pi` means `p*i`.
+`pi` resolves to the constant from each syntax's pi symbol — `pi` in
+AsciiMath, `\pi` in LaTeX, and the `π` symbol (or `&#x3c0;` entity) in the
+other syntaxes. Plain-text `pi` is treated per syntax: a single bindable
+variable in MathML (`<mi>pi</mi>`) and OMML text runs, but individual
+identifiers (`p*i`) in LaTeX, UnicodeMath, and HTML, which tokenize letters
+one by one.
 
 Implicit multiplication by juxtaposition is supported for adjacent operands,
 so `2a`, `2(a+b)`, `(a+b)(a-b)`, and `pi r^2` multiply. Two adjacent numeric
@@ -340,9 +340,9 @@ Division uses `Float` arithmetic, and pole detection is exact: `cot(0)` raises
 a division-by-zero error, while `sec(pi/2)` returns a large finite number
 because the floating-point value of `pi/2` is not exactly the pole.
 
-Binding values must be real `Numeric` values. `pi` is a reserved constant in
-every input syntax and always resolves to its numeric value; bindings such as
-`pi: 3` are ignored rather than overriding it.
+Binding values must be real `Numeric` values. A recognized `pi` constant
+always resolves to its numeric value and cannot be overridden by a binding
+such as `pi: 3`.
 
 Missing variables raise
 `Plurimath::Math::Evaluation::MissingVariableError`. Binding values that are

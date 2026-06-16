@@ -66,9 +66,19 @@ module Plurimath
           false
         end
 
+        # OMML emits variable text runs as Text nodes. Only a plain, non-blank
+        # string names a variable; rich content (arrays/formulas) or a missing
+        # value does not.
+        def variable_name
+          return unless parameter_one.is_a?(String)
+
+          stripped = parameter_one.strip
+          stripped unless stripped.empty?
+        end
+
         def evaluate(evaluator)
-          name = parameter_one.to_s.strip
-          evaluator.unsupported(self) if name.empty?
+          name = variable_name
+          evaluator.unsupported(self) unless name
 
           evaluator.value_for(name)
         end
