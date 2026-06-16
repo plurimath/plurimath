@@ -9,10 +9,8 @@ module Plurimath
       end
 
       def message
-        <<~MESSAGE
-          [plurimath] Invalid number #{@value.inspect} for number formatting.
-          [plurimath] Expected a numeric string such as "1234", "-12.34", or "1.2e5".
-        MESSAGE
+        "[plurimath] Invalid number #{@value.inspect} for number formatting. " \
+          "Expected a numeric string such as \"1234\", \"-12.34\", or \"1.2e5\"."
       end
     end
   end
