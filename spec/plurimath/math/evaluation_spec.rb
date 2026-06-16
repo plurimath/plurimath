@@ -193,6 +193,93 @@ RSpec.describe Plurimath::Math::Formula do
       expect(evaluate("sum_(i=1)^3 (i*x)", :asciimath, x: 2, i: 100)).to eq(12)
     end
 
+    it "evaluates MathML bounded sum and product with a sibling body" do
+      sum = mathml(
+        "<munderover><mo>&#x2211;</mo><mrow><mi>i</mi><mo>=</mo>" \
+        "<mn>1</mn></mrow><mn>3</mn></munderover><msup><mi>i</mi><mn>2</mn></msup>",
+      )
+      prod = mathml(
+        "<munderover><mo>&#x220f;</mo><mrow><mi>i</mi><mo>=</mo>" \
+        "<mn>1</mn></mrow><mn>4</mn></munderover><mi>i</mi>",
+      )
+
+      aggregate_failures do
+        expect(evaluate(sum, :mathml)).to eq(14)
+        expect(evaluate(prod, :mathml)).to eq(24)
+      end
+    end
+
+    it "evaluates nested MathML bounded sums" do
+      nested = mathml(
+        "<munderover><mo>&#x2211;</mo><mrow><mi>i</mi><mo>=</mo>" \
+        "<mn>1</mn></mrow><mn>2</mn></munderover>" \
+        "<munderover><mo>&#x2211;</mo><mrow><mi>j</mi><mo>=</mo>" \
+        "<mn>1</mn></mrow><mn>2</mn></munderover><mi>j</mi>",
+      )
+
+      expect(evaluate(nested, :mathml)).to eq(6)
+    end
+
+    it "evaluates OMML bounded sum and product with text indexes" do
+      sum = Plurimath::Math.parse("sum_(i=1)^3 i", :asciimath).to_omml
+      prod = Plurimath::Math.parse("prod_(i=1)^4 i", :asciimath).to_omml
+
+      aggregate_failures do
+        expect(evaluate(sum, :omml)).to eq(6)
+        expect(evaluate(prod, :omml)).to eq(24)
+      end
+    end
+
+    it "identifies variable names only for plain symbols and text values" do
+      aggregate_failures do
+        expect(Plurimath::Math::Symbols::Symbol.new("k").variable_name).to eq("k")
+        expect(Plurimath::Math::Symbols::Symbol.new("").variable_name).to be_nil
+        expect(Plurimath::Math::Symbols::Symbol.new(nil).variable_name).to be_nil
+        expect(Plurimath::Math::Symbols::Pi.new.variable_name).to be_nil
+        expect(Plurimath::Math::Symbols::Plus.new.variable_name).to be_nil
+        expect(Plurimath::Math::Function::Text.new("k").variable_name).to eq("k")
+        expect(Plurimath::Math::Function::Text.new(" k ").variable_name).to eq("k")
+        expect(Plurimath::Math::Function::Text.new("").variable_name).to be_nil
+        expect(Plurimath::Math::Function::Text.new(nil).variable_name).to be_nil
+        expect(Plurimath::Math::Function::Text.new(%w[a b]).variable_name).to be_nil
+      end
+    end
+
+    it "resolves iteration indexes from each valid node type and rejects others" do
+      build = lambda do |index|
+        lower = described_class.new(
+          [index, Plurimath::Math::Symbols::Equal.new,
+           Plurimath::Math::Number.new("1")],
+        )
+        described_class.new(
+          [Plurimath::Math::Function::Sum.new(
+            lower, Plurimath::Math::Number.new("2"),
+            Plurimath::Math::Number.new("5")
+          )],
+        ).evaluate
+      end
+
+      aggregate_failures do
+        expect(build.call(Plurimath::Math::Symbols::Symbol.new("k"))).to eq(10)
+        expect(build.call(Plurimath::Math::Function::Text.new("k"))).to eq(10)
+
+        [Plurimath::Math::Function::Text.new(nil),
+         Plurimath::Math::Function::Text.new(%w[a b]),
+         Plurimath::Math::Symbols::Symbol.new(""),
+         Plurimath::Math::Symbols::Plus.new].each do |index|
+          expect { build.call(index) }.to raise_error(
+            Plurimath::Math::Evaluation::UnsupportedExpressionError,
+            "unsupported expression: malformed iteration bounds",
+          )
+        end
+
+        expect { build.call(Plurimath::Math::Symbols::Pi.new) }.to raise_error(
+          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          "unsupported expression: reserved constant as iteration index",
+        )
+      end
+    end
+
     it "raises for invalid discrete function arguments" do
       cases = {
         "gcd(2.5,2)" => [

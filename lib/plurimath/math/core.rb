@@ -377,6 +377,14 @@ namespace: "m")
         nil
       end
 
+      # The bound variable a node represents, or nil if it is not a plain
+      # variable. Symbols and text nodes that name a variable override this;
+      # it lets iteration indexes accept both `Symbols::Symbol` (AsciiMath/
+      # MathML) and `Function::Text` (OMML) without type-sniffing.
+      def variable_name
+        nil
+      end
+
       def unicodemath_parens(field, options:)
         paren = field.to_unicodemath(options: options)
         return paren if field.is_a?(Math::Function::Fenced)

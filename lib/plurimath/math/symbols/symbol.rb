@@ -123,14 +123,23 @@ module Plurimath
           value == "/"
         end
 
+        # A plain symbol names a variable through its `value`. Symbol
+        # subclasses (Pi, Plus, ...) carry no `value`, so they return nil here
+        # and are never treated as variables.
+        def variable_name
+          return if reserved_constant || value.nil? || value.empty?
+
+          value
+        end
+
         # Symbol classes that represent constants (e.g. Pi) override
         # #reserved_constant; everything else resolves through bindings.
         def evaluate(evaluator)
           constant = reserved_constant
           return constant if constant
 
-          name = value.to_s
-          evaluator.unsupported(self) if name.empty?
+          name = variable_name
+          evaluator.unsupported(self) unless name
 
           evaluator.value_for(name)
         end
