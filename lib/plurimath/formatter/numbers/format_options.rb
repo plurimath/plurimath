@@ -75,8 +75,9 @@ module Plurimath
         end
 
         def group
-          # Explicit nil disables grouping, mirroring the decimal contract.
-          separator_option(:group, default: DEFAULT_GROUP).to_s
+          # Unlike decimal, an explicit nil group falls back to the default
+          # separator (released 0.10.7 behavior); use "" to disable grouping.
+          (separator_option(:group, default: DEFAULT_GROUP) || DEFAULT_GROUP).to_s
         end
 
         def group_digits
