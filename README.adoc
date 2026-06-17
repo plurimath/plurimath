@@ -344,6 +344,9 @@ Binding values must be real `Numeric` values. A recognized `pi` constant
 always resolves to its numeric value and cannot be overridden by a binding
 such as `pi: 3`.
 
+Binding keys must be strings or symbols; other key types raise
+`Plurimath::Math::Evaluation::InvalidBindingKeyError`.
+
 Missing variables raise
 `Plurimath::Math::Evaluation::MissingVariableError`. Binding values that are
 not real numbers raise `Plurimath::Math::Evaluation::InvalidBindingError`.
