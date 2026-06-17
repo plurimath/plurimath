@@ -2,7 +2,7 @@
 
 module Plurimath
   class NumberFormatter
-    attr_accessor :locale, :localize_number, :localizer_symbols, :precision
+    attr_accessor :locale, :precision, :localize_number, :localizer_symbols
 
     def initialize(
       locale = "en",
@@ -39,6 +39,28 @@ module Plurimath
 
     private
 
+    # localize_number/localizer_symbols are not per-option-hardened — they feed
+    # SymbolResolver directly — so validate their types at the point of use (see
+    # #symbol_resolver). That single check covers the constructor, the public
+    # writers, and any later mutation, raising a clean ConfigurationError
+    # instead of leaking a TypeError out of SymbolResolver.
+    def validated_localize_number(value)
+      return value if value.nil? || value.is_a?(String)
+
+      raise Plurimath::ConfigurationError.new(
+        :invalid_formatter_option, option: :localize_number, value: value, supported: "a String"
+      )
+    end
+
+    def validated_localizer_symbols(value)
+      return {} if value.nil?
+      return value if value.is_a?(Hash)
+
+      raise Plurimath::ConfigurationError.new(
+        :invalid_formatter_option, option: :localizer_symbols, value: value, supported: "a Hash"
+      )
+    end
+
     def format_options(source, locale, precision, format)
       Formatter::Numbers::FormatOptions.new(
         source,
@@ -66,8 +88,8 @@ module Plurimath
     def symbol_resolver(locale)
       Formatter::Numbers::SymbolResolver.new(
         locale,
-        localizer_symbols: localizer_symbols,
-        localize_number: localize_number,
+        localizer_symbols: validated_localizer_symbols(localizer_symbols),
+        localize_number: validated_localize_number(localize_number),
       )
     end
 
@@ -76,7 +98,9 @@ module Plurimath
     end
 
     def supported_locale(locale)
-      return :en if locale.nil?
+      # Locale always falls back to :en for any unsupported value, including
+      # nil and non-string/symbol types; it never raises.
+      return :en unless locale.is_a?(String) || locale.is_a?(Symbol)
 
       Formatter::SupportedLocales::LOCALES.key?(locale.to_sym) ? locale.to_sym : :en
     end

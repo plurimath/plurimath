@@ -2041,6 +2041,123 @@ RSpec.describe Plurimath::NumberFormatter do
         it "falls back to :en for nil locale" do
           expect(formatter.localized_number("1234", locale: nil)).to eql("1,234")
         end
+
+        it "falls back to :en for non-string/symbol locale instead of crashing" do
+          [5, {}, []].each do |loc|
+            expect(formatter.localized_number("1234", locale: loc)).to eql("1,234"),
+                                                                       "expected locale #{loc.inspect} to fall back to :en"
+          end
+        end
+
+        it "rejects a non-Hash localizer_symbols" do
+          [5, "x", []].each do |value|
+            expect { described_class.new(:en, localizer_symbols: value).localized_number("1234") }
+              .to raise_error(Plurimath::ConfigurationError, /formatter option :localizer_symbols/),
+                  "expected localizer_symbols #{value.inspect} to raise"
+          end
+          expect(
+            described_class.new(:en, localizer_symbols: nil).localized_number("1234"),
+          ).to eql("1,234")
+        end
+
+        it "rejects a non-String localize_number" do
+          [5, true, []].each do |value|
+            expect { described_class.new(:en, localize_number: value).localized_number("1234") }
+              .to raise_error(Plurimath::ConfigurationError, /formatter option :localize_number/),
+                  "expected localize_number #{value.inspect} to raise"
+          end
+        end
+
+        it "rejects an invalid precision passed as a keyword argument" do
+          [-1, 1.5, true].each do |value|
+            expect { formatter.localized_number("1234.5", precision: value) }
+              .to raise_error(Plurimath::ConfigurationError, /formatter option :precision/),
+                  "expected precision kwarg #{value.inspect} to raise"
+          end
+        end
+      end
+
+      context "with enumerated option type rejection" do
+        it "rejects non-string/symbol hex_capital instead of silently ignoring it" do
+          [5, 1.5, [1], { a: 1 }].each do |value|
+            expect do
+              formatter.localized_number("48879", format: { base: 16, hex_capital: value })
+            end.to raise_error(
+              Plurimath::ConfigurationError, /formatter option :hex_capital/
+            ), "expected hex_capital #{value.inspect} to raise"
+          end
+        end
+
+        it "rejects a non-string/symbol hex_capital when it is used (base 16)" do
+          expect { formatter.localized_number("1234", format: { base: 16, hex_capital: 5 }) }
+            .to raise_error(Plurimath::ConfigurationError, /formatter option :hex_capital/)
+        end
+
+        it "still honors documented hex_capital values after type-checking" do
+          expect(formatter.localized_number("48879",
+                                            format: { base: 16, hex_capital: true,
+                                                      group_digits: 2 })).to eql("0xBE,EF")
+          expect(formatter.localized_number("48879",
+                                            format: { base: 16, hex_capital: false,
+                                                      group_digits: 2 })).to eql("0xbe,ef")
+        end
+
+        it "rejects boolean base_prefix/base_postfix when they are used (non-default base)" do
+          expect { formatter.localized_number("1234", format: { base: 16, base_prefix: true }) }
+            .to raise_error(Plurimath::ConfigurationError, /formatter option :base_prefix/)
+          expect { formatter.localized_number("1234", format: { base: 16, base_postfix: false }) }
+            .to raise_error(Plurimath::ConfigurationError, /formatter option :base_postfix/)
+        end
+      end
+
+      context "with post-construction writers" do
+        it "validates localizer_symbols and localize_number when used" do
+          [5, "x", []].each do |value|
+            formatter = described_class.new(:en)
+            formatter.localizer_symbols = value
+            expect { formatter.localized_number("1234") }
+              .to raise_error(Plurimath::ConfigurationError, /formatter option :localizer_symbols/),
+                  "expected localizer_symbols= #{value.inspect} to raise"
+          end
+          [5, true, []].each do |value|
+            formatter = described_class.new(:en)
+            formatter.localize_number = value
+            expect { formatter.localized_number("1234") }
+              .to raise_error(Plurimath::ConfigurationError, /formatter option :localize_number/),
+                  "expected localize_number= #{value.inspect} to raise"
+          end
+        end
+      end
+
+      context "with zero-source engineering notation" do
+        it "infers width for an explicit precision: 0 like the no-precision case" do
+          no_precision = formatter.localized_number("0.00", format: { notation: :engineering })
+          explicit_zero = formatter.localized_number("0.00",
+                                                     format: { notation: :engineering, precision: 0 })
+          expect(no_precision).to eql("0.00 × 10^0")
+          expect(explicit_zero).to eql(no_precision)
+        end
+
+        it "still honors an explicit positive precision for a zero source" do
+          expect(formatter.localized_number("0.00",
+                                            format: { notation: :engineering, precision: 3 }))
+            .to eql("0.000 × 10^0")
+        end
+      end
+    end
+
+    context "Standard formatter argument validation" do
+      it "rejects a non-Hash options argument" do
+        [5, "x", []].each do |value|
+          expect { Plurimath::Formatter::Standard.new(options: value) }
+            .to raise_error(Plurimath::ConfigurationError, /formatter option :options/),
+                "expected options #{value.inspect} to raise"
+        end
+      end
+
+      it "accepts nil and Hash options" do
+        expect(Plurimath::Formatter::Standard.new(options: nil).localized_number("1234")).to eql("1,234")
+        expect(Plurimath::Formatter::Standard.new(options: {}).localized_number("1234")).to eql("1,234")
       end
     end
   end
