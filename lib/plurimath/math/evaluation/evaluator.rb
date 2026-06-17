@@ -113,6 +113,9 @@ module Plurimath
 
         def normalize_bindings(bindings)
           bindings.to_hash.each_with_object({}) do |(key, value), normalized|
+            unless key.is_a?(String) || key.is_a?(Symbol)
+              raise InvalidBindingKeyError, key
+            end
             unless value.is_a?(Numeric) && value.real?
               raise InvalidBindingError.new(key, value)
             end

@@ -536,6 +536,35 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
 
+    it "rejects binding keys that are not strings or symbols" do
+      formula = Plurimath::Math.parse("a+b", :asciimath)
+
+      aggregate_failures do
+        [[:a], Object.new, 1].each do |key|
+          expect { formula.evaluate({ key => 2, b: 3 }) }
+            .to raise_error(
+              Plurimath::Math::Evaluation::InvalidBindingKeyError,
+              "wrong type for binding key " \
+              "(given #{key.class}, expected String or Symbol)",
+            )
+        end
+      end
+    end
+
+    it "names the variable consistently regardless of binding key style" do
+      formula = Plurimath::Math.parse("a+b", :asciimath)
+      message = "wrong value for variable `a` (given String, expected a real number)"
+
+      aggregate_failures do
+        expect { formula.evaluate(a: "2", b: 3) }
+          .to raise_error(Plurimath::Math::Evaluation::InvalidBindingError, message)
+        expect { formula.evaluate({ a: "2", b: 3 }) }
+          .to raise_error(Plurimath::Math::Evaluation::InvalidBindingError, message)
+        expect { formula.evaluate({ "a" => "2", "b" => 3 }) }
+          .to raise_error(Plurimath::Math::Evaluation::InvalidBindingError, message)
+      end
+    end
+
     it "raises when any subexpression is not a real number" do
       sources = [
         "root(2)(-4)",
