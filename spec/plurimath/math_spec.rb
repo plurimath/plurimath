@@ -182,4 +182,52 @@ RSpec.describe Plurimath::Math do
       end
     end
   end
+
+  describe ".render" do
+    it "raises an actionable RenderingError when lasem is unavailable" do
+      allow(Plurimath::Math::Renderer).to receive(:available?).and_return(false)
+      expect { described_class.render("sum", "asciimath", format: :svg) }
+        .to raise_error(Plurimath::RenderingError, /lasem-doctor/)
+    end
+
+    it "raises a RenderingError for an unsupported format" do
+      expect { described_class.render("sum", "asciimath", format: :gif) }
+        .to raise_error(Plurimath::RenderingError, /unsupported render format/)
+    end
+
+    it "parses then renders, forwarding format and geometry to the renderer" do
+      allow(Plurimath::Math::Renderer).to receive(:render).and_return("BYTES")
+      expect(described_class.render("sum", "asciimath", format: :png, ppi: 144))
+        .to eq("BYTES")
+      expect(Plurimath::Math::Renderer).to have_received(:render)
+        .with(a_string_matching(/<math/), format: :png, ppi: 144)
+    end
+
+    it "routes :locale to parsing and the rest to rendering" do
+      allow(Plurimath::Math::Renderer).to receive(:render).and_return("X")
+      allow(described_class).to receive(:parse).and_call_original
+      described_class.render("1,2", "asciimath", format: :svg, locale: :fr)
+      expect(described_class).to have_received(:parse)
+        .with("1,2", "asciimath", locale: :fr)
+    end
+  end
+
+  describe ".render_available?" do
+    it "delegates to the renderer when available" do
+      allow(Plurimath::Math::Renderer).to receive(:available?).and_return(true)
+      expect(described_class.render_available?).to be(true)
+    end
+
+    it "delegates to the renderer when unavailable" do
+      allow(Plurimath::Math::Renderer).to receive(:available?).and_return(false)
+      expect(described_class.render_available?).to be(false)
+    end
+
+    it "short-circuits to false under Opal without referencing the renderer" do
+      allow(Plurimath::Math::Renderer).to receive(:available?)
+      stub_const("RUBY_ENGINE", "opal")
+      expect(described_class.render_available?).to be(false)
+      expect(Plurimath::Math::Renderer).not_to have_received(:available?)
+    end
+  end
 end

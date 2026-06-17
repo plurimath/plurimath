@@ -4,6 +4,12 @@ source "https://rubygems.org"
 gemspec
 
 gem "canon"
+# Optional native image-rendering backend for `Formula#render` / `plurimath
+# render`. Git-pinned until `lasem` ships to RubyGems; intentionally NOT a
+# gemspec runtime dependency so Opal/plurimath-js and lasem-less installs keep
+# working. For local dev against an in-progress checkout:
+#   bundle config set --local local.lasem /path/to/lasem-ruby
+gem "lasem", github: "plurimath/lasem-ruby", branch: "feat/bootstrap-lasem-wrapper", submodules: true
 #gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "oga"
 #gem "omml", github: "plurimath/omml", branch: "main"

@@ -393,6 +393,34 @@ options:)
           ],
         )
       end
+
+      # Render this formula to a binary image string via the optional `lasem`
+      # gem (https://github.com/plurimath/lasem-ruby).
+      #
+      # +format+ is the output image format, one of :svg, :png, :pdf, :ps.
+      #
+      # Remaining keyword options are split between the two stages:
+      #   * to_mathml options (forwarded to #to_mathml): :intent, :formatter,
+      #     :unitsml, :split_on_linebreak, :display_style,
+      #     :unary_function_spacing. When :display_style is omitted the
+      #     formula's own displaystyle is used.
+      #   * lasem geometry options (forwarded to the renderer): :ppi, :zoom,
+      #     :width, :height, :offset_x, :offset_y. Omit them for lasem defaults.
+      # Unrecognized keyword options are ignored.
+      #
+      # Raises Plurimath::RenderingError when lasem / its native extension is
+      # unavailable, the format is unsupported, or rendering fails. A malformed
+      # formula surfaces as Plurimath::Math::ParseError from #to_mathml, not as
+      # RenderingError. Note: :split_on_linebreak emits multiple <math> roots,
+      # which lasem cannot render as a single document.
+      def render(format: :svg, **opts)
+        mathml = to_mathml(**opts.slice(*Renderer::MATHML_OPTIONS).compact)
+        Renderer.render(
+          mathml,
+          format: format,
+          **opts.slice(*Renderer::LASEM_OPTIONS),
+        )
+      end
       # Attributes end
 
       protected
