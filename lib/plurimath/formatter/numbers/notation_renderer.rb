@@ -112,9 +112,9 @@ module Plurimath
         def engineering_precision(source, coefficient)
           # precision: 0 is intentionally not literal here; it infers.
           return precision if options.explicit_precision? && precision.positive?
-          # Zero sources skip the engineering shift; the resolved precision
-          # already carries their stated fraction width.
-          return precision if source.decimal.zero?
+          # Zero sources carry their stated fraction width; an explicit
+          # precision: 0 still infers (consistent with non-zero engineering).
+          return source.notation_precision if source.decimal.zero?
 
           integer_length = coefficient.integer_digits.length
           budget = [options.significant, options.digit_count].max
