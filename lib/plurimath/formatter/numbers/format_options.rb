@@ -194,9 +194,11 @@ module Plurimath
           value = symbols[key]
           return if value.nil?
 
-          invalid_option!(key, value) if [true, false].include?(value)
+          # Enumerated/symbol options accept only String or Symbol; reject
+          # other types (and booleans) instead of coercing arbitrary input.
+          invalid_option!(key, value) unless value.is_a?(String) || value.is_a?(Symbol)
 
-          value.to_s.to_sym
+          value.to_sym
         end
 
         def invalid_option!(key, value, expected: nil)
