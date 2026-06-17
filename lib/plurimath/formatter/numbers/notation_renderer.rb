@@ -107,11 +107,10 @@ module Plurimath
         # The inferred budget covers the source's significant digits; the
         # engineering shift moves one to three of them into the integer part
         # (per exponent mod 3), so the fraction budget must subtract the
-        # shifted integer width. Only an explicitly requested precision
-        # (including 0) is taken as a literal fraction width.
+        # shifted integer width. Only a positive explicit precision is taken
+        # as a literal fraction width; precision: 0 falls through to inference.
         def engineering_precision(source, coefficient)
-          # precision: 0 falls through to inference for engineering (released
-          # 0.10.7 behavior); only a positive explicit precision is literal.
+          # precision: 0 is intentionally not literal here; it infers.
           return precision if options.explicit_precision? && precision.positive?
           # Zero sources skip the engineering shift; the resolved precision
           # already carries their stated fraction width.

@@ -582,8 +582,9 @@ Option values follow a common handling policy:
   `base_postfix`) accept free-form strings. An explicitly passed `nil`
   disables the separator — for `decimal` this renders the digits without a
   decimal mark, and output correctness is then the caller's responsibility.
-  For `padding`, `nil` falls back to the default `0` pad character instead.
-  Boolean values raise `Plurimath::ConfigurationError`.
+  One exception: `group: nil` falls back to the default separator instead of
+  disabling (use `group: ""` to disable grouping). Boolean values raise
+  `Plurimath::ConfigurationError`.
 * Enumerated options (`notation`, `number_sign`, `exponent_sign`,
   `hex_capital`) accept their documented values as `Symbol` or `String`;
   unrecognized `String`/`Symbol` values fall back to the default behavior.
