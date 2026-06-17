@@ -76,7 +76,7 @@ module Plurimath
 
         def group
           # Unlike decimal, an explicit nil group falls back to the default
-          # separator (released 0.10.7 behavior); use "" to disable grouping.
+          # separator; use "" to disable grouping.
           (separator_option(:group, default: DEFAULT_GROUP) || DEFAULT_GROUP).to_s
         end
 
