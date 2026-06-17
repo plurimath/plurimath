@@ -183,6 +183,22 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       end
     end
 
+    it "rejects non-string, non-symbol values for symbol-typed options" do
+      [5, 1.5, {}, []].each do |value|
+        expect { described_class.new(symbols: { notation: value }) }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :notation/),
+              "expected notation to reject #{value.inspect}"
+        expect { described_class.new(symbols: { number_sign: value }).number_sign }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :number_sign/),
+              "expected number_sign to reject #{value.inspect}"
+      end
+    end
+
+    it "accepts string and symbol values for symbol-typed options" do
+      expect(described_class.new(symbols: { notation: "scientific" }).notation).to eq(:scientific)
+      expect(described_class.new(symbols: { notation: :scientific }).notation).to eq(:scientific)
+    end
+
     it "normalizes numeric base forms and leaves unsupported values raw" do
       expect(described_class.new(symbols: { base: "16" }).base).to eq(16)
       expect(described_class.new(symbols: { base: :"16" }).base).to eq(16)
