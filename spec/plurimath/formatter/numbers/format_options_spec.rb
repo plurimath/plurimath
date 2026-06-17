@@ -58,7 +58,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
     end
 
     it "normalizes hex_capital option values" do
-      expectations = { true => true, false => nil, nil => nil, 1 => nil }
+      expectations = { true => true, false => nil, nil => nil }
       string_forms = {
         "true" => true,
         "numbers_only" => :numbers_only,
@@ -75,6 +75,14 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
 
         expect(options.hex_capital).to eq(expected),
                                        "expected hex_capital #{value.inspect} to normalize to #{expected.inspect}"
+      end
+    end
+
+    it "rejects non-boolean, non-string, non-symbol hex_capital values" do
+      [5, 1.5, {}, []].each do |value|
+        expect { described_class.new(symbols: { hex_capital: value }).hex_capital }
+          .to raise_error(Plurimath::ConfigurationError, /formatter option :hex_capital/),
+              "expected hex_capital #{value.inspect} to raise"
       end
     end
 
@@ -104,6 +112,9 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
     end
 
     it "rejects junk, boolean, float, and negative count values" do
+      # Non-whole Floats (1.5) are rejected in both MRI and Opal. Whole-valued
+      # Floats (2.0) are NOT listed: under Opal they equal their Integer and
+      # can't be rejected, so asserting a raise would fail the Opal suite.
       invalid_values = ["abc", true, 1.5, -1, ""]
       invalid_values.each do |value|
         expect { described_class.new(symbols: { significant: value }).significant }
