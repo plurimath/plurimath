@@ -473,6 +473,20 @@ RSpec.describe Plurimath::Math::Formula do
         expect(formula.evaluate).to eq(8)
       end
 
+      it "rejects an operator symbol in operand position rather than binding it" do
+        formula = described_class.new(
+          [Plurimath::Math::Number.new("1"),
+           Plurimath::Math::Symbols::Plus.new,
+           Plurimath::Math::Symbols::Symbol.new("*"),
+           Plurimath::Math::Number.new("2")],
+        )
+
+        expect { formula.evaluate }.to raise_error(
+          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          "unsupported expression: symbol `*`",
+        )
+      end
+
       it "raises when a flat power token produces a non-real number" do
         formula = described_class.new(
           [Plurimath::Math::Number.new("1"),

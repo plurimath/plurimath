@@ -373,6 +373,11 @@ namespace: "m")
         false
       end
 
+      def operator?
+        plus_operator? || minus_operator? || multiply_operator? ||
+          divide_operator? || power_operator?
+      end
+
       def reserved_constant
         nil
       end
