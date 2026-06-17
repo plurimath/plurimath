@@ -109,8 +109,13 @@ module Plurimath
         end
 
         # Some parser paths emit basic operators as generic symbols instead
-        # of their semantic classes, so the generic symbol answers from its
-        # own value.
+        # of their semantic classes, and a hand-built Formula may hold any of
+        # them, so the generic symbol answers for every operator from its own
+        # value (parsed `+`/`^` arrive as Plus/Hat, so these are inert there).
+        def plus_operator?
+          value == "+"
+        end
+
         def minus_operator?
           value == "-"
         end
@@ -121,6 +126,10 @@ module Plurimath
 
         def divide_operator?
           value == "/"
+        end
+
+        def power_operator?
+          value == "^"
         end
 
         # A plain symbol names a variable through its `value`. Symbol
