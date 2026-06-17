@@ -169,15 +169,9 @@ module Plurimath
         end
 
         def operand_start?(node)
-          return false if node.nil? || operator?(node)
+          return false if node.nil? || node.operator?
 
           !close_paren?(node)
-        end
-
-        def operator?(node)
-          node.plus_operator? || node.minus_operator? ||
-            node.multiply_operator? || node.divide_operator? ||
-            node.power_operator?
         end
 
         def take?(operator)

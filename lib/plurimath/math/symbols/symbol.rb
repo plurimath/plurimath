@@ -136,7 +136,7 @@ module Plurimath
         # subclasses (Pi, Plus, ...) carry no `value`, so they return nil here
         # and are never treated as variables.
         def variable_name
-          return if reserved_constant || value.nil? || value.empty?
+          return if reserved_constant || value.nil? || value.empty? || operator?
 
           value
         end
