@@ -83,7 +83,7 @@ module Plurimath
 
         # Comma-separated argument lists for functions like `max(2,3)`.
         def evaluate_arguments(nodes)
-          comma_separated(Array(nodes)).map { |segment| evaluate_nodes(segment) }
+          split_on_commas(Array(nodes)).map { |segment| evaluate_nodes(segment) }
         end
 
         def function_arguments(node)
@@ -124,7 +124,7 @@ module Plurimath
           end
         end
 
-        def comma_separated(nodes)
+        def split_on_commas(nodes)
           nodes.each_with_object([[]]) do |node, segments|
             node.is_a?(Symbols::Comma) ? segments << [] : segments.last << node
           end
