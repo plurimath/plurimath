@@ -174,8 +174,8 @@ module Plurimath
           !close_paren?(node)
         end
 
-        def take?(operator)
-          return false if eof? || !current.public_send(operator)
+        def take?(predicate)
+          return false if eof? || !current.public_send(predicate)
 
           advance
           true

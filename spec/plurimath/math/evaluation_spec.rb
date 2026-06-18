@@ -433,7 +433,7 @@ RSpec.describe Plurimath::Math::Formula do
       end
 
       {
-        "an empty-string text" => Plurimath::Math::Function::Text.new(nil),
+        "a nil text" => Plurimath::Math::Function::Text.new(nil),
         "an array-valued text" => Plurimath::Math::Function::Text.new(%w[a b]),
         "an empty symbol" => Plurimath::Math::Symbols::Symbol.new(""),
         "an operator symbol" => Plurimath::Math::Symbols::Plus.new,
