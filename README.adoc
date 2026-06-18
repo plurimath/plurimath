@@ -585,11 +585,13 @@ Option values follow a common handling policy:
   One exception: `group: nil` falls back to the default separator instead of
   disabling (use `group: ""` to disable grouping). Boolean values raise
   `Plurimath::ConfigurationError`.
-* Enumerated options (`notation`, `number_sign`, `exponent_sign`,
-  `hex_capital`) accept their documented values as `Symbol` or `String`;
-  unrecognized `String`/`Symbol` values fall back to the default behavior.
-  Boolean values raise `Plurimath::ConfigurationError`, except for
-  `hex_capital`, where `true`/`false` are documented values.
+* Enumerated options (`notation`, `number_sign`, `exponent_sign`, `e`,
+  `times`, `hex_capital`) accept their documented values as `Symbol` or
+  `String`; unrecognized `String`/`Symbol` values fall back to the default
+  behavior. Any other type raises `Plurimath::ConfigurationError` — including
+  Boolean, except for `hex_capital`, where `true`/`false` are documented values.
+* The `locale` always falls back to `:en` for unsupported or wrong-typed
+  values; it never raises.
 * Invalid number input raises `Plurimath::Formatter::InvalidNumber`.
 
 Available options are explained below.
