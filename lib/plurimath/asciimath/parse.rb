@@ -2,7 +2,7 @@
 
 module Plurimath
   class Asciimath
-    class Parse < Parslet::Parser
+    class Parse < Parsanol::Parser
       rule(:td)     { expression.as(:td) }
       rule(:base)   { str("__|").absent? >> str("_") }
       rule(:power)  { str("^") }
@@ -196,10 +196,6 @@ module Plurimath
         end
       end
 
-      def decimal_marker
-        str(Plurimath.configuration.decimal)
-      end
-
       def unary_functions(first_value)
         if ["'underbrace'", "'ubrace'"].include?(first_value.to_s)
           (first_value.as(:unary_class) >> space? >> str("_").as(:symbol)).as(:unary) |
@@ -208,6 +204,10 @@ module Plurimath
           (first_value.as(:unary_class).as(:power_base) >> space? >> power_base).as(:unary) |
             (first_value.as(:unary_class) >> space? >> sequence.maybe).as(:unary)
         end
+      end
+
+      def decimal_marker
+        str(Plurimath.configuration.decimal)
       end
     end
   end

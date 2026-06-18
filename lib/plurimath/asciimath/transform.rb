@@ -2,7 +2,7 @@
 
 module Plurimath
   class Asciimath
-    class Transform < Parslet::Transform
+    class Transform < Parsanol::Transform
       rule(mod: simple(:mod))       { mod }
       rule(frac: simple(:frac))     { frac }
       rule(unary: simple(:unary))   { unary }
@@ -69,7 +69,7 @@ module Plurimath
       end
 
       rule(text: simple(:text)) do
-        text.is_a?(Slice) ? Utility.get_class("text").new(text) : text
+        text.is_a?(Parsanol::Slice) ? Utility.get_class("text").new(text) : text
       end
 
       rule(text: sequence(:text)) do
@@ -736,7 +736,7 @@ module Plurimath
       rule(ternary_class: simple(:function),
            base: simple(:base),
            third_value: simple(:third)) do
-        third_value = third.is_a?(Slice) ? nil : third
+        third_value = third.is_a?(Parsanol::Slice) ? nil : third
         Utility.get_class(function).new(
           Utility.unfenced_value(base),
           nil,
@@ -773,7 +773,7 @@ module Plurimath
       rule(ternary_class: simple(:function),
            power: simple(:power),
            third_value: simple(:third)) do
-        third_value = third.is_a?(Slice) ? nil : third
+        third_value = third.is_a?(Parsanol::Slice) ? nil : third
         Utility.get_class(function).new(
           nil,
           Utility.unfenced_value(power),
@@ -785,7 +785,7 @@ module Plurimath
            base_value: simple(:base),
            power_value: simple(:power),
            third_value: simple(:third)) do
-        third_value = third.is_a?(Slice) ? nil : third
+        third_value = third.is_a?(Parsanol::Slice) ? nil : third
         Utility.get_class(function).new(
           Utility.unfenced_value(base),
           Utility.unfenced_value(power),
@@ -797,7 +797,7 @@ module Plurimath
            base_value: simple(:base),
            power_value: simple(:power),
            third_value: sequence(:third)) do
-        third_value = third.is_a?(Slice) ? nil : third
+        third_value = third.is_a?(Parsanol::Slice) ? nil : third
         Utility.get_class(function).new(
           Utility.unfenced_value(base),
           Utility.unfenced_value(power),
@@ -1008,7 +1008,7 @@ module Plurimath
       rule(lparen: simple(:lparen),
            expr: simple(:expr),
            rparen: simple(:rparen)) do
-        form_value = if expr.is_a?(Slice)
+        form_value = if expr.is_a?(Parsanol::Slice)
                        expr.to_s.empty? ? nil : [expr]
                      else
                        [expr]
