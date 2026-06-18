@@ -319,8 +319,11 @@ superscript such as `log_2^3(8)` raises the result to that power. `mod`,
 `max`, `min`, `gcd`, and `lcm` are supported (`gcd`/`lcm` require integer
 arguments), as are bounded `sum` and `prod` with integer bounds — empty
 ranges follow the standard conventions of `0` for sums and `1` for products,
-the iteration index shadows any outer binding of the same name, and ranges
-are limited to 1,000,000 steps.
+and the iteration index shadows any outer binding of the same name. Ranges
+are capped at `Plurimath.configuration.evaluation_max_iterations` (default
+1,000,000) to guard against runaway loops; set it (globally via
+`Plurimath.configure` or scoped via `Plurimath.with_configuration`) to a
+larger value, or to `nil` to remove the cap.
 
 `pi` resolves to the constant from each syntax's pi symbol — `pi` in
 AsciiMath, `\pi` in LaTeX, and the `π` symbol (or `&#x3c0;` entity) in the

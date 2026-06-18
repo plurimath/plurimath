@@ -322,6 +322,23 @@ RSpec.describe Plurimath::Math::Formula do
         source = Plurimath::Math.parse("prod_(i=1)^4 i", :asciimath).to_omml
         expect(evaluate(source, :omml)).to eq(24)
       end
+
+      it "honors a scoped iteration cap from configuration" do
+        Plurimath.with_configuration do |config|
+          config.evaluation_max_iterations = 2
+          expect { evaluate("sum_(i=1)^5 i") }.to raise_error(
+            Plurimath::Math::Evaluation::UnsupportedExpressionError,
+            "unsupported expression: iteration range larger than 2 steps",
+          )
+        end
+      end
+
+      it "imposes no cap when configuration disables it" do
+        Plurimath.with_configuration do |config|
+          config.evaluation_max_iterations = nil
+          expect(evaluate("sum_(i=1)^5 i")).to eq(15)
+        end
+      end
     end
 
     context "with implicit multiplication by juxtaposition" do
