@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Plurimath
-  VERSION = "0.10.9.pre.1"
+  VERSION = "0.11.0"
 end
