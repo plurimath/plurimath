@@ -7,8 +7,6 @@ module Plurimath
       # validates the integer bounds and step limit, then folds the body with
       # the index temporarily bound.
       class Iteration
-        LIMIT = 1_000_000
-
         def initialize(evaluator, lower, upper, body)
           @evaluator = evaluator
           @lower = lower
@@ -50,9 +48,10 @@ module Plurimath
             raise MathDomainError, "iteration bounds must be integers"
           end
 
-          return unless (to - from + 1) > LIMIT
+          limit = Plurimath.configuration.evaluation_max_iterations
+          return if limit.nil? || (to - from + 1) <= limit
 
-          evaluator.unsupported("iteration range larger than #{LIMIT} steps")
+          evaluator.unsupported("iteration range larger than #{limit} steps")
         end
 
         def body_value(name, index)
