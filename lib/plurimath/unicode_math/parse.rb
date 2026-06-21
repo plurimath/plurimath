@@ -12,8 +12,10 @@ module Plurimath
       rule(:an)  { an_math | an_other }
       rule(:box) { str("□") >> operand }
 
-      rule(:char) { (absent_chars >> unicode.as(:unicode_symbols)) }
-      rule(:rows) { (str("@").as(:tr) >> space? >> rows.as(:trs).maybe) | (row.as(:tr) >> space? >> str("@") >> space? >> rows.as(:trs).maybe) | row.as(:tr) }
+      rule(:char) { absent_chars >> unicode.as(:unicode_symbols) }
+      rule(:rows) do
+        (str("@").as(:tr) >> space? >> rows.as(:trs).maybe) | (row.as(:tr) >> space? >> str("@") >> space? >> rows.as(:trs).maybe) | row.as(:tr)
+      end
 
       rule(:space) { match(/\s/).repeat(1) | invisible_times }
       rule(:other) { other_absent >> alphanumeric.as(:symbol) }
@@ -25,43 +27,81 @@ module Plurimath
       rule(:n_ascii) { match["0-9"].repeat(1).as(:number) }
       rule(:a_ascii) { match["A-Za-z"].repeat(1).as(:symbol) }
       rule(:unicode) { str("&#x") >> match["0-9a-fA-F"].repeat >> str(";") }
-      rule(:an_math) { space.absent? >> match("[\u{1D400}-\u{1D7FF}\u{2102}-\u{2134}]") }
+      rule(:an_math) do
+        space.absent? >> match("[\u{1D400}-\u{1D7FF}\u{2102}-\u{2134}]")
+      end
 
-      rule(:td_value) { expression.as(:exp) >> space? >> td_value.as(:expr).maybe }
-      rule(:an_other) { (an_math | n_ascii).absent? >> alphanumeric.as(:alphanumeric) }
-      rule(:function) { root_functions | box | hbrack | arg_function | intent_function }
-      rule(:op_array) { op_matrixs | op_prefixed_matrixs | str("&") | str("&#xb;") | str("\\array") }
+      rule(:td_value) do
+        expression.as(:exp) >> space? >> td_value.as(:expr).maybe
+      end
+      rule(:an_other) do
+        (an_math | n_ascii).absent? >> alphanumeric.as(:alphanumeric)
+      end
+      rule(:function) do
+        root_functions | box | hbrack | arg_function | intent_function
+      end
+      rule(:op_array) do
+        op_matrixs | op_prefixed_matrixs | str("&") | str("&#xb;") | str("\\array")
+      end
 
-      rule(:op_opener) { open_paren | op_open_unicode | op_open_paren | op_open }
-      rule(:op_closer) { op_close_unicode | close_paren | op_close_paren | op_close }
+      rule(:op_opener) do
+        open_paren | op_open_unicode | op_open_paren | op_open
+      end
+      rule(:op_closer) do
+        op_close_unicode | close_paren | op_close_paren | op_close
+      end
 
       rule(:op_decimal) { decimal_marker | str(",") | str(".") }
-      rule(:diacritics) { (char.as(:char) >> diacritics.as(:diacritics)) | char.as(:char) }
-      rule(:open_paren) { (op_masked_open >> (op_closer | op_opener)).as(:open_paren) | op_masked_open }
+      rule(:diacritics) do
+        (char.as(:char) >> diacritics.as(:diacritics)) | char.as(:char)
+      end
+      rule(:open_paren) do
+        (op_masked_open >> (op_closer | op_opener)).as(:open_paren) | op_masked_open
+      end
 
-      rule(:matrix_only) { non_matrixs_absence? >> (op_matrixs | op_prefixed_matrixs) }
-      rule(:close_paren) { (op_masked_close >> (op_opener | op_closer)).as(:close_paren) | op_masked_close }
+      rule(:matrix_only) do
+        non_matrixs_absence? >> (op_matrixs | op_prefixed_matrixs)
+      end
+      rule(:close_paren) do
+        (op_masked_close >> (op_opener | op_closer)).as(:close_paren) | op_masked_close
+      end
 
       rule(:diacriticbase) { an | n_ascii }
       rule(:forward_slash) { str("/") | str("&#x2f;") | str("&#x2044;") }
 
       rule(:root_functions) { qdrt | cbrt | sqrt | binary_root | nthrt }
       rule(:op_over_choose) { (str("\\choose") | str("&#x249e;")).as(:choose) }
-      rule(:op_masked_open) { (str("\\left") | str("\\open") | str("&#x251c;")).as(:paren_open_prefix) >> digits.as(:open_paren_mask).maybe }
+      rule(:op_masked_open) do
+        (str("\\left") | str("\\open") | str("&#x251c;")).as(:paren_open_prefix) >> digits.as(:open_paren_mask).maybe
+      end
 
-      rule(:invisible_times) { (str("&#x2062;") | str("&#x2061;") | str("&#x20;") | str("\\itimes") >> space?) }
+      rule(:invisible_times) do
+        str("&#x2062;") | str("&#x2061;") | str("&#x20;") | (str("\\itimes") >> space?)
+      end
 
-      rule(:ordinary_symbols) { op_ordinary_symbols | op_prefixed_ordinary_symbols }
+      rule(:ordinary_symbols) do
+        op_ordinary_symbols | op_prefixed_ordinary_symbols
+      end
       rule(:interval_a_ascii) { match["A-Za-z"].as(:symbol).repeat(1) }
 
-      rule(:negatable_symbols) { forward_slash >> negated | negated >> str("&#x338;") }
-      rule(:invisible_unicode) { str("&#x2592;") | (str("\\naryand") | str("\\of") >> space?) }
+      rule(:negatable_symbols) do
+        (forward_slash >> negated) | (negated >> str("&#x338;"))
+      end
+      rule(:invisible_unicode) do
+        str("&#x2592;") | (str("\\naryand") | (str("\\of") >> space?))
+      end
 
       rule(:invisible_unicode?) { invisible_unicode.maybe }
-      rule(:relational_symbols) { op_relational_unicode | op_relational_symbols }
+      rule(:relational_symbols) do
+        op_relational_unicode | op_relational_symbols
+      end
 
-      rule(:hbrack_power_base_check)  { (sub_sup_operand >> (power_symbol | base_symbol)).present? }
-      rule(:spaced_bracketed_operand) { operand >> space? >> spaced_bracketed_operand.as(:expr).maybe }
+      rule(:hbrack_power_base_check) do
+        (sub_sup_operand >> (power_symbol | base_symbol)).present?
+      end
+      rule(:spaced_bracketed_operand) do
+        operand >> space? >> spaced_bracketed_operand.as(:expr).maybe
+      end
 
       rule(:hbrack) do
         (op_h_brackets >> str("(").present? >> exp_bracket.as(:first_value)) |
@@ -76,15 +116,15 @@ module Plurimath
           op_prefixed_ordinary_negated |
           op_ordinary_negated |
           binary_negated |
-          absent_negated_unicodes >> unicode.as(:negated_operator)
+          (absent_negated_unicodes >> unicode.as(:negated_operator))
         )
       end
 
       rule(:op_over) do
         str("&#x2044;").as(:bevelled) |
-          slash >> (str("sdiv") | str("sdivide") | str("sfrac")).as(:bevelled) |
+          (slash >> (str("sdiv") | str("sdivide") | str("sfrac")).as(:bevelled)) |
           str("&#x2298;").as(:no_display_style) |
-          slash >> (str("ndiv") | str("oslash")).as(:no_display_style) |
+          (slash >> (str("ndiv") | str("oslash")).as(:no_display_style)) |
           (str("&#x2215;") | str("\\ldiv")).as(:ldiv) |
           forward_slash |
           str("\\over") |
@@ -95,14 +135,14 @@ module Plurimath
       end
 
       rule(:element_exp_script_validation?) do
-        (((op_unary_functions | unary_arg_functions).absent? >> atom.as(:factor).maybe) >> (mini_sub_sup_present? >> operator >> mini_fraction.present?).absent?)
+        ((op_unary_functions | unary_arg_functions).absent? >> atom.as(:factor).maybe) >> (mini_sub_sup_present? >> operator >> mini_fraction.present?).absent?
       end
 
       rule(:spaced_exp_bracket) do
-        expression >> space? >> spaced_exp_bracket.as(:exp) |
-          mid_symbols >> space? >> spaced_exp_bracket.as(:expr) |
-          str("&#x2212;").as(:symbol) >> space? >> spaced_exp_bracket.as(:expr) |
-          expression >> space?
+        (expression >> space? >> spaced_exp_bracket.as(:exp)) |
+          (mid_symbols >> space? >> spaced_exp_bracket.as(:expr)) |
+          (str("&#x2212;").as(:symbol) >> space? >> spaced_exp_bracket.as(:expr)) |
+          (expression >> space?)
       end
 
       rule(:row) do
@@ -117,8 +157,8 @@ module Plurimath
       end
 
       rule(:slashed_operator) do
-        absent_slashed_values >> str("\\") >> (str("\\") | unicode | (n_ascii | a_ascii).repeat(1) | any).as(:slashed_value) |
-          absent_slashed_values >> str("\\").as(:slashed_value)
+        (absent_slashed_values >> str("\\") >> (str("\\") | unicode | (n_ascii | a_ascii).repeat(1) | any).as(:slashed_value)) |
+          (absent_slashed_values >> str("\\").as(:slashed_value))
       end
 
       rule(:number) do
@@ -128,10 +168,10 @@ module Plurimath
       end
 
       rule(:numerator) do
-        (relational_symbols.absent? | exp_script.present?) >>  (
+        (relational_symbols.absent? | exp_script.present?) >> (
           (unary_arg_functions >> numerator.as(:recursive_numerator).maybe) |
-          ((absent_numerator_exp_script? >> op_nary.absent?) >> mini_fraction_exp_script_absent? >> exp_script >> space) >> numerator.as(:recursive_numerator).maybe |
-          (absent_numerator_exp_script? >> mini_fraction_exp_script_absent? >> exp_script) >> numerator.as(:recursive_numerator).maybe |
+          (((absent_numerator_exp_script? >> op_nary.absent?) >> mini_fraction_exp_script_absent? >> exp_script >> space) >> numerator.as(:recursive_numerator).maybe) |
+          ((absent_numerator_exp_script? >> mini_fraction_exp_script_absent? >> exp_script) >> numerator.as(:recursive_numerator).maybe) |
           (accents.as(:base) >> accents_subsup).as(:accents_subsup) |
           sub_paren |
           sup_paren |
@@ -139,7 +179,7 @@ module Plurimath
           unary_arg_functions |
           (frac_binary_absent >> numerator.as(:recursive_numerator)) |
           (factor >> frac_binary_absent.maybe >> numerator.as(:recursive_numerator).maybe) |
-          operator.absent? >> operand >> frac_binary_absent.maybe |
+          (operator.absent? >> operand >> frac_binary_absent.maybe) |
           frac_binary_absent
         )
       end
@@ -172,9 +212,9 @@ module Plurimath
       end
 
       rule(:interval_exp_bracket) do
-        str("(").as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> str("]").as(:close_paren) |
-        str("[").as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> str(")").as(:close_paren) |
-        (str("[") | str("]")).as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> (str("[") | str("]")).as(:close_paren)
+        (str("(").as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> str("]").as(:close_paren)) |
+          (str("[").as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> str(")").as(:close_paren)) |
+          ((str("[") | str("]")).as(:open_paren) >> interval_value.as(:left_value) >> str(",").as(:comma) >> interval_value.as(:right_value) >> (str("[") | str("]")).as(:close_paren))
       end
 
       rule(:interval_value) do
@@ -191,15 +231,15 @@ module Plurimath
       end
 
       rule(:denominator) do
-        operator.absent? >> fraction.as(:frac) |
+        (operator.absent? >> fraction.as(:frac)) |
           exp_script |
           sub_paren |
           sup_paren |
-          frac_binary_absent >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator) |
-          operator.absent? >> factor >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator) |
-          operator.absent? >> operand >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator) |
+          (frac_binary_absent >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator)) |
+          (operator.absent? >> factor >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator)) |
+          (operator.absent? >> operand >> invisible_times.maybe >> relational_symbols.absent? >> denominator.as(:recursive_denominator)) |
           frac_binary_absent |
-          operator.absent? >> operand
+          (operator.absent? >> operand)
       end
 
       rule(:op_masked_close) do
@@ -207,10 +247,10 @@ module Plurimath
       end
 
       rule(:element) do
-        accents.present? >> (accents.as(:base) >> accents_subsup).as(:accents_subsup) |
-          accents.present? >> fraction.as(:frac) |
+        (accents.present? >> (accents.as(:base) >> accents_subsup).as(:accents_subsup)) |
+          (accents.present? >> fraction.as(:frac)) |
           ((op_unary_functions | unary_arg_functions).present? >> fraction.as(:frac)) |
-          mini_sub_sup_present? >> operator >> mini_fraction.as(:frac) |
+          (mini_sub_sup_present? >> operator >> mini_fraction.as(:frac)) |
           accents |
           diacritics_accents |
           op_unicode_fractions |
@@ -218,7 +258,7 @@ module Plurimath
           monospace_fonts |
           array |
           exp_script |
-          element_exp_script_validation? >> space? >> exp_script |
+          (element_exp_script_validation? >> space? >> exp_script) |
           unary_arg_functions |
           combined_symbols |
           wrapper_symbols |
@@ -232,13 +272,13 @@ module Plurimath
       end
 
       rule(:expression) do
-        element >> other.as(:other) >> expression.as(:expr) |
-          element >> relational_symbols >> expression.as(:expr).maybe |
+        (element >> other.as(:other) >> expression.as(:expr)) |
+          (element >> relational_symbols >> expression.as(:expr).maybe) |
           element |
-          element >> space? >> expression.as(:expr) |
-          slashed_operator >> space? >> expression.as(:expr).maybe |
-          element >> space? >> expression.as(:expr) >> space? >> expression.as(:expression).maybe |
-          mini_values >> space? >> expression.as(:expr).maybe
+          (element >> space? >> expression.as(:expr)) |
+          (slashed_operator >> space? >> expression.as(:expr).maybe) |
+          (element >> space? >> expression.as(:expr) >> space? >> expression.as(:expression).maybe) |
+          (mini_values >> space? >> expression.as(:expr).maybe)
       end
 
       root :expression

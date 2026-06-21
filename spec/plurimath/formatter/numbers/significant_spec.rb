@@ -55,7 +55,9 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
     end
 
     context "with boundary rounding" do
-      let(:symbols) { { decimal: ".", group: "", group_digits: 10, significant: 2 } }
+      let(:symbols) do
+        { decimal: ".", group: "", group_digits: 10, significant: 2 }
+      end
 
       it "rounds fractional values across leading zeros" do
         parts = Plurimath::Formatter::Numbers::Source.new("0.0999").to_parts
@@ -77,7 +79,9 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
     end
 
     context "when the significant count is already met" do
-      let(:symbols) { { decimal: ".", group: "", group_digits: 10, significant: 4 } }
+      let(:symbols) do
+        { decimal: ".", group: "", group_digits: 10, significant: 4 }
+      end
 
       it "keeps the rounded significant digits" do
         parts = Plurimath::Formatter::Numbers::Source.new("123.456").to_parts

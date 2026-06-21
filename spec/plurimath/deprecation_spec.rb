@@ -133,7 +133,9 @@ RSpec.describe Plurimath::Deprecation do
       described_class.warn(feature: "test.notices_b")
 
       expect(described_class.notices).to all(be_a(Plurimath::DeprecationError))
-      expect(described_class.notices.map(&:feature)).to contain_exactly("test.notices_a", "test.notices_b")
+      expect(described_class.notices.map(&:feature)).to contain_exactly(
+        "test.notices_a", "test.notices_b"
+      )
     end
   end
 
