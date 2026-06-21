@@ -80,8 +80,11 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
 
     it "rejects non-boolean, non-string, non-symbol hex_capital values" do
       [5, 1.5, {}, []].each do |value|
-        expect { described_class.new(symbols: { hex_capital: value }).hex_capital }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :hex_capital/),
+        expect do
+          described_class.new(symbols: { hex_capital: value }).hex_capital
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :hex_capital/),
               "expected hex_capital #{value.inspect} to raise"
       end
     end
@@ -117,23 +120,41 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       # can't be rejected, so asserting a raise would fail the Opal suite.
       invalid_values = ["abc", true, 1.5, -1, ""]
       invalid_values.each do |value|
-        expect { described_class.new(symbols: { significant: value }).significant }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :significant/),
+        expect do
+          described_class.new(symbols: { significant: value }).significant
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :significant/),
               "expected significant to reject #{value.inspect}"
-        expect { described_class.new(symbols: { digit_count: value }).digit_count }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :digit_count/),
+        expect do
+          described_class.new(symbols: { digit_count: value }).digit_count
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :digit_count/),
               "expected digit_count to reject #{value.inspect}"
-        expect { described_class.new(symbols: { group_digits: value }).group_digits }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :group_digits/),
+        expect do
+          described_class.new(symbols: { group_digits: value }).group_digits
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :group_digits/),
               "expected group_digits to reject #{value.inspect}"
-        expect { described_class.new(symbols: { fraction_group_digits: value }).fraction_group_digits }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :fraction_group_digits/),
+        expect do
+          described_class.new(symbols: { fraction_group_digits: value }).fraction_group_digits
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :fraction_group_digits/),
               "expected fraction_group_digits to reject #{value.inspect}"
-        expect { described_class.new(symbols: { padding_digits: value }).padding_digits }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :padding_digits/),
+        expect do
+          described_class.new(symbols: { padding_digits: value }).padding_digits
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :padding_digits/),
               "expected padding_digits to reject #{value.inspect}"
-        expect { described_class.new(symbols: { padding_group_digits: value }).padding_group_digits }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :padding_group_digits/),
+        expect do
+          described_class.new(symbols: { padding_group_digits: value }).padding_group_digits
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :padding_group_digits/),
               "expected padding_group_digits to reject #{value.inspect}"
       end
     end
@@ -163,17 +184,29 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       booleans = [true, false]
       booleans.each do |value|
         expect { described_class.new(symbols: { decimal: value }).decimal }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :decimal/)
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :decimal/)
         expect { described_class.new(symbols: { group: value }).group }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :group/)
-        expect { described_class.new(symbols: { fraction_group: value }).fraction_group }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :fraction_group/)
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :group/)
+        expect do
+          described_class.new(symbols: { fraction_group: value }).fraction_group
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :fraction_group/)
         expect { described_class.new(symbols: { padding: value }).padding }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :padding/)
-        expect { described_class.new(symbols: { base_prefix: value }).base_prefix }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :base_prefix/)
-        expect { described_class.new(symbols: { base_postfix: value }).base_postfix }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :base_postfix/)
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :padding/)
+        expect do
+          described_class.new(symbols: { base_prefix: value }).base_prefix
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :base_prefix/)
+        expect do
+          described_class.new(symbols: { base_postfix: value }).base_postfix
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :base_postfix/)
       end
     end
 
@@ -182,25 +215,35 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
       booleans.each do |value|
         # notation, e, times, and exponent_sign are read at construction.
         expect { described_class.new(symbols: { notation: value }) }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :notation/)
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :notation/)
         expect { described_class.new(symbols: { e: value }) }
           .to raise_error(Plurimath::ConfigurationError, /formatter option :e/)
         expect { described_class.new(symbols: { times: value }) }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :times/)
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :times/)
         expect { described_class.new(symbols: { exponent_sign: value }) }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :exponent_sign/)
-        expect { described_class.new(symbols: { number_sign: value }).number_sign }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :number_sign/)
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :exponent_sign/)
+        expect do
+          described_class.new(symbols: { number_sign: value }).number_sign
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :number_sign/)
       end
     end
 
     it "rejects non-string, non-symbol values for symbol-typed options" do
       [5, 1.5, {}, []].each do |value|
         expect { described_class.new(symbols: { notation: value }) }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :notation/),
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :notation/),
               "expected notation to reject #{value.inspect}"
-        expect { described_class.new(symbols: { number_sign: value }).number_sign }
-          .to raise_error(Plurimath::ConfigurationError, /formatter option :number_sign/),
+        expect do
+          described_class.new(symbols: { number_sign: value }).number_sign
+        end
+          .to raise_error(Plurimath::ConfigurationError,
+                          /formatter option :number_sign/),
               "expected number_sign to reject #{value.inspect}"
       end
     end
@@ -268,7 +311,8 @@ RSpec.describe Plurimath::Formatter::Numbers::FormatOptions do
     end
 
     it "uses only the first configured padding character" do
-      options = described_class.new(symbols: { padding: "xy", padding_digits: 4 })
+      options = described_class.new(symbols: { padding: "xy",
+                                               padding_digits: 4 })
 
       expect(options.padding).to eq("x")
     end

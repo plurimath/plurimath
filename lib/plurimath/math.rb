@@ -32,7 +32,10 @@ module Plurimath
       unknown_options = options.keys - SUPPORTED_PARSE_OPTIONS
       raise_unknown_parse_options!(unknown_options) unless unknown_options.empty?
 
-      raise_unsupported_parse_option!(type, :locale) if options.key?(:locale) && !localized_parse_type?(type)
+      if options.key?(:locale) && !localized_parse_type?(type)
+        raise_unsupported_parse_option!(type,
+                                        :locale)
+      end
       options = normalize_parse_options(options)
 
       begin

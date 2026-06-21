@@ -28,7 +28,10 @@ module Plurimath
           @integer_digits = parts.integer_digits
 
           fraction = parts.fraction_digits
-          fraction = change_base(fraction, precision) if !base_default? && fraction.match?(/[1-9]/)
+          if !base_default? && fraction.match?(/[1-9]/)
+            fraction = change_base(fraction,
+                                   precision)
+          end
           number = if @digit_count.positive?
                      digit_count_format(fraction)
                    else

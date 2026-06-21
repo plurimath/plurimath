@@ -599,13 +599,13 @@ RSpec.describe Plurimath::Mathml::Parser do
 
     it "returns sqrt formula with the radicands grouped as a formula" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Sqrt.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("s"),
-            Plurimath::Math::Symbols::Symbol.new("t"),
-          ]),
-        ),
-      ])
+                                                      Plurimath::Math::Function::Sqrt.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("s"),
+                                                                                       Plurimath::Math::Symbols::Symbol.new("t"),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end

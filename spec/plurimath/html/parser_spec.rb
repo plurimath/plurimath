@@ -1535,7 +1535,9 @@ RSpec.describe Plurimath::Html::Parser do
     end
 
     context "contains table sections, header cells, and attributes" do
-      let(:string) { '<table class="matrix"><tbody><tr><th>x</th><td data-column="2">y</td></tr></tbody></table>' }
+      let(:string) do
+        '<table class="matrix"><tbody><tr><th>x</th><td data-column="2">y</td></tr></tbody></table>'
+      end
       let(:parser_input) { string }
 
       it "returns abstract parsed tree" do
@@ -1576,7 +1578,9 @@ RSpec.describe Plurimath::Html::Parser do
     end
 
     context "contains custom wrapper elements" do
-      let(:string) { '<math-field data-input="html"><var>x</var><sup>2</sup></math-field>' }
+      let(:string) do
+        '<math-field data-input="html"><var>x</var><sup>2</sup></math-field>'
+      end
       let(:parser_input) { string }
 
       it "treats custom elements as transparent HTML wrappers" do
@@ -1591,7 +1595,9 @@ RSpec.describe Plurimath::Html::Parser do
     end
 
     context "contains nested semantic wrappers with whitespace" do
-      let(:string) { '<section class="math"><p><em>a</em><sub>1</sub>+<strong>b</strong><sup>2</sup></p></section>' }
+      let(:string) do
+        '<section class="math"><p><em>a</em><sub>1</sub>+<strong>b</strong><sup>2</sup></p></section>'
+      end
       let(:parser_input) { string }
 
       it "parses supported HTML wrappers and keeps math semantics" do

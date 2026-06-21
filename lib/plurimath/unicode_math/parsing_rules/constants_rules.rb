@@ -8,7 +8,9 @@ module Plurimath
 
         rule(:slash)  { str("\\") }
         rule(:slash?) { slash.maybe }
-        rule(:primes) { str("&#x2057;") | str("&#x2034;") | str("&#x2033;") | str("&#x2032;") | str("&#x27;") | str("'") }
+        rule(:primes) do
+          str("&#x2057;") | str("&#x2034;") | str("&#x2033;") | str("&#x2032;") | str("&#x27;") | str("'")
+        end
 
         rule(:op_open) { slash >> arr_to_expression(Constants::OPEN_SYMBOLS.keys, :open_paren) }
 
@@ -33,13 +35,19 @@ module Plurimath
 
         rule(:binary_symbols) { op_binary_symbols | op_binary_symbols_prefixed }
         rule(:op_close_paren) { arr_to_expression(Constants::CLOSE_PARENTHESIS, :close_paren) }
-        rule(:binary_negated) { binary_negated_absent_symbols? >> (op_binary_negated | op_prefixed_binary_negated) }
+        rule(:binary_negated) do
+          binary_negated_absent_symbols? >> (op_binary_negated | op_prefixed_binary_negated)
+        end
         rule(:unicoded_fonts) { unicoded_fonts_to_expression(Constants::UNICODED_FONTS, :symbol) }
 
-        rule(:wrapper_symbols) { arr_to_expression(Constants.wrapper_symbols, :symbol) }
+        rule(:wrapper_symbols) do
+          arr_to_expression(Constants.wrapper_symbols, :symbol)
+        end
         rule(:op_nary_symbols) { arr_to_expression(Constants::NARY_SYMBOLS.values, :nary_class) }
         rule(:op_open_unicode) { arr_to_expression(Constants::OPEN_SYMBOLS.values, :open_paren) }
-        rule(:prefixed_primes) { str("pppprime") | str("ppprime") | str("pprime") | str("prime") }
+        rule(:prefixed_primes) do
+          str("pppprime") | str("ppprime") | str("pprime") | str("prime")
+        end
 
         rule(:combined_symbols) { op_combined_symbols | op_combined_unicode }
         rule(:op_close_unicode) { arr_to_expression(Constants::CLOSE_SYMBOLS.values, :close_paren) }
@@ -76,7 +84,10 @@ module Plurimath
         rule(:op_unary_arg_functions) { arr_to_expression(Constants::UNARY_ARG_FUNCTIONS.values, :unary_arg_functions) }
 
         rule(:op_prefixed_unary_symbols) { slash >> arr_to_expression(Constants::UNARY_SYMBOLS.keys, :unary_symbols) }
-        rule(:op_size_overrides_symbols) { str("&#x2132;") >> arr_to_expression(Constants::SIZE_OVERRIDES_SYMBOLS.keys, :size_overrides) }
+        rule(:op_size_overrides_symbols) do
+          str("&#x2132;") >> arr_to_expression(Constants::SIZE_OVERRIDES_SYMBOLS.keys,
+                                               :size_overrides)
+        end
 
         rule(:op_binary_symbols_prefixed) { slash >> arr_to_expression(Constants::BINARY_SYMBOLS.keys, :binary_symbols) }
         rule(:op_prefixed_binary_negated) { slash >> arr_to_expression(Constants::BINARY_SYMBOLS.keys, :binary_negated_operator) }
@@ -98,7 +109,7 @@ module Plurimath
           end
         end
 
-        def unicoded_fonts_to_expression(hash, name = nil)
+        def unicoded_fonts_to_expression(hash, _name = nil)
           type = hash.first.class
           hash.reduce do |expression, expr_hash|
             if expression.is_a?(type)
@@ -113,7 +124,7 @@ module Plurimath
             type = expr_hash.first.class
             expr_hash.reduce do |expression, (_, hex_code)|
               expression = str(name).absent?.as(name).as(:unicoded_font_class) >> str(expression.last).as(:symbol) if expression.is_a?(type)
-              expression | str(name).absent?.as(name).as(:unicoded_font_class) >> str(hex_code).as(:symbol)
+              expression | (str(name).absent?.as(name).as(:unicoded_font_class) >> str(hex_code).as(:symbol))
             end
           else
             str(expr_hash.values.last)

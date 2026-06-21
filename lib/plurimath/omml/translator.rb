@@ -241,7 +241,10 @@ module Plurimath
         chr = first_omml_child(pr&.chr)&.val
         value = omml_argument_value(node.e)
 
-        return group_character_above_value(chr, value) if group_character_above?(pr)
+        if group_character_above?(pr)
+          return group_character_above_value(chr,
+                                             value)
+        end
 
         group_character_below_value(chr, value)
       end

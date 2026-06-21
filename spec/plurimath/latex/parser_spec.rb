@@ -74,10 +74,10 @@ RSpec.describe Plurimath::Latex::Parser do
                                                           Plurimath::Math::Formula.new([
                                                                                          Plurimath::Math::Function::Left.new("("),
                                                                                          Plurimath::Math::Formula.new([
-                                                                                                                         Plurimath::Math::Number.new("1"),
-                                                                                                                         Plurimath::Math::Symbols::Comma.new,
-                                                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                                                       ]),
+                                                                                                                        Plurimath::Math::Number.new("1"),
+                                                                                                                        Plurimath::Math::Symbols::Comma.new,
+                                                                                                                        Plurimath::Math::Number.new("2"),
+                                                                                                                      ]),
                                                                                          Plurimath::Math::Function::Right.new(")"),
                                                                                        ]),
                                                         ])

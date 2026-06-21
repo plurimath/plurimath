@@ -5,10 +5,12 @@ module Plurimath
     module Numbers
       # Chooses which precision source wins for one render call.
       class PrecisionResolver
-        def resolve(source, precision:, base:, significant:, notation_supported:, digit_count: 0)
+        def resolve(source, precision:, base:, significant:,
+notation_supported:, digit_count: 0)
           return precision if precision
 
-          significant_precision = significant_base_precision(source, base, significant)
+          significant_precision = significant_base_precision(source, base,
+                                                             significant)
           return significant_precision if significant_precision
 
           # Source owns input-derived digit lengths; this resolver only decides
@@ -20,7 +22,10 @@ module Plurimath
             # coefficient fraction beyond the source's own significant digits
             # (one digit leads, so the fraction allowance is budget - 1).
             budget = [significant, digit_count].max
-            return [budget - 1, source.notation_precision].max if budget.positive?
+            if budget.positive?
+              return [budget - 1,
+                      source.notation_precision].max
+            end
 
             return source.notation_precision
           end

@@ -70,7 +70,10 @@ module Plurimath
         end
 
         def notation_parts(source)
-          return [source.to_parts(base: options.base), 0] if source.decimal.zero?
+          if source.decimal.zero?
+            return [source.to_parts(base: options.base),
+                    0]
+          end
 
           parts = source.to_parts(base: Base::DEFAULT_BASE)
           digits, exponent = significant_digits_and_exponent(parts)
@@ -91,7 +94,9 @@ module Plurimath
           exponent -= index
           digits = "#{coefficient.integer_digits}#{coefficient.fraction_digits}"
           integer_length = index + 1
-          integer_digits = digits[0...integer_length].to_s.ljust(integer_length, "0")
+          integer_digits = digits[0...integer_length].to_s.ljust(
+            integer_length, "0"
+          )
 
           [
             Parts.new(
@@ -118,7 +123,10 @@ module Plurimath
 
           integer_length = coefficient.integer_digits.length
           budget = [options.significant, options.digit_count].max
-          return [source.significant_digit_count - integer_length, 0].max unless budget.positive?
+          unless budget.positive?
+            return [source.significant_digit_count - integer_length,
+                    0].max
+          end
 
           fraction_budget = [budget - integer_length, 0].max
           # Leave one digit for Significant's rounding pass when the source
