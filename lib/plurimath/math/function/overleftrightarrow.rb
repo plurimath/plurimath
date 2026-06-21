@@ -14,7 +14,7 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           mover = ox_element("mover")
           first_value = parameter_one&.to_mathml_without_math_tag(intent,
-                                                                    options: options)
+                                                                  options: options)
           if attributes && attributes[:accent]
             mover[:accent] =
               attributes[:accent]
@@ -36,7 +36,7 @@ module Plurimath
           else
             symbol = Symbols::Symbol.new("\u20e1")
             Overset.new(parameter_one, symbol).to_omml_without_math_tag(true,
-                                                                          options: options)
+                                                                        options: options)
           end
         end
 

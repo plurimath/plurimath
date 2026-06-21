@@ -45,7 +45,8 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
         ),
       )
 
-      expect(renderer.render(source("14000"), :scientific)).to eq("1.400 0 × 10^+4")
+      expect(renderer.render(source("14000"),
+                             :scientific)).to eq("1.400 0 × 10^+4")
     end
 
     it "renders engineering notation" do
@@ -58,7 +59,8 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
         ),
       )
 
-      expect(renderer.render(source("14000"), :engineering)).to eq("14,00 x 10^3")
+      expect(renderer.render(source("14000"),
+                             :engineering)).to eq("14,00 x 10^3")
     end
 
     it "infers engineering precision from significant digits instead of raw characters" do
@@ -71,8 +73,10 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
         ),
       )
 
-      expect(renderer.render(source("-14000"), :engineering)).to eq("-14.000 x 10^3")
-      expect(renderer.render(source("1.23e4"), :engineering)).to eq("12.3 x 10^3")
+      expect(renderer.render(source("-14000"),
+                             :engineering)).to eq("-14.000 x 10^3")
+      expect(renderer.render(source("1.23e4"),
+                             :engineering)).to eq("12.3 x 10^3")
     end
 
     it "preserves zero precision in scientific notation" do

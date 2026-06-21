@@ -77,7 +77,8 @@ module Plurimath
         def group
           # Unlike decimal, an explicit nil group falls back to the default
           # separator; use "" to disable grouping.
-          (separator_option(:group, default: DEFAULT_GROUP) || DEFAULT_GROUP).to_s
+          (separator_option(:group,
+                            default: DEFAULT_GROUP) || DEFAULT_GROUP).to_s
         end
 
         def group_digits
@@ -151,7 +152,8 @@ module Plurimath
               invalid_option!(:precision, value)
             end
             if effective_precision.negative?
-              invalid_option!(:precision, value, expected: "a non-negative integer")
+              invalid_option!(:precision, value,
+                              expected: "a non-negative integer")
             end
           end
           @explicit_precision = !effective_precision.nil?
@@ -174,7 +176,10 @@ module Plurimath
           return default if value.nil?
 
           integer = coerce_integer(value) { invalid_option!(key, value) }
-          invalid_option!(key, value, expected: "a non-negative integer") if integer.negative?
+          if integer.negative?
+            invalid_option!(key, value,
+                            expected: "a non-negative integer")
+          end
 
           integer
         end
@@ -211,7 +216,10 @@ module Plurimath
 
           # Enumerated/symbol options accept only String or Symbol; reject
           # other types (and booleans) instead of coercing arbitrary input.
-          invalid_option!(key, value) unless value.is_a?(String) || value.is_a?(Symbol)
+          unless value.is_a?(String) || value.is_a?(Symbol)
+            invalid_option!(key,
+                            value)
+          end
 
           value.to_sym
         end
