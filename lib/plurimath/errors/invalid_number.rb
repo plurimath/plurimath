@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module Formatter
+  module Errors
     class InvalidNumber < Plurimath::Error
       def initialize(value)
         @value = value

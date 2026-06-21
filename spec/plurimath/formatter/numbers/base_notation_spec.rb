@@ -45,7 +45,8 @@ RSpec.describe Plurimath::Formatter::Numbers::BaseNotation do
     end
 
     it "combines explicit base_prefix and base_postfix when both are provided" do
-      notation = described_class.new(options(base: 16, base_prefix: "0x", base_postfix: "h"))
+      notation = described_class.new(options(base: 16, base_prefix: "0x",
+                                             base_postfix: "h"))
 
       expect(notation.apply("ff")).to eq("0xffh")
     end
@@ -57,7 +58,8 @@ RSpec.describe Plurimath::Formatter::Numbers::BaseNotation do
     end
 
     it "does not apply whole-rendered-string capitalization for numbers_only mode" do
-      notation = described_class.new(options(base: 16, hex_capital: :numbers_only))
+      notation = described_class.new(options(base: 16,
+                                             hex_capital: :numbers_only))
 
       expect(notation.apply("a.d'f")).to eq("0xa.d'f")
     end
@@ -74,7 +76,15 @@ RSpec.describe Plurimath::Formatter::Numbers::BaseNotation do
     it "raises for unsupported bases" do
       expect do
         described_class.new(options(base: 5))
-      end.to raise_error(Plurimath::Formatter::UnsupportedBase)
+      end.to raise_error(Plurimath::Errors::UnsupportedBase)
+    end
+
+    it "exposes the message via #message like sibling formatter errors" do
+      error = Plurimath::Errors::UnsupportedBase.new(5, 2 => "0b", 8 => "0o",
+                                                        10 => "", 16 => "0x")
+
+      expect(error.message).to start_with("[plurimath] Unsupported base `5`")
+      expect(error.to_s).to eq(error.message)
     end
   end
 end

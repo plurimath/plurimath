@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module Formatter
+  module Errors
     class UnsupportedLocale < Plurimath::Error
       def initialize(locale, supported_locales)
         @locale = locale

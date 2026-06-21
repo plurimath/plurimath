@@ -592,7 +592,7 @@ Option values follow a common handling policy:
   Boolean, except for `hex_capital`, where `true`/`false` are documented values.
 * The `locale` always falls back to `:en` for unsupported or wrong-typed
   values; it never raises.
-* Invalid number input raises `Plurimath::Formatter::InvalidNumber`.
+* Invalid number input raises `Plurimath::Errors::InvalidNumber`.
 
 Available options are explained below.
 
@@ -732,7 +732,7 @@ Missing integer digits are inserted before grouping using the configured
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Supported values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
 The value is also accepted as its `String` or `Symbol` equivalent (`"16"`).
-Passing any other value for `base` raises `Plurimath::Formatter::UnsupportedBase`.
+Passing any other value for `base` raises `Plurimath::Errors::UnsupportedBase`.
 +
 .Rendering numbers in different bases
 [example]
