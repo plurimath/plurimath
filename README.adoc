@@ -607,6 +607,15 @@ The same option keys can be passed through `localizer_symbols`, through the
 per-call `format:` hash, or through `Plurimath::Formatter::Standard`'s
 `options:` argument.
 
+When rendering through `Plurimath::Math::Formula` serialization methods
+(`to_asciimath`, `to_latex`, `to_mathml`, `to_unicodemath`, `to_html`),
+per-element overrides can be supplied via `options[:format]`. The hash is
+forwarded to `NumberFormatter#localized_number`'s `format:` keyword, taking
+precedence over the configured formatter's symbols for that one element.
+Custom formatters with a simpler `localized_number(value)` signature are
+unaffected unless `options[:format]` is supplied, in which case their method
+must accept the `format:` keyword.
+
 
 `decimal`:: (`String` value)
 Symbol to use for the decimal point. Accepts a character.
