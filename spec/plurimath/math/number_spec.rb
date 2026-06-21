@@ -38,6 +38,7 @@ RSpec.describe Plurimath::Math::Number do
 
   describe "nil formatter handling" do
     subject(:number) { described_class.new("42") }
+
     let(:nil_options) { { formatter: nil } }
 
     it "returns value from to_latex" do
@@ -160,6 +161,47 @@ RSpec.describe Plurimath::Math::Number do
         )
 
         expect(result).to eql("1,234")
+      end
+
+      it "forwards options[:format] to the formatter's per-call format override" do
+        formatter = Plurimath::Formatter::Standard.new
+        result = described_class.new("23456").to_asciimath(
+          options: {
+            formatter: formatter,
+            format: {
+              base: 16,
+              base_prefix: "U+",
+              group: "",
+              padding_group_digits: 4,
+              hex_capital: true,
+              significant: 4,
+            },
+          },
+        )
+
+        expect(result).to eql("U+5BA0")
+      end
+
+      it "does not forward an empty options[:format] hash" do
+        formatter = Plurimath::Formatter::Standard.new
+        result = described_class.new("1234").to_asciimath(
+          options: { formatter: formatter, format: {} },
+        )
+
+        expect(result).to eql("1,234")
+      end
+
+      it "does not break custom formatters when options[:format] is absent" do
+        custom = Class.new do
+          def localized_number(number)
+            "custom(#{number})"
+          end
+        end
+        result = described_class.new("1234").to_asciimath(
+          options: { formatter: custom.new },
+        )
+
+        expect(result).to eql("custom(1234)")
       end
     end
 
