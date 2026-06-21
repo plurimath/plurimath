@@ -83,7 +83,7 @@ module Plurimath
           valid_type = value.is_a?(Numeric) || value.is_a?(String)
           return if valid_type && NUMERIC_PATTERN.match?(raw)
 
-          raise Plurimath::Formatter::InvalidNumber, value
+          raise Plurimath::Errors::InvalidNumber, value
         end
 
         def decimal_parts_integer_length

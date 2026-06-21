@@ -30,7 +30,7 @@ RSpec.describe Plurimath::Formatter::SupportedLocales do
       expect do
         described_class.key_for!(:unknown)
       end.to raise_error(
-        Plurimath::Formatter::UnsupportedLocale,
+        Plurimath::Errors::UnsupportedLocale,
         /\[plurimath\] Unsupported locale :unknown\./,
       )
     end
