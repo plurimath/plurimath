@@ -22,7 +22,12 @@ module Plurimath
         end
 
         def apply(string)
-          rendered = upcase_hex? ? string.tr(Base::HEX_DIGITS, Base::HEX_DIGITS.upcase) : string
+          rendered = if upcase_hex?
+                       string.tr(Base::HEX_DIGITS,
+                                 Base::HEX_DIGITS.upcase)
+                     else
+                       string
+                     end
           return rendered if default?
 
           "#{base_prefix}#{rendered}#{base_postfix}"
@@ -59,7 +64,7 @@ module Plurimath
         def validate_base!
           return if self.class.supported?(base)
 
-          raise UnsupportedBase.new(base, DEFAULT_PREFIXES)
+          raise Plurimath::Errors::UnsupportedBase.new(base, DEFAULT_PREFIXES)
         end
       end
     end

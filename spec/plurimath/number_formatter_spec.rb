@@ -42,7 +42,8 @@ RSpec.describe Plurimath::NumberFormatter do
       end
 
       it "does not leak localizer symbols into locale defaults" do
-        custom_formatter = described_class.new(:en, localizer_symbols: { decimal: "@" })
+        custom_formatter = described_class.new(:en,
+                                               localizer_symbols: { decimal: "@" })
 
         expect(custom_formatter.twitter_cldr_reader(locale: :en)[:decimal]).to eql("@")
         expect(described_class.new(:en).twitter_cldr_reader(locale: :en)[:decimal]).to eql(".")
@@ -1732,7 +1733,8 @@ RSpec.describe Plurimath::NumberFormatter do
             decimal: ".",
           )
 
-          expect(formatter.localized_number("0.12325e3", format: format)).to eql("0x7b.400")
+          expect(formatter.localized_number("0.12325e3",
+                                            format: format)).to eql("0x7b.400")
           expect(
             formatter.localized_number(
               "0.12325e3",
@@ -1841,7 +1843,7 @@ RSpec.describe Plurimath::NumberFormatter do
             formatter.localized_number("10",
                                        format: base_format_defaults.merge(base: 3))
           end.to raise_error(
-            Plurimath::Formatter::UnsupportedBase,
+            Plurimath::Errors::UnsupportedBase,
             /Unsupported base `3` for number formatting/,
           )
         end
@@ -1851,7 +1853,7 @@ RSpec.describe Plurimath::NumberFormatter do
             formatter.localized_number("10",
                                        format: base_format_defaults.merge(base: 5))
           end.to raise_error(
-            Plurimath::Formatter::UnsupportedBase,
+            Plurimath::Errors::UnsupportedBase,
             /Unsupported base `5` for number formatting/,
           )
         end
@@ -1861,7 +1863,7 @@ RSpec.describe Plurimath::NumberFormatter do
             formatter.localized_number("10",
                                        format: base_format_defaults.merge(base: 20))
           end.to raise_error(
-            Plurimath::Formatter::UnsupportedBase,
+            Plurimath::Errors::UnsupportedBase,
             /Unsupported base `20` for number formatting/,
           )
         end
@@ -1871,7 +1873,7 @@ RSpec.describe Plurimath::NumberFormatter do
             formatter.localized_number("10",
                                        format: base_format_defaults.merge(base: -1))
           end.to raise_error(
-            Plurimath::Formatter::UnsupportedBase,
+            Plurimath::Errors::UnsupportedBase,
           )
         end
       end
@@ -1884,9 +1886,10 @@ RSpec.describe Plurimath::NumberFormatter do
 
       context "with invalid number input" do
         it "raises InvalidNumber for non-numeric input" do
-          ["abc", "", "-", "1_,000", "Infinity", "NaN", "+ -5", "1,000", nil].each do |value|
+          ["abc", "", "-", "1_,000", "Infinity", "NaN", "+ -5", "1,000",
+           nil].each do |value|
             expect { formatter.localized_number(value) }.to raise_error(
-              Plurimath::Formatter::InvalidNumber,
+              Plurimath::Errors::InvalidNumber,
               /Invalid number #{Regexp.escape(value.inspect)}/,
             ), "expected #{value.inspect} to raise InvalidNumber"
           end
@@ -1916,7 +1919,8 @@ RSpec.describe Plurimath::NumberFormatter do
 
         it "raises a domain error for non-numeric group digit counts" do
           expect do
-            formatter.localized_number("1234567", format: { group_digits: "abc" })
+            formatter.localized_number("1234567",
+                                       format: { group_digits: "abc" })
           end.to raise_error(
             Plurimath::ConfigurationError,
             /invalid value "abc" for formatter option :group_digits/,
@@ -1927,18 +1931,21 @@ RSpec.describe Plurimath::NumberFormatter do
       context "with explicit nil separators" do
         it "renders without a decimal separator when decimal is explicitly nil" do
           # Output correctness is the caller's responsibility under this contract.
-          output_string = formatter.localized_number("1.5", format: { decimal: nil })
+          output_string = formatter.localized_number("1.5",
+                                                     format: { decimal: nil })
           expect(output_string).to eql("15")
         end
 
         it "falls back to default grouping when group is explicitly nil" do
           # Released 0.10.7 behavior; use group: "" to disable grouping.
-          output_string = formatter.localized_number("1234567", format: { group: nil })
+          output_string = formatter.localized_number("1234567",
+                                                     format: { group: nil })
           expect(output_string).to eql("1,234,567")
         end
 
         it "disables grouping when group is an empty string" do
-          output_string = formatter.localized_number("1234567", format: { group: "" })
+          output_string = formatter.localized_number("1234567",
+                                                     format: { group: "" })
           expect(output_string).to eql("1234567")
         end
 
@@ -1955,15 +1962,18 @@ RSpec.describe Plurimath::NumberFormatter do
       context "with base conversion precision" do
         it "converts the full decimal fraction before truncating to target-base digits" do
           expect(
-            formatter.localized_number("0.07", precision: 1, format: { base: 16 }),
+            formatter.localized_number("0.07", precision: 1,
+                                               format: { base: 16 }),
           ).to eql("0x0.1")
           expect(
-            formatter.localized_number("0.899", precision: 1, format: { base: 16 }),
+            formatter.localized_number("0.899", precision: 1,
+                                                format: { base: 16 }),
           ).to eql("0x0.e")
         end
 
         it "accepts string base forms" do
-          output_string = formatter.localized_number("255", format: { base: "16" })
+          output_string = formatter.localized_number("255",
+                                                     format: { base: "16" })
           expect(output_string).to eql("0xff")
         end
 
@@ -1971,7 +1981,7 @@ RSpec.describe Plurimath::NumberFormatter do
           expect do
             formatter.localized_number("10", format: { base: 7 })
           end.to raise_error(
-            Plurimath::Formatter::UnsupportedBase,
+            Plurimath::Errors::UnsupportedBase,
             /must be one of: 2, 8, 10, 16\./,
           )
         end
@@ -2007,26 +2017,35 @@ RSpec.describe Plurimath::NumberFormatter do
 
         it "honors a digit_count budget for e and scientific coefficients" do
           expect(
-            formatter.localized_number("12345.678", format: { notation: :e, digit_count: 4 }),
+            formatter.localized_number("12345.678",
+                                       format: { notation: :e,
+                                                 digit_count: 4 }),
           ).to eql("1.235e4")
           expect(
-            formatter.localized_number("12345.678", format: { notation: :scientific, digit_count: 4 }),
+            formatter.localized_number("12345.678",
+                                       format: { notation: :scientific,
+                                                 digit_count: 4 }),
           ).to eql("1.235 × 10^4")
         end
 
         it "honors a significant budget for e and scientific coefficients" do
           expect(
-            formatter.localized_number("12345.678", format: { notation: :e, significant: 4 }),
+            formatter.localized_number("12345.678",
+                                       format: { notation: :e,
+                                                 significant: 4 }),
           ).to eql("1.235e4")
           expect(
-            formatter.localized_number("12345.678", format: { notation: :scientific, significant: 4 }),
+            formatter.localized_number("12345.678",
+                                       format: { notation: :scientific,
+                                                 significant: 4 }),
           ).to eql("1.235 × 10^4")
         end
       end
 
       context "with malformed call arguments" do
         it "treats nil format as no options" do
-          expect(formatter.localized_number("1234", format: nil)).to eql("1,234")
+          expect(formatter.localized_number("1234",
+                                            format: nil)).to eql("1,234")
         end
 
         it "rejects non-Hash format values" do
@@ -2039,7 +2058,8 @@ RSpec.describe Plurimath::NumberFormatter do
         end
 
         it "falls back to :en for nil locale" do
-          expect(formatter.localized_number("1234", locale: nil)).to eql("1,234")
+          expect(formatter.localized_number("1234",
+                                            locale: nil)).to eql("1,234")
         end
 
         it "falls back to :en for non-string/symbol locale instead of crashing" do
@@ -2051,19 +2071,28 @@ RSpec.describe Plurimath::NumberFormatter do
 
         it "rejects a non-Hash localizer_symbols" do
           [5, "x", []].each do |value|
-            expect { described_class.new(:en, localizer_symbols: value).localized_number("1234") }
-              .to raise_error(Plurimath::ConfigurationError, /formatter option :localizer_symbols/),
+            expect do
+              described_class.new(:en,
+                                  localizer_symbols: value).localized_number("1234")
+            end
+              .to raise_error(Plurimath::ConfigurationError,
+                              /formatter option :localizer_symbols/),
                   "expected localizer_symbols #{value.inspect} to raise"
           end
           expect(
-            described_class.new(:en, localizer_symbols: nil).localized_number("1234"),
+            described_class.new(:en,
+                                localizer_symbols: nil).localized_number("1234"),
           ).to eql("1,234")
         end
 
         it "rejects a non-String localize_number" do
           [5, true, []].each do |value|
-            expect { described_class.new(:en, localize_number: value).localized_number("1234") }
-              .to raise_error(Plurimath::ConfigurationError, /formatter option :localize_number/),
+            expect do
+              described_class.new(:en,
+                                  localize_number: value).localized_number("1234")
+            end
+              .to raise_error(Plurimath::ConfigurationError,
+                              /formatter option :localize_number/),
                   "expected localize_number #{value.inspect} to raise"
           end
         end
@@ -2071,7 +2100,8 @@ RSpec.describe Plurimath::NumberFormatter do
         it "rejects an invalid precision passed as a keyword argument" do
           [-1, 1.5, true].each do |value|
             expect { formatter.localized_number("1234.5", precision: value) }
-              .to raise_error(Plurimath::ConfigurationError, /formatter option :precision/),
+              .to raise_error(Plurimath::ConfigurationError,
+                              /formatter option :precision/),
                   "expected precision kwarg #{value.inspect} to raise"
           end
         end
@@ -2089,8 +2119,12 @@ RSpec.describe Plurimath::NumberFormatter do
         end
 
         it "rejects a non-string/symbol hex_capital when it is used (base 16)" do
-          expect { formatter.localized_number("1234", format: { base: 16, hex_capital: 5 }) }
-            .to raise_error(Plurimath::ConfigurationError, /formatter option :hex_capital/)
+          expect do
+            formatter.localized_number("1234",
+                                       format: { base: 16, hex_capital: 5 })
+          end
+            .to raise_error(Plurimath::ConfigurationError,
+                            /formatter option :hex_capital/)
         end
 
         it "still honors documented hex_capital values after type-checking" do
@@ -2103,10 +2137,19 @@ RSpec.describe Plurimath::NumberFormatter do
         end
 
         it "rejects boolean base_prefix/base_postfix when they are used (non-default base)" do
-          expect { formatter.localized_number("1234", format: { base: 16, base_prefix: true }) }
-            .to raise_error(Plurimath::ConfigurationError, /formatter option :base_prefix/)
-          expect { formatter.localized_number("1234", format: { base: 16, base_postfix: false }) }
-            .to raise_error(Plurimath::ConfigurationError, /formatter option :base_postfix/)
+          expect do
+            formatter.localized_number("1234",
+                                       format: { base: 16, base_prefix: true })
+          end
+            .to raise_error(Plurimath::ConfigurationError,
+                            /formatter option :base_prefix/)
+          expect do
+            formatter.localized_number("1234",
+                                       format: { base: 16,
+                                                 base_postfix: false })
+          end
+            .to raise_error(Plurimath::ConfigurationError,
+                            /formatter option :base_postfix/)
         end
       end
 
@@ -2116,14 +2159,16 @@ RSpec.describe Plurimath::NumberFormatter do
             formatter = described_class.new(:en)
             formatter.localizer_symbols = value
             expect { formatter.localized_number("1234") }
-              .to raise_error(Plurimath::ConfigurationError, /formatter option :localizer_symbols/),
+              .to raise_error(Plurimath::ConfigurationError,
+                              /formatter option :localizer_symbols/),
                   "expected localizer_symbols= #{value.inspect} to raise"
           end
           [5, true, []].each do |value|
             formatter = described_class.new(:en)
             formatter.localize_number = value
             expect { formatter.localized_number("1234") }
-              .to raise_error(Plurimath::ConfigurationError, /formatter option :localize_number/),
+              .to raise_error(Plurimath::ConfigurationError,
+                              /formatter option :localize_number/),
                   "expected localize_number= #{value.inspect} to raise"
           end
         end
@@ -2131,16 +2176,20 @@ RSpec.describe Plurimath::NumberFormatter do
 
       context "with zero-source engineering notation" do
         it "infers width for an explicit precision: 0 like the no-precision case" do
-          no_precision = formatter.localized_number("0.00", format: { notation: :engineering })
+          no_precision = formatter.localized_number("0.00",
+                                                    format: { notation: :engineering })
           explicit_zero = formatter.localized_number("0.00",
-                                                     format: { notation: :engineering, precision: 0 })
+                                                     format: {
+                                                       notation: :engineering, precision: 0
+                                                     })
           expect(no_precision).to eql("0.00 × 10^0")
           expect(explicit_zero).to eql(no_precision)
         end
 
         it "still honors an explicit positive precision for a zero source" do
           expect(formatter.localized_number("0.00",
-                                            format: { notation: :engineering, precision: 3 }))
+                                            format: { notation: :engineering,
+                                                      precision: 3 }))
             .to eql("0.000 × 10^0")
         end
       end
@@ -2150,7 +2199,8 @@ RSpec.describe Plurimath::NumberFormatter do
       it "rejects a non-Hash options argument" do
         [5, "x", []].each do |value|
           expect { Plurimath::Formatter::Standard.new(options: value) }
-            .to raise_error(Plurimath::ConfigurationError, /formatter option :options/),
+            .to raise_error(Plurimath::ConfigurationError,
+                            /formatter option :options/),
                 "expected options #{value.inspect} to raise"
         end
       end
