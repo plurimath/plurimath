@@ -103,10 +103,20 @@ module Plurimath
         elsif formatter.respond_to?(:format)
           formatter.format(options[:formula], self)
         elsif formatter.respond_to?(:localized_number)
-          formatter.localized_number(value.to_s)
+          formatter.localized_number(value.to_s,
+                                     **format_kwargs(options[:format]))
         else
           value
         end
+      end
+
+      private
+
+      # Empty splat is silently dropped by Ruby, so simple formatter signatures still work.
+      def format_kwargs(format)
+        return {} unless format.is_a?(Hash) && !format.empty?
+
+        { format: format }
       end
     end
   end
