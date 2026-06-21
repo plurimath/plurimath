@@ -24,7 +24,8 @@ module Plurimath
     )
       locale = supported_locale(locale)
       source = Formatter::Numbers::Source.new(number_string)
-      options = format_options(source, locale, precision, validated_format(format))
+      options = format_options(source, locale, precision,
+                               validated_format(format))
 
       if options.notation_supported?
         return notation_renderer(options).render(source, options.notation)

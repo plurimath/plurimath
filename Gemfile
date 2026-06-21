@@ -4,9 +4,9 @@ source "https://rubygems.org"
 gemspec
 
 gem "canon"
-#gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
+# gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "oga"
-#gem "omml", github: "plurimath/omml", branch: "main"
+# gem "omml", github: "plurimath/omml", branch: "main"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 gem "rake", "~> 12.0"

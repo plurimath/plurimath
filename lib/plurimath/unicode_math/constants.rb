@@ -86,7 +86,7 @@ module Plurimath
         hsmash: { mpadded: { width: "0" }, phantom: false },
         asmash: { mpadded: { height: "0" }, phantom: false },
         dsmash: { mpadded: { depth: "0" }, phantom: false },
-        smash: { mpadded: { height: "0", depth: "0" }, phantom: false }
+        smash: { mpadded: { height: "0", depth: "0" }, phantom: false },
       }.freeze
 
       BINARY_SYMBOLS = {
@@ -541,32 +541,32 @@ module Plurimath
       ].freeze
 
       NEGATABLE_SYMBOLS = %w[
-        "&#x2292;"
-        "&#x2291;"
-        "&#x2287;"
-        "&#x2286;"
-        "&#x2283;"
-        "&#x2282;"
-        "&#x227c;"
-        "&#x227b;"
-        "&#x227a;"
-        "&#x227d;"
-        "&#x2277;"
-        "&#x2276;"
-        "&#x2265;"
-        "&#x2264;"
-        "&#x2261;"
-        "&#x224d;"
-        "&#x2248;"
-        "&#x2245;"
-        "&#x2243;"
-        "&#x223c;"
-        "&#x220b;"
-        "&#x2208;"
-        "&#x2203;"
-        "&#x3e;"
-        "&#x3c;"
-        "&#xac;"
+        &#x2292;
+        &#x2291;
+        &#x2287;
+        &#x2286;
+        &#x2283;
+        &#x2282;
+        &#x227c;
+        &#x227b;
+        &#x227a;
+        &#x227d;
+        &#x2277;
+        &#x2276;
+        &#x2265;
+        &#x2264;
+        &#x2261;
+        &#x224d;
+        &#x2248;
+        &#x2245;
+        &#x2243;
+        &#x223c;
+        &#x220b;
+        &#x2208;
+        &#x2203;
+        &#x3e;
+        &#x3c;
+        &#xac;
         ~
         =
         +
@@ -675,168 +675,168 @@ module Plurimath
       }.freeze
 
       DIACRITIC_OVERLAYS = [
-        '&#x20eb;',
-        '&#x20ea;',
-        '&#x20e6;',
-        '&#x20e5;',
-        '&#x20e4;',
-        '&#x20e3;',
-        '&#x20e2;',
-        '&#x20e0;',
-        '&#x20df;',
-        '&#x20de;',
-        '&#x20dd;',
-        '&#x20da;',
-        '&#x20d9;',
-        '&#x20d8;',
-        '&#x20d3;',
-        '&#x20d2;',
-        '&#x309;',
-        '&#x304;',
-        '&#x338;',
-        '&#x337;',
-        '&#x336;',
-        '&#x335;',
-        '&#x334;',
+        "&#x20eb;",
+        "&#x20ea;",
+        "&#x20e6;",
+        "&#x20e5;",
+        "&#x20e4;",
+        "&#x20e3;",
+        "&#x20e2;",
+        "&#x20e0;",
+        "&#x20df;",
+        "&#x20de;",
+        "&#x20dd;",
+        "&#x20da;",
+        "&#x20d9;",
+        "&#x20d8;",
+        "&#x20d3;",
+        "&#x20d2;",
+        "&#x309;",
+        "&#x304;",
+        "&#x338;",
+        "&#x337;",
+        "&#x336;",
+        "&#x335;",
+        "&#x334;",
       ].freeze
 
       OVERLAYS_NOTATIONS = {
-        '&#x20eb;': "mover",
-        '&#x20ea;': "mover",
-        '&#x20e6;': "mover",
-        '&#x20e5;': "mover",
-        '&#x20e4;': "mover",
-        '&#x20e3;': "mover",
-        '&#x20e2;': "mover",
-        '&#x20e0;': "circle downdiagonalstrike",
-        '&#x20df;': "mover",
-        '&#x20de;': "box",
-        '&#x20dd;': "circle",
-        '&#x20da;': "mover",
-        '&#x20d9;': "mover",
-        '&#x20d4;': "mover",
-        '&#x20d6;': "mover",
-        '&#x20d5;': "mover",
-        '&#x20d8;': "mover",
-        '&#x20d3;': "mover",
-        '&#x20d2;': "mover",
-        '&#x304;': "top",
-        '&#x338;': "mover",
-        '&#x337;': "mover",
-        '&#x336;': "mover",
-        '&#x335;': "mover",
-        '&#x334;': "mover",
-        '&#x309;': "mover",
+        "&#x20eb;": "mover",
+        "&#x20ea;": "mover",
+        "&#x20e6;": "mover",
+        "&#x20e5;": "mover",
+        "&#x20e4;": "mover",
+        "&#x20e3;": "mover",
+        "&#x20e2;": "mover",
+        "&#x20e0;": "circle downdiagonalstrike",
+        "&#x20df;": "mover",
+        "&#x20de;": "box",
+        "&#x20dd;": "circle",
+        "&#x20da;": "mover",
+        "&#x20d9;": "mover",
+        "&#x20d4;": "mover",
+        "&#x20d6;": "mover",
+        "&#x20d5;": "mover",
+        "&#x20d8;": "mover",
+        "&#x20d3;": "mover",
+        "&#x20d2;": "mover",
+        "&#x304;": "top",
+        "&#x338;": "mover",
+        "&#x337;": "mover",
+        "&#x336;": "mover",
+        "&#x335;": "mover",
+        "&#x334;": "mover",
+        "&#x309;": "mover",
       }.freeze
 
       DIACRITIC_BELOWS = [
-        '&#x316;',
-        '&#x317;',
-        '&#x318;',
-        '&#x319;',
-        '&#x31c;',
-        '&#x31d;',
-        '&#x31e;',
-        '&#x31f;',
-        '&#x320;',
-        '&#x321;',
-        '&#x322;',
-        '&#x323;',
-        '&#x324;',
-        '&#x325;',
-        '&#x326;',
-        '&#x327;',
-        '&#x328;',
-        '&#x329;',
-        '&#x32a;',
-        '&#x32b;',
-        '&#x32c;',
-        '&#x32d;',
-        '&#x32e;',
-        '&#x32f;',
-        '&#x330;',
-        '&#x331;',
-        '&#x332;',
-        '&#x333;',
-        '&#x339;',
-        '&#x33a;',
-        '&#x33b;',
-        '&#x33c;',
-        '&#x345;',
-        '&#x347;',
-        '&#x348;',
-        '&#x349;',
-        '&#x34d;',
-        '&#x34e;',
-        '&#x353;',
-        '&#x354;',
-        '&#x355;',
-        '&#x356;',
-        '&#x359;',
-        '&#x35a;',
-        '&#x35c;',
-        '&#x35f;',
-        '&#x362;',
-        '&#x20e8;',
-        '&#x20ec;',
-        '&#x20ed;',
-        '&#x20ee;',
-        '&#x20ef;',
+        "&#x316;",
+        "&#x317;",
+        "&#x318;",
+        "&#x319;",
+        "&#x31c;",
+        "&#x31d;",
+        "&#x31e;",
+        "&#x31f;",
+        "&#x320;",
+        "&#x321;",
+        "&#x322;",
+        "&#x323;",
+        "&#x324;",
+        "&#x325;",
+        "&#x326;",
+        "&#x327;",
+        "&#x328;",
+        "&#x329;",
+        "&#x32a;",
+        "&#x32b;",
+        "&#x32c;",
+        "&#x32d;",
+        "&#x32e;",
+        "&#x32f;",
+        "&#x330;",
+        "&#x331;",
+        "&#x332;",
+        "&#x333;",
+        "&#x339;",
+        "&#x33a;",
+        "&#x33b;",
+        "&#x33c;",
+        "&#x345;",
+        "&#x347;",
+        "&#x348;",
+        "&#x349;",
+        "&#x34d;",
+        "&#x34e;",
+        "&#x353;",
+        "&#x354;",
+        "&#x355;",
+        "&#x356;",
+        "&#x359;",
+        "&#x35a;",
+        "&#x35c;",
+        "&#x35f;",
+        "&#x362;",
+        "&#x20e8;",
+        "&#x20ec;",
+        "&#x20ed;",
+        "&#x20ee;",
+        "&#x20ef;",
       ].freeze
 
       BELOWS_NOTATIONS = {
-        '&#x316;': "munder",
-        '&#x317;': "munder",
-        '&#x318;': "munder",
-        '&#x319;': "munder",
-        '&#x31c;': "munder",
-        '&#x31d;': "munder",
-        '&#x31e;': "munder",
-        '&#x31f;': "munder",
-        '&#x320;': "munder",
-        '&#x321;': "munder",
-        '&#x322;': "munder",
-        '&#x323;': "munder",
-        '&#x324;': "munder",
-        '&#x325;': "munder",
-        '&#x326;': "munder",
-        '&#x327;': "munder",
-        '&#x328;': "munder",
-        '&#x329;': "munder",
-        '&#x32a;': "munder",
-        '&#x32b;': "munder",
-        '&#x32c;': "munder",
-        '&#x32d;': "munder",
-        '&#x32e;': "munder",
-        '&#x32f;': "munder",
-        '&#x330;': "munder",
-        '&#x331;': "munder",
-        '&#x332;': "bottom",
-        '&#x333;': "munder",
-        '&#x339;': "munder",
-        '&#x33a;': "munder",
-        '&#x33b;': "munder",
-        '&#x33c;': "munder",
-        '&#x345;': "munder",
-        '&#x347;': "munder",
-        '&#x348;': "munder",
-        '&#x349;': "munder",
-        '&#x34d;': "munder",
-        '&#x34e;': "munder",
-        '&#x353;': "munder",
-        '&#x354;': "munder",
-        '&#x355;': "munder",
-        '&#x356;': "munder",
-        '&#x359;': "munder",
-        '&#x35a;': "munder",
-        '&#x35c;': "munder",
-        '&#x35f;': "munder",
-        '&#x362;': "munder",
-        '&#x20e8;': "munder",
-        '&#x20ec;': "munder",
-        '&#x20ed;': "munder",
-        '&#x20ee;': "munder",
-        '&#x20ef;': "munder",
+        "&#x316;": "munder",
+        "&#x317;": "munder",
+        "&#x318;": "munder",
+        "&#x319;": "munder",
+        "&#x31c;": "munder",
+        "&#x31d;": "munder",
+        "&#x31e;": "munder",
+        "&#x31f;": "munder",
+        "&#x320;": "munder",
+        "&#x321;": "munder",
+        "&#x322;": "munder",
+        "&#x323;": "munder",
+        "&#x324;": "munder",
+        "&#x325;": "munder",
+        "&#x326;": "munder",
+        "&#x327;": "munder",
+        "&#x328;": "munder",
+        "&#x329;": "munder",
+        "&#x32a;": "munder",
+        "&#x32b;": "munder",
+        "&#x32c;": "munder",
+        "&#x32d;": "munder",
+        "&#x32e;": "munder",
+        "&#x32f;": "munder",
+        "&#x330;": "munder",
+        "&#x331;": "munder",
+        "&#x332;": "bottom",
+        "&#x333;": "munder",
+        "&#x339;": "munder",
+        "&#x33a;": "munder",
+        "&#x33b;": "munder",
+        "&#x33c;": "munder",
+        "&#x345;": "munder",
+        "&#x347;": "munder",
+        "&#x348;": "munder",
+        "&#x349;": "munder",
+        "&#x34d;": "munder",
+        "&#x34e;": "munder",
+        "&#x353;": "munder",
+        "&#x354;": "munder",
+        "&#x355;": "munder",
+        "&#x356;": "munder",
+        "&#x359;": "munder",
+        "&#x35a;": "munder",
+        "&#x35c;": "munder",
+        "&#x35f;": "munder",
+        "&#x362;": "munder",
+        "&#x20e8;": "munder",
+        "&#x20ec;": "munder",
+        "&#x20ed;": "munder",
+        "&#x20ee;": "munder",
+        "&#x20ef;": "munder",
       }.freeze
 
       SUP_DIGITS = {
@@ -849,7 +849,7 @@ module Plurimath
         "6": "&#x2076;",
         "7": "&#x2077;",
         "8": "&#x2078;",
-        "9": "&#x2079;"
+        "9": "&#x2079;",
       }.freeze
 
       SUB_DIGITS = {
@@ -866,51 +866,51 @@ module Plurimath
       }.freeze
 
       SUB_ALPHABETS = {
-        "a": "&#x2090;",
-        "e": "&#x2091;",
-        "h": "&#x2095;",
-        "i": "&#x1d62;",
-        "j": "&#x2c7c;",
-        "k": "&#x2096;",
-        "l": "&#x2097;",
-        "m": "&#x2098;",
-        "n": "&#x2099;",
-        "o": "&#x2092;",
-        "p": "&#x209a;",
-        "r": "&#x1d63;",
-        "s": "&#x209b;",
-        "t": "&#x209c;",
-        "u": "&#x1d64;",
-        "v": "&#x1d65;",
-        "x": "&#x2093;"
+        a: "&#x2090;",
+        e: "&#x2091;",
+        h: "&#x2095;",
+        i: "&#x1d62;",
+        j: "&#x2c7c;",
+        k: "&#x2096;",
+        l: "&#x2097;",
+        m: "&#x2098;",
+        n: "&#x2099;",
+        o: "&#x2092;",
+        p: "&#x209a;",
+        r: "&#x1d63;",
+        s: "&#x209b;",
+        t: "&#x209c;",
+        u: "&#x1d64;",
+        v: "&#x1d65;",
+        x: "&#x2093;",
       }.freeze
 
       SUP_ALPHABETS = {
-        "a": "&#x1d43;",
-        "b": "&#x1d47;",
-        "c": "&#x1d9c;",
-        "d": "&#x1d48;",
-        "e": "&#x1d49;",
-        "f": "&#x1da0;",
-        "g": "&#x1d4d;",
-        "h": "&#x2b0;",
-        "i": "&#x2071;",
-        "j": "&#x2b2;",
-        "k": "&#x1d4f;",
-        "l": "&#x2e1;",
-        "m": "&#x1d50;",
-        "n": "&#x207f;",
-        "o": "&#x1d52;",
-        "p": "&#x1d56;",
-        "r": "&#x2b3;",
-        "s": "&#x2e2;",
-        "t": "&#x1d57;",
-        "u": "&#x1d58;",
-        "v": "&#x1d5b;",
-        "w": "&#x2b7;",
-        "x": "&#x2e3;",
-        "y": "&#x2b8;",
-        "z": "&#x1dbb;"
+        a: "&#x1d43;",
+        b: "&#x1d47;",
+        c: "&#x1d9c;",
+        d: "&#x1d48;",
+        e: "&#x1d49;",
+        f: "&#x1da0;",
+        g: "&#x1d4d;",
+        h: "&#x2b0;",
+        i: "&#x2071;",
+        j: "&#x2b2;",
+        k: "&#x1d4f;",
+        l: "&#x2e1;",
+        m: "&#x1d50;",
+        n: "&#x207f;",
+        o: "&#x1d52;",
+        p: "&#x1d56;",
+        r: "&#x2b3;",
+        s: "&#x2e2;",
+        t: "&#x1d57;",
+        u: "&#x1d58;",
+        v: "&#x1d5b;",
+        w: "&#x2b7;",
+        x: "&#x2e3;",
+        y: "&#x2b8;",
+        z: "&#x1dbb;",
       }.freeze
 
       SUB_OPERATORS = {
@@ -984,13 +984,13 @@ module Plurimath
 
       UNICODED_FONTS = {
         script: {
-          "H": "&#x210b;"
+          H: "&#x210b;",
         },
         fraktur: {
-          "H": "&#x210c;",
+          H: "&#x210c;",
         },
         double: {
-          "H": "&#x210d;"
+          H: "&#x210d;",
         },
         mitBbb: {
           D: "&#x2145;",
@@ -1021,7 +1021,7 @@ module Plurimath
 
       class << self
         def wrapper_symbols
-          @@wrapper_symbols ||= Utility.symbols_hash(:unicodemath).keys.grep(/"P\{[^\}]+\}/)
+          @@wrapper_symbols ||= Utility.symbols_hash(:unicodemath).keys.grep(/"P\{[^}]+\}/)
         end
       end
     end

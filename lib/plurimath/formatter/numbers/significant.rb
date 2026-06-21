@@ -75,7 +75,8 @@ module Plurimath
 
           fraction = reversed[0...decimal_index]
           integer = reversed[(decimal_index + 1)..]
-          fraction, carry = digit_sequence.increment_reversed(fraction, overflow: EMPTY_STRING)
+          fraction, carry = digit_sequence.increment_reversed(fraction,
+                                                              overflow: EMPTY_STRING)
           return fraction + [CANONICAL_DECIMAL] + integer unless carry.positive?
 
           integer = increment_integer(integer)
@@ -83,7 +84,8 @@ module Plurimath
         end
 
         def increment_integer(reversed)
-          digits, carry = digit_sequence.increment_reversed(reversed, overflow: ZERO)
+          digits, carry = digit_sequence.increment_reversed(reversed,
+                                                            overflow: ZERO)
           digits << "1" if carry.positive?
           digits
         end

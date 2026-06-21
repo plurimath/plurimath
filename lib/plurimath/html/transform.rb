@@ -202,25 +202,29 @@ module Plurimath
       rule(sub_sup: simple(:sub_sup),
            sub_value: simple(:sub_value),
            sup_value: simple(:sup_value)) do
-        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                sup_value: sup_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: simple(:sub_value),
            sup_value: sequence(:sup_value)) do
-        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                sup_value: sup_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value),
            sup_value: simple(:sup_value)) do
-        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                sup_value: sup_value)
       end
 
       rule(sub_sup: simple(:sub_sup),
            sub_value: sequence(:sub_value),
            sup_value: sequence(:sup_value)) do
-        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value)
+        TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                sup_value: sup_value)
       end
 
       # Parslet emits separate shapes for each sub/sup value combination and
@@ -303,7 +307,8 @@ module Plurimath
            sup_value: simple(:sup_value),
            expression: simple(:expression)) do
         TransformUtility.append_expression(
-          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                  sup_value: sup_value),
           expression,
         )
       end
@@ -313,7 +318,8 @@ module Plurimath
            sup_value: simple(:sup_value),
            expression: sequence(:expression)) do
         TransformUtility.append_expression(
-          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                  sup_value: sup_value),
           expression,
         )
       end
@@ -323,7 +329,8 @@ module Plurimath
            sup_value: sequence(:sup_value),
            expression: simple(:expression)) do
         TransformUtility.append_expression(
-          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                  sup_value: sup_value),
           expression,
         )
       end
@@ -333,7 +340,8 @@ module Plurimath
            sup_value: sequence(:sup_value),
            expression: sequence(:expression)) do
         TransformUtility.append_expression(
-          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                  sup_value: sup_value),
           expression,
         )
       end
@@ -343,7 +351,8 @@ module Plurimath
            sup_value: simple(:sup_value),
            expression: simple(:expression)) do
         TransformUtility.append_expression(
-          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                  sup_value: sup_value),
           expression,
         )
       end
@@ -353,7 +362,8 @@ module Plurimath
            sup_value: simple(:sup_value),
            expression: sequence(:expression)) do
         TransformUtility.append_expression(
-          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                  sup_value: sup_value),
           expression,
         )
       end
@@ -363,7 +373,8 @@ module Plurimath
            sup_value: sequence(:sup_value),
            expression: simple(:expression)) do
         TransformUtility.append_expression(
-          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                  sup_value: sup_value),
           expression,
         )
       end
@@ -373,7 +384,8 @@ module Plurimath
            sup_value: sequence(:sup_value),
            expression: sequence(:expression)) do
         TransformUtility.append_expression(
-          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value, sup_value: sup_value),
+          TransformUtility.sub_sup_value(sub_sup, sub_value: sub_value,
+                                                  sup_value: sup_value),
           expression,
         )
       end
