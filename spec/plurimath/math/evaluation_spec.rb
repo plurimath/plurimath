@@ -327,7 +327,7 @@ RSpec.describe Plurimath::Math::Formula do
         Plurimath.with_configuration do |config|
           config.evaluation_max_iterations = 2
           expect { evaluate("sum_(i=1)^5 i") }.to raise_error(
-            Plurimath::Math::Evaluation::UnsupportedExpressionError,
+            Plurimath::Errors::Evaluation::UnsupportedExpressionError,
             "unsupported expression: iteration range larger than 2 steps",
           )
         end
@@ -457,7 +457,7 @@ RSpec.describe Plurimath::Math::Formula do
       }.each do |label, index|
         it "rejects #{label} index as malformed" do
           expect { sum_with_index(index) }.to raise_error(
-            Plurimath::Math::Evaluation::UnsupportedExpressionError,
+            Plurimath::Errors::Evaluation::UnsupportedExpressionError,
             "unsupported expression: malformed iteration bounds",
           )
         end
@@ -465,7 +465,7 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "rejects a reserved-constant index" do
         expect { sum_with_index(Plurimath::Math::Symbols::Pi.new) }.to raise_error(
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: reserved constant as iteration index",
         )
       end
@@ -499,7 +499,7 @@ RSpec.describe Plurimath::Math::Formula do
         )
 
         expect { formula.evaluate }.to raise_error(
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: symbol `*`",
         )
       end
@@ -518,7 +518,7 @@ RSpec.describe Plurimath::Math::Formula do
         )
 
         expect { formula.evaluate }.to raise_error(
-          Plurimath::Math::Evaluation::MathDomainError,
+          Plurimath::Errors::Evaluation::MathDomainError,
           "result is not a real number",
         )
       end
@@ -545,7 +545,7 @@ RSpec.describe Plurimath::Math::Formula do
       }.each_with_index do |(value, message), index|
         it "reports a clear message for unsupported token shape ##{index + 1}" do
           expect { described_class.new(value).evaluate }.to raise_error(
-            Plurimath::Math::Evaluation::UnsupportedExpressionError, message
+            Plurimath::Errors::Evaluation::UnsupportedExpressionError, message
           )
         end
       end
@@ -554,7 +554,7 @@ RSpec.describe Plurimath::Math::Formula do
     context "when raising binding errors" do
       it "raises for a missing variable" do
         expect { evaluate("a+b+c", :asciimath, a: 2, b: 3) }.to raise_error(
-          Plurimath::Math::Evaluation::MissingVariableError,
+          Plurimath::Errors::Evaluation::MissingVariableError,
           "missing value for variable `c`",
         )
       end
@@ -565,7 +565,7 @@ RSpec.describe Plurimath::Math::Formula do
       }.each do |value, class_name|
         it "raises for a #{class_name} binding value" do
           expect { evaluate("a+b", :asciimath, a: value, b: 3) }.to raise_error(
-            Plurimath::Math::Evaluation::InvalidBindingError,
+            Plurimath::Errors::Evaluation::InvalidBindingError,
             "wrong value for variable `a` (given #{class_name}, expected a real number)",
           )
         end
@@ -575,7 +575,7 @@ RSpec.describe Plurimath::Math::Formula do
         it "raises for a #{key.class} binding key" do
           formula = Plurimath::Math.parse("a+b", :asciimath)
           expect { formula.evaluate({ key => 2, b: 3 }) }.to raise_error(
-            Plurimath::Math::Evaluation::InvalidBindingKeyError,
+            Plurimath::Errors::Evaluation::InvalidBindingKeyError,
             "wrong type for binding key (given #{key.class}, expected String or Symbol)",
           )
         end
@@ -587,11 +587,11 @@ RSpec.describe Plurimath::Math::Formula do
 
         aggregate_failures do
           expect { formula.evaluate(a: "2", b: 3) }
-            .to raise_error(Plurimath::Math::Evaluation::InvalidBindingError, message)
+            .to raise_error(Plurimath::Errors::Evaluation::InvalidBindingError, message)
           expect { formula.evaluate({ a: "2", b: 3 }) }
-            .to raise_error(Plurimath::Math::Evaluation::InvalidBindingError, message)
+            .to raise_error(Plurimath::Errors::Evaluation::InvalidBindingError, message)
           expect { formula.evaluate({ "a" => "2", "b" => 3 }) }
-            .to raise_error(Plurimath::Math::Evaluation::InvalidBindingError, message)
+            .to raise_error(Plurimath::Errors::Evaluation::InvalidBindingError, message)
         end
       end
 
@@ -613,7 +613,7 @@ RSpec.describe Plurimath::Math::Formula do
       ["1/0", "a/(b-b)", "frac(1)(0)", "cot(0)", "root(0)(27)", "0^(-1)"].each do |source|
         it "raises dividing by zero for #{source.inspect}" do
           expect { evaluate(source, :asciimath, a: 1, b: 2) }.to raise_error(
-            Plurimath::Math::Evaluation::DivisionByZeroError, "divided by 0"
+            Plurimath::Errors::Evaluation::DivisionByZeroError, "divided by 0"
           )
         end
       end
@@ -621,7 +621,7 @@ RSpec.describe Plurimath::Math::Formula do
       ["ln(-1)", "sqrt(-4)", "arcsin(2)"].each do |source|
         it "raises a math domain error for #{source.inspect}" do
           expect { evaluate(source) }.to raise_error(
-            Plurimath::Math::Evaluation::MathDomainError, /out of domain/
+            Plurimath::Errors::Evaluation::MathDomainError, /out of domain/
           )
         end
       end
@@ -629,7 +629,7 @@ RSpec.describe Plurimath::Math::Formula do
       ["ln(0)", "exp(1000)", "floor(exp(1000))"].each do |source|
         it "raises a non-finite-result error for #{source.inspect}" do
           expect { evaluate(source) }.to raise_error(
-            Plurimath::Math::Evaluation::NonFiniteResultError,
+            Plurimath::Errors::Evaluation::NonFiniteResultError,
             "result is not a finite number",
           )
         end
@@ -644,7 +644,7 @@ RSpec.describe Plurimath::Math::Formula do
       ].each do |source|
         it "raises when subexpression #{source.inspect} is not real" do
           expect { evaluate(source) }.to raise_error(
-            Plurimath::Math::Evaluation::MathDomainError, "result is not a real number"
+            Plurimath::Errors::Evaluation::MathDomainError, "result is not a real number"
           )
         end
       end
@@ -653,39 +653,39 @@ RSpec.describe Plurimath::Math::Formula do
     context "when raising for invalid function arguments" do
       {
         "gcd(2.5,2)" => [
-          Plurimath::Math::Evaluation::MathDomainError,
+          Plurimath::Errors::Evaluation::MathDomainError,
           "gcd requires integer arguments",
         ],
         "7 mod 0" => [
-          Plurimath::Math::Evaluation::DivisionByZeroError,
+          Plurimath::Errors::Evaluation::DivisionByZeroError,
           "divided by 0",
         ],
         "sum_(i=1)^2.5 i" => [
-          Plurimath::Math::Evaluation::MathDomainError,
+          Plurimath::Errors::Evaluation::MathDomainError,
           "iteration bounds must be integers",
         ],
         "sum_(pi=1)^3 2" => [
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: reserved constant as iteration index",
         ],
         "sum_(i=1)^9999999 i" => [
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
-          "unsupported expression: iteration range larger than 1000000 steps",
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
+          "unsupported expression: iteration range larger than 100000 steps",
         ],
         "log_0(8)" => [
-          Plurimath::Math::Evaluation::MathDomainError,
+          Plurimath::Errors::Evaluation::MathDomainError,
           "log base must be a positive number other than 1",
         ],
         "log_1(8)" => [
-          Plurimath::Math::Evaluation::MathDomainError,
+          Plurimath::Errors::Evaluation::MathDomainError,
           "log base must be a positive number other than 1",
         ],
         "max 2,3" => [
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: malformed token",
         ],
         "7 mod -3" => [
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: Symbols::Minus",
         ],
       }.each do |source, (error, message)|
@@ -698,28 +698,28 @@ RSpec.describe Plurimath::Math::Formula do
     context "when raising for unsupported expressions" do
       it "raises for an equation instead of solving" do
         expect { evaluate("a+b=c", :asciimath, a: 2, b: 3, c: 5) }.to raise_error(
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: equation",
         )
       end
 
       it "raises for an unsupported semantic node" do
         expect { evaluate("int_0^1 x dx", :asciimath, x: 1) }.to raise_error(
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: Function::Int",
         )
       end
 
       it "raises for a bare function without an operand" do
         expect { evaluate('\lg', :latex) }.to raise_error(
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: missing operand",
         )
       end
 
       it "raises for an empty expression" do
         expect { described_class.new([]).evaluate }.to raise_error(
-          Plurimath::Math::Evaluation::UnsupportedExpressionError,
+          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: empty expression",
         )
       end

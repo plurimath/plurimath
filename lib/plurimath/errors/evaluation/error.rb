@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module Math
+  module Errors
     module Evaluation
-      class Error < StandardError; end
+      class Error < Plurimath::Error; end
     end
   end
 end

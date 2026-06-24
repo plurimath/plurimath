@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module Math
+  module Errors
     module Evaluation
       class MissingVariableError < Error
         def initialize(name)

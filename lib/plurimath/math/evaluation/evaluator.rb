@@ -5,7 +5,8 @@ module Plurimath
     module Evaluation
       # Computes the numeric value of a Formula tree against variable
       # bindings, enforcing the strict error contract: results are always
-      # real, finite numbers or one of the Evaluation errors is raised.
+      # real, finite numbers or one of the Errors::Evaluation classes is
+      # raised.
       class Evaluator
         def initialize(formula, bindings = {})
           @formula = formula
@@ -16,14 +17,14 @@ module Plurimath
           result = begin
             evaluate_formula(@formula)
           rescue ::Math::DomainError => e
-            raise MathDomainError, e.message
+            raise Errors::Evaluation::MathDomainError, e.message
           rescue ::FloatDomainError
-            raise NonFiniteResultError
+            raise Errors::Evaluation::NonFiniteResultError
           rescue ::ZeroDivisionError
-            raise DivisionByZeroError
+            raise Errors::Evaluation::DivisionByZeroError
           end
 
-          raise NonFiniteResultError unless result.finite?
+          raise Errors::Evaluation::NonFiniteResultError unless result.finite?
 
           result
         end
@@ -43,26 +44,24 @@ module Plurimath
           when Formula
             evaluate_formula(node)
           else
-            return real_result(node.evaluate(self)) if node.respond_to?(:evaluate)
-
-            unsupported(node)
+            real_result(node.evaluate(self))
           end
         end
 
         def value_for(name)
-          raise MissingVariableError, name unless bindings.key?(name)
+          raise Errors::Evaluation::MissingVariableError, name unless bindings.key?(name)
 
           bindings[name]
         end
 
         def divide(dividend, divisor)
-          raise DivisionByZeroError if divisor.zero?
+          raise Errors::Evaluation::DivisionByZeroError if divisor.zero?
 
           dividend / divisor.to_f
         end
 
         def modulo(dividend, divisor)
-          raise DivisionByZeroError if divisor.zero?
+          raise Errors::Evaluation::DivisionByZeroError if divisor.zero?
 
           dividend % divisor
         end
@@ -76,7 +75,7 @@ module Plurimath
         # final result, so correct asymptotic values like `1/exp(1000)` still
         # evaluate.
         def real_result(value)
-          raise MathDomainError, "result is not a real number" unless value.real?
+          raise Errors::Evaluation::MathDomainError, "result is not a real number" unless value.real?
 
           value
         end
@@ -104,7 +103,7 @@ module Plurimath
         end
 
         def unsupported(node_or_message)
-          raise UnsupportedExpressionError, unsupported_message(node_or_message)
+          raise Errors::Evaluation::UnsupportedExpressionError, unsupported_message(node_or_message)
         end
 
         private
@@ -114,10 +113,10 @@ module Plurimath
         def normalize_bindings(bindings)
           bindings.to_hash.each_with_object({}) do |(key, value), normalized|
             unless key.is_a?(String) || key.is_a?(Symbol)
-              raise InvalidBindingKeyError, key
+              raise Errors::Evaluation::InvalidBindingKeyError, key
             end
             unless value.is_a?(Numeric) && value.real?
-              raise InvalidBindingError.new(key, value)
+              raise Errors::Evaluation::InvalidBindingError.new(key, value)
             end
 
             normalized[key.to_s] = value

@@ -76,7 +76,7 @@ module Plurimath
 
         Float(raw_value)
       rescue ArgumentError
-        raise Evaluation::UnsupportedExpressionError, "number `#{raw_value}`"
+        raise Errors::Evaluation::UnsupportedExpressionError, "number `#{raw_value}`"
       end
 
       def mini_sized?

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Plurimath
-  module Math
+  module Errors
     module Evaluation
       autoload :Error, "#{__dir__}/evaluation/error"
       autoload :DivisionByZeroError, "#{__dir__}/evaluation/division_by_zero_error"

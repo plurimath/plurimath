@@ -188,11 +188,11 @@ module Plurimath
         end
 
         def open_paren?(node)
-          node.respond_to?(:open?) && node.open?
+          node&.open?
         end
 
         def close_paren?(node)
-          node.respond_to?(:close?) && node.close?
+          node&.close?
         end
 
         def current
