@@ -17,10 +17,11 @@ module Plurimath
         # junk after partial parses, and Infinity/NaN spellings.
         NUMERIC_PATTERN = /\A[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?\z/
 
-        def initialize(value)
+        def initialize(value, base: Base::DEFAULT_BASE)
           @raw = value.to_s
+          @base = base || Base::DEFAULT_BASE
           validate_numeric!(value)
-          @decimal = BigDecimal(raw)
+          @decimal = parse_decimal
           @sign = raw.start_with?("-") ? -1 : 1
 
           mantissa, @exponent_text = unsigned_value.split("e", 2)
@@ -79,11 +80,25 @@ module Plurimath
 
         private
 
+        # Converts the raw string to BigDecimal. For non-decimal bases with
+        # alphanumeric digits (e.g. "FF" in hex), uses #to_i(base) to convert.
+        # Pure-decimal inputs (e.g. "255") are parsed directly by BigDecimal.
+        def parse_decimal
+          return BigDecimal(raw) if decimal_input?
+
+          stripped = raw.sub(/\A[-+]/, "")
+          BigDecimal(stripped.to_i(@base))
+        end
+
         def validate_numeric!(value)
           valid_type = value.is_a?(Numeric) || value.is_a?(String)
-          return if valid_type && NUMERIC_PATTERN.match?(raw)
+          return if valid_type && (non_decimal_base? || NUMERIC_PATTERN.match?(raw))
 
           raise Plurimath::Errors::InvalidNumber, value
+        end
+
+        def non_decimal_base?
+          @base != Base::DEFAULT_BASE
         end
 
         def decimal_parts_integer_length
@@ -127,7 +142,17 @@ module Plurimath
         end
 
         def unsigned_value
-          raw.downcase.sub(/\A[-+]/, "")
+          return raw.downcase.sub(/\A[-+]/, "") if decimal_input?
+
+          @decimal.abs.to_s("F").downcase.sub(/\A[-+]/, "").delete_suffix(".0")
+        end
+
+        # Returns true when the raw value is a plain decimal string (digits,
+        # optional decimal point, optional exponent), meaning BigDecimal(raw)
+        # works directly.
+        def decimal_input?
+          stripped = raw.sub(/\A[-+]/, "")
+          stripped.match?(/\A[0-9.]+(?:e[+-]?[0-9]+)?\z/i)
         end
       end
     end

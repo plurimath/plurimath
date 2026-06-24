@@ -35,8 +35,8 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
                                                       Plurimath::Math::Function::Base.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("7FE0"),
-                                                        Plurimath::Math::Symbols::Symbol.new("16"),
+                                                        Plurimath::Math::Number.new("7FE0"),
+                                                        Plurimath::Math::Number.new("16"),
                                                       ),
                                                     ])
       expect(formula).to eq(expected_value)
@@ -59,9 +59,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     it "returns formula of decimal values" do
       expected_value = Plurimath::Math::Formula.new([
                                                       Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("22"),
+                                                                                     Plurimath::Math::Number.new("22"),
                                                                                      Plurimath::Math::Symbols::Symbol.new("/"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("7"),
+                                                                                     Plurimath::Math::Number.new("7"),
                                                                                    ]),
                                                     ])
       expect(formula).to eq(expected_value)

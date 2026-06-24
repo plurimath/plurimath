@@ -3,6 +3,8 @@
 module Plurimath
   class Html
     class Transform < Parslet::Transform
+      include Plurimath::BaseNumberPrefix::Transform
+
       rule(text: simple(:text))      { Math::Function::Text.new(text) }
       rule(unary: simple(:unary))    { Utility.get_class(unary).new }
       rule(symbol: simple(:symbol)) { TransformUtility.symbol(symbol) }

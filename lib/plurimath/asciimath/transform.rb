@@ -3,6 +3,8 @@
 module Plurimath
   class Asciimath
     class Transform < Parslet::Transform
+      include Plurimath::BaseNumberPrefix::Transform
+
       rule(mod: simple(:mod))       { mod }
       rule(frac: simple(:frac))     { frac }
       rule(unary: simple(:unary))   { unary }

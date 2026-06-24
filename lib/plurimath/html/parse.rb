@@ -3,6 +3,8 @@
 module Plurimath
   class Html
     class Parse < Parslet::Parser
+      include Plurimath::BaseNumberPrefix::Parser
+
       rule(:space)   { match["\s"].repeat(1) }
       rule(:unary)   { array_to_expression(Constants::UNARY_CLASSES, :unary) }
       rule(:binary)  { str("lim").as(:binary) }
@@ -75,6 +77,9 @@ module Plurimath
       rule(:symbol_text_or_tag) do
         tag_parse |
           html_entity.as(:symbol) |
+          hex_number |
+          binary_number |
+          octal_number |
           (match["0-9"].repeat(1) >> decimal_marker >> match["0-9"].repeat(1)).as(:number) |
           match["0-9"].repeat(1).as(:number) |
           match["a-zA-Z"].as(:text) |

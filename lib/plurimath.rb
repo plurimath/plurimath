@@ -7,6 +7,7 @@ require "plurimath/xml_engine"
 
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
+  autoload :BaseNumberPrefix, "plurimath/base_number_prefix"
   autoload :Cli, "plurimath/cli" unless RUBY_ENGINE == "opal"
   autoload :Configuration, "plurimath/configuration"
   autoload :Deprecation, "plurimath/deprecation"

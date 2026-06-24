@@ -3,6 +3,8 @@
 module Plurimath
   class Latex
     class Transform < Parslet::Transform
+      include Plurimath::BaseNumberPrefix::Transform
+
       rule(base: simple(:base))       { base }
       rule(over: simple(:over))       { over }
       rule(number: simple(:num))      { Math::Number.new(Utility.html_entity_to_unicode(num.to_s)) }

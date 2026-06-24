@@ -19,7 +19,7 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
   end
 
   describe "#render" do
-    it "renders e notation with a custom exponent separator" do
+    it "returns a FormattedNotation for e notation" do
       renderer = described_class.new(
         options(
           decimal: "@",
@@ -29,10 +29,15 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
         ),
       )
 
-      expect(renderer.render(source("14000"), :e)).to eq("1@4E4")
+      result = renderer.render(source("14000"), :e)
+
+      expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNotation)
+      expect(result.to_s).to eq("1@4E4")
+      expect(result.notation_style).to eq(:e)
+      expect(result.exponent).to eq(4)
     end
 
-    it "renders scientific notation with explicit plus exponents" do
+    it "returns a FormattedNotation for scientific notation" do
       renderer = described_class.new(
         options(
           decimal: ".",
@@ -45,11 +50,15 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
         ),
       )
 
-      expect(renderer.render(source("14000"),
-                             :scientific)).to eq("1.400 0 × 10^+4")
+      result = renderer.render(source("14000"), :scientific)
+
+      expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNotation)
+      expect(result.to_s).to eq("1.400 0 × 10^+4")
+      expect(result.notation_style).to eq(:scientific)
+      expect(result.exponent).to eq(4)
     end
 
-    it "renders engineering notation" do
+    it "returns a FormattedNotation for engineering notation" do
       renderer = described_class.new(
         options(
           decimal: ",",
@@ -59,8 +68,12 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
         ),
       )
 
-      expect(renderer.render(source("14000"),
-                             :engineering)).to eq("14,00 x 10^3")
+      result = renderer.render(source("14000"), :engineering)
+
+      expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNotation)
+      expect(result.to_s).to eq("14,00 x 10^3")
+      expect(result.notation_style).to eq(:engineering)
+      expect(result.exponent).to eq(3)
     end
 
     it "infers engineering precision from significant digits instead of raw characters" do
@@ -73,10 +86,11 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
         ),
       )
 
-      expect(renderer.render(source("-14000"),
-                             :engineering)).to eq("-14.000 x 10^3")
-      expect(renderer.render(source("1.23e4"),
-                             :engineering)).to eq("12.3 x 10^3")
+      result1 = renderer.render(source("-14000"), :engineering)
+      expect(result1.to_s).to eq("-14.000 x 10^3")
+
+      result2 = renderer.render(source("1.23e4"), :engineering)
+      expect(result2.to_s).to eq("12.3 x 10^3")
     end
 
     it "preserves zero precision in scientific notation" do
@@ -88,7 +102,22 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
         ),
       )
 
-      expect(renderer.render(source("0.00"), :scientific)).to eq("0.00 × 10^0")
+      result = renderer.render(source("0.00"), :scientific)
+      expect(result.to_s).to eq("0.00 × 10^0")
+    end
+
+    it "carries the coefficient as a FormattedNumber" do
+      renderer = described_class.new(
+        options(
+          precision: 2,
+          e: :e,
+          times: "x",
+        ),
+      )
+
+      result = renderer.render(source("14000"), :scientific)
+      expect(result.coefficient).to be_a(Plurimath::Formatter::Numbers::FormattedNumber)
+      expect(result.coefficient.to_s).to eq("1.40")
     end
   end
 end

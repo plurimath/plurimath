@@ -3,48 +3,59 @@
 module Plurimath
   module Math
     class Number < Core
-      attr_accessor :value, :mini_sub_sized, :mini_sup_sized
+      attr_accessor :value, :mini_sub_sized, :mini_sup_sized, :base
 
-      def initialize(value = nil, mini_sub_sized: false, mini_sup_sized: false)
+      def initialize(value = nil, mini_sub_sized: false, mini_sup_sized: false,
+                     base: nil)
         @value = value.is_a?(::Parslet::Slice) ? value.to_s : value
-        @mini_sub_sized = mini_sub_sized if mini_sub_sized
-        @mini_sup_sized = mini_sup_sized if mini_sup_sized
+        @mini_sub_sized = mini_sub_sized
+        @mini_sup_sized = mini_sup_sized
+        @base = base
       end
 
       def ==(object)
-        object.respond_to?(:value) &&
+        object.is_a?(Number) &&
           object.value == value &&
           object.mini_sub_sized == mini_sub_sized &&
-          object.mini_sup_sized == mini_sup_sized
+          object.mini_sup_sized == mini_sup_sized &&
+          object.base == base
       end
 
       def element_order=(*); end
 
       def to_asciimath(options:)
-        format_value_with_options(options)
+        Formatter::Numbers::TextRenderer.render(
+          format_value_with_options(options), :asciimath
+        )
       end
 
       def to_mathml_without_math_tag(_, options:)
-        Utility.ox_element("mn") << format_value_with_options(options)
+        Formatter::Numbers::MathmlRenderer.render(format_value_with_options(options))
       end
 
       def to_latex(options:)
-        format_value_with_options(options)
+        Formatter::Numbers::TextRenderer.render(
+          format_value_with_options(options), :latex
+        )
       end
 
       def to_html(options:)
-        format_value_with_options(options)
+        Formatter::Numbers::TextRenderer.render(
+          format_value_with_options(options), :html
+        )
       end
 
       def to_omml_without_math_tag(_, options:)
-        [t_tag(options: options)]
+        [Formatter::Numbers::OmmlRenderer.render(format_value_with_options(options))]
       end
 
       def to_unicodemath(options:)
         return mini_sub if mini_sub_sized
         return mini_sup if mini_sup_sized
 
-        format_value_with_options(options)
+        Formatter::Numbers::TextRenderer.render(
+          format_value_with_options(options), :unicodemath
+        )
       end
 
       def insert_t_tag(_, options:)
@@ -59,24 +70,15 @@ module Plurimath
 
       def t_tag(options:)
         Utility.ox_element("t",
-                           namespace: "m") << format_value_with_options(options)
+                           namespace: "m") << formatted_value(options)
       end
 
       def nary_attr_value(options:)
-        format_value_with_options(options)
+        format_value_with_options(options).to_s
       end
 
       def validate_function_formula
         false
-      end
-
-      def evaluate(_evaluator)
-        raw_value = value.to_s
-        return raw_value.to_i if raw_value.match?(/\A[+-]?\d+\z/)
-
-        Float(raw_value)
-      rescue ArgumentError
-        raise Errors::Evaluation::UnsupportedExpressionError, "number `#{raw_value}`"
       end
 
       def mini_sized?
@@ -107,25 +109,16 @@ module Plurimath
         end
         return value unless formatter
 
-        if formatter.respond_to?(:format_number)
-          formatter.format_number(options[:formula], self)
-        elsif formatter.respond_to?(:format)
-          formatter.format(options[:formula], self)
-        elsif formatter.respond_to?(:localized_number)
-          formatter.localized_number(value.to_s,
-                                     **format_kwargs(options[:format]))
-        else
-          value
-        end
+        format = options[:format] || {}
+        format = format.merge(base: base) if base && !format.key?(:base)
+
+        formatter.format_number(options[:formula], self, format: format)
       end
 
       private
 
-      # Empty splat is silently dropped by Ruby, so simple formatter signatures still work.
-      def format_kwargs(format)
-        return {} unless format.is_a?(Hash) && !format.empty?
-
-        { format: format }
+      def formatted_value(options)
+        format_value_with_options(options).to_s
       end
     end
   end

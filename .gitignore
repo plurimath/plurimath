@@ -14,3 +14,6 @@
 
 # temp files
 *.kate-swp
+
+# Roadmap/planning notes live in issues or docs/, not the repo
+/TODO.*/
