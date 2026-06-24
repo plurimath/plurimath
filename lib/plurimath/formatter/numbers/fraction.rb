@@ -20,7 +20,7 @@ module Plurimath
         end
 
         # Keep fraction preparation on structured parts; localized rendering and
-        # grouping happen later at the PartsRenderer boundary.
+        # grouping happen later at the FormattedNumber boundary.
         def apply_parts(parts, precision: self.precision)
           precision = precision.to_i
           return parts.with_digits(fraction_digits: DEFAULT_STRINGS[:empty]) unless precision.positive?

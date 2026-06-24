@@ -888,6 +888,205 @@ The decimal separator is rendered as configured by the `decimal` option.
 NOTE: The fractional-part conversion treats the digits after the decimal point as a fractional value (for example, `"10.75"` is interpreted
 as decimal `0.75` for the fractional part) and converts that real value to the requested base, honoring the configured precision.
 
+
+===== Semantic base notation rendering
+
+When numbers are formatted with a non-decimal `base`, Plurimath produces
+*structured output* in each representation language rather than flat
+prefix/postfix strings. The base is rendered as a subscript, making the
+output semantically rich and accessible to screen readers and other tools.
+
+For plain-text uses (`localized_number`), prefix/postfix notation is still
+available through the `base_prefix` and `base_postfix` options.
+
+.Semantic rendering by format
+[example]
+====
+[source,ruby]
+----
+formatter = Plurimath::Formatter::Standard.new(options: { base: 16 })
+Plurimath.configuration.number_formatter = formatter
+
+formula = Plurimath::Math.parse("255", :asciimath)
+
+formula.to_asciimath
+# => "ff_(16)"
+
+formula.to_latex
+# => "\\mathrm{ff}_{16}"
+
+formula.to_html
+# => "ff<sub>16</sub>"
+
+formula.to_unicodemath
+# => "ff_(16)"
+----
+
+MathML produces a structured `<msub>` element:
+
+[source,xml]
+----
+<msub><mn>ff</mn><mn>16</mn></msub>
+----
+
+OMML produces a structured `<m:sSub>` element:
+
+[source,xml]
+----
+<m:sSub>
+  <m:sSubPr>...</m:sSubPr>
+  <m:e><m:r><m:t>ff</m:t></m:r></m:e>
+  <m:sub><m:r><m:t>16</m:t></m:r></m:sub>
+</m:sSub>
+----
+====
+
+Negative numbers wrap the sign around the subscript structure:
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("-255", :asciimath)
+formula.to_latex
+# => "-\\mathrm{ff}_{16}"
+----
+
+[source,xml]
+----
+<mrow><mo>-</mo><msub><mn>ff</mn><mn>16</mn></msub></mrow>
+====
+
+
+===== Structured notation rendering
+
+Scientific and engineering notation also produces structured output in MathML.
+The `× 10^exp` portion is rendered as separate elements:
+
+[source,ruby]
+----
+formatter = Plurimath::Formatter::Standard.new(
+  options: { notation: :scientific, exponent_sign: :plus },
+)
+Plurimath.configuration.number_formatter = formatter
+
+formula = Plurimath::Math.parse("14000", :asciimath)
+----
+
+[source,xml]
+----
+<mrow>
+  <mn>1.4000</mn>
+  <mo>×</mo>
+  <msup><mn>10</mn><mn>+4</mn></msup>
+</mrow>
+----
+
+E-notation remains as a flat `<mn>` element:
+
+[source,xml]
+----
+<mn>1.4000E+4</mn>
+====
+
+
+===== Structured formatter API
+
+`NumberFormatter#localized_number` continues to return a flat string for
+backward compatibility. A new `NumberFormatter#formatted_number` method returns
+a structured value object that carries the semantic parts of the formatted
+number.
+
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:en)
+result = formatter.formatted_number("255", format: { base: 16 })
+
+result                                   # => FormattedNumber
+result.to_s                              # => "0xff"
+result.digits_string                     # => "ff"
+result.sign_text                         # => nil (no sign for positive numbers)
+result.base_notation.base                # => 16
+result.negative?                         # => false
+result.fractional?                       # => false
+----
+
+The `sign_text` accessor returns `"-"` for negative numbers, `"+"` when
+`number_sign: :plus` is set, and `nil` otherwise. Output renderers use it
+to produce format-specific sign elements.
+
+For notation numbers, `formatted_number` returns a `FormattedNotation` value
+object:
+
+[source,ruby]
+----
+result = formatter.formatted_number("14000", format: { notation: :scientific })
+
+result                                   # => FormattedNotation
+result.to_s                              # => "1.4000 × 10^4"
+result.coefficient                       # => FormattedNumber
+result.coefficient.to_s                  # => "1.4000"
+result.exponent                          # => 4
+result.formatted_exponent                # => "4" ("+4" when exponent_sign: :plus)
+result.notation_style                    # => :scientific
+----
+
+These value objects are what Plurimath uses internally to produce the
+structured output shown above.
+
+
+===== Storing base on Math::Number
+
+`Plurimath::Math::Number` now accepts a `base:` keyword, storing the radix
+as a semantic attribute. When present, the stored base is used as the default
+for formatting — no explicit `base:` option is needed in the format hash.
+
+[source,ruby]
+----
+number = Plurimath::Math::Number.new("FF", base: 16)
+# When rendered with a configured formatter, the stored base (16) is used:
+number.to_asciimath(options: {})
+# => "ff_(16)"
+----
+
+The stored base represents the *semantic truth* about the number and takes
+precedence over the formatter's built-in base configuration. An explicit
+`format: { base: N }` parameter still overrides everything.
+
+
+===== Parse-time base prefix literals
+
+All four input parsers (AsciiMath, LaTeX, UnicodeMath, HTML) recognize
+base-prefixed number literals and store the base automatically on the
+resulting `Math::Number` node — no manual `base:` keyword needed.
+
+[cols="1,1,3", options="header"]
+|===
+|Prefix |Base |Example
+
+|`0x` / `0X` |16 |`0xFF`, `0xBE EF`
+|`0b` / `0B` |2  |`0b1010`
+|`0o` / `0O` |8  |`0o17`
+|===
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("0xFF", :asciimath)
+formula.value.first.value  # => "FF"
+formula.value.first.base   # => 16
+
+# The stored base drives semantic rendering in every output format:
+formula.to_asciimath  # => "ff_(16)"
+formula.to_latex      # => "\mathrm{ff}_{16}"
+formula.to_html       # => "ff<sub>16</sub>"
+----
+
+NOTE: Hex literals store the original hex digits (`"FF"`) because letters
+are unambiguous. Binary and octal literals store the *decimal equivalent*
+(`0b1010` → value `"10"`) because their digit sets overlap with decimal.
+
+The shared `Plurimath::BaseNumberPrefix` module defines these parser and
+transform rules once; every format parser includes it. Adding a new base
+prefix requires editing only `lib/plurimath/base_number_prefix.rb`.
+
 ===== Base conversion with other formatting options
 
 Base conversion works seamlessly with other formatting options such as `precision`, `digit_count`,
@@ -1748,12 +1947,12 @@ end
 
 Formula rendering uses the first formatter method available in this order:
 `format_number(formula, number)`, then `format(formula, number)`, then
-`localized_number(number.value.to_s)`. This keeps existing custom formatters
-working while giving new custom formatters a method name specific to formula
-number formatting.
-
-New custom formatters should define `format_number`; the `format` fallback
-exists for compatibility with existing custom formatters.
+`formatted_number(number.value.to_s)` (returns a structured value object),
+then `localized_number(number.value.to_s)` (returns a flat string). This
+keeps existing custom formatters working while giving new code access to the
+structured result through `formatted_number`. New custom formatters should
+define `format_number`; the `format` fallback exists for compatibility with
+existing custom formatters.
 
 To implement contextual formatting, define a `format_number` method in a custom
 formatter subclass.

@@ -11,15 +11,10 @@ module Plurimath
         def initialize(source, options)
           @source = source
           @options = options
-          @base_notation = BaseNotation.new(@options)
+          @base_notation = BaseNotation.from_options(@options)
           @integer_format = Integer.new(@options)
           @fraction_format = Fraction.new(@options)
           @significant_format = Significant.new(@options)
-          @parts_renderer = PartsRenderer.new(
-            integer_formatter: @integer_format,
-            fraction_formatter: @fraction_format,
-          )
-          @sign_renderer = SignRenderer.new(@options.number_sign)
         end
 
         def format(precision: nil)
@@ -41,15 +36,21 @@ module Plurimath
           parts = renderable_parts(parts, precision: precision)
 
           parts = significant_format.apply_parts(parts) if significant_format.active?
-          result = parts_renderer.render(parts)
 
-          sign_renderer.apply(parts, base_notation.apply(result))
+          FormattedNumber.new(
+            sign: parts.sign,
+            integer_part: integer_format.format_groups(parts.integer_digits),
+            fraction_part: parts.fractional? ? fraction_format.format_groups(parts.fraction_digits) : "",
+            decimal_separator: fraction_format.decimal,
+            base_notation: base_notation,
+            number_sign: options.number_sign,
+          )
         end
 
         private
 
         attr_reader :base_notation, :fraction_format, :integer_format,
-                    :parts_renderer, :significant_format, :sign_renderer
+                    :significant_format
 
         def renderable_parts(parts, precision:)
           parts = parts.with_digits(

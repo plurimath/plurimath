@@ -2211,4 +2211,54 @@ RSpec.describe Plurimath::NumberFormatter do
       end
     end
   end
+
+  describe ".formatted_number" do
+    let(:locale) { :en }
+    let(:localize_number) { nil }
+    let(:localizer_symbols) { {} }
+
+    it "returns a FormattedNumber" do
+      result = formatter.formatted_number("42")
+
+      expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNumber)
+      expect(result.to_s).to eq("42")
+    end
+
+    it "carries structured base notation for non-decimal bases" do
+      result = formatter.formatted_number("255",
+                                          format: { base: 16 })
+
+      expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNumber)
+      expect(result).to be_base_notation
+      expect(result.base_notation.base).to eq(16)
+      expect(result.base_notation.prefix).to eq("0x")
+      expect(result.digits_string).to eq("ff")
+      expect(result.to_s).to eq("0xff")
+    end
+
+    it "carries sign as a semantic property" do
+      result = formatter.formatted_number("-42")
+
+      expect(result).to be_negative
+      expect(result.integer_part).to eq("42")
+      expect(result.to_s).to eq("-42")
+    end
+
+    it "carries fraction parts separately" do
+      result = formatter.formatted_number("3.14")
+
+      expect(result).to be_fractional
+      expect(result.integer_part).to eq("3")
+      expect(result.fraction_part).to eq("14")
+      expect(result.decimal_separator).to eq(".")
+    end
+
+    it "returns a FormattedNotation for notation numbers" do
+      result = formatter.formatted_number("14000",
+                                          format: { notation: :scientific })
+
+      expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNotation)
+      expect(result.to_s).to eq("1.4000 × 10^4")
+    end
+  end
 end

@@ -3,6 +3,8 @@
 module Plurimath
   class Asciimath
     class Parse < Parslet::Parser
+      include Plurimath::BaseNumberPrefix::Parser
+
       rule(:td)     { expression.as(:td) }
       rule(:base)   { str("__|").absent? >> str("_") }
       rule(:power)  { str("^") }
@@ -10,7 +12,10 @@ module Plurimath
       rule(:comma)  { str(",") >> space? }
       rule(:space?) { space.maybe }
       rule(:number) do
-        (match("[0-9]").repeat(1) >> decimal_marker >> match("[0-9]").repeat(1)).as(:number) |
+        hex_number |
+          binary_number |
+          octal_number |
+          (match("[0-9]").repeat(1) >> decimal_marker >> match("[0-9]").repeat(1)).as(:number) |
           match("[0-9]").repeat(1).as(:number) |
           str(".").as(:symbol)
       end

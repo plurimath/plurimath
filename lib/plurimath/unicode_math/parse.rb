@@ -3,6 +3,7 @@
 module Plurimath
   class UnicodeMath
     class Parse < Parslet::Parser
+      include Plurimath::BaseNumberPrefix::Parser
       include ParsingRules::Masked
       include ParsingRules::SubSup
       include ParsingRules::CommonRules
@@ -162,7 +163,10 @@ module Plurimath
       end
 
       rule(:number) do
-        (digits.as(:whole) >> op_decimal.as(:decimal) >> digits.as(:fractional)).as(:decimal_number) |
+        hex_number |
+          binary_number |
+          octal_number |
+          (digits.as(:whole) >> op_decimal.as(:decimal) >> digits.as(:fractional)).as(:decimal_number) |
           (op_decimal.as(:decimal) >> digits.as(:whole) >> space?).as(:decimal_number) |
           digits.as(:digit)
       end

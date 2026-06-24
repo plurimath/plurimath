@@ -11,7 +11,6 @@ module Plurimath
         def initialize(options)
           @options = options
           @precision = (@options.precision || 0).to_i
-          @exponent_sign_renderer = SignRenderer.new(@options.exponent_sign)
         end
 
         def render(source, notation)
@@ -31,25 +30,43 @@ module Plurimath
 
         private
 
-        attr_reader :exponent_sign_renderer, :options, :precision
+        attr_reader :options, :precision
 
         def render_e(source)
-          localized_notation_parts(source).join(options.exponent_separator.to_s)
+          coefficient, exponent = resolve_notation_parts(source,
+                                                         precision: precision)
+          build_notation(coefficient, :e, exponent)
         end
 
         def render_scientific(source)
-          localized_notation_parts(source).join(" #{options.times} 10^")
+          coefficient, exponent = resolve_notation_parts(source,
+                                                         precision: precision)
+          build_notation(coefficient, :scientific, exponent)
         end
 
         def render_engineering(source)
           parts = notation_parts(source)
-          parts = engineering_notation_parts(parts) unless source.decimal.zero?
-          parts[0] = localize_parts(
-            source,
-            parts[0],
-            precision: engineering_precision(source, parts[0]),
+          parts = engineering_coefficient_parts(parts) unless source.decimal.zero?
+          coefficient = localize_parts(source, parts[0],
+                                       precision: engineering_precision(source, parts[0]))
+          build_notation(coefficient, :engineering, parts[1])
+        end
+
+        def resolve_notation_parts(source, precision:)
+          parts = notation_parts(source)
+          coefficient = localize_parts(source, parts[0], precision: precision)
+          [coefficient, parts[1]]
+        end
+
+        def build_notation(coefficient, style, exponent)
+          FormattedNotation.new(
+            coefficient: coefficient,
+            notation_style: style,
+            exponent: exponent,
+            times_symbol: options.times,
+            exponent_separator: options.exponent_separator.to_s,
+            exponent_sign: options.exponent_sign,
           )
-          parts.join(" #{options.times} 10^")
         end
 
         def localize_parts(source, parts, precision:)
@@ -60,13 +77,6 @@ module Plurimath
             parts,
             precision: precision,
           )
-        end
-
-        def localized_notation_parts(source)
-          parts = notation_parts(source)
-          parts[0] = localize_parts(source, parts[0], precision: precision)
-          parts[1] = render_exponent(parts[1])
-          parts
         end
 
         def notation_parts(source)
@@ -88,10 +98,10 @@ module Plurimath
           ]
         end
 
-        def engineering_notation_parts(parts)
+        def engineering_coefficient_parts(parts)
           coefficient, exponent = parts
           index = exponent % 3
-          exponent -= index
+          new_exponent = exponent - index
           digits = "#{coefficient.integer_digits}#{coefficient.fraction_digits}"
           integer_length = index + 1
           integer_digits = digits[0...integer_length].to_s.ljust(
@@ -105,7 +115,7 @@ module Plurimath
               integer_digits: integer_digits,
               fraction_digits: digits[integer_length..].to_s,
             ),
-            render_exponent(exponent),
+            new_exponent,
           ]
         end
 
@@ -115,10 +125,7 @@ module Plurimath
         # shifted integer width. Only a positive explicit precision is taken
         # as a literal fraction width; precision: 0 falls through to inference.
         def engineering_precision(source, coefficient)
-          # precision: 0 is intentionally not literal here; it infers.
           return precision if options.explicit_precision? && precision.positive?
-          # Zero sources carry their stated fraction width; an explicit
-          # precision: 0 still infers (consistent with non-zero engineering).
           return source.notation_precision if source.decimal.zero?
 
           integer_length = coefficient.integer_digits.length
@@ -144,12 +151,6 @@ module Plurimath
             index = digits.index(/[1-9]/)
             [digits[index..], parts.integer_digits.length - index - 1]
           end
-        end
-
-        def render_exponent(exponent)
-          return "0" if exponent.zero?
-
-          exponent_sign_renderer.apply(exponent, exponent.abs.to_s)
         end
       end
     end
