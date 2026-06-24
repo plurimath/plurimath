@@ -11,7 +11,7 @@ module Plurimath
         def evaluate(evaluator)
           values = evaluator.function_arguments(parameter_one)
           unless values.all?(Integer)
-            raise Evaluation::MathDomainError, "gcd requires integer arguments"
+            raise Errors::Evaluation::MathDomainError, "gcd requires integer arguments"
           end
 
           values.reduce(:gcd)

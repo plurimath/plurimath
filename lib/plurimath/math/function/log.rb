@@ -20,7 +20,7 @@ module Plurimath
         def evaluate_with_argument(evaluator, argument)
           base = parameter_one ? evaluator.evaluate_node(parameter_one) : 10
           unless base.positive? && base != 1
-            raise Evaluation::MathDomainError,
+            raise Errors::Evaluation::MathDomainError,
                   "log base must be a positive number other than 1"
           end
 

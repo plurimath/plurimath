@@ -45,7 +45,7 @@ module Plurimath
 
         def validate_bounds(from, to)
           unless from.is_a?(Integer) && to.is_a?(Integer)
-            raise MathDomainError, "iteration bounds must be integers"
+            raise Errors::Evaluation::MathDomainError, "iteration bounds must be integers"
           end
 
           limit = Plurimath.configuration.evaluation_max_iterations

@@ -382,6 +382,21 @@ namespace: "m")
         nil
       end
 
+      # Default evaluation entry point: a node that does not implement a
+      # numeric evaluation raises UnsupportedExpressionError. Concrete nodes
+      # (Number, Symbol operators, Function::*) override this.
+      def evaluate(evaluator)
+        evaluator.unsupported(self)
+      end
+
+      def open?
+        false
+      end
+
+      def close?
+        false
+      end
+
       # The bound variable a node represents, or nil if it is not a plain
       # variable. Symbols and text nodes that name a variable override this;
       # it lets iteration indexes accept both `Symbols::Symbol` (AsciiMath/

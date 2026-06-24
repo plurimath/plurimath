@@ -6,7 +6,7 @@ module Plurimath
 
     # Cap on bounded sum/prod iterations, guarding the untrusted-document
     # evaluation path against runaway loops. Set to nil to disable the cap.
-    DEFAULT_MAX_ITERATIONS = 1_000_000
+    DEFAULT_MAX_ITERATIONS = 100_000
 
     attr_accessor :number_formatter, :locale, :evaluation_max_iterations
 
