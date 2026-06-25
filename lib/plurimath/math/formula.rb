@@ -413,7 +413,7 @@ options:)
       end
 
       def boolean_display_style(display_style = displaystyle)
-        YAML.safe_load(display_style.to_s)
+        display_style.to_s == "true"
       end
 
       def new_space(spacing, indent)

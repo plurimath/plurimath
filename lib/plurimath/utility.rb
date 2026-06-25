@@ -552,7 +552,7 @@ lang: nil)
         if value.last.is_a?(Math::Function::UnaryFunction)
           value.last.parameter_one = value.shift if value.length > 1
           value.last.attributes = attrs.transform_values do |v|
-            YAML.safe_load(v)
+            v.to_s == "true"
           end
         end
         value
