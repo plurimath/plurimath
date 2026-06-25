@@ -1330,39 +1330,8 @@ RSpec.describe Plurimath::Math::Formula do
           },
         )
       end
-      let(:format_number_spy_class) do
-        Class.new(Plurimath::Formatter::Standard) do
-          def initialize(on_format_number: nil)
-            super()
-            @on_format_number = on_format_number
-          end
-
-          def format_number(formula, number)
-            @on_format_number&.call(formula, number)
-            localized_number(number.value.to_s)
-          end
-        end
-      end
-      let(:format_number_spy) do
-        format_number_spy_class.new(
-          on_format_number: proc { |formula, number|
-            received_formula << formula
-            received_numbers << number
-          },
-        )
-      end
 
       it "passes the root formula and number nodes to format_number" do
-        formula_obj.to_latex(formatter: format_number_spy)
-
-        expect(received_formula.first).to be_a(described_class)
-        expect(received_formula.first).to eq(formula_obj)
-        expect(received_numbers.first).to be_a(Plurimath::Math::Number)
-        expect(received_numbers.first.value).to eq("2024")
-        expect(received_numbers[1].value).to eq("1000000")
-      end
-
-      it "passes the root formula and number nodes to format" do
         formula_obj.to_latex(formatter: spy)
 
         expect(received_formula.first).to be_a(described_class)
@@ -1455,12 +1424,12 @@ module FormulaSpecFormatters
   end
 
   class YearFormatter < Plurimath::Formatter::Standard
-    def format(_formula, number)
+    def format_number(_formula, number, format: {})
       int_value = Integer(number.value, exception: false)
       if int_value && int_value > 1800 && int_value < 2200
         number.value.to_s
       else
-        localized_number(number.value.to_s)
+        localized_number(number.value.to_s, format: format)
       end
     end
   end
@@ -1471,9 +1440,9 @@ module FormulaSpecFormatters
       @on_format = on_format
     end
 
-    def format(formula, number)
+    def format_number(formula, number, format: {})
       @on_format&.call(formula, number)
-      localized_number(number.value.to_s)
+      localized_number(number.value.to_s, format: format)
     end
   end
 end
