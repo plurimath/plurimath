@@ -142,6 +142,68 @@ plurimath help convert
 ----
 
 
+=== Rendering images
+
+The `render` command rasterizes or vectorizes a formula to an image
+(`svg`, `png`, `pdf`, or `ps`) using the optional
+https://github.com/plurimath/lasem-ruby[`lasem`] gem (a native extension
+wrapping the Lasem C library). Image rendering is OPTIONAL: Plurimath works
+fully without it, and it is unavailable under Opal/plurimath-js. See
+<<image-rendering,Rendering to images>> for installing the backend.
+
+[source,bash]
+----
+plurimath render [options]
+----
+
+Options mirror `convert` for the input side (`-i`, `-f`, `-p`, `-e`), plus:
+
+`-o`, `--output <FILE>`::
+Output file path. The image format is taken from its extension
+(`.svg`/`.png`/`.pdf`/`.ps`); an extension outside that set is an error. When
+omitted, the rendered bytes are written to standard output.
+
+`-r`, `--format <FORMAT>`::
+Image format (`svg`, `png`, `pdf`, `ps`). Used when `--output` has no usable
+extension or when writing to standard output (a file's extension takes
+precedence). Defaults to `svg`.
+
+`-d`, `--display-style`::
+DisplayStyle, boolean. Defaults to the parsed formula's display style.
+
+`-s`, `--split-on-linebreak`::
+Boolean. Note that lasem renders a single MathML document, so this mainly
+affects the serialized MathML rather than producing multiple images.
+
+`-e`, `--xml-engine <ENGINE>`::
+XML engine used to parse the input (`ox` or `oga`). Defaults to `ox`.
+
+`--ppi`, `--zoom`, `--width`, `--height`, `--offset-x`, `--offset-y`::
+Numeric geometry options passed through to lasem; omit them to use lasem's
+defaults.
+
+[example]
+.Render an AsciiMath equation to a PNG file
+====
+[source,bash]
+----
+plurimath render -i "sqrt(x^2 + y^2)" -f asciimath -o formula.png --ppi 144
+----
+====
+
+[example]
+.Render a LaTeX file to SVG on standard output
+====
+[source,bash]
+----
+plurimath render -p formula.tex -f latex -r svg > formula.svg
+----
+====
+
+If the `lasem` backend is unavailable, the format is unsupported, or rendering
+fails, the command prints a message and exits with a non-zero status.
+
+
 == Ruby API
 
 
@@ -455,6 +517,69 @@ unicodemath = formula.to_unicodemath
 omml = formula.to_omml
 # => "<omml representation of the expression>"
 ----
+
+
+[#image-rendering]
+=== Rendering to images
+
+`Formula#render` produces a binary image (`:svg`, `:png`, `:pdf`, or `:ps`) by
+serializing the formula to MathML and handing it to the optional
+https://github.com/plurimath/lasem-ruby[`lasem`] gem, a native extension
+wrapping the Lasem C library. `lasem` is an OPTIONAL, soft dependency: it is not
+a runtime dependency of Plurimath, is unavailable under Opal/plurimath-js, and
+must be added explicitly.
+
+Until `lasem` is published to RubyGems, pin it via Git in your `Gemfile`:
+
+[source,ruby]
+----
+gem "lasem", github: "plurimath/lasem-ruby", branch: "feat/bootstrap-lasem-wrapper"
+----
+
+Then verify the native toolchain (cairo, pango, and the Lasem C library):
+
+[source,sh]
+----
+bundle exec lasem-doctor
+----
+
+Render with `Formula#render`:
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("sum_(i=1)^n i", "asciimath")
+
+svg = formula.render(format: :svg)
+png = formula.render(format: :png, ppi: 144, zoom: 2)
+File.binwrite("sum.png", png)
+----
+
+Or render directly from source in one step with `Plurimath::Math.render`, which
+parses and then renders (parse options such as `:locale` are routed to parsing):
+
+[source,ruby]
+----
+png = Plurimath::Math.render("sum_(i=1)^n i", "asciimath", format: :png, ppi: 144)
+File.binwrite("sum.png", png)
+
+# Check availability before rendering to avoid a raise:
+Plurimath::Math.render_available? # => true / false (always false under Opal)
+----
+
+Supported `format:` values are `:svg`, `:png`, `:pdf`, `:ps`. Remaining keyword
+options are split between the MathML serialization (`:display_style`,
+`:intent`, `:formatter`, `:unitsml`, `:unary_function_spacing`,
+`:split_on_linebreak`) and the lasem renderer (`:ppi`, `:zoom`, `:width`,
+`:height`, `:offset_x`, `:offset_y`); omit the geometry options to use lasem's
+defaults. When `:display_style` is omitted the formula's own display style is
+used.
+
+If `lasem` or its native extension is unavailable, the format is unsupported, or
+rendering fails, a `Plurimath::Errors` rendering error is raised
+(`RenderingUnavailable`, `UnsupportedRenderFormat`, or `RenderingFailed` — all
+subclasses of `Plurimath::Error`); the unavailable message points you to
+`lasem-doctor`. A malformed formula surfaces as `Plurimath::Math::ParseError`
+from the MathML step, not as a rendering error.
 
 
 == Number formatting
