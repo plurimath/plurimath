@@ -437,7 +437,7 @@ lang: nil)
         symbol = Mathml::Constants::UNICODE_SYMBOLS[unicode.strip.to_sym]
         if classes.include?(symbol&.strip)
           get_class(symbol.strip).new
-        elsif classes.any?(string&.strip)
+        elsif classes.any?(string&.strip) && !(lang == :mathml && Mathml::Constants.accent_word?(string))
           get_class(string.strip).new
         elsif omml
           text_classes(string,

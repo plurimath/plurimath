@@ -108,4 +108,29 @@ RSpec.describe Plurimath::Unitsml do
       end
     end
   end
+
+  # Regression for unitsml/unitsdb#123. An accent name ("bar") rendered by
+  # UnitsML as a bare <mi> must stay a literal identifier, not be re-parsed as
+  # the overline accent. (Named-function unit names like "min"/"sec" are a
+  # separate, ambiguous case and are intentionally not addressed by this rule.)
+  describe "an accent-named unit (unitsml/unitsdb#123)" do
+    it "renders 'bar' as an upright unit identifier, not an overline accent" do
+      formula = Plurimath::Math.parse('1 "unitsml(bar)"', :asciimath)
+      mathml = <<~MATHML
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mn>1</mn>
+            <mo rspace="thickmathspace">&#x2062;</mo>
+            <mrow>
+              <mstyle mathvariant="normal">
+                <mi>bar</mi>
+              </mstyle>
+            </mrow>
+          </mstyle>
+        </math>
+      MATHML
+      expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
+      expect(formula.to_latex).to eq('1 \mathrm{bar}')
+    end
+  end
 end

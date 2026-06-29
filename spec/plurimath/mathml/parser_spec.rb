@@ -599,13 +599,13 @@ RSpec.describe Plurimath::Mathml::Parser do
 
     it "returns sqrt formula with the radicands grouped as a formula" do
       expected_value = Plurimath::Math::Formula.new([
-        Plurimath::Math::Function::Sqrt.new(
-          Plurimath::Math::Formula.new([
-            Plurimath::Math::Symbols::Symbol.new("s"),
-            Plurimath::Math::Symbols::Symbol.new("t"),
-          ]),
-        ),
-      ])
+                                                      Plurimath::Math::Function::Sqrt.new(
+                                                        Plurimath::Math::Formula.new([
+                                                                                       Plurimath::Math::Symbols::Symbol.new("s"),
+                                                                                       Plurimath::Math::Symbols::Symbol.new("t"),
+                                                                                     ]),
+                                                      ),
+                                                    ])
       expect(formula).to eq(expected_value)
     end
   end
@@ -2159,6 +2159,43 @@ RSpec.describe Plurimath::Mathml::Parser do
                                                           Plurimath::Math::Symbols::Sprime.new,
                                                         ],
                                                         Plurimath::Math::Symbols::Paren::Rsquare.new,
+                                                      ),
+                                                    ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains a bare <mi> whose name collides with an accent (unitsml/unitsdb#123)" do
+    let(:exp) do
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <mi>bar</mi>
+        </math>
+      MATHML
+    end
+
+    it "treats the accent name as a literal symbol, not an overline accent" do
+      expected_value = Plurimath::Math::Formula.new([
+                                                      Plurimath::Math::Symbols::Symbol.new("bar"),
+                                                    ])
+      expect(formula).to eq(expected_value)
+    end
+  end
+
+  context "contains an upright <mi> whose name collides with an accent (unitsml/unitsdb#123)" do
+    let(:exp) do
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <mi mathvariant='normal'>bar</mi>
+        </math>
+      MATHML
+    end
+
+    it "treats the upright identifier as a literal symbol, not an overline accent" do
+      expected_value = Plurimath::Math::Formula.new([
+                                                      Plurimath::Math::Function::FontStyle::Normal.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("bar"),
+                                                        "normal",
                                                       ),
                                                     ])
       expect(formula).to eq(expected_value)

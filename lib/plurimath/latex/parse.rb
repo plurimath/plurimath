@@ -3,6 +3,8 @@
 module Plurimath
   class Latex
     class Parse < Parslet::Parser
+      include Plurimath::BaseNumberPrefix::Parser
+
       rule(:base)          { str("_") }
       rule(:power)         { str("^") }
       rule(:slash)         { str("\\") }
@@ -101,6 +103,9 @@ module Plurimath
           (rparen.absent? >> symbol_class_commands) |
           (slash >> math_operators_classes) |
           match["a-zA-Z"].as(:symbols) |
+          hex_number |
+          binary_number |
+          octal_number |
           (match["0-9"].repeat(0) >> decimal_marker.maybe >> match["0-9"].repeat(1)).as(:number) |
           match["0-9"].repeat(1).as(:number) |
           (str("\\\\").as("\\\\") >> match(/\s/).repeat) |

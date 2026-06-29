@@ -7,33 +7,53 @@ module Plurimath
         include Helper
 
         rule(:rect) { rect_symbols >> space? >> bracketed_masked_value(:rect) }
-        rule(:sqrt) { (sqrt_symbols.as(:root_symbol) >> (exp_script | operand).as(:first_value)).as(:root) }
-        rule(:qdrt) { (qdrt_symbols.as(:root_symbol) >> (exp_script | operand).as(:first_value)).as(:root) }
-        rule(:cbrt) { (cbrt_symbols.as(:root_symbol) >> (exp_script | operand).as(:first_value)).as(:root) }
+        rule(:sqrt) do
+          (sqrt_symbols.as(:root_symbol) >> (exp_script | operand).as(:first_value)).as(:root)
+        end
+        rule(:qdrt) do
+          (qdrt_symbols.as(:root_symbol) >> (exp_script | operand).as(:first_value)).as(:root)
+        end
+        rule(:cbrt) do
+          (cbrt_symbols.as(:root_symbol) >> (exp_script | operand).as(:first_value)).as(:root)
+        end
 
-        rule(:color) { color_symbols >> space? >>  bracketed_masked_value(:color) }
-        rule(:phant) { phantom_symbols >> space? >> bracketed_masked_value(:phantom) }
+        rule(:color) do
+          color_symbols >> space? >> bracketed_masked_value(:color)
+        end
+        rule(:phant) do
+          phantom_symbols >> space? >> bracketed_masked_value(:phantom)
+        end
 
-        rule(:backcolor)   { backcolor_symbols >> space? >> bracketed_masked_value(:backcolor) }
+        rule(:backcolor) do
+          backcolor_symbols >> space? >> bracketed_masked_value(:backcolor)
+        end
 
         rule(:cbrt_symbols) { str("&#x221b;") | str("\\cbrt") }
         rule(:qdrt_symbols) { str("&#x221c;") | str("\\cbrt") }
         rule(:rect_symbols) { str("&#x25ad;") | str("\\rect") }
         rule(:sqrt_symbols) { str("&#x221a;") | str("\\sqrt") | str("\\surd") }
-        rule(:root_symbols) { str("&#x24ad;") | str("&#x221a;") | str("\\root") | str("\\surd") }
+        rule(:root_symbols) do
+          str("&#x24ad;") | str("&#x221a;") | str("\\root") | str("\\surd")
+        end
         rule(:arg_function) do
-          str("&#x24d0;").as(:arg) >> str("(") >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe >> str(")") |
-            str("&#x24d0;").as(:arg) >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe
+          (str("&#x24d0;").as(:arg) >> str("(") >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe >> str(")")) |
+            (str("&#x24d0;").as(:arg) >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe)
         end
 
         rule(:color_symbols)   { str("&#x270e;") | str("\\color") }
         rule(:phantom_symbols) { str("&#x27e1;") | str("\\phantom") }
-        rule(:monospace_fonts) { (str("&#xffd7;") >> str("(") >> space? >> expression.as(:monospace_value) >> space? >> str(")")).as(:monospace) }
+        rule(:monospace_fonts) do
+          (str("&#xffd7;") >> str("(") >> space? >> expression.as(:monospace_value) >> space? >> str(")")).as(:monospace)
+        end
 
         rule(:backcolor_symbols) { str("&#x2601;") | str("\\backcolor") }
-        rule(:masked_recursive_value) { (space? >> expression | exp_bracket | exp_script).as(:expr) >> masked_recursive_value.as(:func_expr).maybe }
+        rule(:masked_recursive_value) do
+          ((space? >> expression) | exp_bracket | exp_script).as(:expr) >> masked_recursive_value.as(:func_expr).maybe
+        end
 
-        rule(:root_invisible_character?) { (str("\\naryand").absent? >> invisible_unicode).maybe }
+        rule(:root_invisible_character?) do
+          (str("\\naryand").absent? >> invisible_unicode).maybe
+        end
 
         rule(:nthrt) do
           (sqrt_symbols >> str("(") >> masked_recursive_value.as(:first_value) >> str("&") >> masked_recursive_value.as(:second_value) >> str(")")).as(:root)
@@ -44,8 +64,8 @@ module Plurimath
         end
 
         rule(:intent_function) do
-          str("&#x24d8;").as(:intent) >> str("(").as(:open_paren) >> parsing_text.as(:intent_arguments).maybe >> space? >> expression.as(:first_value).maybe >> str(")").as(:close_paren) |
-            str("&#x24d8;").as(:intent) >> expression.as(:intent_expr)
+          (str("&#x24d8;").as(:intent) >> str("(").as(:open_paren) >> parsing_text.as(:intent_arguments).maybe >> space? >> expression.as(:first_value).maybe >> str(")").as(:close_paren)) |
+            (str("&#x24d8;").as(:intent) >> expression.as(:intent_expr))
         end
 
         def masked_value(func_name)
@@ -53,7 +73,7 @@ module Plurimath
         end
 
         def bracketed_masked_value(func_name)
-          str("(") >> (masked_value(func_name).as(func_name)) >> str(")")
+          str("(") >> masked_value(func_name).as(func_name) >> str(")")
         end
       end
     end

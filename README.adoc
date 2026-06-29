@@ -348,6 +348,83 @@ formula = Plurimath::Math.parse(omml, :omml)
 ----
 
 
+=== Evaluating formulas
+
+`Plurimath::Math::Formula#evaluate` computes numeric results from supported
+semantic formula trees.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("sqrt(a^2+b^2)", :asciimath)
+formula.evaluate(a: 3, b: 4)
+# => 5.0
+----
+
+Variable bindings can use string or symbol keys.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("a+b-c*d", :asciimath)
+formula.evaluate("a" => 10, b: 5, c: 2, d: 3)
+# => 9
+----
+
+Evaluation supports numeric literals, variables, addition, subtraction,
+multiplication, division, fractions, powers, grouping, square roots, `pi`,
+roots, absolute values, floor/ceiling, `sin`, `cos`, `tan`, inverse trig,
+reciprocal trig, hyperbolic trig, `ln`, and `exp`. Trigonometric functions use
+radians.
+
+Logarithms evaluate with `ln`, `lg`, and `log` — `log` defaults to base 10,
+`log_b` uses the subscript base (which must be positive and not 1), and a
+superscript such as `log_2^3(8)` raises the result to that power. `mod`,
+`max`, `min`, `gcd`, and `lcm` are supported (`gcd`/`lcm` require integer
+arguments), as are bounded `sum` and `prod` with integer bounds — empty
+ranges follow the standard conventions of `0` for sums and `1` for products,
+and the iteration index shadows any outer binding of the same name. Ranges
+are capped at `Plurimath.configuration.evaluation_max_iterations` (default
+1,000,000) to guard against runaway loops; set it (globally via
+`Plurimath.configure` or scoped via `Plurimath.with_configuration`) to a
+larger value, or to `nil` to remove the cap.
+
+`pi` resolves to the constant from each syntax's pi symbol — `pi` in
+AsciiMath, `\pi` in LaTeX, and the `π` symbol (or `&#x3c0;` entity) in the
+other syntaxes. Plain-text `pi` is treated per syntax: a single bindable
+variable in MathML (`<mi>pi</mi>`) and OMML text runs, but individual
+identifiers (`p*i`) in LaTeX, UnicodeMath, and HTML, which tokenize letters
+one by one.
+
+Implicit multiplication by juxtaposition is supported for adjacent operands,
+so `2a`, `2(a+b)`, `(a+b)(a-b)`, and `pi r^2` multiply. Two adjacent numeric
+literals such as `2 3` raise instead, because that shape usually indicates a
+split number literal.
+
+Chained powers follow the parsed tree structure, so `2^3^2` evaluates as
+`(2^3)^2`; use explicit grouping such as `2^(3^2)` for right association.
+Division uses `Float` arithmetic, and pole detection is exact: `cot(0)` raises
+a division-by-zero error, while `sec(pi/2)` returns a large finite number
+because the floating-point value of `pi/2` is not exactly the pole.
+
+Binding values must be real `Numeric` values. A recognized `pi` constant
+always resolves to its numeric value and cannot be overridden by a binding
+such as `pi: 3`.
+
+Binding keys must be strings or symbols; other key types raise
+`Plurimath::Math::Evaluation::InvalidBindingKeyError`.
+
+Missing variables raise
+`Plurimath::Math::Evaluation::MissingVariableError`. Binding values that are
+not real numbers raise `Plurimath::Math::Evaluation::InvalidBindingError`.
+Division by zero raises `Plurimath::Math::Evaluation::DivisionByZeroError`.
+Math domain violations such as `ln(-1)`, including results that are not real
+numbers, raise `Plurimath::Math::Evaluation::MathDomainError`. Evaluations
+that do not produce a finite number, such as `ln(0)`, raise
+`Plurimath::Math::Evaluation::NonFiniteResultError`. Unsupported expressions,
+including equations that would require solving, raise
+`Plurimath::Math::Evaluation::UnsupportedExpressionError`. All evaluation
+errors subclass `Plurimath::Math::Evaluation::Error`.
+
+
 === Converting to other formats
 
 Once you have a `Plurimath::Math::Formula` object, you can convert it to
@@ -636,7 +713,7 @@ formatter = Plurimath::NumberFormatter.new(
 <1> Locale to be used for number formatting.
 <2> String pattern to define the number formatting.
 <3> Hash containing relevant options for number formatting.
-<4> Number of decimal places to round.
+<4> Number of decimal places to keep; the fraction is truncated, not rounded.
 
 Where,
 
@@ -657,7 +734,8 @@ options for number formatting. Use either `localize_number` or
 See <<localizer_symbols,format options hash>> for details.
 
 `precision: <precision-number>`:: (optional, default `nil`)
-Number of decimal places to round. Accepts an integer value.
+Number of decimal places to keep; the fraction is truncated, not
+rounded. Accepts an integer value.
 +
 .Specifying a precision of 6 digits
 [example]
@@ -694,6 +772,28 @@ through a Hash object containing specified options.
 
 This Hash object is called the "format options Hash".
 
+Option values follow a common handling policy:
+
+* Count options (`precision`, `significant`, `digit_count`, `group_digits`,
+  `fraction_group_digits`, `padding_digits`, `padding_group_digits`) accept an
+  `Integer` or its `String`/`Symbol` numeric equivalent (`"4"`). Any other
+  value, including negative numbers, raises `Plurimath::ConfigurationError`.
+* Separator options (`decimal`, `group`, `fraction_group`, `base_prefix`,
+  `base_postfix`) accept free-form strings. An explicitly passed `nil`
+  disables the separator — for `decimal` this renders the digits without a
+  decimal mark, and output correctness is then the caller's responsibility.
+  One exception: `group: nil` falls back to the default separator instead of
+  disabling (use `group: ""` to disable grouping). Boolean values raise
+  `Plurimath::ConfigurationError`.
+* Enumerated options (`notation`, `number_sign`, `exponent_sign`, `e`,
+  `times`, `hex_capital`) accept their documented values as `Symbol` or
+  `String`; unrecognized `String`/`Symbol` values fall back to the default
+  behavior. Any other type raises `Plurimath::ConfigurationError` — including
+  Boolean, except for `hex_capital`, where `true`/`false` are documented values.
+* The `locale` always falls back to `:en` for unsupported or wrong-typed
+  values; it never raises.
+* Invalid number input raises `Plurimath::Errors::InvalidNumber`.
+
 Available options are explained below.
 
 NOTE: Each option takes an input of a certain specified type. Using an input
@@ -706,6 +806,15 @@ when configuration will be static or changes are not required very often.
 The same option keys can be passed through `localizer_symbols`, through the
 per-call `format:` hash, or through `Plurimath::Formatter::Standard`'s
 `options:` argument.
+
+When rendering through `Plurimath::Math::Formula` serialization methods
+(`to_asciimath`, `to_latex`, `to_mathml`, `to_unicodemath`, `to_html`),
+per-element overrides can be supplied via `options[:format]`. The hash is
+forwarded to `NumberFormatter#localized_number`'s `format:` keyword, taking
+precedence over the configured formatter's symbols for that one element.
+Custom formatters with a simpler `localized_number(value)` signature are
+unaffected unless `options[:format]` is supplied, in which case their method
+must accept the `format:` keyword.
 
 
 `decimal`:: (`String` value)
@@ -818,12 +927,12 @@ Missing integer digits are inserted before grouping using the configured
 "32"    with `padding_group_digits: 4, group: ""` => "0032"
 "32123" with `padding_group_digits: 4, group: ""` => "00032123"
 ====
-====
 
 `base`:: (`Numeric` value)
 Sets the numeric base (radix) used to render both the integer and fractional parts of the number.
 Supported values are 2 (binary), 8 (octal), 10 (decimal, default) and 16 (hexadecimal).
-Passing any other value for `base` raises `Plurimath::Formatter::UnsupportedBase`.
+The value is also accepted as its `String` or `Symbol` equivalent (`"16"`).
+Passing any other value for `base` raises `Plurimath::Errors::UnsupportedBase`.
 +
 .Rendering numbers in different bases
 [example]
@@ -875,6 +984,10 @@ uppercase letters. This includes both hexadecimal digits and any separators
 Use `:numbers_only` to uppercase generated hexadecimal digits without changing
 separator characters. It has no effect for other bases.
 +
+Both values are also accepted as their `String` or `Symbol` equivalents
+(`"true"`, `:true`, `"numbers_only"`). Matching is case-sensitive; any other
+value (including any form of `false`) disables uppercasing.
++
 .Uppercase hexadecimal output
 [example]
 ====
@@ -897,6 +1010,205 @@ The decimal separator is rendered as configured by the `decimal` option.
 +
 NOTE: The fractional-part conversion treats the digits after the decimal point as a fractional value (for example, `"10.75"` is interpreted
 as decimal `0.75` for the fractional part) and converts that real value to the requested base, honoring the configured precision.
+
+
+===== Semantic base notation rendering
+
+When numbers are formatted with a non-decimal `base`, Plurimath produces
+*structured output* in each representation language rather than flat
+prefix/postfix strings. The base is rendered as a subscript, making the
+output semantically rich and accessible to screen readers and other tools.
+
+For plain-text uses (`localized_number`), prefix/postfix notation is still
+available through the `base_prefix` and `base_postfix` options.
+
+.Semantic rendering by format
+[example]
+====
+[source,ruby]
+----
+formatter = Plurimath::Formatter::Standard.new(options: { base: 16 })
+Plurimath.configuration.number_formatter = formatter
+
+formula = Plurimath::Math.parse("255", :asciimath)
+
+formula.to_asciimath
+# => "ff_(16)"
+
+formula.to_latex
+# => "\\mathrm{ff}_{16}"
+
+formula.to_html
+# => "ff<sub>16</sub>"
+
+formula.to_unicodemath
+# => "ff_(16)"
+----
+
+MathML produces a structured `<msub>` element:
+
+[source,xml]
+----
+<msub><mn>ff</mn><mn>16</mn></msub>
+----
+
+OMML produces a structured `<m:sSub>` element:
+
+[source,xml]
+----
+<m:sSub>
+  <m:sSubPr>...</m:sSubPr>
+  <m:e><m:r><m:t>ff</m:t></m:r></m:e>
+  <m:sub><m:r><m:t>16</m:t></m:r></m:sub>
+</m:sSub>
+----
+====
+
+Negative numbers wrap the sign around the subscript structure:
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("-255", :asciimath)
+formula.to_latex
+# => "-\\mathrm{ff}_{16}"
+----
+
+[source,xml]
+----
+<mrow><mo>-</mo><msub><mn>ff</mn><mn>16</mn></msub></mrow>
+====
+
+
+===== Structured notation rendering
+
+Scientific and engineering notation also produces structured output in MathML.
+The `× 10^exp` portion is rendered as separate elements:
+
+[source,ruby]
+----
+formatter = Plurimath::Formatter::Standard.new(
+  options: { notation: :scientific, exponent_sign: :plus },
+)
+Plurimath.configuration.number_formatter = formatter
+
+formula = Plurimath::Math.parse("14000", :asciimath)
+----
+
+[source,xml]
+----
+<mrow>
+  <mn>1.4000</mn>
+  <mo>×</mo>
+  <msup><mn>10</mn><mn>+4</mn></msup>
+</mrow>
+----
+
+E-notation remains as a flat `<mn>` element:
+
+[source,xml]
+----
+<mn>1.4000E+4</mn>
+====
+
+
+===== Structured formatter API
+
+`NumberFormatter#localized_number` continues to return a flat string for
+backward compatibility. A new `NumberFormatter#formatted_number` method returns
+a structured value object that carries the semantic parts of the formatted
+number.
+
+[source,ruby]
+----
+formatter = Plurimath::NumberFormatter.new(:en)
+result = formatter.formatted_number("255", format: { base: 16 })
+
+result                                   # => FormattedNumber
+result.to_s                              # => "0xff"
+result.digits_string                     # => "ff"
+result.sign_text                         # => nil (no sign for positive numbers)
+result.base_notation.base                # => 16
+result.negative?                         # => false
+result.fractional?                       # => false
+----
+
+The `sign_text` accessor returns `"-"` for negative numbers, `"+"` when
+`number_sign: :plus` is set, and `nil` otherwise. Output renderers use it
+to produce format-specific sign elements.
+
+For notation numbers, `formatted_number` returns a `FormattedNotation` value
+object:
+
+[source,ruby]
+----
+result = formatter.formatted_number("14000", format: { notation: :scientific })
+
+result                                   # => FormattedNotation
+result.to_s                              # => "1.4000 × 10^4"
+result.coefficient                       # => FormattedNumber
+result.coefficient.to_s                  # => "1.4000"
+result.exponent                          # => 4
+result.formatted_exponent                # => "4" ("+4" when exponent_sign: :plus)
+result.notation_style                    # => :scientific
+----
+
+These value objects are what Plurimath uses internally to produce the
+structured output shown above.
+
+
+===== Storing base on Math::Number
+
+`Plurimath::Math::Number` now accepts a `base:` keyword, storing the radix
+as a semantic attribute. When present, the stored base is used as the default
+for formatting — no explicit `base:` option is needed in the format hash.
+
+[source,ruby]
+----
+number = Plurimath::Math::Number.new("FF", base: 16)
+# When rendered with a configured formatter, the stored base (16) is used:
+number.to_asciimath(options: {})
+# => "ff_(16)"
+----
+
+The stored base represents the *semantic truth* about the number and takes
+precedence over the formatter's built-in base configuration. An explicit
+`format: { base: N }` parameter still overrides everything.
+
+
+===== Parse-time base prefix literals
+
+All four input parsers (AsciiMath, LaTeX, UnicodeMath, HTML) recognize
+base-prefixed number literals and store the base automatically on the
+resulting `Math::Number` node — no manual `base:` keyword needed.
+
+[cols="1,1,3", options="header"]
+|===
+|Prefix |Base |Example
+
+|`0x` / `0X` |16 |`0xFF`, `0xBE EF`
+|`0b` / `0B` |2  |`0b1010`
+|`0o` / `0O` |8  |`0o17`
+|===
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("0xFF", :asciimath)
+formula.value.first.value  # => "FF"
+formula.value.first.base   # => 16
+
+# The stored base drives semantic rendering in every output format:
+formula.to_asciimath  # => "ff_(16)"
+formula.to_latex      # => "\mathrm{ff}_{16}"
+formula.to_html       # => "ff<sub>16</sub>"
+----
+
+NOTE: Hex literals store the original hex digits (`"FF"`) because letters
+are unambiguous. Binary and octal literals store the *decimal equivalent*
+(`0b1010` → value `"10"`) because their digit sets overlap with decimal.
+
+The shared `Plurimath::BaseNumberPrefix` module defines these parser and
+transform rules once; every format parser includes it. Adding a new base
+prefix requires editing only `lib/plurimath/base_number_prefix.rb`.
 
 ===== Base conversion with other formatting options
 
@@ -1150,8 +1462,11 @@ In this example it is `' '` (a space).
 ----
 formatter = Plurimath::NumberFormatter.new(:en, localize_number: "#,##0.### ###")
 formatter.localized_number("1234.56789")
-# => "1,234.568 9"
+# => "1,234.567 89"
 ----
+
+NOTE: A space used as a group or fraction-group delimiter in the
+`localize_number` pattern is emitted as U+00A0 NO-BREAK SPACE in the output.
 ====
 
 
@@ -1175,7 +1490,7 @@ formatter.localized_number(
 ----
 <1> The number to be formatted.
 <2> The locale to be used for number formatting.
-<3> The number of decimal places to round the number to.
+<3> The number of decimal places to keep; the fraction is truncated, not rounded.
 <4> Hash containing the relevant options for number formatting.
 
 Where,
@@ -1188,8 +1503,8 @@ Value is a symbol.
 Overrides the locale set during the creation of the `NumberFormatter` object. If
 not provided, the locale of the `NumberFormatter` instance will be used.
 
-`precision: <precision-number>`:: (optional) The number of decimal places to round the
-number to. If not provided, the precision of the `NumberFormatter` instance will
+`precision: <precision-number>`:: (optional) The number of decimal places to keep
+(the fraction is truncated, not rounded). If not provided, the precision of the `NumberFormatter` instance will
 be used.
 
 `format: <format-hash>`:: (optional, default `{}`) A Hash containing the relevant
@@ -1198,7 +1513,8 @@ configuration of the `NumberFormatter`.
 Takes a Hash in the form of the <<localizer_symbols,format options hash>>.
 
 `precision: <precision-number>`::
-Number of decimal places to round. Accepts an integer value.
+Number of decimal places to keep; the fraction is truncated, not
+rounded. Accepts an integer value.
 +
 .Specifying a precision of 6 digits
 [example]
@@ -1754,12 +2070,12 @@ end
 
 Formula rendering uses the first formatter method available in this order:
 `format_number(formula, number)`, then `format(formula, number)`, then
-`localized_number(number.value.to_s)`. This keeps existing custom formatters
-working while giving new custom formatters a method name specific to formula
-number formatting.
-
-New custom formatters should define `format_number`; the `format` fallback
-exists for compatibility with existing custom formatters.
+`formatted_number(number.value.to_s)` (returns a structured value object),
+then `localized_number(number.value.to_s)` (returns a flat string). This
+keeps existing custom formatters working while giving new code access to the
+structured result through `formatted_number`. New custom formatters should
+define `format_number`; the `format` fallback exists for compatibility with
+existing custom formatters.
 
 To implement contextual formatting, define a `format_number` method in a custom
 formatter subclass.

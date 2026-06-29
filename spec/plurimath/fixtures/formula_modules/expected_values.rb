@@ -1310,7 +1310,7 @@ module ExpectedValues
                                             Plurimath::Math::Function::Fenced.new(
                                               Plurimath::Math::Symbols::Paren::Lround.new,
                                               [
-                                                Plurimath::Math::Number.new("1+"),
+                                                Plurimath::Math::Symbols::Symbol.new("1+"),
                                                 Plurimath::Math::Function::Frac.new(
                                                   Plurimath::Math::Number.new("1"),
                                                   Plurimath::Math::Function::Text.new(

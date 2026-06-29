@@ -174,6 +174,24 @@ module Plurimath
         "+": "+",
         "-": "-",
       }.freeze
+      # Over/under accent decorations. In MathML these are only ever expressed
+      # as <mover>/<munder> with a base (recovered from their diacritic
+      # CHARACTER), never as a bare <mi>/<mo> identifier word. So a bare token
+      # whose text is one of these names is a literal identifier (e.g. the unit
+      # "bar"), not the accent. See unitsml/unitsdb#123.
+      ACCENT_WORDS = %w[
+        bar overline ul hat vec tilde dot ddot obrace ubrace overleftrightarrow
+      ].freeze
+
+      # True when +string+ is a bare word naming an over/under accent. Such
+      # tokens are literal identifiers in MathML (the accent itself is a
+      # diacritic character inside <mover>/<munder>), so callers must not
+      # promote them to accent operators. AsciiMath/LaTeX word forms
+      # (bar(x), \bar{x}) are parsed elsewhere and never reach this predicate.
+      def self.accent_word?(string)
+        ACCENT_WORDS.include?(string&.strip)
+      end
+
       CLASSES = %w[
         mathfrak
         underset

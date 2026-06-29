@@ -108,6 +108,51 @@ module Plurimath
           false
         end
 
+        # Some parser paths emit basic operators as generic symbols instead
+        # of their semantic classes, and a hand-built Formula may hold any of
+        # them, so the generic symbol answers for every operator from its own
+        # value (parsed `+`/`^` arrive as Plus/Hat, so these are inert there).
+        def plus_operator?
+          value == "+"
+        end
+
+        def minus_operator?
+          value == "-"
+        end
+
+        def multiply_operator?
+          value == "*"
+        end
+
+        def divide_operator?
+          value == "/"
+        end
+
+        def power_operator?
+          value == "^"
+        end
+
+        # A plain symbol names a variable through its `value`. Symbol
+        # subclasses (Pi, Plus, ...) carry no `value`, so they return nil here
+        # and are never treated as variables.
+        def variable_name
+          return if reserved_constant || value.nil? || value.empty? || operator?
+
+          value
+        end
+
+        # Symbol classes that represent constants (e.g. Pi) override
+        # #reserved_constant; everything else resolves through bindings.
+        def evaluate(evaluator)
+          constant = reserved_constant
+          return constant if constant
+
+          name = variable_name
+          evaluator.unsupported(self) unless name
+
+          evaluator.value_for(name)
+        end
+
         def omml_nodes(_, options:)
           Array(t_tag(options: options))
         end

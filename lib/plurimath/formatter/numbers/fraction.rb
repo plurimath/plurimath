@@ -20,7 +20,7 @@ module Plurimath
         end
 
         # Keep fraction preparation on structured parts; localized rendering and
-        # grouping happen later at the PartsRenderer boundary.
+        # grouping happen later at the FormattedNumber boundary.
         def apply_parts(parts, precision: self.precision)
           precision = precision.to_i
           return parts.with_digits(fraction_digits: DEFAULT_STRINGS[:empty]) unless precision.positive?
@@ -28,9 +28,12 @@ module Plurimath
           @integer_digits = parts.integer_digits
 
           fraction = parts.fraction_digits
-          fraction = change_base(fraction, precision) if !base_default? && fraction.match?(/[1-9]/)
+          if !base_default? && fraction.match?(/[1-9]/)
+            fraction = change_base(fraction,
+                                   precision)
+          end
           number = if @digit_count.positive?
-                     digit_count_format(fraction, precision)
+                     digit_count_format(fraction)
                    else
                      format(fraction, precision)
                    end
@@ -67,7 +70,7 @@ module Plurimath
 
         # The digit_count option is a total visible-digit budget, so fraction
         # rounding can carry back into the integer digits.
-        def digit_count_format(fraction, precision)
+        def digit_count_format(fraction)
           integer = integer_digits + DEFAULT_STRINGS[:dot] + fraction
           int_length = integer.length.pred # integer length; excluding the decimal point
           if int_length > @digit_count
@@ -79,22 +82,10 @@ module Plurimath
             end
             round_base_string(fraction)
           elsif int_length < @digit_count
-            fraction + (DEFAULT_STRINGS[:zero] * (update_digit_count(fraction, precision) - int_length))
+            fraction + (DEFAULT_STRINGS[:zero] * (@digit_count - int_length))
           else
             fraction
           end
-        end
-
-        def update_digit_count(number, precision)
-          return @digit_count unless zeros_count_in(number) == precision
-
-          @digit_count - precision + 1
-        end
-
-        def zeros_count_in(number)
-          return unless number.chars.all?(DEFAULT_STRINGS[:zero])
-
-          number.length
         end
 
         def round_base_string(fraction)

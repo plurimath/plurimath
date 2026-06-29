@@ -180,7 +180,9 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
     end
 
     context "with numbers-only hex capitalization" do
-      let(:symbols) { { base: 16, group_digits: 2, group: "e", hex_capital: :numbers_only } }
+      let(:symbols) do
+        { base: 16, group_digits: 2, group: "e", hex_capital: :numbers_only }
+      end
 
       it "capitalizes generated hex digits without changing separators" do
         result = formatter.apply("48879")

@@ -39,6 +39,10 @@ module Plurimath
           "⒜#{unicodemath_parens(parameter_one, options: options)}"
         end
 
+        def evaluate(evaluator)
+          evaluator.evaluate_node(parameter_one).abs
+        end
+
         def intent_names
           { name: "absolute-value" }
         end

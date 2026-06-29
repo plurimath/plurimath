@@ -53,14 +53,15 @@ module Plurimath
         wrapper_tag << r_tag
       end
 
-      def omml_parameter(field, display_style, tag_name:, options:, namespace: "m")
+      def omml_parameter(field, display_style, tag_name:, options:,
+namespace: "m")
         tag = ox_element(tag_name, namespace: namespace)
         return empty_tag(tag) unless field
 
         field_value = if field.is_a?(Array)
-                        field.map { |object|
- object.insert_t_tag(display_style, options: options)
-}
+                        field.map do |object|
+                          object.insert_t_tag(display_style, options: options)
+                        end
                       else
                         field.insert_t_tag(display_style, options: options)
                       end
@@ -106,7 +107,7 @@ module Plurimath
 
         options[:array] << field&.to_asciimath_math_zone(
           hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options]
-)
+        )
       end
 
       def latex_fields_to_print(field, options = {})
@@ -131,7 +132,7 @@ module Plurimath
 
         options[:array] << field&.to_mathml_math_zone(
           hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options]
-)
+        )
       end
 
       def omml_fields_to_print(field, options = {})
@@ -156,13 +157,13 @@ module Plurimath
 
         options[:array] << field&.to_unicodemath_math_zone(
           hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options]
-)
+        )
       end
 
       def dump_mathml(field, intent = false, options:)
         dump_ox_nodes(field.mathml_nodes(intent, options: options)).gsub(
           /\n\s*/, ""
-)
+        )
       end
 
       def dump_omml(field, display_style, options:)
@@ -170,7 +171,7 @@ module Plurimath
 
         dump_ox_nodes(field.omml_nodes(display_style, options: options)).gsub(
           /\n\s*/, ""
-)
+        )
       end
 
       def mathml_nodes(intent, options:)
@@ -260,8 +261,10 @@ module Plurimath
           case field
           when Core
             field.line_breaking(obj)
-            updated_object_values(variable, obj: obj,
-                                            update_value: true) if obj.value_exist?
+            if obj.value_exist?
+              updated_object_values(variable, obj: obj,
+                                              update_value: true)
+            end
           when Array
             array_line_break_field(field, variable, obj)
           end
@@ -350,6 +353,58 @@ module Plurimath
         false
       end
 
+      def plus_operator?
+        false
+      end
+
+      def minus_operator?
+        false
+      end
+
+      def multiply_operator?
+        false
+      end
+
+      def divide_operator?
+        false
+      end
+
+      def power_operator?
+        false
+      end
+
+      def operator?
+        plus_operator? || minus_operator? || multiply_operator? ||
+          divide_operator? || power_operator?
+      end
+
+      def reserved_constant
+        nil
+      end
+
+      # Default evaluation entry point: a node that does not implement a
+      # numeric evaluation raises UnsupportedExpressionError. Concrete nodes
+      # (Number, Symbol operators, Function::*) override this.
+      def evaluate(evaluator)
+        evaluator.unsupported(self)
+      end
+
+      def open?
+        false
+      end
+
+      def close?
+        false
+      end
+
+      # The bound variable a node represents, or nil if it is not a plain
+      # variable. Symbols and text nodes that name a variable override this;
+      # it lets iteration indexes accept both `Symbols::Symbol` (AsciiMath/
+      # MathML) and `Function::Text` (OMML) without type-sniffing.
+      def variable_name
+        nil
+      end
+
       def unicodemath_parens(field, options:)
         paren = field.to_unicodemath(options: options)
         return paren if field.is_a?(Math::Function::Fenced)
@@ -361,9 +416,9 @@ module Plurimath
         return false unless field.is_a?(Math::Symbols::Symbol)
         return true if field&.value&.include?("&#x27;")
 
-        Utility.primes_constants.any? { |_prefix, prime|
- unicodemath_field_value(field).include?(prime)
-}
+        Utility.primes_constants.any? do |_prefix, prime|
+          unicodemath_field_value(field).include?(prime)
+        end
       end
 
       def paren?

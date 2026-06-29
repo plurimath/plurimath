@@ -47,7 +47,8 @@ RSpec.describe Plurimath::Math do
                                                         Plurimath::Math::Number.new("1,2"),
                                                       ])
 
-        expect(described_class.parse("1,2", :html, locale: :fr)).to eq(expected_value)
+        expect(described_class.parse("1,2", :html,
+                                     locale: :fr)).to eq(expected_value)
       end
 
       it "uses locale for LaTeX input" do
@@ -55,7 +56,8 @@ RSpec.describe Plurimath::Math do
                                                         Plurimath::Math::Number.new("1,2"),
                                                       ])
 
-        expect(described_class.parse("1,2", :latex, locale: :fr)).to eq(expected_value)
+        expect(described_class.parse("1,2", :latex,
+                                     locale: :fr)).to eq(expected_value)
       end
 
       it "uses locale for UnicodeMath input" do
@@ -63,7 +65,8 @@ RSpec.describe Plurimath::Math do
                                                         Plurimath::Math::Number.new("1٫2"),
                                                       ])
 
-        expect(described_class.parse("1٫2", :unicode, locale: :ar)).to eq(expected_value)
+        expect(described_class.parse("1٫2", :unicode,
+                                     locale: :ar)).to eq(expected_value)
       end
     end
 
@@ -129,7 +132,7 @@ RSpec.describe Plurimath::Math do
         expect do
           described_class.parse("1,2", :asciimath, locale: :unknown)
         end.to raise_error(
-          Plurimath::Formatter::UnsupportedLocale,
+          Plurimath::Errors::UnsupportedLocale,
           /\[plurimath\] Unsupported locale :unknown\./,
         )
       end

@@ -7,22 +7,34 @@ module Plurimath
         include Helper
 
         rule(:atom)   { (diacritics >> diacriticbase.maybe) | an }
-        rule(:atoms)  { (atom.as(:atom) >> atoms.as(:atoms).maybe) }
+        rule(:atoms)  { atom.as(:atom) >> atoms.as(:atoms).maybe }
         rule(:entity) { atoms | number }
 
         rule(:operator) { match["-+*=.?:,`"].as(:operator) }
-        rule(:op_unary) { op_prefixed_unary_arg_functions | op_unary_arg_functions | op_prefixed_unary_symbols | op_unary_symbols }
+        rule(:op_unary) do
+          op_prefixed_unary_arg_functions | op_unary_arg_functions | op_prefixed_unary_symbols | op_unary_symbols
+        end
 
-        rule(:mid_symbols) { (slash >> str("mid").as(:mid_symbol)) | str("&#x2223;").as(:mid_symbol) }
+        rule(:mid_symbols) do
+          (slash >> str("mid").as(:mid_symbol)) | str("&#x2223;").as(:mid_symbol)
+        end
 
         rule(:unary_spaces) { space | invisible_unicode }
         rule(:custom_fonts) { str("double") | str("fraktur") | str("script") }
-        rule(:parsing_text) { str("\"") >> match("[^\"]").repeat(1).as(:text) >> str("\"") }
-        rule(:alphanumeric) { match("[\u{0041}-\u{005A}\u{0061}-\u{007A}\u{0391}-\u{2207}\u{3B1}-\u{3DD}\u{30}-\u{39}]") }
+        rule(:parsing_text) do
+          str("\"") >> match("[^\"]").repeat(1).as(:text) >> str("\"")
+        end
+        rule(:alphanumeric) do
+          match("[\u{0041}-\u{005A}\u{0061}-\u{007A}\u{0391}-\u{2207}\u{3B1}-\u{3DD}\u{30}-\u{39}]")
+        end
 
         rule(:op_h_brackets)  { op_h_bracket | op_h_bracket_prefixed }
-        rule(:nary_functions) { (op_unary >> unary_spaces.maybe) | (op_unary_functions >> unary_spaces) }
-        rule(:exclamation_symbols) { (str("!") | str("!!")).as(:exclamation_symbol) }
+        rule(:nary_functions) do
+          (op_unary >> unary_spaces.maybe) | (op_unary_functions >> unary_spaces)
+        end
+        rule(:exclamation_symbols) do
+          (str("!") | str("!!")).as(:exclamation_symbol)
+        end
         rule(:exclamation_symbols?) { exclamation_symbols.maybe }
 
         rule(:mini_fraction) do
@@ -36,15 +48,15 @@ module Plurimath
         rule(:fraction) do
           mini_fraction |
             binomial_fraction |
-            numerator.as(:numerator) >> space? >> (negatable_symbols.absent? >> op_over) >> space? >> denominator.as(:denominator)
+            (numerator.as(:numerator) >> space? >> (negatable_symbols.absent? >> op_over) >> space? >> denominator.as(:denominator))
         end
 
         rule(:fonts) do
           unicoded_fonts |
-            str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol) |
-            str("\\") >> str("mitBbb").as(:unicoded_font_class) >> match(/D|d|e|i|j/).as(:symbol)|
-            op_fonts >> match["A-Za-z"].as(:symbol) |
-            op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number))
+            (str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol)) |
+            (str("\\") >> str("mitBbb").as(:unicoded_font_class) >> match(/D|d|e|i|j/).as(:symbol)) |
+            (op_fonts >> match["A-Za-z"].as(:symbol)) |
+            (op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number)))
         end
 
         rule(:unary_arg_functions) do
@@ -52,7 +64,7 @@ module Plurimath
             (nary_functions >> space? >> (exp_bracket | soperand).as(:first_value)).as(:unary_function)
         end
 
-        rule(:accents)  do
+        rule(:accents) do
           (exp_bracket.as(:intermediate_exp).as(:first_value) >> str("&#xa0;").maybe >> repeated_accent_symbols).as(:accents) |
             (str("&#xa0;").absent? >> factor.as(:first_value) >> str("&#xa0;").maybe >> repeated_accent_symbols).as(:accents)
         end
@@ -65,12 +77,12 @@ module Plurimath
         end
 
         rule(:repeated_accent_symbols) do
-          (op_accent | op_accent_prefixed).repeat(1) >> prime_symbols.maybe |
+          ((op_accent | op_accent_prefixed).repeat(1) >> prime_symbols.maybe) |
             prime_symbols
         end
 
         rule(:prime_symbols) do
-          ((slash >> prefixed_primes.as(:prefixed_prime) | primes).repeat(1).as(:prime_accent_symbols))
+          ((slash >> prefixed_primes.as(:prefixed_prime)) | primes).repeat(1).as(:prime_accent_symbols)
         end
 
         rule(:operand) do
@@ -94,7 +106,7 @@ module Plurimath
             monospace_fonts |
             relational_symbols |
             unary_arg_functions |
-            op_unary_functions >> unary_spaces >> (operand | exp_bracket).absent? |
+            (op_unary_functions >> unary_spaces >> (operand | exp_bracket).absent?) |
             wrapper_symbols |
             ordinary_symbols |
             negatable_symbols |

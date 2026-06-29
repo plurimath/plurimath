@@ -3,6 +3,7 @@
 module Plurimath
   class UnicodeMath
     class Transform < Parslet::Transform
+      include Plurimath::BaseNumberPrefix::Transform
 
       rule(td: simple(:td)) { Math::Function::Td.new([td]) }
       rule(tr: simple(:tr)) { Math::Function::Tr.new([tr]) }

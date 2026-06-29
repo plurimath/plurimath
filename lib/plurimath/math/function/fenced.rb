@@ -116,6 +116,10 @@ module Plurimath
           "#{unicode_open_paren(options: options)}#{fenced_value}#{unicode_close_paren(options: options)}"
         end
 
+        def evaluate(evaluator)
+          evaluator.evaluate_nodes(parameter_two)
+        end
+
         def to_asciimath_math_zone(spacing, last = false, indent = true,
 options:)
           filtered_values(parameter_two,
