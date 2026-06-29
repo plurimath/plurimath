@@ -417,10 +417,12 @@ options:)
       #     :width, :height, :offset_x, :offset_y. Omit them for lasem defaults.
       # Unrecognized keyword options are ignored.
       #
-      # Raises Plurimath::RenderingError when lasem / its native extension is
-      # unavailable, the format is unsupported, or rendering fails. A malformed
-      # formula surfaces as Plurimath::Math::ParseError from #to_mathml, not as
-      # RenderingError. Note: :split_on_linebreak emits multiple <math> roots,
+      # Raises a Plurimath::Errors rendering error (RenderingUnavailable,
+      # UnsupportedRenderFormat, or RenderingFailed) when lasem / its native
+      # extension is unavailable, the format is unsupported, or rendering fails.
+      # A malformed formula surfaces as Plurimath::Math::ParseError from
+      # #to_mathml, not as a rendering error. Note: :split_on_linebreak emits
+      # multiple <math> roots,
       # which lasem cannot render as a single document.
       def render(format: :svg, **opts)
         mathml = to_mathml(**opts.slice(*Renderer::MATHML_OPTIONS).compact)

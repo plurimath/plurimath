@@ -9,9 +9,10 @@ RSpec.describe Plurimath::Math::Renderer do
       end
     end
 
-    it "raises RenderingError for an unknown format" do
+    it "raises UnsupportedRenderFormat for an unknown format" do
       expect { described_class.normalize_format(:gif) }
-        .to raise_error(Plurimath::RenderingError, /unsupported render format/)
+        .to raise_error(Plurimath::Errors::UnsupportedRenderFormat,
+                        /\A\[plurimath\] Unsupported render format/)
     end
   end
 
@@ -21,13 +22,14 @@ RSpec.describe Plurimath::Math::Renderer do
       # availability-first implementation would raise the "unavailable" error;
       # getting the unsupported-format error proves format is checked first.
       expect { described_class.render("<math/>", format: :gif) }
-        .to raise_error(Plurimath::RenderingError, /unsupported render format/)
+        .to raise_error(Plurimath::Errors::UnsupportedRenderFormat, /Unsupported render format/)
     end
 
     it "raises an actionable unavailable error when lasem is absent" do
       allow(described_class).to receive(:available?).and_return(false)
       expect { described_class.render("<math/>", format: :svg) }
-        .to raise_error(Plurimath::RenderingError, /lasem-doctor/)
+        .to raise_error(Plurimath::Errors::RenderingUnavailable,
+                        /\A\[plurimath\].*lasem-doctor/)
     end
 
     context "with a stubbed Lasem backend" do
@@ -61,10 +63,13 @@ RSpec.describe Plurimath::Math::Renderer do
           .to eq({ input: :mathml, output: :svg, ppi: 96 })
       end
 
-      it "wraps backend errors (incl. ArgumentError outside Lasem::Error) as RenderingError" do
+      it "wraps backend errors (incl. ArgumentError outside Lasem::Error) as RenderingFailed" do
         allow(fake_lasem).to receive(:render).and_raise(ArgumentError, "bad ppi")
+        err = nil
         expect { described_class.render("<math/>", format: :svg, ppi: -1) }
-          .to raise_error(Plurimath::RenderingError, /failed to render MathML to svg/)
+          .to raise_error(Plurimath::Errors::RenderingFailed) { |e| err = e }
+        expect(err.message).to match(/\A\[plurimath\] Failed to render/)
+        expect(err.cause).to be_a(ArgumentError)
       end
     end
   end

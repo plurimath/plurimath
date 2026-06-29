@@ -34,8 +34,8 @@ module Plurimath
       # Resolve the output image format. The --output extension is authoritative
       # for a file (so `-o x.png` always writes PNG); --format applies when there
       # is no usable extension (stdout, or an extensionless --output); otherwise
-      # svg. Math::Renderer validates the result and raises RenderingError on an
-      # unsupported value.
+      # svg. Math::Renderer validates the result and raises
+      # Errors::UnsupportedRenderFormat on an unsupported value.
       def render_format(output_path)
         extension = File.extname(output_path.to_s).delete_prefix(".")
         return extension.downcase.to_sym unless extension.empty?

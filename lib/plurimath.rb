@@ -15,7 +15,6 @@ module Plurimath
   autoload :ConfigurationError, "plurimath/errors/configuration_error"
   autoload :DeprecationError, "plurimath/errors/deprecation_error"
   autoload :Errors, "plurimath/errors"
-  autoload :RenderingError, "plurimath/errors/rendering_error"
   autoload :Formatter, "plurimath/formatter"
   autoload :Html, "plurimath/html"
   autoload :Latex, "plurimath/latex"

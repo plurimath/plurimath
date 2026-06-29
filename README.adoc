@@ -575,9 +575,11 @@ defaults. When `:display_style` is omitted the formula's own display style is
 used.
 
 If `lasem` or its native extension is unavailable, the format is unsupported, or
-rendering fails, a `Plurimath::RenderingError` is raised; its message points you
-to `lasem-doctor`. A malformed formula surfaces as `Plurimath::Math::ParseError`
-from the MathML step, not as `RenderingError`.
+rendering fails, a `Plurimath::Errors` rendering error is raised
+(`RenderingUnavailable`, `UnsupportedRenderFormat`, or `RenderingFailed` — all
+subclasses of `Plurimath::Error`); the unavailable message points you to
+`lasem-doctor`. A malformed formula surfaces as `Plurimath::Math::ParseError`
+from the MathML step, not as a rendering error.
 
 
 == Number formatting

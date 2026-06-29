@@ -30,26 +30,31 @@ module Plurimath
 
       module_function
 
-      # Render a MathML document to a binary image string. Raises
-      # Plurimath::RenderingError on any problem.
+      # Render a MathML document to a binary image string. Raises a
+      # Plurimath::Errors rendering error (UnsupportedRenderFormat,
+      # RenderingUnavailable, or RenderingFailed) on any problem.
       def render(mathml, format:, **opts)
         format = normalize_format(format)
         ensure_available!
+        render_with_backend(mathml, format, opts)
+      end
 
+      # Only the backend call is wrapped here, so the UnsupportedRenderFormat /
+      # RenderingUnavailable errors raised above are not re-wrapped.
+      def render_with_backend(mathml, format, opts)
         Lasem.render(
           mathml,
           input: :mathml,
           output: format,
           **opts.slice(*LASEM_OPTIONS).compact,
         )
-      rescue Plurimath::RenderingError
-        raise
       rescue StandardError => e
         # Catches Lasem::RenderError/DependencyError AND Lasem::OptionError, which
         # is an ArgumentError living OUTSIDE Lasem::Error (lasem-ruby errmodel-1),
         # so we deliberately rescue StandardError rather than Lasem::Error.
-        raise RenderingError.render_failed(format, cause: e)
+        raise Errors::RenderingFailed.new(format, e)
       end
+      private_class_method :render_with_backend
 
       # True only when this is a non-Opal runtime, the `lasem` gem loads, and its
       # native extension reports itself available. Never raises.
@@ -67,13 +72,13 @@ module Plurimath
         symbol = format.to_s.downcase.to_sym
         return symbol if OUTPUT_FORMATS.include?(symbol)
 
-        raise RenderingError.unsupported_format(format, supported: OUTPUT_FORMATS)
+        raise Errors::UnsupportedRenderFormat.new(format, OUTPUT_FORMATS)
       end
 
       def ensure_available!
         return if available?
 
-        raise RenderingError.unavailable(@load_error)
+        raise Errors::RenderingUnavailable.new(@load_error)
       end
 
       # Lazily require the optional gem. Only ever reached on the non-Opal path.

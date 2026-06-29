@@ -52,10 +52,11 @@ module Plurimath
 
     # Parse +text+ of +type+ and render the resulting formula to a binary image
     # (one of :svg, :png, :pdf, :ps) via the optional `lasem` gem. Parse options
-    # (e.g. :locale) are routed to .parse; the rest go to Formula#render. Raises
-    # Plurimath::RenderingError when lasem/its native extension is unavailable,
-    # the format is unsupported, or rendering fails, and Plurimath::Math::ParseError
-    # when +text+ cannot be parsed (raised during parsing, before rendering).
+    # (e.g. :locale) are routed to .parse; the rest go to Formula#render. Raises a
+    # Plurimath::Errors rendering error (RenderingUnavailable, UnsupportedRenderFormat,
+    # or RenderingFailed) when lasem/its native extension is unavailable, the format
+    # is unsupported, or rendering fails, and Plurimath::Math::ParseError when +text+
+    # cannot be parsed (raised during parsing, before rendering).
     def render(text, type, format: :svg, **options)
       parse_options = options.slice(*SUPPORTED_PARSE_OPTIONS)
       render_options = options.except(*SUPPORTED_PARSE_OPTIONS)

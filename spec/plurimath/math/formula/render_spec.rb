@@ -6,13 +6,13 @@ RSpec.describe Plurimath::Math::Formula do
   describe "#render" do
     it "rejects an unsupported format before touching lasem" do
       expect { formula.render(format: :gif) }
-        .to raise_error(Plurimath::RenderingError, /unsupported render format/)
+        .to raise_error(Plurimath::Errors::UnsupportedRenderFormat, /Unsupported render format/)
     end
 
-    it "raises an actionable RenderingError when lasem is unavailable" do
+    it "raises RenderingUnavailable when lasem is unavailable" do
       allow(Plurimath::Math::Renderer).to receive(:available?).and_return(false)
       expect { formula.render(format: :svg) }
-        .to raise_error(Plurimath::RenderingError, /lasem-doctor/)
+        .to raise_error(Plurimath::Errors::RenderingUnavailable, /lasem-doctor/)
     end
 
     context "with the bridge stubbed at the boundary" do

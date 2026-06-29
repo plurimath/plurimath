@@ -187,15 +187,15 @@ RSpec.describe Plurimath::Math do
   end
 
   describe ".render" do
-    it "raises an actionable RenderingError when lasem is unavailable" do
+    it "raises RenderingUnavailable when lasem is unavailable" do
       allow(Plurimath::Math::Renderer).to receive(:available?).and_return(false)
       expect { described_class.render("sum", "asciimath", format: :svg) }
-        .to raise_error(Plurimath::RenderingError, /lasem-doctor/)
+        .to raise_error(Plurimath::Errors::RenderingUnavailable, /lasem-doctor/)
     end
 
-    it "raises a RenderingError for an unsupported format" do
+    it "raises UnsupportedRenderFormat for an unsupported format" do
       expect { described_class.render("sum", "asciimath", format: :gif) }
-        .to raise_error(Plurimath::RenderingError, /unsupported render format/)
+        .to raise_error(Plurimath::Errors::UnsupportedRenderFormat, /Unsupported render format/)
     end
 
     it "parses then renders, forwarding format and geometry to the renderer" do
