@@ -751,6 +751,10 @@ RSpec.describe Plurimath::Utility do
         expect(built).not_to have_key("\\{")
         expect(built["("]).to eq(Plurimath::Math::Symbols::Paren::Lround)
       ensure
+        # Restore the exact prior memo state: drop the entry this example built,
+        # then put back the original only if there was one. Leaving a freshly
+        # memoized :latex entry behind would leak state across examples.
+        memo.delete(:latex)
         memo[:latex] = original if original
       end
     end
