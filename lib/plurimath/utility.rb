@@ -161,88 +161,8 @@ module Plurimath
     }.freeze
 
     class << self
-      def organize_table(array, column_align: nil, options: nil)
-        table = []
-        table_data = []
-        table_row = []
-        organize_options(array, column_align) if options
-        string_columns = column_align&.map { |column| column.is_a?(Math::Symbols::Paren) ? "|" : column.value }
-        array.each do |data|
-          if data&.separate_table
-            table_row << Math::Function::Td.new(filter_table_data(table_data).compact)
-            table_data = []
-            if data.linebreak?
-              organize_tds(table_row.flatten, string_columns.dup, options)
-              table << Math::Function::Tr.new(table_row)
-              table_row = []
-            end
-            next
-          end
-          table_data << data
-        end
-        table_row << Math::Function::Td.new(table_data.compact) if table_data
-        unless table_row.nil? || table_row.empty?
-          organize_tds(table_row.flatten, string_columns.dup, options)
-          table << Math::Function::Tr.new(table_row)
-        end
-        unless column_align.nil? || column_align.empty?
-          table_separator(string_columns, table,
-                          symbol: "|")
-        end
-        table
-      end
-
-      def organize_options(table_data, column_align)
-        return column_align if column_align.length <= 1
-
-        align = [column_align&.shift]
-        table_data.insert(0, *column_align)
-        align
-      end
-
-      def table_options(table_data)
-        rowline = ""
-        table_data.map do |tr|
-          if tr&.parameter_one&.first&.parameter_one&.first.is_a?(Math::Symbols::Hline)
-            rowline += "solid "
-          else
-            rowline += "none "
-          end
-        end
-        options = { rowline: rowline.strip } if rowline.include?("solid")
-        options || {}
-      end
-
-      def organize_tds(tr_array, column_align, options)
-        return tr_array if column_align.nil? || column_align.empty?
-
-        column_align.reject! { |string| string == "|" }
-        column_align = column_align * tr_array.length if options
-        tr_array.map.with_index do |td, ind|
-          columnalign = ALIGNMENT_LETTERS[column_align[ind]&.to_sym]
-          td.parameter_two = { columnalign: columnalign } if columnalign
-        end
-      end
-
-      def filter_table_data(table_data)
-        table_data.each_with_index do |object, ind|
-          if object.is_a?(Math::Symbols::Minus)
-            table_data[ind] = Math::Formula.new(
-              [object, table_data.delete_at(ind.next)],
-            )
-          end
-        end
-        table_data
-      end
-
       def get_table_class(text)
         Object.const_get("Plurimath::Math::Function::Table::#{capitalize(text)}")
-      end
-
-      def sub_sup_method?(sub_sup)
-        if sub_sup.methods.include?(:class_name)
-          Html::Constants::SUB_SUP_CLASSES.value?(sub_sup.class_name.to_sym)
-        end
       end
 
       def get_class(text)
@@ -394,32 +314,12 @@ module Plurimath
         fonts_array.find { |d| d.is_a?(Hash) && d[key] }
       end
 
-      def td_values(objects, slicer)
-        sliced = objects.slice_when { |object, _| symbol_value(object, slicer) }
-        tds = sliced.map do |slice|
-          Math::Function::Td.new(
-            slice.delete_if { |d| symbol_value(d, slicer) }.compact,
-          )
-        end
-        tds << Math::Function::Td.new([]) if symbol_value(objects.last, slicer)
-        tds
-      end
-
       def symbol_value(object, value)
         (object.is_a?(Math::Symbols::Comma) if value&.include?(",")) ||
           (object.is_a?(Math::Symbols::Minus) if value&.include?("-")) ||
           (object.is_a?(Math::Symbols::Paren::Vert) if value&.include?("|")) ||
           (object.is_a?(Math::Symbols::Symbol) && object&.value&.include?(value)) ||
           (value == "\\\\" && object.is_a?(Math::Function::Linebreak))
-      end
-
-      def td_value(td_object)
-        str_classes = [String, Parslet::Slice]
-        if str_classes.include?(td_object.class) && td_object.to_s.empty?
-          return Math::Function::Text.new(nil)
-        end
-
-        td_object
       end
 
       def mathml_unary_classes(text_array, omml: false, unicode_only: false,
@@ -615,25 +515,6 @@ lang: nil)
           object.options.empty?
       end
 
-      def frac_values(object)
-        case object
-        when Math::Formula
-          object.value.any? { |d| symbol_value(d, ",") }
-        when Array
-          object.any? { |d| symbol_value(d, ",") }
-        end
-      end
-
-      def table_td(object)
-        new_object = case object
-                     when Math::Function::Td
-                       object
-                     else
-                       Math::Function::Td.new([object])
-                     end
-        Array(new_object)
-      end
-
       def symbol_object(value, lang: nil)
         value = case value
                 when "ℒ" then "{:"
@@ -645,36 +526,12 @@ lang: nil)
         symbols_class(value, lang: lang)
       end
 
-      def asciimath_symbol_object(value, lang: :asciimath)
-        return if value.nil?
-
-        symbols = symbols_hash(lang)
-        return symbols[value&.to_s].new if symbols.key?(value&.to_s)
-
-        symbol_object(value&.to_s, lang: lang)
-      end
-
       def validate_left_right(fields = [])
         fields.each do |field|
           if field.is_a?(Math::Formula) && field.value.first.is_a?(Math::Function::Left)
             field.left_right_wrapper = true
           end
         end
-      end
-
-      def left_right_objects(paren, function)
-        paren = if paren.to_s.match?(/\\\{|\\\}/)
-                  paren.to_s.gsub("\\", "")
-                else
-                  Latex::Constants::LEFT_RIGHT_PARENTHESIS[paren.to_sym]
-                end
-        get_class(function).new(paren)
-      end
-
-      def valid_class(object)
-        text = object.extract_class_name_from_text
-        (object.extractable? && Asciimath::Constants::SUB_SUP_CLASSES.include?(text)) ||
-          Latex::Constants::SYMBOLS[text.to_sym] == :power_base
       end
 
       def mrow_left_right(mrow = [])
@@ -840,189 +697,6 @@ lang: nil)
         end
       end
 
-      def unicode_accents(accents, lang: :unicodemath)
-        if accents.is_a?(Math::Function::BinaryFunction)
-          accents
-        elsif accents.any? { |acc| acc&.dig(:first_value)&.is_a?(Array) }
-          accent_value = accents.first[:first_value].pop
-          first_value = accents.first[:first_value]
-          accents.first[:first_value] = accent_value
-          Math::Formula.new(
-            first_value + [transform_accents(accents, lang: lang)],
-          )
-        else
-          transform_accents(accents, lang: lang)
-        end
-      end
-
-      def transform_accents(accents, lang:)
-        accents.reduce do |function, accent|
-          if function.is_a?(Hash)
-            if function[:prime_accent_symbols]
-              Math::Function::Power.new(
-                unfenced_value(
-                  accent_value(function, function: true,
-                                         lang: lang), paren_specific: true
-                ),
-                accent_value(accent, lang: lang),
-              )
-            else
-              Math::Function::Overset.new(
-                accent_value(accent, lang: lang),
-                unfenced_value(
-                  accent_value(function, function: true,
-                                         lang: lang), paren_specific: true
-                ),
-                { accent: true },
-              )
-            end
-          elsif accent[:prime_accent_symbols]
-            Math::Function::Power.new(
-              unfenced_value(function, paren_specific: true),
-              accent_value(accent, lang: lang),
-            )
-          else
-            Math::Function::Overset.new(
-              accent_value(accent, lang: lang),
-              unfenced_value(function, paren_specific: true),
-              { accent: true },
-            )
-          end
-        end
-      end
-
-      def accent_value(accent, lang:, function: false)
-        if accent[:accent_symbols]
-          symbols_class(
-            UnicodeMath::Constants::ACCENT_SYMBOLS[accent[:accent_symbols].to_sym] || accent[:accent_symbols], lang: lang
-          )
-        else
-          accent[:first_value] || filter_values(accent[:prime_accent_symbols])
-        end
-      end
-
-      def unicode_fractions(fractions)
-        frac_arr = UnicodeMath::Constants::UNICODE_FRACTIONS[fractions.to_sym]
-        Math::Function::Frac.new(
-          Math::Number.new(frac_arr.first.to_s),
-          Math::Number.new(frac_arr.last.to_s),
-          { displaystyle: false, unicodemath_fraction: true },
-        )
-      end
-
-      def updated_primes(prime)
-        filter_values(
-          prime.to_s.scan(UNICODE_REGEX).map do |str|
-            symbols_class(str, lang: :unicodemath)
-          end,
-        )
-      end
-
-      def fractions(numerator, denominator, options = nil)
-        frac_class = Math::Function::Frac
-        if denominator.is_a?(frac_class)
-          if denominator.parameter_one.is_a?(frac_class)
-            recursion_fraction(denominator, numerator, options)
-          else
-            denominator.parameter_one = frac_class.new(
-              unfenced_value(numerator, paren_specific: true),
-              unfenced_value(denominator.parameter_one, paren_specific: true),
-              options,
-            )
-          end
-          denominator
-        else
-          frac_class.new(
-            unfenced_value(numerator, paren_specific: true),
-            unfenced_value(denominator, paren_specific: true),
-            options,
-          )
-        end
-      end
-
-      def recursion_fraction(frac, numerator, options)
-        frac_class = Math::Function::Frac
-        new_numerator = frac.parameter_one
-        if new_numerator.is_a?(frac_class)
-          recursion_fraction(new_numerator, numerator, options)
-        else
-          frac.parameter_one = frac_class.new(
-            unfenced_value(numerator, paren_specific: true),
-            unfenced_value(frac.parameter_one, paren_specific: true),
-            options,
-          )
-          frac
-        end
-      end
-
-      def recursive_sub(sub_script, sub_recursion)
-        base_class = Math::Function::Base
-        if sub_recursion.is_a?(base_class)
-          if sub_recursion.parameter_one.is_a?(base_class)
-            base_recursion(sub_script, sub_recursion)
-          else
-            sub_recursion.parameter_one = base_class.new(sub_script,
-                                                         sub_recursion.parameter_one)
-          end
-          sub_recursion
-        else
-          base_class.new(
-            sub_script,
-            sub_recursion,
-          )
-        end
-      end
-
-      def base_recursion(sub_script, sub_recursion)
-        base_class = Math::Function::Base
-        new_sub = sub_recursion.parameter_one
-        if new_sub.is_a?(base_class)
-          base_recursion(sub_script, new_sub)
-        else
-          sub_recursion.parameter_one = base_class.new(sub_script, new_sub)
-        end
-        sub_recursion
-      end
-
-      def recursive_sup(sup_script, sup_recursion)
-        power_class = Math::Function::Power
-        if sup_recursion.is_a?(power_class)
-          if sup_recursion.parameter_one.is_a?(power_class)
-            sup_recursion(sup_script, sup_recursion)
-          else
-            sup_recursion.parameter_one = power_class.new(sup_script,
-                                                          sup_recursion.parameter_one)
-          end
-          sup_recursion
-        else
-          power_class.new(
-            sup_script,
-            sup_recursion,
-          )
-        end
-      end
-
-      def sup_recursion(sup_script, sup_recursion)
-        power_class = Math::Function::Power
-        new_sup = sup_recursion.parameter_one
-        if new_sup.is_a?(power_class)
-          sup_recursion(sup_script, new_sup)
-        else
-          sup_recursion.parameter_one = power_class.new(sup_script, new_sup)
-        end
-        sup_recursion
-      end
-
-      def base_is_prime?(base)
-        symbol_prime?(base.parameter_two) ||
-          primes_constants.key(base.parameter_two.value)
-      end
-
-      def symbol_prime?(obj)
-        obj&.class&.const_defined?(:INPUT) &&
-          primes_constants&.key(hexcode_in_input(obj))
-      end
-
       def primes_constants
         primes = {}
         primes
@@ -1036,74 +710,11 @@ lang: nil)
         end
       end
 
-      def base_is_sub_or_sup?(base)
-        case base
-        when Math::Formula
-          base_is_sub_or_sup?(base.value.first)
-        when Math::Function::Fenced
-          base_is_sub_or_sup?(base.parameter_two.first)
-        when Math::Symbols::Symbol, Math::Number
-          base.mini_sub_sized || base_mini_sup_sized
-        end
-      end
-
-      def identity_matrix(size)
-        matrix = Array.new(size) { Array.new(size, 0) }
-        size.times { |i| matrix[i][i] = 1 }
-        matrix.map do |tr|
-          tr.map.with_index do |td, i|
-            tr[i] = Math::Function::Td.new([Math::Number.new(td.to_s)])
-          end
-          Math::Function::Tr.new(tr)
-        end
-      end
-
-      def enclosure_attrs(mask)
-        raise "enclosure mask is not between 0 and 255" if mask.nil? || mask.negative? || mask > 255
-
-        ret = ""
-        unless mask.nil?
-          mask ^= 15
-          bin_mask = mask.to_s(2).reverse
-          classes = bin_mask.chars.each_with_index.filter_map do |bit, i|
-            MASK_CLASSES[2**i] if bit == "1"
-          end
-          ret = classes.join(" ")
-        end
-        ret
-      end
-
       def notations_to_mask(notations)
         mask = notations.split.map do |notation|
           MASK_CLASSES.key(notation)
         end
         mask.inject(*:+) ^ 15
-      end
-
-      def slashed_values(value)
-        decoded = HTMLEntities.new.decode(value)
-        if decoded.to_s.match?(/^\w+/)
-          Math::Function::Text.new("\\#{decoded}")
-        else
-          Math::Symbols::Symbol.new(decoded, true)
-        end
-      end
-
-      def sequence_slashed_values(values, lang:)
-        values.each.with_index do |value, index|
-          decoded = HTMLEntities.new.decode(value.value)
-          slashed = if index.zero?
-                      slashed_values(value.value)
-                    elsif decoded.match?(/[0-9]/)
-                      Math::Number.new(decoded)
-                    else
-                      symbols_class(
-                        decoded, lang: lang
-                      )
-                    end
-          values[index] = slashed
-        end
-        values
       end
 
       def math_display_text_objects(object)
