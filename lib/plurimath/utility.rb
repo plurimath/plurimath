@@ -120,23 +120,6 @@ module Plurimath
       number
       text
     ].freeze
-    TABLE_SUPPORTED_ATTRS = %i[
-      columnlines
-      rowlines
-      frame
-    ].freeze
-    MPADDED_ATTRS = %i[
-      height
-      depth
-      width
-    ].freeze
-    MGLYPH_ATTRS = %i[
-      height
-      width
-      index
-      alt
-      src
-    ].freeze
     UNICODEMATH_MENCLOSE_FUNCTIONS = {
       underline: "bottom",
       underbar: "bottom",
@@ -167,16 +150,6 @@ module Plurimath
 
       def get_class(text)
         Object.const_get("Plurimath::Math::Function::#{capitalize(text)}")
-      end
-
-      def get_symbol_class(text)
-        Object.const_get("Plurimath::Math::Symbols::#{capitalize(text)}")
-      rescue StandardError
-        get_paren_class(text)
-      end
-
-      def get_paren_class(text)
-        Object.const_get("Plurimath::Math::Symbols::Paren::#{capitalize(text)}")
       end
 
       def capitalize(text)
@@ -297,23 +270,6 @@ module Plurimath
         end
       end
 
-      def nary_fonts(nary, lang:)
-        narypr  = nary.first.flatten.compact
-        subsup  = narypr.any?("undOvr") ? "undOvr" : "subSup"
-        unicode = narypr.any?(Hash) ? narypr.first[:chr] : "∫"
-        Math::Function::Nary.new(
-          symbols_class(string_to_html_entity(unicode), lang: lang),
-          filter_values(nary[1]),
-          filter_values(nary[2]),
-          filter_values(nary[3]),
-          { type: subsup },
-        )
-      end
-
-      def find_pos_chr(fonts_array, key)
-        fonts_array.find { |d| d.is_a?(Hash) && d[key] }
-      end
-
       def symbol_value(object, value)
         (object.is_a?(Math::Symbols::Comma) if value&.include?(",")) ||
           (object.is_a?(Math::Symbols::Minus) if value&.include?("-")) ||
@@ -402,105 +358,6 @@ lang: nil)
         value
       end
 
-      def join_attr_value(attrs, value, unicode_only: false, lang: :mathml)
-        if attrs.is_a?(Hash) && attrs.key?(:intent)
-          [
-            Math::Function::Intent.new(
-              filter_values(join_attr_value(nil, value,
-                                            unicode_only: unicode_only, lang: lang)),
-              Math::Function::Text.new(attrs[:intent], lang: lang),
-            ),
-          ]
-        elsif value.any?(String)
-          new_value = mathml_unary_classes(value, unicode_only: unicode_only,
-                                                  lang: lang)
-          array_value = Array(new_value)
-          if attrs.nil?
-            array_value
-          else
-            join_attr_value(attrs, array_value,
-                            unicode_only: unicode_only)
-          end
-        elsif attrs.nil?
-          value
-        elsif attrs.is_a?(String) && ["solid",
-                                      "none"].include?(attrs.split.first.downcase)
-          table_separator(attrs.split, value)
-        elsif attrs.is_a?(Hash)
-          if attrs.key?(:accent) || attrs.key?(:accentunder)
-            attr_is_accent(attrs, value)
-          elsif attrs.key?(:linebreak)
-            Math::Function::Linebreak.new(value.first, attrs)
-          elsif attrs.key?(:bevelled) || attrs.key?(:linethickness)
-            Math::Function::Frac.new(value[0], value[1], attrs)
-          elsif attrs.key?(:notation)
-            value << attrs
-          elsif attrs.key?(:separators)
-            fenced = Math::Function::Fenced.new(
-              symbol_object(attrs[:open] || "(", lang: lang),
-              value,
-              symbol_object(attrs[:close] || ")", lang: lang),
-            )
-            fenced.options = { separators: attrs[:separators] }
-            fenced
-          elsif TABLE_SUPPORTED_ATTRS.any? { |atr| attrs.key?(atr) }
-            Math::Function::Table.new(value, nil, nil, attrs)
-          elsif MPADDED_ATTRS.any? { |atr| attrs.key?(atr) }
-            Math::Function::Mpadded.new(
-              filter_values(value),
-              attrs,
-            )
-          elsif MGLYPH_ATTRS.any? { |atr| attrs.key?(atr) }
-            Math::Function::Mglyph.new(
-              attrs,
-            )
-          end
-        elsif attrs.is_a?(Math::Core)
-          attr_is_function(attrs, value)
-        end
-      end
-
-      def attr_is_accent(attrs, value)
-        if value.last.is_a?(Math::Function::UnaryFunction)
-          value.last.parameter_one = value.shift if value.length > 1
-          value.last.attributes = attrs.transform_values do |v|
-            v.to_s == "true"
-          end
-        end
-        value
-      end
-
-      def attr_is_function(attrs, value)
-        case attrs
-        when Math::Function::Fenced
-          attrs.parameter_two = value.compact
-          attrs
-        when Math::Function::FontStyle
-          attrs.parameter_one = filter_values(value)
-          attrs
-        when Math::Function::Color
-          color_value = filter_values(value)
-          if attrs.parameter_two
-            attrs.parameter_two.parameter_one = color_value
-          else
-            attrs.parameter_two = color_value
-          end
-          attrs
-        end
-      end
-
-      def nil_to_none_object(value)
-        return value unless value.any?(NilClass) || value.any? do |val|
-          val.is_a?(Array) && val.empty?
-        end
-
-        value.each.with_index do |val, index|
-          next unless val.nil? || val.is_a?(Array)
-
-          value[index] = Math::Function::None.new
-        end
-      end
-
       def unfenced_value(object, paren_specific: false)
         case object
         when Math::Function::Fenced
@@ -544,14 +401,6 @@ lang: nil)
             field.left_right_wrapper = true
           end
         end
-      end
-
-      def mrow_left_right(mrow = [])
-        object = mrow.first
-        !(
-          (object.is_a?(Math::Function::TernaryFunction) && object.any_value_exist? && (mrow.length <= 2)) ||
-          (object.is_a?(Math::Function::UnaryFunction) && mrow.length == 1)
-        )
       end
 
       def populate_function_classes(mrow = [], lang:)
@@ -617,33 +466,6 @@ lang: nil)
               object.parameter_three = filter_values(mrow.delete_at(ind + 1))
             end
           end
-        end
-      end
-
-      def paren_able?(arr = [], mrow = [])
-        arr.any? do |opening, closing|
-          symbol_value(mrow.first,
-                       opening.to_s) && symbol_value(mrow.last, closing.to_s)
-        end
-      end
-
-      def fenceable_classes(mrow = [])
-        return false unless mrow.length > 1
-        return unless paren_able?(PARENTHESIS,
-                                  mrow) || (mrow.first.is_a?(Math::Symbols::Paren) && mrow.last.is_a?(Math::Symbols::Paren))
-
-        open_paren = mrow.shift
-        close_paren = mrow.pop
-        if mrow.length == 1 && mrow.first.is_a?(Math::Function::Table)
-          table = mrow.first
-          table.open_paren = open_paren
-          table.close_paren = close_paren
-        else
-          mrow.replace(
-            [
-              Math::Function::Fenced.new(open_paren, mrow.dup, close_paren),
-            ],
-          )
         end
       end
 
