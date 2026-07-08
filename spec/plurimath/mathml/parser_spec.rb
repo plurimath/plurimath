@@ -921,13 +921,15 @@ RSpec.describe Plurimath::Mathml::Parser do
       MATHML
     end
 
-    it "returns formula of sum and frac" do
+    # A bare <mo>frac</mo> is a literal identifier (a fraction is <mfrac>), so it
+    # parses as a Symbol, not Function::Frac. See PR #450.
+    it "returns formula of sum with a literal frac identifier" do
       expected_value = Plurimath::Math::Formula.new([
                                                       Plurimath::Math::Function::Sum.new(
                                                         Plurimath::Math::Formula.new([
                                                                                        Plurimath::Math::Symbols::Symbol.new("i"),
                                                                                        Plurimath::Math::Symbols::Equal.new,
-                                                                                       Plurimath::Math::Function::Frac.new,
+                                                                                       Plurimath::Math::Symbols::Symbol.new("frac"),
                                                                                      ]),
                                                         Plurimath::Math::Number.new("33"),
                                                       ),
