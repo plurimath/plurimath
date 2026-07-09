@@ -169,7 +169,6 @@ module Plurimath
               omml_argument_value(node.f_name),
               omml_argument_value(node.e),
             ],
-            lang: :omml,
           ),
         )
       end
@@ -204,10 +203,8 @@ module Plurimath
       def accent_to_plurimath(node)
         pr = first_omml_child(node.acc_pr)
         chr = first_omml_child(pr&.chr)&.val
-        accent = chr ? Utility.mathml_unary_classes([chr], lang: :omml) : Math::Function::Hat.new
-        value = [accent, omml_argument_value(node.e)]
-        Utility.unary_function_classes(value, lang: :omml)
-        accent_value(value)
+        accent = chr ? Utility.resolve_symbol_token(chr) : Math::Function::Hat.new
+        accent_value(accent, omml_argument_value(node.e))
       end
 
       def bar_to_plurimath(node)

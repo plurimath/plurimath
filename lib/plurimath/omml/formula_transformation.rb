@@ -62,7 +62,7 @@ module Plurimath
         return Math::Function::Text.new("", lang: :omml) if value == ""
         return nil if value == "\u200B"
 
-        Utility.mathml_unary_classes([value], omml: true, lang: :omml)
+        Utility.resolve_text_token(value)
       end
 
       def omml_argument_value(node)
@@ -182,7 +182,7 @@ module Plurimath
       end
 
       def nary_operator(character)
-        character && Utility.mathml_unary_classes([character], lang: :omml)
+        character && Utility.resolve_symbol_token(character)
       end
 
       def nary_type(properties)
@@ -228,13 +228,13 @@ module Plurimath
         delimiter_symbol(character.val)
       end
 
-      def accent_value(value)
-        accent = value.first
+      def accent_value(accent, argument)
         unless accent.is_a?(Math::Function::UnaryFunction)
-          return Math::Function::Overset.new(accent, value.last,
+          return Math::Function::Overset.new(accent, argument,
                                              { accent: true })
         end
 
+        accent.parameter_one ||= argument
         accent.attributes = { accent: true }
         accent
       end
