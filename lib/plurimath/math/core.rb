@@ -103,7 +103,7 @@ namespace: "m")
 
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_asciimath(options: options[:options])}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field, lang: :asciimath)
+        return unless ModelHelper.validate_math_zone(field, lang: :asciimath)
 
         options[:array] << field&.to_asciimath_math_zone(
           hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options]
@@ -115,7 +115,7 @@ namespace: "m")
 
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_latex(options: options[:options])}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field, lang: :latex)
+        return unless ModelHelper.validate_math_zone(field, lang: :latex)
 
         options[:array] << field&.to_latex_math_zone(hashed[:function_spacing],
                                                      hashed[:last], hashed[:indent], options: options[:options])
@@ -127,8 +127,8 @@ namespace: "m")
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{dump_mathml(field,
                                                                   options: options[:options])}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field, lang: :mathml,
-                                                        intent: options[:intent], options: options[:options])
+        return unless ModelHelper.validate_math_zone(field, lang: :mathml,
+                                                            intent: options[:intent], options: options[:options])
 
         options[:array] << field&.to_mathml_math_zone(
           hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options]
@@ -142,7 +142,7 @@ namespace: "m")
         display_style = options[:display_style]
         options[:array] << "#{hashed[:spacing]}|_ \"#{dump_omml(field,
                                                                 display_style, options: options[:options])}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field, lang: :omml)
+        return unless ModelHelper.validate_math_zone(field, lang: :omml)
 
         options[:array] << field&.to_omml_math_zone(hashed[:function_spacing],
                                                     hashed[:last], hashed[:indent], display_style: display_style, options: options[:options])
@@ -153,7 +153,7 @@ namespace: "m")
 
         hashed = common_math_zone_conversion(field, options)
         options[:array] << "#{hashed[:spacing]}|_ \"#{field&.to_unicodemath(options: options[:options])}\"#{hashed[:field_name]}\n"
-        return unless Utility.validate_math_zone(field, lang: :unicodemath)
+        return unless ModelHelper.validate_math_zone(field, lang: :unicodemath)
 
         options[:array] << field&.to_unicodemath_math_zone(
           hashed[:function_spacing], hashed[:last], hashed[:indent], options: options[:options]
@@ -201,8 +201,8 @@ namespace: "m")
       end
 
       def filtered_values(value, lang:, options: {})
-        @values = Utility.filter_math_zone_values(value, lang: lang,
-                                                         options: options)
+        @values = ModelHelper.filter_math_zone_values(value, lang: lang,
+                                                             options: options)
       end
 
       def dump_ox_nodes(nodes)

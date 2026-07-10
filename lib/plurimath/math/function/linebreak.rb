@@ -9,7 +9,7 @@ module Plurimath
         def initialize(parameter_one = nil, attributes = {})
           @parameter_one = parameter_one
           @attributes = attributes
-          Utility.validate_left_right([parameter_one])
+          ModelHelper.validate_left_right([parameter_one])
         end
 
         def ==(object)
