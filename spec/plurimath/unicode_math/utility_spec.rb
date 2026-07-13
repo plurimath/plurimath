@@ -498,22 +498,29 @@ RSpec.describe Plurimath::UnicodeMath::Utility do
       end
     end
 
-    # quirk: the second operand of the || is the typo `base_mini_sup_sized`
-    # (instead of `base.mini_sup_sized`), which is undefined on Utility. Any
-    # Symbol/Number whose mini_sub_sized is falsy therefore raises NameError
-    # — including mini_SUP_sized values, which can never return true.
-    context "with a Symbol that is not mini-sub-sized" do
-      it "raises NameError from the base_mini_sup_sized typo" do
-        expect { described_class.base_is_sub_or_sup?(symbol("a")) }
-          .to raise_error(NameError, /base_mini_sup_sized/)
+    context "with a Symbol that is neither mini-sub- nor mini-sup-sized" do
+      it "returns nil" do
+        expect(described_class.base_is_sub_or_sup?(symbol("a"))).to be_nil
       end
+    end
 
-      it "raises NameError even when the symbol is mini-sup-sized" do
-        expect do
+    context "with a mini-sup-sized Symbol" do
+      it "returns true" do
+        expect(
           described_class.base_is_sub_or_sup?(
             symbol("a", mini_sup_sized: true),
-          )
-        end.to raise_error(NameError, /base_mini_sup_sized/)
+          ),
+        ).to be(true)
+      end
+    end
+
+    context "with a mini-sup-sized Number" do
+      it "returns true" do
+        expect(
+          described_class.base_is_sub_or_sup?(
+            number("2", mini_sup_sized: true),
+          ),
+        ).to be(true)
       end
     end
 

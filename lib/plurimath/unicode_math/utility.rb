@@ -195,7 +195,7 @@ module Plurimath
           when Math::Function::Fenced
             base_is_sub_or_sup?(base.parameter_two.first)
           when Math::Symbols::Symbol, Math::Number
-            base.mini_sub_sized || base_mini_sup_sized
+            base.mini_sub_sized || base.mini_sup_sized
           end
         end
 

@@ -140,7 +140,7 @@ module Plurimath
             next unless sym_instance.is_nary_symbol?
 
             intent_name = sym_instance.nary_intent_name
-            next pp symbol.const_source_location(:INPUT) if intent_name.nil?
+            next if intent_name.nil?
 
             hash[intent_name.gsub(/\s|-/, "_").to_sym] = intent_name
           end
