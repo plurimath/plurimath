@@ -19,7 +19,7 @@ module Plurimath
             validate_mathml_fields(parameter_two, intent, options: options),
             validate_mathml_fields(parameter_three, intent, options: options),
           ]
-          Utility.update_nodes(subsup_tag, new_arr)
+          XmlHelper.update_nodes(subsup_tag, new_arr)
         end
 
         def to_latex(options:)
@@ -42,10 +42,10 @@ module Plurimath
                              options: options)
           end
 
-          ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
-          ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
-          ssubsuppr << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
+          ssubsup   = XmlHelper.ox_element("sSubSup", namespace: "m")
+          ssubsuppr = XmlHelper.ox_element("sSubSupPr", namespace: "m")
+          ssubsuppr << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(
             ssubsup,
             [
               ssubsuppr,

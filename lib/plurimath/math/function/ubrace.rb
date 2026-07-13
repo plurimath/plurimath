@@ -27,7 +27,7 @@ module Plurimath
 
           over_tag = ox_element("munder")
           over_tag.set_attr(attributes) if attributes && !attributes.empty?
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             over_tag,
             [
               parameter_one.to_mathml_without_math_tag(intent,

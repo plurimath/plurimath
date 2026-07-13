@@ -18,7 +18,7 @@ module Plurimath
             second_value = parameter_one.to_mathml_without_math_tag(intent,
                                                                     options: options)
           end
-          Utility.update_nodes(mover, [second_value, ox_element("mo") << "~"])
+          XmlHelper.update_nodes(mover, [second_value, ox_element("mo") << "~"])
         end
 
         def to_omml_without_math_tag(display_style, options:)
@@ -53,11 +53,11 @@ module Plurimath
         protected
 
         def acc_tag(display_style, options:)
-          acc_tag    = Utility.ox_element("acc", namespace: "m")
-          acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << Utility.ox_element("chr", namespace: "m",
-                                                  attributes: { "m:val": "˜" })
-          Utility.update_nodes(
+          acc_tag    = XmlHelper.ox_element("acc", namespace: "m")
+          acc_pr_tag = XmlHelper.ox_element("accPr", namespace: "m")
+          acc_pr_tag << XmlHelper.ox_element("chr", namespace: "m",
+                                                    attributes: { "m:val": "˜" })
+          XmlHelper.update_nodes(
             acc_tag,
             [
               acc_pr_tag,

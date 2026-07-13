@@ -17,19 +17,19 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          Utility.update_nodes(
-            Utility.ox_element("mphantom"),
+          XmlHelper.update_nodes(
+            XmlHelper.ox_element("mphantom"),
             Array(mathml_value(intent, options: options)),
           )
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          phant = Utility.ox_element("phant", namespace: "m")
-          e_tag = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(e_tag,
+          phant = XmlHelper.ox_element("phant", namespace: "m")
+          e_tag = XmlHelper.ox_element("e", namespace: "m")
+          XmlHelper.update_nodes(e_tag,
                                Array(omml_value(display_style,
                                                 options: options)))
-          Utility.update_nodes(phant, [phant_pr, e_tag])
+          XmlHelper.update_nodes(phant, [phant_pr, e_tag])
         end
 
         def to_unicodemath(options:)
@@ -50,9 +50,9 @@ module Plurimath
 
         def phant_pr
           attributes = { "m:val": "off" }
-          phant = Utility.ox_element("phantPr", namespace: "m")
-          phant << Utility.ox_element("show", namespace: "m",
-                                              attributes: attributes)
+          phant = XmlHelper.ox_element("phantPr", namespace: "m")
+          phant << XmlHelper.ox_element("show", namespace: "m",
+                                                attributes: attributes)
         end
 
         def phantom_symbol

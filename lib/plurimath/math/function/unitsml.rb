@@ -98,7 +98,7 @@ options:)
                                                                   ))}</mrow>")
           xref = xml.nodes.find { |node| node.respond_to?(:[]) }&.[](:id)
           mathml[:xref] = xref if xref
-          Utility.update_nodes(mathml, xml.nodes)
+          XmlHelper.update_nodes(mathml, xml.nodes)
         end
       end
     end

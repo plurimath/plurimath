@@ -13,7 +13,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("m#{class_name}"),
             mathml_value(intent, options: options),
           )

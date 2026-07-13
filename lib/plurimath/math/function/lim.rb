@@ -35,7 +35,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          first_value = Utility.ox_element("mo") << "lim"
+          first_value = XmlHelper.ox_element("mo") << "lim"
           return first_value unless any_value_exist?
 
           tag_name = if parameter_two && parameter_one
@@ -43,8 +43,8 @@ module Plurimath
                      else
                        parameter_one ? "under" : "over"
                      end
-          lim_tag = Utility.ox_element("m#{tag_name}")
-          Utility.update_nodes(
+          lim_tag = XmlHelper.ox_element("m#{tag_name}")
+          XmlHelper.update_nodes(
             lim_tag,
             [
               first_value,

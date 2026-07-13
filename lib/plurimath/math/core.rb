@@ -65,7 +65,7 @@ namespace: "m")
                       else
                         field.insert_t_tag(display_style, options: options)
                       end
-        Utility.update_nodes(tag, field_value)
+        XmlHelper.update_nodes(tag, field_value)
       end
 
       def validate_function_formula
@@ -315,7 +315,7 @@ namespace: "m")
       end
 
       def ox_element(node, attributes: [], namespace: "")
-        Utility.ox_element(
+        XmlHelper.ox_element(
           node,
           attributes: attributes,
           namespace: namespace,
@@ -523,10 +523,10 @@ namespace: "m")
           when "mover" then tag.name = "msup"
           end
         elsif options_array.include?("upper_limit_as_super_script") && tag.nodes[1].name == "mrow"
-          tag = Utility.update_nodes(
+          tag = XmlHelper.update_nodes(
             ox_element("munder"),
             [
-              Utility.update_nodes(
+              XmlHelper.update_nodes(
                 ox_element("msup"),
                 [
                   tag.nodes[0],

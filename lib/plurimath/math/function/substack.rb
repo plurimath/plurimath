@@ -23,7 +23,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("mtable"),
             mathml_value(intent, options: options),
           )

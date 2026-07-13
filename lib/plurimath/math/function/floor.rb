@@ -19,7 +19,7 @@ module Plurimath
                                ox_element("mo") << "&#x230a;")
           end
           value_array << (ox_element("mo") << "&#x230b;") unless close_paren
-          Utility.update_nodes(ox_element("mrow"), value_array)
+          XmlHelper.update_nodes(ox_element("mrow"), value_array)
         end
 
         def to_omml_without_math_tag(display_style, options:)

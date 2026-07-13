@@ -43,13 +43,13 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent, options:)
           tag_name = MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub"
-          sub_tag = Utility.ox_element("m#{tag_name}")
+          sub_tag = XmlHelper.ox_element("m#{tag_name}")
           mathml_value = []
           mathml_value << validate_mathml_fields(parameter_one, intent,
                                                  options: options)
           mathml_value << validate_mathml_fields(parameter_two, intent,
                                                  options: options)
-          Utility.update_nodes(sub_tag, mathml_value)
+          XmlHelper.update_nodes(sub_tag, mathml_value)
         end
 
         def to_latex(options:)
@@ -66,10 +66,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          ssub_element  = Utility.ox_element("sSub", namespace: "m")
-          subpr_element = Utility.ox_element("sSubPr", namespace: "m")
-          subpr_element << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
+          ssub_element  = XmlHelper.ox_element("sSub", namespace: "m")
+          subpr_element = XmlHelper.ox_element("sSubPr", namespace: "m")
+          subpr_element << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(
             ssub_element,
             [
               subpr_element,

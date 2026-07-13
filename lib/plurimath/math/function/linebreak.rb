@@ -44,7 +44,7 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent, options:)
           unless parameter_one
-            return Utility.ox_element("mo",
+            return XmlHelper.ox_element("mo",
                                       attributes: { linebreak: "newline" })
           end
 

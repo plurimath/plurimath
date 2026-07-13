@@ -27,7 +27,7 @@ module Plurimath
 
           munder_tag = ox_element("munder")
           munder_tag.set_attr(attributes) if attributes && !attributes.empty?
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             munder_tag,
             [
               parameter_one&.to_mathml_without_math_tag(intent,
@@ -68,14 +68,14 @@ module Plurimath
         protected
 
         def groupchr_tag(display_style, options:)
-          groupchr = Utility.ox_element("groupChr", namespace: "m")
-          groupchrpr = Utility.ox_element("groupChrPR", namespace: "m")
-          chr = Utility.ox_element("chr", namespace: "m",
-                                          attributes: { "m:val": "_" })
-          pos = Utility.ox_element("pos", namespace: "m",
-                                          attributes: { "m:val": "bot" })
-          Utility.update_nodes(groupchrpr, [chr, pos])
-          Utility.update_nodes(
+          groupchr = XmlHelper.ox_element("groupChr", namespace: "m")
+          groupchrpr = XmlHelper.ox_element("groupChrPR", namespace: "m")
+          chr = XmlHelper.ox_element("chr", namespace: "m",
+                                            attributes: { "m:val": "_" })
+          pos = XmlHelper.ox_element("pos", namespace: "m",
+                                            attributes: { "m:val": "bot" })
+          XmlHelper.update_nodes(groupchrpr, [chr, pos])
+          XmlHelper.update_nodes(
             groupchr,
             [
               groupchrpr,

@@ -60,7 +60,7 @@ module Plurimath
 
       def insert_t_tag(_, options:)
         [
-          Utility.ox_element("r", namespace: "m") << t_tag(options: options),
+          XmlHelper.ox_element("r", namespace: "m") << t_tag(options: options),
         ]
       end
 
@@ -69,7 +69,7 @@ module Plurimath
       end
 
       def t_tag(options:)
-        Utility.ox_element("t",
+        XmlHelper.ox_element("t",
                            namespace: "m") << formatted_value(options)
       end
 

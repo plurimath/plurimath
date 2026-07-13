@@ -52,12 +52,12 @@ module Plurimath
             validate_mathml_fields(parameter_two, intent, options: options),
             validate_mathml_fields(parameter_three, intent, options: options),
           ]
-          subsup_tag = Utility.update_nodes(ox_element(tag_name), new_arr)
+          subsup_tag = XmlHelper.update_nodes(ox_element(tag_name), new_arr)
           masked_tag(subsup_tag) if self.options[:mask]
           return subsup_tag unless parameter_four
 
           intentify(
-            Utility.update_nodes(
+            XmlHelper.update_nodes(
               ox_element("mrow"),
               [
                 subsup_tag,
@@ -74,8 +74,8 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          nary_element = Utility.ox_element("nary", namespace: "m")
-          Utility.update_nodes(nary_element,
+          nary_element = XmlHelper.ox_element("nary", namespace: "m")
+          XmlHelper.update_nodes(nary_element,
                                omml_nary_tag(display_style, options: options))
           Array(nary_element)
         end
@@ -155,12 +155,12 @@ module Plurimath
         def chr_value(narypr, options:)
           first_value = Utility.html_entity_to_unicode(parameter_one&.nary_attr_value(options: options))
           unless first_value == "∫"
-            narypr << Utility.ox_element("chr", namespace: "m",
-                                                attributes: { "m:val": first_value })
+            narypr << XmlHelper.ox_element("chr", namespace: "m",
+                                                  attributes: { "m:val": first_value })
           end
 
-          narypr << Utility.ox_element("limLoc", namespace: "m",
-                                                 attributes: { "m:val": (self.options[:type] || "subSup").to_s })
+          narypr << XmlHelper.ox_element("limLoc", namespace: "m",
+                                                   attributes: { "m:val": (self.options[:type] || "subSup").to_s })
           hide_tags(narypr, parameter_two, "sub")
           hide_tags(narypr, parameter_three, "sup")
           narypr
@@ -169,15 +169,15 @@ module Plurimath
         def hide_tags(nar, field, tag_prefix)
           return nar unless field.nil?
 
-          nar << Utility.ox_element("#{tag_prefix}Hide", namespace: "m",
-                                                         attributes: { "m:val": "1" })
+          nar << XmlHelper.ox_element("#{tag_prefix}Hide", namespace: "m",
+                                                           attributes: { "m:val": "1" })
         end
 
         def omml_nary_tag(display_style, options:)
-          narypr = Utility.ox_element("naryPr", namespace: "m")
+          narypr = XmlHelper.ox_element("naryPr", namespace: "m")
           chr_value(narypr, options: options)
           [
-            (narypr << Utility.pr_element("ctrl", true, namespace: "m")),
+            (narypr << XmlHelper.pr_element("ctrl", true, namespace: "m")),
             omml_parameter(parameter_two, display_style, tag_name: "sub",
                                                          options: options),
             omml_parameter(parameter_three, display_style, tag_name: "sup",
