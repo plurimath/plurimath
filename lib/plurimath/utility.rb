@@ -96,13 +96,6 @@ module Plurimath
       ln
       lg
     ].freeze
-    MUNDER_CLASSES = %w[
-      ubrace
-      obrace
-      right
-      max
-      min
-    ].freeze
     PARENTHESIS = {
       "&#x2329;": "&#x232a;",
       "&#x230a;": "&#x230b;",

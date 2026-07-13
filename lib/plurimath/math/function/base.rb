@@ -11,6 +11,14 @@ module Plurimath
           first_value: "base",
           second_value: "script",
         }.freeze
+        # Base values whose MathML script renders as <munder> instead of <msub>.
+        MUNDER_CLASSES = %w[
+          ubrace
+          obrace
+          right
+          max
+          min
+        ].freeze
 
         def initialize(parameter_one = nil,
                        parameter_two = nil,
@@ -34,7 +42,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          tag_name = Utility::MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub"
+          tag_name = MUNDER_CLASSES.include?(parameter_one&.class_name) ? "under" : "sub"
           sub_tag = Utility.ox_element("m#{tag_name}")
           mathml_value = []
           mathml_value << validate_mathml_fields(parameter_one, intent,
