@@ -36,7 +36,7 @@ module Plurimath
         end
 
         def filter_math_zone_values(value, lang:, intent: false, options: nil)
-          return [] if value && value.empty?
+          return [] if value.nil? || value.empty?
 
           new_arr = []
           temp_array = []
@@ -72,7 +72,7 @@ module Plurimath
           mask = notations.split.map do |notation|
             Utility::MASK_CLASSES.key(notation)
           end
-          mask.inject(*:+) ^ 15
+          mask.compact.sum ^ 15
         end
 
         private

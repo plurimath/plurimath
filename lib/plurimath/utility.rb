@@ -200,6 +200,8 @@ module Plurimath
       end
 
       def symbol_value(object, value)
+        return false if value.nil?
+
         (object.is_a?(Math::Symbols::Comma) if value&.include?(",")) ||
           (object.is_a?(Math::Symbols::Minus) if value&.include?("-")) ||
           (object.is_a?(Math::Symbols::Paren::Vert) if value&.include?("|")) ||

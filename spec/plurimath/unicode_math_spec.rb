@@ -165,4 +165,20 @@ RSpec.describe Plurimath::UnicodeMath do
       end
     end
   end
+
+  describe "#to_unicodemath MathML" do
+    subject(:string) { formula.to_unicodemath }
+
+    let(:formula) { Plurimath::Math.parse(mathml_string, :mathml) }
+
+    context "menclose mixing a known and an unrecognized notation" do
+      let(:mathml_string) do
+        '<math><menclose notation="top radical"><mi>x</mi></menclose></math>'
+      end
+
+      it "drops the unknown notation and masks on the known one" do
+        expect(string).to eq("▭(14&x)")
+      end
+    end
+  end
 end

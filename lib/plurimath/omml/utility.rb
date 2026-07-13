@@ -14,7 +14,7 @@ module Plurimath
         def valid_class(object)
           text = object.extract_class_name_from_text
           (object.extractable? && Asciimath::Constants::SUB_SUP_CLASSES.include?(text)) ||
-            Latex::Constants::SYMBOLS[text.to_sym] == :power_base
+            Latex::Constants::SYMBOLS[text&.to_sym] == :power_base
         end
 
         def resolve_text_token(value)

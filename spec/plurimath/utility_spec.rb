@@ -430,11 +430,9 @@ RSpec.describe Plurimath::Utility do
       expect(described_class.symbol_value(Plurimath::Math::Symbols::Symbol.new, "x")).to be(false)
     end
 
-    # quirk: nil value crashes on String#include?(nil) once a Symbol object
-    # reaches the value-inclusion branch
-    it "raises TypeError for a Symbol object and nil value" do
-      expect { described_class.symbol_value(Plurimath::Math::Symbols::Symbol.new("a"), nil) }
-        .to raise_error(TypeError)
+    it "returns false for a Symbol object and nil value" do
+      expect(described_class.symbol_value(Plurimath::Math::Symbols::Symbol.new("a"), nil))
+        .to be(false)
     end
   end
 

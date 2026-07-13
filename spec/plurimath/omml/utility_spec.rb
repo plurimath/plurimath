@@ -51,13 +51,10 @@ RSpec.describe Plurimath::Omml::Utility do
         .to be(false)
     end
 
-    # quirk: Formula#extract_class_name_from_text returns nil when the
-    # single value is not a Function::Text, and valid_class calls
-    # nil.to_sym — raising NoMethodError instead of returning false.
-    it "raises NoMethodError for a Formula wrapping a non-Text value" do
+    it "returns false for a Formula wrapping a non-Text value" do
       formula = Plurimath::Math::Formula.new([Plurimath::Math::Number.new("3")])
 
-      expect { described_class.valid_class(formula) }.to raise_error(NoMethodError)
+      expect(described_class.valid_class(formula)).to be(false)
     end
 
     # quirk: FontStyle#extract_class_name_from_text always returns
