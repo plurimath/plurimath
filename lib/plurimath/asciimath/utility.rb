@@ -2,7 +2,7 @@
 
 module Plurimath
   class Asciimath
-    # AsciiMath-specific helpers extracted from Plurimath::Utility (A1 code-quality
+    # AsciiMath-specific helpers extracted from Plurimath::Utility (code-quality
     # refactor). Subclasses Utility so bareword `Utility.<generic>` calls inside
     # AsciiMath files keep resolving here and inherit the generic helpers.
     class Utility < Plurimath::Utility

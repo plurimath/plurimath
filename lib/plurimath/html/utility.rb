@@ -2,7 +2,7 @@
 
 module Plurimath
   class Html
-    # Html-specific helper extracted from Plurimath::Utility (A1 code-quality
+    # Html-specific helper extracted from Plurimath::Utility (code-quality
     # refactor). Subclasses Utility so bareword `Utility.<generic>` calls inside
     # Html files keep resolving here and inherit the generic helpers.
     class Utility < Plurimath::Utility

@@ -2,7 +2,7 @@
 
 module Plurimath
   class UnicodeMath
-    # UnicodeMath-specific helpers extracted from Plurimath::Utility (A1 code-quality
+    # UnicodeMath-specific helpers extracted from Plurimath::Utility (code-quality
     # refactor). Subclasses Utility so that bareword `Utility.<generic>` calls inside
     # UnicodeMath files keep resolving here and inherit the generic helpers.
     class Utility < Plurimath::Utility

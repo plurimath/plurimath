@@ -2,7 +2,7 @@
 
 module Plurimath
   class Latex
-    # LaTeX-specific helpers extracted from Plurimath::Utility (A1 code-quality
+    # LaTeX-specific helpers extracted from Plurimath::Utility (code-quality
     # refactor). Subclasses Utility so bareword `Utility.<generic>` calls inside
     # LaTeX files keep resolving here and inherit the generic helpers.
     class Utility < Plurimath::Utility
@@ -55,14 +55,6 @@ module Plurimath
           options || {}
         end
 
-        # True when the row's first cell holds an Hline marker (a horizontal
-        # rule), reached through the tr -> first cell -> first content nesting.
-        def hline_row?(row)
-          first_cell = row&.parameter_one&.first
-          first_content = first_cell&.parameter_one&.first
-          first_content.is_a?(Math::Symbols::Hline)
-        end
-
         def organize_tds(tr_array, column_align, options)
           return tr_array if column_align.nil? || column_align.empty?
 
@@ -102,6 +94,16 @@ module Plurimath
                     Latex::Constants::LEFT_RIGHT_PARENTHESIS[paren.to_sym]
                   end
           get_class(function).new(paren)
+        end
+
+        private
+
+        # True when the row's first cell holds an Hline marker (a horizontal
+        # rule), reached through the tr -> first cell -> first content nesting.
+        def hline_row?(row)
+          first_cell = row&.parameter_one&.first
+          first_content = first_cell&.parameter_one&.first
+          first_content.is_a?(Math::Symbols::Hline)
         end
       end
     end
