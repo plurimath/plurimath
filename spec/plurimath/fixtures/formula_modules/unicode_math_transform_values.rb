@@ -13435,7 +13435,7 @@ module UnicodeMathTransformValues
                                                Plurimath::Math::Function::Overset.new(
                                                  Plurimath::Math::Symbols::Acute.new,
                                                  Plurimath::Math::Function::Overset.new(
-                                                   Plurimath::Math::Symbols::Symbol.new("&#x303;"),
+                                                   Plurimath::Math::Symbols::Tilde.new,
                                                    Plurimath::Math::Function::Overset.new(
                                                      Plurimath::Math::Symbols::Check.new,
                                                      Plurimath::Math::Function::Overset.new(
@@ -18374,7 +18374,7 @@ module UnicodeMathTransformValues
                                                Plurimath::Math::Formula.new([
                                                                               Plurimath::Math::Symbols::Symbol.new("&#x1d44f;"),
                                                                               Plurimath::Math::Function::Overset.new(
-                                                                                Plurimath::Math::Symbols::Symbol.new("&#x303;"),
+                                                                                Plurimath::Math::Symbols::Tilde.new,
                                                                                 Plurimath::Math::Symbols::Symbol.new("&#x1d450;"),
                                                                                 { accent: true },
                                                                               ),

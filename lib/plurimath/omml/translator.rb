@@ -203,7 +203,13 @@ module Plurimath
       def accent_to_plurimath(node)
         pr = first_omml_child(node.acc_pr)
         chr = first_omml_child(pr&.chr)&.val
-        accent = chr ? Utility.resolve_symbol_token(chr) : Math::Function::Hat.new
+        accent =
+          if chr
+            Utility.contextual_accent_from_token(chr) ||
+              Utility.resolve_symbol_token(chr)
+          else
+            Math::Function::Hat.new
+          end
         accent_value(accent, omml_argument_value(node.e))
       end
 

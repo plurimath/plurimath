@@ -24,6 +24,60 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
+  # The combining tilde has no function mapping, so it used to leak into the
+  # accent slot as a raw entity. It is now promoted to the Tilde function in an
+  # accent position, mirroring &#x302; -> Hat.
+  context "contains a combining tilde in an mover accent position" do
+    let(:exp) do
+      <<~MATHML
+        <math xmlns='http://www.w3.org/1998/Math/MathML'>
+          <mover accent='true'><mi>c</mi><mo>&#x303;</mo></mover>
+        </math>
+      MATHML
+    end
+
+    it "resolves the combining tilde to the Tilde function" do
+      expected_value = Plurimath::Math::Formula.new([
+                                                      Plurimath::Math::Function::Tilde.new(
+                                                        Plurimath::Math::Symbols::Symbol.new("c"),
+                                                        { accent: true },
+                                                      ),
+                                                    ])
+      expect(formula).to eq(expected_value)
+    end
+
+    it "renders the tilde accent in LaTeX" do
+      expect(formula.to_latex).to eq("\\tilde{c}")
+    end
+  end
+
+  # The promotion above must stay confined to accent positions: outside one, a
+  # combining tilde is ordinary content and has to survive untouched.
+  context "contains a combining tilde outside an accent position" do
+    it "leaves it alone inside a text run" do
+      mathml = "<math xmlns='http://www.w3.org/1998/Math/MathML'><mtext>a&#x303;b</mtext></math>"
+      expect(described_class.new(mathml).parse.to_latex).to eq("\\text{a&#x303;b}")
+    end
+
+    it "leaves a bare mo as a plain symbol" do
+      mathml = "<math xmlns='http://www.w3.org/1998/Math/MathML'><mo>&#x303;</mo></math>"
+      expect(described_class.new(mathml).parse).to eq(
+        Plurimath::Math::Formula.new([
+                                       Plurimath::Math::Symbols::Symbol.new("&#x303;"),
+                                     ]),
+      )
+    end
+
+    it "leaves a bare mi as a plain symbol" do
+      mathml = "<math xmlns='http://www.w3.org/1998/Math/MathML'><mi>&#x303;</mi></math>"
+      expect(described_class.new(mathml).parse).to eq(
+        Plurimath::Math::Formula.new([
+                                       Plurimath::Math::Symbols::Symbol.new("&#x303;"),
+                                     ]),
+      )
+    end
+  end
+
   context "contains mathml string of sum and prod formula" do
     let(:exp) do
       <<~MATHML

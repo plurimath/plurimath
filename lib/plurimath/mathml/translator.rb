@@ -122,6 +122,12 @@ module Plurimath
         children = content_children(mover)
         base = filter_child(mml_to_plurimath(children[0]))
         overscript = filter_child(mml_to_plurimath(children[1]))
+        # An accent character that has no function mapping arrives as a plain
+        # symbol; promote it here, where it is unambiguously an accent.
+        if overscript.instance_of?(Plurimath::Math::Symbols::Symbol)
+          overscript =
+            Utility.contextual_accent_from_token(overscript.value) || overscript
+        end
         options = {}
         options[:accent] = true if truthy_mathml_bool?(mover.accent)
 

@@ -3,6 +3,19 @@
 module Plurimath
   class Mathml
     module FunctionTokenResolver
+      # Promotes an accent character to its function class. Callers must only
+      # use this from an accent position; elsewhere the character has to stay a
+      # plain symbol/text. Decode-then-encode normalizes both call sites: MathML
+      # passes an already-encoded "&#x303;", OMML passes the raw U+0303.
+      def contextual_accent_from_token(value)
+        return nil if value.nil?
+
+        entity = string_to_html_entity(html_entity_to_unicode(value.to_s))
+        function_name =
+          Mathml::Constants::CONTEXTUAL_ACCENT_FUNCTIONS[entity.strip.to_sym]
+        get_class(function_name).new if function_name
+      end
+
       private
 
       def function_from_token(value)

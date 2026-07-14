@@ -98,18 +98,19 @@ RSpec.describe Plurimath::UnicodeMath::Utility do
       end
     end
 
-    # quirk: "&#x303;" (combining tilde) has no dedicated symbols_class
-    # mapping on the :unicodemath path, so — unlike "&#x302;" → Hat — the
-    # accent lands as a generic Symbol carrying the raw entity string.
-    context "with the combining-tilde entity (input like 'ã')" do
-      it "uses a generic Symbol holding the raw entity as the accent" do
+    # "&#x303;" (combining tilde) now resolves through symbols_class to the
+    # Tilde symbol on the :unicodemath path, mirroring "&#x302;" → Hat, so it
+    # no longer leaks the raw entity string into the accent slot. (Reached by
+    # the decomposed form "a" + U+0303, not precomposed NFC "ã" = U+00E3.)
+    context "with the combining-tilde entity (decomposed 'a' + U+0303)" do
+      it "resolves the combining tilde to the Tilde symbol as the accent" do
         accents = [
           { first_value: symbol("a") },
           { accent_symbols: "&#x303;" },
         ]
 
         expect(described_class.unicode_accents(accents))
-          .to eq(overset(symbol("&#x303;"), symbol("a")))
+          .to eq(overset(Plurimath::Math::Symbols::Tilde.new, symbol("a")))
       end
     end
 
@@ -139,7 +140,7 @@ RSpec.describe Plurimath::UnicodeMath::Utility do
         ]
 
         expect(described_class.unicode_accents(accents)).to eq(
-          overset(symbol("&#x303;"), overset(hat, symbol("a"))),
+          overset(Plurimath::Math::Symbols::Tilde.new, overset(hat, symbol("a"))),
         )
       end
     end
