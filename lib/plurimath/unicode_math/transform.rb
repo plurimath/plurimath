@@ -116,7 +116,11 @@ module Plurimath
       end
 
       rule(prefixed_prime: simple(:prime)) do
-        Utility.updated_primes(prime)
+        # Normalize the slash-prefixed name (\prime, \pprime, ...) to its entity
+        # so the enclosing prime_accent_symbols handling resolves it like the
+        # direct entity forms. Resolving to a node here instead would be dropped
+        # by the outer updated_primes re-scan (which only matches entities).
+        Constants::PREFIXED_PRIMES[prime.to_s.to_sym] || prime
       end
 
       rule(unary_functions: simple(:unary)) do

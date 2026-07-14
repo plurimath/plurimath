@@ -158,5 +158,41 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
         expect(formula.to_latex).to eq("\\overset{\\tilde}{a}")
       end
     end
+
+    # Regression: a slash-prefixed prime (\prime, \pprime, ...) reaches the
+    # prime handling as its bare name. Before the fix it resolved to nil,
+    # leaving an empty exponent ("a^{}"); it now maps to the matching prime
+    # symbol like the direct entity form does.
+    context "with a prefixed prime (\\prime)" do
+      let(:string) { "a\\prime" }
+
+      it "resolves to a Prime exponent" do
+        expect(formula.to_latex).to eq("a^{\\prime}")
+      end
+    end
+
+    context "with a repeated prefixed prime (\\prime\\prime)" do
+      let(:string) { "a\\prime\\prime" }
+
+      it "resolves each prefixed prime in the exponent" do
+        expect(formula.to_latex).to eq("a^{\\prime \\prime}")
+      end
+    end
+
+    context "with an accent followed by a prefixed prime" do
+      let(:string) { "#{[0x0061, 0x0302].pack('U*')}\\prime" }
+
+      it "resolves the prefixed prime instead of leaving an empty exponent" do
+        expect(formula.to_latex).to eq("\\overset{^}{a}^{\\prime}")
+      end
+    end
+
+    context "with the higher-order prefixed primes" do
+      it "maps each name to its prime symbol" do
+        expect(described_class.new("a\\pprime").parse.to_latex).to eq("a^{\\dprime}")
+        expect(described_class.new("a\\ppprime").parse.to_latex).to eq("a^{\\trprime}")
+        expect(described_class.new("a\\pppprime").parse.to_latex).to eq("a^{\\fourth}")
+      end
+    end
   end
 end
