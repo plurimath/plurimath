@@ -124,5 +124,28 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
         expect(formula).to eq(UnicodeMathTransformValues::EXAMPLE_679)
       end
     end
+
+    # Regression: "a" + combining circumflex + prime (U+0061 U+0302 U+2032)
+    # reaches unicode_accents' prime branch. Before the fix the raw entity
+    # string landed in the Power exponent and to_latex raised; now the prime
+    # resolves to a Prime symbol and the conversion succeeds.
+    context "with a combining accent followed by a prime" do
+      let(:string) { [0x0061, 0x0302, 0x2032].pack("U*") }
+
+      it "resolves the prime so to_latex renders without raising" do
+        expect(formula.to_latex).to eq("\\overset{^}{a}^{\\prime}")
+      end
+    end
+
+    # Multi-prime: updated_primes maps each entity, so the exponent is a
+    # Formula of Prime symbols rather than a raw string — guards the
+    # Formula-exponent branch the fix introduces.
+    context "with a combining accent followed by two primes" do
+      let(:string) { [0x0061, 0x0302, 0x2032, 0x2032].pack("U*") }
+
+      it "resolves both primes into the Power exponent" do
+        expect(formula.to_latex).to eq("\\overset{^}{a}^{\\prime \\prime}")
+      end
+    end
   end
 end

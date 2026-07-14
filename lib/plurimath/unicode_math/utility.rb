@@ -62,7 +62,7 @@ module Plurimath
               UnicodeMath::Constants::ACCENT_SYMBOLS[accent[:accent_symbols].to_sym] || accent[:accent_symbols], lang: lang
             )
           else
-            accent[:first_value] || filter_values(accent[:prime_accent_symbols])
+            accent[:first_value] || updated_primes(accent[:prime_accent_symbols])
           end
         end
 
