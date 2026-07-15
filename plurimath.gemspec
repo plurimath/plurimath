@@ -29,8 +29,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.add_dependency "bigdecimal"
   spec.add_dependency "htmlentities"
-  spec.add_dependency "lutaml-model", "~> 0.8.0"
-  spec.add_dependency "mml", ">= 2.3"
+  spec.add_dependency "lutaml-model", "~> 0.8.17"
+  spec.add_dependency "mml", "~> 2.4.0"
   spec.add_dependency "omml", "~> 0.2.5"
   spec.add_dependency "ostruct"
   spec.add_dependency "ox"
