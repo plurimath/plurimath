@@ -29,7 +29,7 @@ RSpec.describe Plurimath::Asciimath::Utility do
       expect(result).to eq([td([number("1")]), td([number("2")])])
     end
 
-    it "slices on a generic Symbol whose value contains the slicer" do
+    it "slices on a generic Symbol whose value is the slicer" do
       result = described_class.td_values(
         [number("1"), Plurimath::Math::Symbols::Symbol.new(","), number("2")],
         ",",

@@ -202,10 +202,10 @@ module Plurimath
       def symbol_value(object, value)
         return false if value.nil?
 
-        (object.is_a?(Math::Symbols::Comma) if value&.include?(",")) ||
-          (object.is_a?(Math::Symbols::Minus) if value&.include?("-")) ||
-          (object.is_a?(Math::Symbols::Paren::Vert) if value&.include?("|")) ||
-          (object.is_a?(Math::Symbols::Symbol) && object&.value&.include?(value)) ||
+        (object.is_a?(Math::Symbols::Comma) if value == ",") ||
+          (object.is_a?(Math::Symbols::Minus) if value == "-") ||
+          (object.is_a?(Math::Symbols::Paren::Vert) if value == "|") ||
+          (object.is_a?(Math::Symbols::Symbol) && object&.value == value) ||
           (value == "\\\\" && object.is_a?(Math::Function::Linebreak))
       end
 
