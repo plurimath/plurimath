@@ -15,7 +15,7 @@ module Plurimath
         output_format = options[:output_format]
         configure_xml_engine(input_format, output_format)
         formula = Plurimath::Math.parse(text, input_format)
-        return puts formula.to_display(output_format.to_sym) if YAML.safe_load(options[:math_rendering])
+        return puts formula.to_display(output_format.to_sym) if options[:math_rendering].to_s == "true"
 
         puts convert_formula(formula, output_format)
       end

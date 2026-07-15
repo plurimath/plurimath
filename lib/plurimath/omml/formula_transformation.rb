@@ -102,7 +102,15 @@ module Plurimath
       end
 
       def linebreak_child?(node, child)
+        return true if ct_br_child?(child)
+
         child == "" && node.respond_to?(:br) && node.br == ""
+      end
+
+      def ct_br_child?(child)
+        return false unless child.is_a?(Object)
+
+        Lutaml::Model::Utils.base_class_name(child.class.name) == "CTBr"
       end
 
       def styled_run?(children)
@@ -110,11 +118,18 @@ module Plurimath
       end
 
       def styled_run_value(children)
-        font = children.first
+        fonts, content = children.partition do |child|
+          font_style_class?(child)
+        end
+        font = fonts.first
         font.new(
-          Utility.filter_values(children.drop(1)),
+          Utility.filter_values(content),
           Utility::FONT_STYLES.key(font).to_s,
         )
+      end
+
+      def font_style_class?(value)
+        value.is_a?(Class) && value <= Math::Function::FontStyle
       end
 
       def script_function_value(script_class, node)

@@ -110,5 +110,131 @@ RSpec.describe Plurimath::Omml::Translator do
       expect(Plurimath::Omml.new(omml).to_formula.to_asciimath)
         .to eq('frac("x")("y") 2')
     end
+
+    context "when an m:r carries both m:rPr and w:rPr styling" do
+      let(:omml) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                   xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+            <m:r>
+              <m:rPr><m:sty m:val="p"/></m:rPr>
+              <w:rPr><w:i/></w:rPr>
+              <m:t>x</m:t>
+            </m:r>
+          </m:oMath>
+        OMML
+      end
+
+      it "prefers the math-namespace style and renders without raising" do
+        formula = Plurimath::Omml.new(omml).to_formula
+        expect(formula.to_asciimath).to eq('rm("x")')
+        expect(formula.to_latex).to eq("\\mathrm{\\text{x}}")
+      end
+    end
+
+    context "when m:rPr/m:sty=b coexists with w:rPr/w:i" do
+      let(:omml) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                   xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+            <m:r>
+              <m:rPr><m:sty m:val="b"/></m:rPr>
+              <w:rPr><w:i/></w:rPr>
+              <m:t>x</m:t>
+            </m:r>
+          </m:oMath>
+        OMML
+      end
+
+      it "prefers the math-namespace style (bold) over the Word-namespace italic" do
+        expect(Plurimath::Omml.new(omml).to_formula.to_asciimath)
+          .to eq('mathbf("x")')
+      end
+    end
+
+    context "when an m:r carries WordprocessingML run inner content" do
+      shared_examples "round-trips without raising" do
+        it "parses and renders without raising UnsupportedNodeError" do
+          formula = Plurimath::Omml.new(omml).to_formula
+          expect { formula.to_asciimath }.not_to raise_error
+          expect { formula.to_latex }.not_to raise_error
+          expect { formula.to_mathml }.not_to raise_error
+        end
+      end
+
+      context "with <w:br/> (line break)" do
+        let(:omml) do
+          <<~OMML
+            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+              <m:r><m:t>x</m:t><w:br/></m:r>
+            </m:oMath>
+          OMML
+        end
+
+        include_examples "round-trips without raising"
+
+        it "emits a Linebreak node for the break" do
+          formula = Plurimath::Omml.new(omml).to_formula
+          expect(formula.to_asciimath).to include("\\")
+        end
+      end
+
+      context "with text on both sides of <w:br/>" do
+        let(:omml) do
+          <<~OMML
+            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+              <m:r><m:t>x</m:t><w:br/><m:t>y</m:t></m:r>
+            </m:oMath>
+          OMML
+        end
+
+        it "preserves the text after the line break" do
+          formula = Plurimath::Omml.new(omml).to_formula
+          expect(formula.to_asciimath).to eq("\"x\" \\\n  \"y\"")
+          expect(formula.to_latex).to eq("\\text{x} \\\\  \\text{y}")
+        end
+      end
+
+      context "with <w:tab/>" do
+        let(:omml) do
+          <<~OMML
+            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+              <m:r><m:t>a</m:t><w:tab/><m:t>b</m:t></m:r>
+            </m:oMath>
+          OMML
+        end
+
+        include_examples "round-trips without raising"
+      end
+
+      context "with <w:cr/> (carriage return)" do
+        let(:omml) do
+          <<~OMML
+            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+              <m:r><m:t>a</m:t><w:cr/><m:t>b</m:t></m:r>
+            </m:oMath>
+          OMML
+        end
+
+        include_examples "round-trips without raising"
+      end
+
+      context "with <w:noBreakHyphen/>" do
+        let(:omml) do
+          <<~OMML
+            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+              <m:r><m:t>a</m:t><w:noBreakHyphen/><m:t>b</m:t></m:r>
+            </m:oMath>
+          OMML
+        end
+
+        include_examples "round-trips without raising"
+      end
+    end
   end
 end
