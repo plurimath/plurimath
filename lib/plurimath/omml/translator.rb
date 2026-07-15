@@ -58,6 +58,8 @@ module Plurimath
              "CTCtrlPr", "CTBoxPr" then nil
         when "CTRPr" then word_run_properties_to_plurimath(node)
         when "CTRPR" then math_run_properties_to_plurimath(node)
+        when "CTBr" then Math::Function::Linebreak.new
+        when "CTWordprocessingEmpty", "CTWordprocessingText" then nil
         else
           unsupported_node!(node)
         end
