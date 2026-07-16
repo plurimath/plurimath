@@ -205,7 +205,7 @@ module Plurimath
         (object.is_a?(Math::Symbols::Comma) if value == ",") ||
           (object.is_a?(Math::Symbols::Minus) if value == "-") ||
           (object.is_a?(Math::Symbols::Paren::Vert) if value == "|") ||
-          (object.is_a?(Math::Symbols::Symbol) && object&.value == value) ||
+          (object.is_a?(Math::Symbols::Symbol) && object.value == value) ||
           (value == "\\\\" && object.is_a?(Math::Function::Linebreak))
       end
 
