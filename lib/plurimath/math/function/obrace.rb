@@ -22,12 +22,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          mo_tag = Utility.ox_element("mo") << "&#x23de;"
+          mo_tag = XmlHelper.ox_element("mo") << "&#x23de;"
           return mo_tag unless parameter_one
 
-          over_tag = Utility.ox_element("mover")
+          over_tag = XmlHelper.ox_element("mover")
           over_tag.set_attr(attributes) if attributes && !attributes.empty?
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             over_tag,
             [
               parameter_one.to_mathml_without_math_tag(intent,
@@ -65,11 +65,11 @@ module Plurimath
         protected
 
         def acc_tag(display_style, options:)
-          acc_tag    = Utility.ox_element("acc", namespace: "m")
-          acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << Utility.ox_element("chr", namespace: "m",
-                                                  attributes: { "m:val": "⏞" })
-          Utility.update_nodes(
+          acc_tag    = XmlHelper.ox_element("acc", namespace: "m")
+          acc_pr_tag = XmlHelper.ox_element("accPr", namespace: "m")
+          acc_pr_tag << XmlHelper.ox_element("chr", namespace: "m",
+                                                    attributes: { "m:val": "⏞" })
+          XmlHelper.update_nodes(
             acc_tag,
             [
               acc_pr_tag,

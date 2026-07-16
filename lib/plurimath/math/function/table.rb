@@ -52,7 +52,7 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           table_tag = ox_element("mtable", attributes: table_attribute)
           table_tag["intent"] = ":matrix(#{value.length},#{td_count})" if intent
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             table_tag,
             value&.map do |object|
               object&.to_mathml_without_math_tag(intent, options: options)
@@ -69,7 +69,7 @@ module Plurimath
                                                          options: options))
             attributes = { intent: ":fenced" } if intent
             mrow = ox_element("mrow", attributes: attributes)
-            return Utility.update_nodes(mrow,
+            return XmlHelper.update_nodes(mrow,
                                         [first_paren, table_tag, second_paren])
           end
 
@@ -284,37 +284,37 @@ options:)
         end
 
         def single_td_table(display_style, options:)
-          eqarr    = Utility.ox_element("eqArr", namespace: "m")
-          eqarrpr  = Utility.ox_element("eqArrPr", namespace: "m")
-          eqarrpr  << Utility.pr_element("ctrl", true, namespace: "m")
+          eqarr    = XmlHelper.ox_element("eqArr", namespace: "m")
+          eqarrpr  = XmlHelper.ox_element("eqArrPr", namespace: "m")
+          eqarrpr  << XmlHelper.pr_element("ctrl", true, namespace: "m")
           eqarr    << eqarrpr
           tr_value = value.map do |object|
             object.to_omml_without_math_tag(display_style, options: options)
           end.flatten
-          Utility.update_nodes(eqarr, tr_value.compact)
+          XmlHelper.update_nodes(eqarr, tr_value.compact)
           [eqarr]
         end
 
         def multiple_td_table(display_style, options:)
           count  = { "m:val": value&.first&.parameter_one&.count }
           mcjc   = { "m:val": "center" }
-          mm     = Utility.ox_element("m", namespace: "m")
-          mpr    = Utility.ox_element("mPr", namespace: "m")
-          mcs    = Utility.ox_element("mcs", namespace: "m")
-          mc     = Utility.ox_element("mc", namespace: "m")
-          mcpr   = Utility.ox_element("mcPr", namespace: "m")
-          mcount = Utility.ox_element(
+          mm     = XmlHelper.ox_element("m", namespace: "m")
+          mpr    = XmlHelper.ox_element("mPr", namespace: "m")
+          mcs    = XmlHelper.ox_element("mcs", namespace: "m")
+          mc     = XmlHelper.ox_element("mc", namespace: "m")
+          mcpr   = XmlHelper.ox_element("mcPr", namespace: "m")
+          mcount = XmlHelper.ox_element(
             "count",
             namespace: "m",
             attributes: count,
           )
-          mcjc = Utility.ox_element(
+          mcjc = XmlHelper.ox_element(
             "mcJc",
             namespace: "m",
             attributes: mcjc,
           )
-          ctrlpr = Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(mcpr, [mcount, mcjc])
+          ctrlpr = XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(mcpr, [mcount, mcjc])
           mc  << mcpr
           mcs << mc
           mpr << mcs
@@ -322,7 +322,7 @@ options:)
           mm_value = value&.map do |object|
             object.to_omml_without_math_tag(display_style, options: options)
           end
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             mm,
             mm_value.insert(0, mpr).flatten,
           )
@@ -330,7 +330,7 @@ options:)
         end
 
         def norm_table(table_tag)
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("mrow"),
             [
               mo_element("&#x2016;"),
@@ -343,32 +343,32 @@ options:)
         def fenced_table(ox_table)
           return ox_table unless open_paren || close_paren
 
-          d_node = Utility.ox_element("d", namespace: "m")
-          e_node = Utility.ox_element("e", namespace: "m")
-          Utility.update_nodes(e_node, ox_table)
-          Utility.update_nodes(d_node, [mdpr_node, e_node])
+          d_node = XmlHelper.ox_element("d", namespace: "m")
+          e_node = XmlHelper.ox_element("e", namespace: "m")
+          XmlHelper.update_nodes(e_node, ox_table)
+          XmlHelper.update_nodes(d_node, [mdpr_node, e_node])
           [d_node]
         end
 
         def mdpr_node
-          sepchr = Utility.ox_element("sepChr", attributes: { "m:val": "" },
-                                                namespace: "m")
-          mgrow = Utility.ox_element("grow", namespace: "m")
-          mdpr = Utility.ox_element("dPr", namespace: "m")
-          Utility.update_nodes(mdpr, [begchr, endchr, sepchr, mgrow])
+          sepchr = XmlHelper.ox_element("sepChr", attributes: { "m:val": "" },
+                                                  namespace: "m")
+          mgrow = XmlHelper.ox_element("grow", namespace: "m")
+          mdpr = XmlHelper.ox_element("dPr", namespace: "m")
+          XmlHelper.update_nodes(mdpr, [begchr, endchr, sepchr, mgrow])
         end
 
         def begchr
           return unless open_paren
 
-          Utility.ox_element("begChr",
+          XmlHelper.ox_element("begChr",
                              attributes: { "m:val": paren(open_paren) }, namespace: "m")
         end
 
         def endchr
           return unless close_paren
 
-          Utility.ox_element("endChr",
+          XmlHelper.ox_element("endChr",
                              attributes: { "m:val": paren(close_paren) }, namespace: "m")
         end
 
@@ -400,7 +400,7 @@ options:)
         end
 
         def mo_element(value)
-          Utility.ox_element("mo") << value
+          XmlHelper.ox_element("mo") << value
         end
 
         def unicodemath_table_class?

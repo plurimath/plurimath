@@ -37,7 +37,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(_, **)
-          text = Utility.ox_element("t", namespace: "m")
+          text = XmlHelper.ox_element("t", namespace: "m")
           text << (parse_text("omml") || parameter_one)
           [text]
         end
@@ -49,13 +49,13 @@ module Plurimath
         end
 
         def insert_t_tag(display_style, options:)
-          r_tag = Utility.ox_element("r", namespace: "m")
+          r_tag = XmlHelper.ox_element("r", namespace: "m")
           if @lang&.to_s != "omml"
-            rpr_tag = Utility.ox_element("rPr", namespace: "m")
+            rpr_tag = XmlHelper.ox_element("rPr", namespace: "m")
             rpr_tag << msty_tag_with_attrs
             r_tag << rpr_tag
           end
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             r_tag,
             [omml_nodes(display_style, options: options)],
           )

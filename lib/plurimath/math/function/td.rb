@@ -19,7 +19,7 @@ module Plurimath
           return "" if Utility.symbol_value(parameter_one.first, "|")
 
           td_attribute = parameter_two if parameter_two&.any?
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("mtd", attributes: td_attribute),
             parameter_one.map do |object|
               object&.to_mathml_without_math_tag(intent, options: options)
@@ -41,10 +41,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          me = Utility.ox_element("e", namespace: "m")
+          me = XmlHelper.ox_element("e", namespace: "m")
           return [me] if parameter_one && parameter_one.empty?
 
-          Utility.update_nodes(me,
+          XmlHelper.update_nodes(me,
                                omml_content(display_style, options: options))
           [me]
         end

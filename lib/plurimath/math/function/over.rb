@@ -22,7 +22,7 @@ module Plurimath
             parameter_one&.to_mathml_without_math_tag(intent, options: options),
             parameter_two&.to_mathml_without_math_tag(intent, options: options),
           ]
-          Utility.update_nodes(ox_element(tag_name), mathml_value)
+          XmlHelper.update_nodes(ox_element(tag_name), mathml_value)
         end
 
         def to_latex(options:)
@@ -32,12 +32,12 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          f_element   = Utility.ox_element("f", namespace: "m")
-          fpr_element = Utility.ox_element("fPr", namespace: "m")
-          Utility.update_nodes(
+          f_element   = XmlHelper.ox_element("f", namespace: "m")
+          fpr_element = XmlHelper.ox_element("fPr", namespace: "m")
+          XmlHelper.update_nodes(
             f_element,
             [
-              fpr_element << Utility.pr_element("ctrl", true, namespace: "m"),
+              fpr_element << XmlHelper.pr_element("ctrl", true, namespace: "m"),
               omml_parameter(parameter_one, display_style, tag_name: "num",
                                                            options: options),
               omml_parameter(parameter_two, display_style, tag_name: "den",

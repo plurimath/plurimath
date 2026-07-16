@@ -19,11 +19,11 @@ module Plurimath
             mover[:accent] =
               attributes[:accent]
           end
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             mover,
             [
               first_value,
-              Utility.ox_element("mo") << "&#x2192;",
+              XmlHelper.ox_element("mo") << "&#x2192;",
             ],
           )
         end
@@ -106,11 +106,11 @@ options:)
         protected
 
         def acc_tag(display_style, options:)
-          acc_tag    = Utility.ox_element("acc", namespace: "m")
-          acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << Utility.ox_element("chr", namespace: "m",
-                                                  attributes: { "m:val": "→" })
-          Utility.update_nodes(
+          acc_tag    = XmlHelper.ox_element("acc", namespace: "m")
+          acc_pr_tag = XmlHelper.ox_element("accPr", namespace: "m")
+          acc_pr_tag << XmlHelper.ox_element("chr", namespace: "m",
+                                                    attributes: { "m:val": "→" })
+          XmlHelper.update_nodes(
             acc_tag,
             [
               acc_pr_tag,

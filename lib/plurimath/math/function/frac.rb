@@ -42,7 +42,7 @@ module Plurimath
               opt == :choose
             end)
           end
-          Utility.update_nodes(frac_tag, mathml_value)
+          XmlHelper.update_nodes(frac_tag, mathml_value)
           if intent
             update_derivative(frac_tag, mathml_value[0],
                               mathml_value[1])
@@ -57,8 +57,8 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          f_element = Utility.ox_element("f", namespace: "m")
-          Utility.update_nodes(
+          f_element = XmlHelper.ox_element("f", namespace: "m")
+          XmlHelper.update_nodes(
             f_element,
             [
               fpr_element,
@@ -137,13 +137,13 @@ module Plurimath
         protected
 
         def fpr_element
-          fpr_element = Utility.ox_element("fPr", namespace: "m")
+          fpr_element = XmlHelper.ox_element("fPr", namespace: "m")
           if options
             attributes = { "m:val": attr_value }
-            fpr_element << Utility.ox_element("type", namespace: "m",
-                                                      attributes: attributes)
+            fpr_element << XmlHelper.ox_element("type", namespace: "m",
+                                                        attributes: attributes)
           end
-          fpr_element << Utility.pr_element("ctrl", true, namespace: "m")
+          fpr_element << XmlHelper.pr_element("ctrl", true, namespace: "m")
         end
 
         def attr_value

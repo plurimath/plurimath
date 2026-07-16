@@ -59,7 +59,7 @@ module Plurimath
                        parameter_one ? "sub" : "sup"
                      end
           oint_tag = ox_element("m#{tag_name}")
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             oint_tag,
             [
               mo_tag,
@@ -72,7 +72,7 @@ module Plurimath
           return ternary_intentify(oint_tag, intent) unless parameter_three
 
           ternary_intentify(
-            Utility.update_nodes(
+            XmlHelper.update_nodes(
               ox_element("mrow"),
               [
                 oint_tag,
@@ -88,8 +88,8 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           if any_value_exist?
-            nary = Utility.ox_element("nary", namespace: "m")
-            Utility.update_nodes(
+            nary = XmlHelper.ox_element("nary", namespace: "m")
+            XmlHelper.update_nodes(
               nary,
               [
                 narypr((hide_function_name ? "" : "∮"),
@@ -104,8 +104,8 @@ module Plurimath
             )
             [nary]
           else
-            r_tag = Utility.ox_element("r", namespace: "m")
-            t_tag = Utility.ox_element("t", namespace: "m")
+            r_tag = XmlHelper.ox_element("r", namespace: "m")
+            t_tag = XmlHelper.ox_element("t", namespace: "m")
             r_tag << (t_tag << "&#x222e;")
             [r_tag]
           end

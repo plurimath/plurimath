@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("mover"),
             [
               mathml_values(parameter_two, intent, options: options),
@@ -33,10 +33,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          limupp   = Utility.ox_element("limUpp", namespace: "m")
-          limupppr = Utility.ox_element("limUppPr", namespace: "m")
-          limupppr << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
+          limupp   = XmlHelper.ox_element("limUpp", namespace: "m")
+          limupppr = XmlHelper.ox_element("limUppPr", namespace: "m")
+          limupppr << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(
             limupp,
             [
               limupppr,

@@ -23,11 +23,11 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_intent, **)
-          Utility.ox_element("mi")
+          XmlHelper.ox_element("mi")
         end
 
         def to_omml_without_math_tag(_, **)
-          [Utility.ox_element("m:r") << Utility.ox_element("m:t")]
+          [XmlHelper.ox_element("m:r") << XmlHelper.ox_element("m:t")]
         end
 
         def to_html

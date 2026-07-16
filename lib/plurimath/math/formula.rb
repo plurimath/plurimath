@@ -100,8 +100,8 @@ module Plurimath
           style_attrs = { displaystyle: boolean_display_style(display_style) }
           math  = ox_element("math", attributes: math_attrs)
           style = ox_element("mstyle", attributes: style_attrs)
-          Utility.update_nodes(style, mathml_content(intent, options: options))
-          Utility.update_nodes(math, [style])
+          XmlHelper.update_nodes(style, mathml_content(intent, options: options))
+          XmlHelper.update_nodes(math, [style])
           unitsml_post_processing(math, style)
           dump_nodes(math, indent: 2)
         end
@@ -127,7 +127,7 @@ module Plurimath
         mathml_value = mathml_content(intent, options: options)
         attributes = intent_attribute(mathml_value) if intent
         mrow = ox_element("mrow", attributes: attributes)
-        Utility.update_nodes(mrow, mathml_value)
+        XmlHelper.update_nodes(mrow, mathml_value)
       end
 
       def mathml_content(intent, options:)
@@ -160,11 +160,11 @@ formatter: nil, unitsml: {})
           objects = split_on_linebreak ? new_line_support : [self]
           options = { formatter: formatter, unitsml: unitsml }.compact
           options[:formula] ||= self
-          para_element = Utility.ox_element("oMathPara",
+          para_element = XmlHelper.ox_element("oMathPara",
                                             attributes: OMML_NAMESPACES, namespace: "m")
           objects.each.with_index(1) do |object, index|
-            para_element << Utility.update_nodes(
-              Utility.ox_element("oMath", namespace: "m"),
+            para_element << XmlHelper.update_nodes(
+              XmlHelper.ox_element("oMath", namespace: "m"),
               object.omml_content(boolean_display_style(display_style),
                                   options: options),
             )
@@ -505,7 +505,7 @@ options:)
       end
 
       def intent_post_processing(nodes, _intent)
-        mrow = Utility.update_nodes(ox_element("mrow"), nodes)
+        mrow = XmlHelper.update_nodes(ox_element("mrow"), nodes)
         upcase_dd_derivative(nodes) if validate_upcase_dd_derivatives?(nodes)
         subsup_dd_derivative(nodes) if validate_subsup_dd_derivatives?(nodes)
         partial_derivative(nodes) if valid_partial_derivative?(nodes)
@@ -624,7 +624,7 @@ options:)
                  node["arg"] = "f"
                  node
                else
-                 Utility.update_nodes(
+                 XmlHelper.update_nodes(
                    ox_element("mrow", attributes: { arg: "f" }),
                    nodes,
                  )
@@ -671,7 +671,7 @@ options:)
         end
         intent_name = "#{intent_names[:derivative]}(1,#{second_arg},#{third_arg})"
         mrow = ox_element("mrow", attributes: { intent: intent_name })
-        nodes.insert(0, Utility.update_nodes(mrow, mrow_nodes))
+        nodes.insert(0, XmlHelper.update_nodes(mrow, mrow_nodes))
       end
 
       def subsup_dd_derivative(nodes)
@@ -766,7 +766,7 @@ options:)
           next if node.name == "mi"
           break if node.name == "mrow"
         end
-        Utility.update_nodes(mrow, row_nodes)
+        XmlHelper.update_nodes(mrow, row_nodes)
       end
 
       def numeric_encoding(node)

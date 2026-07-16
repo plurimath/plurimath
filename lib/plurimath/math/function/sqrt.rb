@@ -7,7 +7,7 @@ module Plurimath
         attr_accessor :options
 
         def to_mathml_without_math_tag(intent, options:)
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("msqrt"),
             Array(parameter_one&.to_mathml_without_math_tag(intent,
                                                             options: options)),
@@ -15,18 +15,18 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          rad_element = Utility.ox_element("rad", namespace: "m")
-          pr_element = Utility.ox_element("radPr", namespace: "m")
-          pr_element << Utility.ox_element(
+          rad_element = XmlHelper.ox_element("rad", namespace: "m")
+          pr_element = XmlHelper.ox_element("radPr", namespace: "m")
+          pr_element << XmlHelper.ox_element(
             "degHide",
             namespace: "m",
             attributes: { "m:val": "on" },
           )
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             rad_element,
             [
-              (pr_element << Utility.pr_element("ctrl", true, namespace: "m")),
-              Utility.ox_element("deg", namespace: "m"),
+              (pr_element << XmlHelper.pr_element("ctrl", true, namespace: "m")),
+              XmlHelper.ox_element("deg", namespace: "m"),
               omml_parameter(parameter_one, display_style, tag_name: "e",
                                                            options: options),
             ],

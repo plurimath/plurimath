@@ -39,14 +39,14 @@ module Plurimath
           unary_element = if parameter_one
                             new_arr += mathml_value(intent, options: options)
                             mrow = ox_element("mrow")
-                            Utility.update_nodes(mrow, new_arr)
+                            XmlHelper.update_nodes(mrow, new_arr)
                             intentify(mrow, intent, func_name: :function,
                                                     intent_name: intent_names[:name])
                           else
                             new_arr.first
                           end
           if insert_space_tags && options[:unary_function_spacing]
-            Utility.update_nodes(
+            XmlHelper.update_nodes(
               ox_element("mrow"),
               [
                 ox_element("mo", attributes: { rspace: "thickmathspace" }),
@@ -79,8 +79,8 @@ module Plurimath
           if @hide_function_name
             value = omml_value(display_style, options: options)
           else
-            func = Utility.ox_element("func", namespace: "m")
-            value = Utility.update_nodes(func,
+            func = XmlHelper.ox_element("func", namespace: "m")
+            value = XmlHelper.update_nodes(func,
                                          function_values(display_style,
                                                          options: options))
           end
@@ -252,19 +252,19 @@ options:)
         end
 
         def function_values(display_style, options:)
-          funcpr = Utility.ox_element("funcPr", namespace: "m")
-          funcpr << Utility.pr_element("ctrl", true, namespace: "m")
-          fname  = Utility.ox_element("fName", namespace: "m")
-          fname << Utility.update_nodes(
-            Utility.ox_element("r", namespace: "m"),
+          funcpr = XmlHelper.ox_element("funcPr", namespace: "m")
+          funcpr << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          fname  = XmlHelper.ox_element("fName", namespace: "m")
+          fname << XmlHelper.update_nodes(
+            XmlHelper.ox_element("r", namespace: "m"),
             [
-              Utility.rpr_element,
-              (Utility.ox_element("t", namespace: "m") << class_name),
+              XmlHelper.rpr_element,
+              (XmlHelper.ox_element("t", namespace: "m") << class_name),
             ],
           )
-          me = Utility.ox_element("e", namespace: "m")
+          me = XmlHelper.ox_element("e", namespace: "m")
           if parameter_one
-            Utility.update_nodes(me,
+            XmlHelper.update_nodes(me,
                                  omml_value(display_style,
                                             options: options))
           end

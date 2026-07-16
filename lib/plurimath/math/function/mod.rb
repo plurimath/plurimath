@@ -44,7 +44,7 @@ module Plurimath
             value_array << parameter_two&.to_mathml_without_math_tag(intent,
                                                                      options: options)
           end
-          Utility.update_nodes(ox_element("mrow"), value_array)
+          XmlHelper.update_nodes(ox_element("mrow"), value_array)
         end
 
         def to_latex(options:)

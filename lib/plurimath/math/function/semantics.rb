@@ -13,8 +13,8 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           first_value = parameter_one&.to_mathml_without_math_tag(intent,
                                                                   options: options)
-          Utility.update_nodes(
-            Utility.ox_element("semantics"),
+          XmlHelper.update_nodes(
+            XmlHelper.ox_element("semantics"),
             other_tags(parameter_two, intent, options: options).insert(0,
                                                                        first_value),
           )
@@ -48,8 +48,8 @@ module Plurimath
           contented = []
           array&.each do |hash|
             hash.each do |tag, content|
-              tag_element = Utility.ox_element(tag&.to_s)
-              contented << Utility.update_nodes(
+              tag_element = XmlHelper.ox_element(tag&.to_s)
+              contented << XmlHelper.update_nodes(
                 tag_element,
                 content&.map { |object|
                   object&.to_mathml_without_math_tag(intent, options: options)

@@ -19,8 +19,8 @@ module Plurimath
           end
 
           def to_mathml_without_math_tag(intent, options:)
-            Utility.update_nodes(
-              Utility.ox_element(
+            XmlHelper.update_nodes(
+              XmlHelper.ox_element(
                 "mstyle",
                 attributes: { mathvariant: "normal" },
               ),

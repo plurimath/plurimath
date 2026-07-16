@@ -41,7 +41,7 @@ module Plurimath
                                                                                                  intent, options: options) || "")
           mrow_value = Array(mathml_value(intent, options: options))&.insert(0,
                                                                              first_value)&.<< third_value
-          fenced = Utility.update_nodes(ox_element("mrow"), mrow_value)
+          fenced = XmlHelper.update_nodes(ox_element("mrow"), mrow_value)
           intentify(
             fenced,
             intent,
@@ -81,12 +81,12 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           attrs = { "m:val": (options ? options[:separators] : "") }
-          d = Utility.ox_element("d", namespace: "m")
-          dpr = Utility.ox_element("dPr", namespace: "m")
+          d = XmlHelper.ox_element("d", namespace: "m")
+          dpr = XmlHelper.ox_element("dPr", namespace: "m")
           open_paren(dpr, options: options)
-          dpr << Utility.ox_element("sepChr", namespace: "m", attributes: attrs)
+          dpr << XmlHelper.ox_element("sepChr", namespace: "m", attributes: attrs)
           close_paren(dpr, options: options)
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             d,
             [
               dpr,
@@ -223,7 +223,7 @@ options:)
           return dpr if first_value.nil?
 
           attributes = { "m:val": Utility.html_entity_to_unicode(first_value) }
-          dpr << Utility.ox_element(
+          dpr << XmlHelper.ox_element(
             "begChr",
             namespace: "m",
             attributes: attributes,
@@ -236,7 +236,7 @@ options:)
           return dpr if third_value.nil?
 
           attributes = { "m:val": Utility.html_entity_to_unicode(third_value) }
-          dpr << Utility.ox_element(
+          dpr << XmlHelper.ox_element(
             "endChr",
             namespace: "m",
             attributes: attributes,
@@ -409,7 +409,7 @@ options:)
             object&.to_mathml_without_math_tag(intent, options: options)
           end
           if intent
-            mrow = Utility.update_nodes(ox_element("mrow"), nodes)
+            mrow = XmlHelper.update_nodes(ox_element("mrow"), nodes)
             update_partial_derivative(nodes) unless mrow.locate("*/mfrac/@intent").empty?
           end
           nodes

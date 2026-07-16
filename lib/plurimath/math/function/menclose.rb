@@ -47,7 +47,7 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           borderbox = ox_element("borderBox", namespace: "m")
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             borderbox,
             [
               borderboxpr,

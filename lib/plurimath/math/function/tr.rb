@@ -22,8 +22,8 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent, options:)
           first_value = remove_hline(cloned_objects.parameter_one)
-          Utility.update_nodes(
-            Utility.ox_element("mtr"),
+          XmlHelper.update_nodes(
+            XmlHelper.ox_element("mtr"),
             first_value.filter_map do |obj|
               obj&.to_mathml_without_math_tag(intent, options: options)
             end,
@@ -53,8 +53,8 @@ module Plurimath
           if parameter_one.count.eql?(1)
             omml_content
           else
-            mr = Utility.ox_element("mr", namespace: "m")
-            Utility.update_nodes(
+            mr = XmlHelper.ox_element("mr", namespace: "m")
+            XmlHelper.update_nodes(
               mr,
               omml_content,
             )

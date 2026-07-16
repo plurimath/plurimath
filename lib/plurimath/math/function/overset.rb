@@ -26,7 +26,7 @@ module Plurimath
             validate_mathml_fields(parameter_two, intent, options: options),
             validate_mathml_fields(parameter_one, intent, options: options),
           ]
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("mover", attributes: self.options),
             value_array,
           )
@@ -39,10 +39,10 @@ module Plurimath
                                                   options: options)
           end
 
-          limupp   = Utility.ox_element("limUpp", namespace: "m")
-          limupppr = Utility.ox_element("limUppPr", namespace: "m")
-          limupppr << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
+          limupp   = XmlHelper.ox_element("limUpp", namespace: "m")
+          limupppr = XmlHelper.ox_element("limUppPr", namespace: "m")
+          limupppr << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(
             limupp,
             [
               limupppr,

@@ -12,18 +12,18 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          dot_tag = Utility.ox_element("mo") << "."
+          dot_tag = XmlHelper.ox_element("mo") << "."
           return dot_tag unless parameter_one
 
           first_value = parameter_one&.to_mathml_without_math_tag(intent,
                                                                   options: options)
-          dot_tag = (Utility.ox_element("mo") << ".")
-          over_tag = Utility.ox_element("mover")
+          dot_tag = (XmlHelper.ox_element("mo") << ".")
+          over_tag = XmlHelper.ox_element("mover")
           if attributes && attributes[:accent]
             over_tag[:accent] =
               attributes[:accent]
           end
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             over_tag,
             [
               first_value,
@@ -60,14 +60,14 @@ module Plurimath
         protected
 
         def acc_tag(display_style, options:)
-          acc_tag    = Utility.ox_element("acc", namespace: "m")
-          acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << Utility.ox_element(
+          acc_tag    = XmlHelper.ox_element("acc", namespace: "m")
+          acc_pr_tag = XmlHelper.ox_element("accPr", namespace: "m")
+          acc_pr_tag << XmlHelper.ox_element(
             "chr",
             namespace: "m",
             attributes: { "m:val": "." },
           )
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             acc_tag,
             [
               acc_pr_tag,

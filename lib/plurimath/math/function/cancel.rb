@@ -5,13 +5,13 @@ module Plurimath
     module Function
       class Cancel < UnaryFunction
         def to_mathml_without_math_tag(intent, options:)
-          cancel_tag = Utility.ox_element(
+          cancel_tag = XmlHelper.ox_element(
             "menclose",
             attributes: { notation: "updiagonalstrike" },
           )
           first_value = parameter_one&.to_mathml_without_math_tag(intent,
                                                                   options: options)
-          Utility.update_nodes(cancel_tag, [first_value])
+          XmlHelper.update_nodes(cancel_tag, [first_value])
         end
 
         def to_omml_without_math_tag(display_style, options:)

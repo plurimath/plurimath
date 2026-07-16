@@ -9,7 +9,7 @@ module Plurimath
         def to_latex(**); end
 
         def to_mathml_without_math_tag(_, **)
-          Utility.ox_element("none")
+          XmlHelper.ox_element("none")
         end
 
         def to_omml_without_math_tag(_, **)

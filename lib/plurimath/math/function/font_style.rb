@@ -33,8 +33,8 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           first_value = parameter_one&.to_mathml_without_math_tag(intent,
                                                                   options: options)
-          Utility.update_nodes(
-            Utility.ox_element(
+          XmlHelper.update_nodes(
+            XmlHelper.ox_element(
               "mstyle",
               attributes: { mathvariant: font_family(mathml: true) },
             ),
@@ -80,7 +80,7 @@ module Plurimath
 
           if children.all? { |node| node.is_a?(String) || t_tag_node?(node) }
             r_tag = empty_font_style_r_tag(sty, scr)
-            Utility.update_nodes(r_tag, children)
+            XmlHelper.update_nodes(r_tag, children)
             return [r_tag]
           end
 
@@ -118,15 +118,15 @@ module Plurimath
         end
 
         def empty_font_style_r_tag(sty, scr)
-          r_tag = Utility.ox_element("r", namespace: "m")
-          rpr_tag = Utility.ox_element("rPr", namespace: "m")
+          r_tag = XmlHelper.ox_element("r", namespace: "m")
+          rpr_tag = XmlHelper.ox_element("rPr", namespace: "m")
           if scr
-            rpr_tag << Utility.ox_element("scr", namespace: "m",
-                                                 attributes: { "m:val": scr })
+            rpr_tag << XmlHelper.ox_element("scr", namespace: "m",
+                                                   attributes: { "m:val": scr })
           end
           if sty
-            rpr_tag << Utility.ox_element("sty", namespace: "m",
-                                                 attributes: { "m:val": sty })
+            rpr_tag << XmlHelper.ox_element("sty", namespace: "m",
+                                                   attributes: { "m:val": sty })
           end
           r_tag << rpr_tag
           r_tag
@@ -137,14 +137,14 @@ module Plurimath
             n.respond_to?(:name) && n.name == "m:rPr"
           end
 
-          rpr_tag = Utility.ox_element("rPr", namespace: "m")
+          rpr_tag = XmlHelper.ox_element("rPr", namespace: "m")
           if scr
-            rpr_tag << Utility.ox_element("scr", namespace: "m",
-                                                 attributes: { "m:val": scr })
+            rpr_tag << XmlHelper.ox_element("scr", namespace: "m",
+                                                   attributes: { "m:val": scr })
           end
           if sty
-            rpr_tag << Utility.ox_element("sty", namespace: "m",
-                                                 attributes: { "m:val": sty })
+            rpr_tag << XmlHelper.ox_element("sty", namespace: "m",
+                                                   attributes: { "m:val": sty })
           end
           r_node.insert_in_nodes(0, rpr_tag)
         end

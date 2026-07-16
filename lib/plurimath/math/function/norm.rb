@@ -20,7 +20,7 @@ module Plurimath
           norm = ox_element("mo") << "&#x2225;"
           first_value.insert(0, norm) unless open_paren
           first_value = first_value << norm unless close_paren
-          Utility.update_nodes(ox_element("mrow"), first_value)
+          XmlHelper.update_nodes(ox_element("mrow"), first_value)
         end
 
         def to_unicodemath(options:)

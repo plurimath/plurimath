@@ -83,7 +83,7 @@ module Plurimath
           # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
           return if value == "&#x2062;"
 
-          [Utility.ox_element("r", namespace: "m") << t_tag(options: options)]
+          [XmlHelper.ox_element("r", namespace: "m") << t_tag(options: options)]
         end
 
         def tag_name
@@ -234,7 +234,7 @@ options:)
         end
 
         def t_element
-          Utility.ox_element("t", namespace: "m")
+          XmlHelper.ox_element("t", namespace: "m")
         end
 
         def explicit_checks(unicode)
