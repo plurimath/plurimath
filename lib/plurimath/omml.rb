@@ -22,6 +22,7 @@ module Plurimath
     autoload :FormulaTransformation, "#{__dir__}/omml/formula_transformation"
     autoload :Parser, "#{__dir__}/omml/parser"
     autoload :Translator, "#{__dir__}/omml/translator"
+    autoload :Utility, "#{__dir__}/omml/utility"
     autoload :UnsupportedNodeError,
              "#{__dir__}/errors/omml/unsupported_node_error"
 

@@ -6,6 +6,7 @@ module Plurimath
     autoload :Parse, "#{__dir__}/asciimath/parse"
     autoload :Parser, "#{__dir__}/asciimath/parser"
     autoload :Transform, "#{__dir__}/asciimath/transform"
+    autoload :Utility, "#{__dir__}/asciimath/utility"
 
     attr_accessor :text
 
