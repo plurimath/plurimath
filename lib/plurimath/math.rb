@@ -5,6 +5,7 @@ module Plurimath
     autoload :Core, "#{__dir__}/math/core"
     autoload :Evaluation, "#{__dir__}/math/evaluation"
     autoload :Formula, "#{__dir__}/math/formula"
+    autoload :ModelHelper, "#{__dir__}/math/model_helper"
     autoload :Function, "#{__dir__}/math/function"
     autoload :InvalidTypeError, "#{__dir__}/errors/invalid_type_error"
     autoload :Number, "#{__dir__}/math/number"

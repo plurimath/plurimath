@@ -63,7 +63,7 @@ module Plurimath
             "#{unicode_symbol}#{unicodemath_parens(parameter_two,
                                                    options: options)}"
           elsif masked_class?
-            first_value = Utility.notations_to_mask(parameter_one) if parameter_one
+            first_value = ModelHelper.notations_to_mask(parameter_one) if parameter_one
             second_value = parameter_two&.to_unicodemath(options: options) if parameter_two
             "▭(#{first_value}&#{second_value})"
           end

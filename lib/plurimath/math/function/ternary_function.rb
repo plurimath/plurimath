@@ -13,7 +13,7 @@ module Plurimath
           @parameter_one = parameter_one
           @parameter_two = parameter_two
           @parameter_three = parameter_three
-          Utility.validate_left_right(variables.map { |var| get(var) })
+          ModelHelper.validate_left_right(variables.map { |var| get(var) })
         end
 
         def ==(object)
