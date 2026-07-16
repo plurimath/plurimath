@@ -97,10 +97,9 @@ RSpec.describe Plurimath::Math::ModelHelper do
       expect(described_class.filter_math_zone_values([], lang: :asciimath)).to eq([])
     end
 
-    # quirk: nil is not guarded (nil&.empty? is falsy), so it crashes
-    it "raises NoMethodError for nil" do
-      expect { described_class.filter_math_zone_values(nil, lang: :asciimath) }
-        .to raise_error(NoMethodError)
+    it "returns [] for nil" do
+      expect(described_class.filter_math_zone_values(nil, lang: :asciimath))
+        .to eq([])
     end
 
     it "merges consecutive text-like values into one space-joined Text" do
@@ -194,16 +193,12 @@ RSpec.describe Plurimath::Math::ModelHelper do
       expect(described_class.notations_to_mask("updiagonalstrike downdiagonalstrike")).to eq(207)
     end
 
-    # quirk: a single unknown notation yields nil, and NilClass#^ turns
-    # `nil ^ 15` into literal true instead of raising
-    it "returns true for a single unknown notation" do
-      expect(described_class.notations_to_mask("unknown")).to be(true)
+    it "returns the empty-mask default (15) for a single unrecognized notation" do
+      expect(described_class.notations_to_mask("unknown")).to eq(15)
     end
 
-    # quirk: an unknown notation mixed with known ones crashes on nil + Integer
-    it "raises NoMethodError when an unknown notation is mixed with known ones" do
-      expect { described_class.notations_to_mask("unknown top") }
-        .to raise_error(NoMethodError)
+    it "drops unrecognized notations mixed with known ones" do
+      expect(described_class.notations_to_mask("unknown top")).to eq(14)
     end
   end
 end

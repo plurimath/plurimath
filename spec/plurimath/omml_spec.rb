@@ -37,6 +37,24 @@ RSpec.describe Plurimath::Omml do
       end
     end
 
+    context "sSubSup with a multi-run (compound) base" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:sSubSup>
+              <m:e><m:r><m:t>a</m:t></m:r><m:r><m:t>b</m:t></m:r></m:e>
+              <m:sub><m:r><m:t>1</m:t></m:r></m:sub>
+              <m:sup><m:r><m:t>2</m:t></m:r></m:sup>
+            </m:sSubSup>
+          </m:oMath>
+        OMML
+      end
+
+      it "converts the compound base instead of crashing" do
+        expect(formula.to_latex).to eq('\text{a} \text{b}_{1}^{2}')
+      end
+    end
+
     context "contains example #01" do
       let(:string) do
         <<~OMML

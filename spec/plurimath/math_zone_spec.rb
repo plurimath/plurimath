@@ -291,6 +291,18 @@ RSpec.describe Plurimath::Math do
         expect(formula).to eql(expected_value)
       end
     end
+
+    context "AsciiMath Math zone of an empty fence (nil fenced content)" do
+      let(:exp) { "()" }
+
+      it "renders the empty fence instead of crashing" do
+        expected_value = <<~MATHZONE
+          |_ Math zone
+            |_ "()"
+        MATHZONE
+        expect(formula).to eql(expected_value)
+      end
+    end
   end
 
   describe ".to_display(:mathml)" do
