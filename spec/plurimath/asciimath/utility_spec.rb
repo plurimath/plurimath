@@ -40,7 +40,7 @@ RSpec.describe Plurimath::Asciimath::Utility do
 
     # Regression: a Symbol whose value merely CONTAINS the slicer is not the
     # separator, so it stays as cell content instead of slicing the row.
-    it "keeps a Symbol whose value only contains the slicer as content" do
+    it "keeps a Symbol whose value contains the slicer but is not the slicer as content" do
       symbol = Plurimath::Math::Symbols::Symbol.new("a,b")
       result = described_class.td_values(
         [number("1"), symbol, number("2")],

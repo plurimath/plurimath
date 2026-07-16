@@ -133,7 +133,7 @@ RSpec.describe Plurimath::Math::Function::Td do
     # Regression: a leading Symbol whose value merely CONTAINS a pipe is not the
     # "|" column separator, so the cell renders its content instead of collapsing
     # to an empty string.
-    context "contains a Symbol whose value only contains a pipe" do
+    context "contains a Symbol whose value has a pipe but is not the separator" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("x|y") }
 
       it "renders the content rather than an empty separator cell" do
