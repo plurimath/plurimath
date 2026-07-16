@@ -248,71 +248,12 @@ module Plurimath
         array.first
       end
 
-      def text_classes(text, lang:)
-        return nil unless text
-
-        text = filter_values(text) unless text.is_a?(String)
-        return text if text.is_a?(Math::Core)
-
-        if text&.scan(/[[:digit:]]/)&.length == text&.length
-          Math::Number.new(text)
-        elsif text&.match?(/[a-zA-Z]/)
-          Math::Function::Text.new(text, lang: lang)
-        else
-          text = string_to_html_entity(text)
-            .gsub("&#x26;", "&")
-            .gsub("&#x3c;", "<")
-            .gsub("&#x27;", "'")
-            .gsub("&#xa0;", " ")
-            .gsub("&#x3e;", ">")
-            .gsub("&#xa;", "\n")
-          symbols_class(text, lang: lang)
-        end
-      end
-
       def symbol_value(object, value)
         (object.is_a?(Math::Symbols::Comma) if value&.include?(",")) ||
           (object.is_a?(Math::Symbols::Minus) if value&.include?("-")) ||
           (object.is_a?(Math::Symbols::Paren::Vert) if value&.include?("|")) ||
           (object.is_a?(Math::Symbols::Symbol) && object&.value&.include?(value)) ||
           (value == "\\\\" && object.is_a?(Math::Function::Linebreak))
-      end
-
-      def mathml_unary_classes(text_array, omml: false, unicode_only: false,
-lang: nil)
-        return [] if text_array.empty?
-
-        compacted = text_array.compact
-        return filter_values(compacted) unless compacted.any?(String)
-
-        string  = compacted.join
-        classes = Mathml::Constants::CLASSES
-        unicode = string_to_html_entity(string)
-        return symbols_class(unicode, lang: lang) if unicode_only && unicode
-
-        symbol = Mathml::Constants::UNICODE_SYMBOLS[unicode.strip.to_sym]
-        if classes.include?(symbol&.strip)
-          get_class(symbol.strip).new
-        elsif classes.any?(string&.strip) && word_resolvable?(string, lang)
-          get_class(string.strip).new
-        elsif omml
-          text_classes(string,
-                       lang: lang)
-        else
-          symbols_class(unicode, lang: lang)
-        end
-      end
-
-      # In MathML and OMML most constructs have a dedicated character or
-      # structural element (<mfrac>, <m:f>, &#x2211;, <mover> + diacritic), so a
-      # bare word token resolves to its function class only when the name has no
-      # such representation (sin, min, log, ...). Parslet-based languages
-      # (AsciiMath bar(x), LaTeX \frac{}{}) parse words in their own grammars and
-      # never reach this resolver, so they keep resolving every CLASSES word.
-      def word_resolvable?(string, lang)
-        return true unless %i[mathml omml].include?(lang)
-
-        Mathml::Constants.named_function_word?(string)
       end
 
       def symbols_class(string, lang:, table: false)
@@ -399,72 +340,6 @@ lang: nil)
         fields.each do |field|
           if field.is_a?(Math::Formula) && field.value.first.is_a?(Math::Function::Left)
             field.left_right_wrapper = true
-          end
-        end
-      end
-
-      def populate_function_classes(mrow = [], lang:)
-        flatten_mrow = mrow.flatten.compact
-        unary_function_classes(flatten_mrow, lang: lang)
-        binary_function_classes(flatten_mrow, lang: lang)
-        ternary_function_classes(flatten_mrow)
-        flatten_mrow
-      end
-
-      def binary_function_classes(mrow, lang:, under: false)
-        binary_class = Math::Function::BinaryFunction
-        mrow.each_with_index do |object, ind|
-          if object.is_a?(String)
-            mrow[ind] =
-              mathml_unary_classes([object], lang: lang)
-          end
-          object = mrow[ind]
-          next unless object.is_a?(binary_class)
-
-          if object.is_a?(Math::Function::Mod)
-            next unless mrow.length >= 1
-
-            object.parameter_one = mrow.delete_at(ind - 1) unless ind.zero?
-            object.parameter_two = mrow.delete_at(ind)
-          elsif Mathml::Constants::UNICODE_SYMBOLS.invert[object.class_name] && mrow.length > 1
-            next if object.parameter_one || mrow.length > 2
-            next object.parameter_one = mrow.delete_at(ind - 1) if under && ind <= 1
-
-            object.parameter_one = mrow.delete_at(ind + 1)
-          end
-        end
-      end
-
-      def unary_function_classes(mrow, lang:)
-        unary_class = Math::Function::UnaryFunction
-        if mrow.any?(String) || mrow.any?(unary_class)
-          mrow.each_with_index do |object, ind|
-            if object.is_a?(String)
-              mrow[ind] =
-                mathml_unary_classes([object], lang: lang)
-            end
-            object = mrow[ind] if object.is_a?(String)
-            next unless object.is_a?(unary_class)
-            next if object.is_a?(Math::Function::Text)
-            next if object.parameter_one || mrow[ind + 1].nil?
-            next unless ind.zero?
-
-            object.parameter_one = mrow.delete_at(ind + 1)
-          end
-        end
-      end
-
-      def ternary_function_classes(mrow)
-        ternary_class = Math::Function::TernaryFunction
-        if mrow.any?(ternary_class) && mrow.length > 1
-          mrow.each_with_index do |object, ind|
-            if object.is_a?(ternary_class)
-              next if [Math::Function::Fenced, Math::Function::Multiscript].include?(object.class)
-              next unless object.parameter_one || object.parameter_two
-              next if object.parameter_three
-
-              object.parameter_three = filter_values(mrow.delete_at(ind + 1))
-            end
           end
         end
       end

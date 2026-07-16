@@ -28,7 +28,7 @@ module Plurimath
       end
 
       def mathml_symbol(value)
-        Plurimath::Utility.mathml_unary_classes([value], lang: :mathml)
+        Utility.resolve_token(value)
       end
 
       # Alignment markers affect MathML layout only; the old parser dropped them
@@ -423,10 +423,7 @@ module Plurimath
       end
 
       def mathml_symbol_to_class(symbol)
-        Plurimath::Utility.mathml_unary_classes(
-          Array(symbol),
-          lang: :mathml,
-        )
+        Utility.resolve_token(symbol)
       end
 
       def value_is_ternary_or_nary?(value)
