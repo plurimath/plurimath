@@ -22,6 +22,21 @@ RSpec.describe Plurimath::Omml do
   describe ".to_latex, to_mathml, to_asciimath" do
     subject(:formula) { described_class.new(string).to_formula }
 
+    context "a bare structural word ('frac') stays a literal identifier" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:r><m:t>frac</m:t></m:r>
+          </m:oMath>
+        OMML
+      end
+
+      it "resolves 'frac' as text, not the Frac function" do
+        expect(formula.to_latex).to eq('\text{frac}')
+        expect(formula.to_asciimath).to eq('"frac"')
+      end
+    end
+
     context "contains example #01" do
       let(:string) do
         <<~OMML

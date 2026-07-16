@@ -174,22 +174,25 @@ module Plurimath
         "+": "+",
         "-": "-",
       }.freeze
-      # Over/under accent decorations. In MathML these are only ever expressed
-      # as <mover>/<munder> with a base (recovered from their diacritic
-      # CHARACTER), never as a bare <mi>/<mo> identifier word. So a bare token
-      # whose text is one of these names is a literal identifier (e.g. the unit
-      # "bar"), not the accent. See unitsml/unitsdb#123.
-      ACCENT_WORDS = %w[
-        bar overline ul hat vec tilde dot ddot obrace ubrace overleftrightarrow
+      # Named operators that have no dedicated MathML/OMML representation — no
+      # unicode character and no structural element — so a bare <mi>/<mo>/<m:t>
+      # word (e.g. <mi>sin</mi>, <m:t>min</m:t>) is their only written form and
+      # resolves to the function class. Every other CLASSES entry has a proper
+      # form — a diacritic character (bar/hat/vec via <mover>), a unicode symbol
+      # (sum/prod/int via &#x2211; etc.), or a structural element (frac via
+      # <mfrac>/<m:f>, sqrt via <msqrt>) — so its bare word is a literal
+      # identifier, not the function. See PR #450 (which introduced this for accents).
+      NAMED_FUNCTION_WORDS = %w[
+        arccos arcsin arctan sin cos tan sec csc cot sinh cosh tanh coth sech
+        csch log ln exp det dim gcd lcm glb lub max min mod
       ].freeze
 
-      # True when +string+ is a bare word naming an over/under accent. Such
-      # tokens are literal identifiers in MathML (the accent itself is a
-      # diacritic character inside <mover>/<munder>), so callers must not
-      # promote them to accent operators. AsciiMath/LaTeX word forms
-      # (bar(x), \bar{x}) are parsed elsewhere and never reach this predicate.
-      def self.accent_word?(string)
-        ACCENT_WORDS.include?(string&.strip)
+      # True when +string+ is a bare word naming an operator that has no other
+      # MathML/OMML representation, so it legitimately resolves to its function
+      # class. Words for constructs that DO have a character/structural form
+      # (accents, sum/prod/int, frac/sqrt/...) return false and stay literal.
+      def self.named_function_word?(string)
+        NAMED_FUNCTION_WORDS.include?(string&.strip)
       end
 
       CLASSES = %w[

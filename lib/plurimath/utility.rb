@@ -337,7 +337,7 @@ lang: nil)
         symbol = Mathml::Constants::UNICODE_SYMBOLS[unicode.strip.to_sym]
         if classes.include?(symbol&.strip)
           get_class(symbol.strip).new
-        elsif classes.any?(string&.strip) && !(lang == :mathml && Mathml::Constants.accent_word?(string))
+        elsif classes.any?(string&.strip) && word_resolvable?(string, lang)
           get_class(string.strip).new
         elsif omml
           text_classes(string,
@@ -345,6 +345,18 @@ lang: nil)
         else
           symbols_class(unicode, lang: lang)
         end
+      end
+
+      # In MathML and OMML most constructs have a dedicated character or
+      # structural element (<mfrac>, <m:f>, &#x2211;, <mover> + diacritic), so a
+      # bare word token resolves to its function class only when the name has no
+      # such representation (sin, min, log, ...). Parslet-based languages
+      # (AsciiMath bar(x), LaTeX \frac{}{}) parse words in their own grammars and
+      # never reach this resolver, so they keep resolving every CLASSES word.
+      def word_resolvable?(string, lang)
+        return true unless %i[mathml omml].include?(lang)
+
+        Mathml::Constants.named_function_word?(string)
       end
 
       def symbols_class(string, lang:, table: false)

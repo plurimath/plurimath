@@ -60,40 +60,40 @@ RSpec.describe Plurimath::Utility do
         expect(result).to eq(Plurimath::Math::Function::Sin.new)
       end
 
-      # quirk: the bare word "frac" resolves to an argument-less
-      # Function::Frac in MathML even though a bare <mi>frac</mi> is an
-      # identifier, not a fraction.
-      it "resolves \"frac\" to an empty Function::Frac for lang: :mathml" do
+      # A bare "frac" is a literal identifier in MathML — a fraction is written
+      # structurally as <mfrac>, never as the word — so it stays a Symbol.
+      # See PR #450 (accent handling this generalizes).
+      it "keeps \"frac\" a literal Symbol for lang: :mathml" do
         result = described_class.mathml_unary_classes(["frac"], lang: :mathml)
 
-        expect(result).to eq(Plurimath::Math::Function::Frac.new)
+        expect(result).to eq(Plurimath::Math::Symbols::Symbol.new("frac"))
       end
 
-      it "resolves \"frac\" to an empty Function::Frac for lang: :omml with omml: true" do
+      it "keeps \"frac\" a literal Text for lang: :omml with omml: true" do
         result = described_class.mathml_unary_classes(
           ["frac"], lang: :omml, omml: true
         )
 
-        expect(result).to eq(Plurimath::Math::Function::Frac.new)
+        expect(result).to eq(Plurimath::Math::Function::Text.new("frac", lang: :omml))
       end
     end
 
-    context "accent-word guard (PR #450)" do
+    context "representation-aware word resolution" do
       it "keeps \"bar\" a literal Symbol for lang: :mathml" do
         result = described_class.mathml_unary_classes(["bar"], lang: :mathml)
 
         expect(result).to eq(Plurimath::Math::Symbols::Symbol.new("bar"))
       end
 
-      # quirk: the accent-word guard is scoped to lang == :mathml only, so
-      # the same bare word "bar" still promotes to Function::Bar on the OMML
-      # path. Known bug — pinned as-is.
-      it "still promotes \"bar\" to Function::Bar for lang: :omml with omml: true" do
+      # The rule applies to OMML too: "bar" is an accent (written as a diacritic
+      # character), so the bare word is a literal — now a Function::Text on the
+      # OMML text-run path, extending the MathML accent rule from PR #450.
+      it "keeps \"bar\" a literal Text for lang: :omml with omml: true" do
         result = described_class.mathml_unary_classes(
           ["bar"], lang: :omml, omml: true
         )
 
-        expect(result).to eq(Plurimath::Math::Function::Bar.new)
+        expect(result).to eq(Plurimath::Math::Function::Text.new("bar", lang: :omml))
       end
     end
 
@@ -514,22 +514,25 @@ RSpec.describe Plurimath::Utility do
       expect(result).to eq([Plurimath::Math::Symbols::Symbol.new("123")])
     end
 
-    # quirk: the accent-word guard is mathml-only, so a "bar" String on the
-    # :omml path becomes Function::Bar and consumes the next element.
-    it "promotes a \"bar\" String to Function::Bar consuming the next element" do
+    # "bar" is an accent (a diacritic character), so the bare word is a literal
+    # on the OMML path (mrow revalidation → symbols_class), not a Function::Bar;
+    # it no longer consumes the next element. See PR #450.
+    it "keeps a \"bar\" String a literal Symbol, not consuming the next element" do
       result = described_class.populate_function_classes(
         ["bar", Plurimath::Math::Number.new("2")], lang: :omml
       )
 
       expect(result).to eq(
-        [Plurimath::Math::Function::Bar.new(Plurimath::Math::Number.new("2"))],
+        [
+          Plurimath::Math::Symbols::Symbol.new("bar"),
+          Plurimath::Math::Number.new("2"),
+        ],
       )
     end
 
-    # quirk: "frac" resolves to an empty Function::Frac, but the binary pass
-    # only slots parameters for classes present in UNICODE_SYMBOLS (or Mod),
-    # so the Frac stays empty and the arguments are left alongside it.
-    it "leaves a resolved Frac empty without slotting the trailing arguments" do
+    # "frac" is written structurally (<m:f>), so the bare word is a literal
+    # Symbol on the OMML path and the trailing arguments are left alongside it.
+    it "keeps a \"frac\" String a literal Symbol, leaving trailing arguments" do
       result = described_class.populate_function_classes(
         ["frac", Plurimath::Math::Number.new("1"), Plurimath::Math::Number.new("2")],
         lang: :omml,
@@ -537,7 +540,7 @@ RSpec.describe Plurimath::Utility do
 
       expect(result).to eq(
         [
-          Plurimath::Math::Function::Frac.new,
+          Plurimath::Math::Symbols::Symbol.new("frac"),
           Plurimath::Math::Number.new("1"),
           Plurimath::Math::Number.new("2"),
         ],
@@ -652,16 +655,16 @@ RSpec.describe Plurimath::Utility do
   end
 
   describe ".binary_function_classes" do
-    # Direct-call pins: via populate_function_classes the unary pass converts
-    # every String first, so the binary pass's own String-conversion line is
-    # reachable only by calling this method directly (it is public surface and
-    # moves with the OMML helper in A1).
-    it "converts a String element to its class during the binary pass" do
+    # Direct-call pin: the binary pass converts a leading String via
+    # mathml_unary_classes. "sum" has a unicode representation (&#x2211;), so
+    # the bare word is now a literal Symbol rather than Function::Sum. The
+    # String-conversion line is still exercised. See PR #450.
+    it "converts a String element via the resolver during the binary pass" do
       mrow = ["sum", Plurimath::Math::Symbols::Symbol.new("x")]
 
       described_class.binary_function_classes(mrow, lang: :omml)
 
-      expect(mrow[0]).to eq(Plurimath::Math::Function::Sum.new)
+      expect(mrow[0]).to eq(Plurimath::Math::Symbols::Symbol.new("sum"))
       expect(mrow[1]).to eq(Plurimath::Math::Symbols::Symbol.new("x"))
     end
 
