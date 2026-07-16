@@ -144,11 +144,13 @@ RSpec.describe Plurimath::UnicodeMath::Utility do
       end
     end
 
-    # quirk: a trailing prime accent becomes a Power whose exponent is the
-    # RAW entity String ("&#x2032;"), not a Math object — filter_values
-    # passes non-Array/non-Formula input straight through.
+    # A real, reachable case: "a" + combining circumflex + prime parses to
+    # this shape, and before the fix the raw entity String "&#x2032;" landed
+    # in the Power exponent, which then crashed on to_latex. accent_value now
+    # routes the prime through updated_primes (as every other prime path
+    # does), so the exponent is a resolved Prime symbol.
     context "with an accent followed by a prime (input like 'â′')" do
-      it "returns a Power with the raw prime entity string as exponent" do
+      it "returns a Power whose exponent is a resolved Prime symbol" do
         accents = [
           { first_value: symbol("a") },
           { accent_symbols: "&#x302;" },
@@ -156,16 +158,18 @@ RSpec.describe Plurimath::UnicodeMath::Utility do
         ]
 
         expect(described_class.unicode_accents(accents)).to eq(
-          power(overset(hat, symbol("a")), "&#x2032;"),
+          power(overset(hat, symbol("a")), Plurimath::Math::Symbols::Prime.new),
         )
       end
     end
 
-    # quirk: when the prime hash immediately follows the base hash, the
-    # prime is treated as an ACCENT (Overset) whose accent slot holds the
-    # raw entity String — not as a Power exponent.
-    context "with a prime hash directly after the base hash" do
-      it "builds an Overset with the raw prime entity string on top" do
+    # Synthetic shape: the real parser never emits a bare prime hash directly
+    # after the base hash — "a′" merges into a single hash and routes to a
+    # Power (a^{\prime}), like the prime-first case below. Pinned only to
+    # document this latent branch; the fix replaces the raw entity String in
+    # the Overset accent slot with the resolved Prime symbol.
+    context "with a prime hash directly after the base hash (synthetic latent shape)" do
+      it "builds an Overset with a resolved Prime symbol on top" do
         accents = [
           { first_value: symbol("a") },
           { prime_accent_symbols: "&#x2032;" },
@@ -173,23 +177,25 @@ RSpec.describe Plurimath::UnicodeMath::Utility do
 
         expect(described_class.unicode_accents(accents)).to eq(
           Plurimath::Math::Function::Overset.new(
-            "&#x2032;", symbol("a"), { accent: true }
+            Plurimath::Math::Symbols::Prime.new, symbol("a"), { accent: true }
           ),
         )
       end
     end
 
-    # quirk: with a prime hash in FIRST position the prime string becomes
-    # the Power BASE and the following accent becomes the exponent.
-    context "with a prime hash in first position" do
-      it "returns Power(raw prime string, accent symbol)" do
+    # Unreachable from the parser: the `accents` grammar rule always emits a
+    # `first_value` base before any accent/prime symbol, so a prime hash can
+    # never occupy first position. Pinned to document the latent branch,
+    # which now resolves the prime to a Prime symbol like every other path.
+    context "with a prime hash in first position (unreachable latent branch)" do
+      it "returns Power(resolved prime symbol, accent symbol)" do
         accents = [
           { prime_accent_symbols: "&#x2032;" },
           { accent_symbols: "&#x302;" },
         ]
 
         expect(described_class.unicode_accents(accents))
-          .to eq(power("&#x2032;", hat))
+          .to eq(power(Plurimath::Math::Symbols::Prime.new, hat))
       end
     end
 
