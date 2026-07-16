@@ -38,6 +38,18 @@ RSpec.describe Plurimath::Asciimath::Utility do
       expect(result).to eq([td([number("1")]), td([number("2")])])
     end
 
+    # Regression: a Symbol whose value merely CONTAINS the slicer is not the
+    # separator, so it stays as cell content instead of slicing the row.
+    it "keeps a Symbol whose value only contains the slicer as content" do
+      symbol = Plurimath::Math::Symbols::Symbol.new("a,b")
+      result = described_class.td_values(
+        [number("1"), symbol, number("2")],
+        ",",
+      )
+
+      expect(result).to eq([td([number("1"), symbol, number("2")])])
+    end
+
     # quirk: a trailing separator appends an extra empty Td.
     it "appends an empty Td when the last object is a separator" do
       result = described_class.td_values(
