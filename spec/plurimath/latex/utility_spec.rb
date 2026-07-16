@@ -62,24 +62,42 @@ RSpec.describe Plurimath::Latex::Utility do
       expect(result).to eq([tr([td([number("1")]), td([number("2")])])])
     end
 
-    # quirk: a trailing linebreak produces an extra trailing row holding one
-    # empty Td, because the post-loop flush appends Td([]) even when no data
-    # followed the linebreak.
-    it "appends an extra empty row after a trailing Linebreak" do
+    # A trailing linebreak closes the last row; nothing follows it, so it no
+    # longer leaves an empty row behind.
+    it "does not append an empty row after a trailing Linebreak" do
       result = described_class.organize_table([number("1"), linebreak])
 
-      expect(result).to eq(
-        [
-          tr([td([number("1")])]),
-          tr([td([])]),
-        ],
-      )
+      expect(result).to eq([tr([td([number("1")])])])
     end
 
-    # quirk: an empty input array still yields one row with one empty Td
-    # (the post-loop flush runs on the empty accumulator).
+    # An empty input yields the placeholder: one row holding a single empty Td.
     it "returns one row with one empty Td for an empty array" do
       expect(described_class.organize_table([])).to eq([tr([td([])])])
+    end
+
+    # The trailing-linebreak guard's remaining states, pinned by row/cell shape.
+    it "appends an empty padding cell for a trailing separator" do
+      expect(described_class.organize_table([number("1"), ampersand]))
+        .to eq([tr([td([number("1")]), td([])])])
+    end
+
+    it "yields one empty-Td row for a lone Linebreak" do
+      expect(described_class.organize_table([linebreak])).to eq([tr([td([])])])
+    end
+
+    it "yields one empty-Td row per Linebreak for consecutive Linebreaks" do
+      expect(described_class.organize_table([linebreak, linebreak]))
+        .to eq([tr([td([])]), tr([td([])])])
+    end
+
+    it "pads the separator's row when a separator follows a Linebreak" do
+      expect(described_class.organize_table([linebreak, ampersand]))
+        .to eq([tr([td([])]), tr([td([]), td([])])])
+    end
+
+    it "closes a separator-opened row on a trailing Linebreak" do
+      expect(described_class.organize_table([ampersand, linebreak]))
+        .to eq([tr([td([]), td([])])])
     end
 
     # quirk: Minus merging (filter_table_data) only runs on cells flushed by
@@ -110,8 +128,8 @@ RSpec.describe Plurimath::Latex::Utility do
       )
     end
 
-    # quirk: the final cell of the input is flushed without filter_table_data,
-    # so the same Minus + value sequence stays un-merged there.
+    # quirk: filter_table_data runs only on separator-flushed cells, so the
+    # final post-loop cell leaves a Minus and its next sibling unmerged.
     it "does not merge Minus in the final (post-loop) cell" do
       result = described_class.organize_table(
         [Plurimath::Math::Symbols::Minus.new, number("2")],
@@ -271,10 +289,10 @@ RSpec.describe Plurimath::Latex::Utility do
       expect(described_class.table_td(number("5"))).to eq([td([number("5")])])
     end
 
-    # quirk: nil is not filtered out — it becomes a Td whose parameter_one
-    # is [nil].
-    it "wraps nil into a Td containing [nil]" do
-      expect(described_class.table_td(nil)).to eq([td([nil])])
+    # nil is not content, so it is filtered out rather than becoming a cell
+    # holding a nil.
+    it "wraps nil into an empty Td" do
+      expect(described_class.table_td(nil)).to eq([td([])])
     end
   end
 

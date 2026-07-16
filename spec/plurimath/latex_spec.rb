@@ -2814,6 +2814,27 @@ RSpec.describe Plurimath::Latex do
         expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
       end
     end
+
+    context "matrix ending in a row separator" do
+      let(:string) { '\\begin{matrix}1 \\\\ \\end{matrix}' }
+
+      it "does not emit a phantom trailing row" do
+        mathml = <<~MATHML
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mstyle displaystyle="true">
+              <mtable>
+                <mtr>
+                  <mtd>
+                    <mn>1</mn>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mstyle>
+          </math>
+        MATHML
+        expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
+      end
+    end
   end
 
   describe ".to_asciimath" do
@@ -2864,6 +2885,15 @@ RSpec.describe Plurimath::Latex do
 
       it "returns parsed Latex to HTML" do
         expected_value = "1cm"
+        expect(html).to eql(expected_value)
+      end
+    end
+
+    context "binomial with an empty operand" do
+      let(:string) { '\\binom{a}{}' }
+
+      it "renders the empty cell instead of crashing" do
+        expected_value = "<table><tr><td>a</td></tr><tr><td></td></tr></table>"
         expect(html).to eql(expected_value)
       end
     end
