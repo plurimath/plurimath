@@ -155,6 +155,16 @@ module Plurimath
         "¯": "bar",
         _: "ul",
       }.freeze
+
+      # Accent characters promoted to their function class ONLY in an accent
+      # position (MathML <mover>, OMML <m:acc>). Kept separate from
+      # UNICODE_SYMBOLS because Text#value= consumes that map as a global
+      # substitution table, so an entry there would also rewrite the character
+      # inside ordinary text runs and bare tokens.
+      CONTEXTUAL_ACCENT_FUNCTIONS = {
+        "&#x303;": "tilde",
+      }.freeze
+
       SYMBOLS = {
         "|": "|",
         "/": "//",

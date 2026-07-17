@@ -147,5 +147,16 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
         expect(formula.to_latex).to eq("\\overset{^}{a}^{\\prime \\prime}")
       end
     end
+
+    # Regression: "a" + combining tilde (U+0061 U+0303). The combining tilde
+    # had no symbols_class mapping and leaked the raw "&#x303;" entity into the
+    # accent slot; it now resolves to the Tilde symbol.
+    context "with a combining tilde accent" do
+      let(:string) { [0x0061, 0x0303].pack("U*") }
+
+      it "resolves the combining tilde to Tilde with no raw entity in to_latex" do
+        expect(formula.to_latex).to eq("\\overset{\\tilde}{a}")
+      end
+    end
   end
 end

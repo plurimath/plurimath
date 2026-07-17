@@ -421,6 +421,31 @@ RSpec.describe Plurimath::Omml do
       end
     end
 
+    context "contains m:acc with combining tilde (U+0303)" do
+      let(:string) do
+        '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">' \
+          '<m:acc><m:accPr><m:chr m:val="&#x303;"/></m:accPr>' \
+          "<m:e><m:r><m:t>c</m:t></m:r></m:e></m:acc></m:oMath>"
+      end
+
+      it "resolves the combining tilde to the Tilde function, like the hat accent" do
+        expect(formula).to eq(
+          Plurimath::Math::Formula.new([
+                                         Plurimath::Math::Function::Tilde.new(
+                                           Plurimath::Math::Function::Text.new(
+                                             "c", lang: :omml
+                                           ),
+                                           { accent: true },
+                                         ),
+                                       ]),
+        )
+      end
+
+      it "converts the tilde accent to LaTeX \\tilde" do
+        expect(formula.to_latex).to eq("\\tilde{\\text{c}}")
+      end
+    end
+
     context "contains m:acc with combining overline (U+0305) from plurimath/plurimath#engageny" do
       let(:string) do
         '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' \
