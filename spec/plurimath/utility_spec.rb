@@ -383,31 +383,32 @@ RSpec.describe Plurimath::Utility do
   end
 
   describe ".symbol_value" do
-    it "matches Comma objects when the value contains a comma" do
+    it "matches a Comma object when the value is a comma" do
       expect(described_class.symbol_value(Plurimath::Math::Symbols::Comma.new, ",")).to be(true)
     end
 
-    # quirk: any value merely CONTAINING "," matches a Comma object, the value
-    # is not compared to the symbol at all
-    it "matches Comma objects for any value containing a comma" do
-      expect(described_class.symbol_value(Plurimath::Math::Symbols::Comma.new, "a,b")).to be(true)
+    # The value is the symbol being looked for, so it has to be that symbol —
+    # merely containing one no longer matches.
+    it "does not match a Comma object for a value that merely contains a comma" do
+      expect(described_class.symbol_value(Plurimath::Math::Symbols::Comma.new, "a,b")).to be(false)
     end
 
-    it "matches Minus objects when the value contains a minus" do
+    it "matches a Minus object when the value is a minus" do
       expect(described_class.symbol_value(Plurimath::Math::Symbols::Minus.new, "-")).to be(true)
     end
 
-    it "matches Paren::Vert objects when the value contains a pipe" do
+    it "matches a Paren::Vert object when the value is a pipe" do
       expect(described_class.symbol_value(Plurimath::Math::Symbols::Paren::Vert.new, "|")).to be(true)
     end
 
-    it "matches generic Symbol objects whose value contains the string" do
+    it "matches generic Symbol objects whose value is the string" do
       expect(described_class.symbol_value(Plurimath::Math::Symbols::Symbol.new("|"), "|")).to be(true)
     end
 
-    # quirk: substring match, not equality ("ab" contains "b")
-    it "matches generic Symbol objects by substring inclusion" do
-      expect(described_class.symbol_value(Plurimath::Math::Symbols::Symbol.new("ab"), "b")).to be(true)
+    # Equality, not substring inclusion: a two-character symbol is not the
+    # single-character separator being looked for.
+    it "does not match a generic Symbol object by substring inclusion" do
+      expect(described_class.symbol_value(Plurimath::Math::Symbols::Symbol.new("ab"), "b")).to be(false)
     end
 
     it "matches Linebreak objects against the literal \\\\ value" do
