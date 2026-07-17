@@ -51,6 +51,29 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
+  # A text run round-trips a letter through its UNICODE_SYMBOLS name, and
+  # Hash#invert keeps only the last key for a duplicated name. Two Greek names
+  # were each shared by two different letters: ς sat on "beta" with β, and Ω sat
+  # on "omega" with ω — so a real β came back as ς, and a lowercase ω came back
+  # as a capital Ω. (Other names are still shared — "hat", "bar", "ul" — but
+  # those are alternate spellings of one concept rather than mislabelled
+  # letters, and belong with the wider Text placeholder issue.)
+  context "contains a Greek letter whose name was shared" do
+    {
+      "beta" => "&#x3b2;",
+      "final sigma" => "&#x3c2;",
+      "omega" => "&#x3c9;",
+      "capital omega" => "&#x3a9;",
+    }.each do |name, entity|
+      it "round-trips #{name} through a text run as itself" do
+        mathml = "<math xmlns='http://www.w3.org/1998/Math/MathML'><mtext>a#{entity}b</mtext></math>"
+
+        expect(described_class.new(mathml).parse.to_mathml)
+          .to include("<mtext>a#{entity}b</mtext>")
+      end
+    end
+  end
+
   # The promotion above must stay confined to accent positions: outside one, a
   # combining tilde is ordinary content and has to survive untouched.
   context "contains a combining tilde outside an accent position" do
