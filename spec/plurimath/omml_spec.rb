@@ -37,6 +37,30 @@ RSpec.describe Plurimath::Omml do
       end
     end
 
+    context "sSubSup whose base is a font-styled function word" do
+      let(:string) do
+        <<~OMML
+          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+            <m:sSubSup>
+              <m:e><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>lim</m:t></m:r></m:e>
+              <m:sub><m:r><m:t>x</m:t></m:r></m:sub>
+              <m:sup><m:r><m:t>y</m:t></m:r></m:sup>
+            </m:sSubSup>
+          </m:oMath>
+        OMML
+      end
+
+      # Built here rather than through the memoized subject: the suite reruns
+      # each example for Ox and Oga on the same instance, so a memoized formula
+      # would be parsed once and an engine-specific regression would slip by.
+      it "resolves the styled word to its function rather than leaving it text" do
+        parsed = described_class.new(string).to_formula
+
+        expect(parsed.value.first).to be_a(Plurimath::Math::Function::Lim)
+        expect(parsed.to_latex).to eq('\lim_{\text{x}}^{\text{y}}')
+      end
+    end
+
     context "sSubSup with a multi-run (compound) base" do
       let(:string) do
         <<~OMML

@@ -57,12 +57,20 @@ RSpec.describe Plurimath::Omml::Utility do
       expect(described_class.valid_class(formula)).to be(false)
     end
 
-    # quirk: FontStyle#extract_class_name_from_text always returns
-    # parameter_one.class_name ("text" for Text params — its first line is a
-    # no-op), so even FontStyle(Text("lim")) is not a valid class.
-    it "returns false for a FontStyle wrapping Text(\"lim\")" do
+    # FontStyle#extract_class_name_from_text now returns the wrapped text, so a
+    # font-styled function word validates just like a bare one.
+    it "returns true for a FontStyle wrapping Text(\"lim\")" do
       font_style = Plurimath::Math::Function::FontStyle.new(
         Plurimath::Math::Function::Text.new("lim"), "mathrm"
+      )
+
+      expect(described_class.valid_class(font_style)).to be(true)
+    end
+
+    # The non-Text branch still falls back to the class name.
+    it "returns false for a FontStyle wrapping a non-Text value" do
+      font_style = Plurimath::Math::Function::FontStyle.new(
+        Plurimath::Math::Number.new("3"), "mathrm"
       )
 
       expect(described_class.valid_class(font_style)).to be(false)

@@ -63,7 +63,8 @@ module Plurimath
         end
 
         def extract_class_name_from_text
-          parameter_one.parameter_one if parameter_one.is_a?(Text)
+          return parameter_one.parameter_one if parameter_one.is_a?(Text)
+
           parameter_one.class_name
         end
 
