@@ -26,7 +26,14 @@ module Plurimath
             end
             table_data << data
           end
-          table_row << Math::Function::Td.new(table_data.compact) if table_data
+          # A trailing linebreak has already flushed its row and nothing follows
+          # it, so there is no final cell to add. An empty input has flushed
+          # nothing, and still yields its one placeholder cell.
+          flushed_by_trailing_linebreak =
+            table_data.empty? && table_row.empty? && !table.empty?
+          unless flushed_by_trailing_linebreak
+            table_row << Math::Function::Td.new(table_data.compact)
+          end
           unless table_row.nil? || table_row.empty?
             organize_tds(table_row.flatten, string_columns.dup, options)
             table << Math::Function::Tr.new(table_row)
@@ -82,7 +89,7 @@ module Plurimath
                        when Math::Function::Td
                          object
                        else
-                         Math::Function::Td.new([object])
+                         Math::Function::Td.new([object].compact)
                        end
           Array(new_object)
         end
