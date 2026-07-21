@@ -4,6 +4,10 @@ module Plurimath
   module Math
     module Function
       class TernaryFunction < Core
+        extend Documentation
+
+        CATALOG_TYPE = :ternary
+
         attr_accessor :parameter_one, :parameter_two, :parameter_three,
                       :hide_function_name
 

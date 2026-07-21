@@ -4,7 +4,11 @@ module Plurimath
   module Math
     module Function
       class Int < TernaryFunction
-        attr_accessor :options
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An integral of an expression, with optional lower and upper limits."
+        REFERENCE = "https://en.wikipedia.org/wiki/Integral"
+        EXAMPLE = -> { new(sym("x"), sym("y"), sym("z")) }
+        # --- end catalog documentation ---
 
         FUNCTION = {
           name: "integral",
@@ -12,6 +16,8 @@ module Plurimath
           second_value: "upper limit",
           third_value: "integrand",
         }.freeze
+
+        attr_accessor :options
 
         def initialize(parameter_one = nil,
                        parameter_two = nil,
