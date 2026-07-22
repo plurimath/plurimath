@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Mod < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The modulo operation between two operands."
+        REFERENCE = "https://en.wikipedia.org/wiki/Modulo"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "mod",
           first_value: "base",

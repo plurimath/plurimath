@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Lim < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The limit operator, carrying a subscript and superscript."
+        REFERENCE = "https://en.wikipedia.org/wiki/Limit_(mathematics)"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "limit",
           first_value: "limit subscript",

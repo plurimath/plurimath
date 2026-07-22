@@ -32,7 +32,7 @@ module Plurimath
     # Base classes whose documented descendants are catalogued. Grows as later
     # PRs document the other arities and the symbols.
     def documentable_bases
-      [Math::Function::TernaryFunction]
+      [Math::Function::TernaryFunction, Math::Function::BinaryFunction]
     end
 
     # descendants only sees loaded classes, so require the source files of every

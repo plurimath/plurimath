@@ -1,11 +1,15 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Catalog do
-  it "enumerates the documented ternary functions in a stable, sorted order" do
-    expected = %w[
+  it "enumerates exactly the documented classes, sorted by catalog name" do
+    ternary = %w[
       fenced int limits multiscript oint powerbase prod rule sum underover
     ]
-    expect(described_class.classes.map(&:catalog_name)).to eq(expected)
+    binary = %w[
+      base frac inf lim log mod over power root stackrel
+    ]
+    names = described_class.classes.map(&:catalog_name)
+    expect(names).to eq((ternary + binary).sort)
   end
 
   it "renders every documented example across all four formats without error" do
@@ -26,7 +30,7 @@ RSpec.describe Plurimath::Catalog do
       aggregate_failures(entry["name"]) do
         expect(entry.keys).to match_array(keys)
         keys.each { |key| expect(entry[key]).not_to be_nil }
-        expect(entry["type"]).to eq("ternary")
+        expect(entry["type"]).not_to be_empty
         expect(entry["reference"]).to start_with("http")
       end
     end
@@ -53,12 +57,17 @@ RSpec.describe Plurimath::Catalog do
     end
   end
 
-  it "builds a full entry for a representative class end to end" do
-    entry = Plurimath::Math::Function::Sum.catalog_entry
+  it "builds full entries for representative classes end to end" do
+    sum = Plurimath::Math::Function::Sum.catalog_entry
+    expect(sum["name"]).to eq("sum")
+    expect(sum["type"]).to eq("ternary")
+    expect(sum["asciimath"]).to eq("sum_(x)^(y) z")
+    expect(sum["latexmath"]).to eq("\\sum_{x}^{y} z")
 
-    expect(entry["name"]).to eq("sum")
-    expect(entry["type"]).to eq("ternary")
-    expect(entry["asciimath"]).to eq("sum_(x)^(y) z")
-    expect(entry["latexmath"]).to eq("\\sum_{x}^{y} z")
+    frac = Plurimath::Math::Function::Frac.catalog_entry
+    expect(frac["name"]).to eq("frac")
+    expect(frac["type"]).to eq("binary")
+    expect(frac["asciimath"]).to eq("frac(x)(y)")
+    expect(frac["latexmath"]).to eq("\\frac{x}{y}")
   end
 end

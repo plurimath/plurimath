@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Inf < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The infimum operator, carrying a subscript and superscript."
+        REFERENCE = "https://en.wikipedia.org/wiki/Infimum_and_supremum"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         def to_asciimath(options:)
           first_value = "_(#{parameter_one.to_asciimath(options: options)})" if parameter_one
           second_value = "^(#{parameter_two.to_asciimath(options: options)})" if parameter_two

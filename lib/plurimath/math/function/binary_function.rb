@@ -4,6 +4,10 @@ module Plurimath
   module Math
     module Function
       class BinaryFunction < Core
+        extend Documentation
+
+        CATALOG_TYPE = :binary
+
         attr_accessor :parameter_one, :parameter_two, :hide_function_name
 
         def initialize(parameter_one = nil, parameter_two = nil)
