@@ -2,28 +2,34 @@
 
 module Plurimath
   # The documented symbol/function catalog that plurimath.org generates its
-  # reference pages from. Each entry carries the metadata plus the example
-  # rendered to AsciiMath, LaTeX, MathML and OMML — see Plurimath::Documentation.
+  # reference pages from. Each entry carries a name, a type, and the example
+  # rendered to AsciiMath, LaTeX, MathML and OMML; function entries also carry a
+  # description and reference. See Plurimath::Documentation (functions) and
+  # Plurimath::SymbolDocumentation (symbols).
   #
   #   Plurimath::Catalog.entries.each do |e|
-  #     File.write("_data/functions/#{e['name']}.yaml", e.to_yaml)
+  #     dir = e["type"] == "symbol" ? "symbols" : "functions"
+  #     File.write("_data/#{dir}/#{e['name']}.yaml", e.to_yaml)
   #   end
   module Catalog
     module_function
 
-    # Every documented class, sorted by catalog name for stable output.
+    # Every documented class, sorted by catalog name — with catalog type as a
+    # tiebreaker, since a symbol and a function can share a name (e.g. `bar`) —
+    # for stable, totally-ordered output.
     # descendants_of returns a base's descendants but not the base itself, so
     # each base is enumerated alongside them — otherwise a base that is itself
     # documentable is missed (Table's own `table` page; Nary, which is both
-    # documentable and has no descendants). Abstract bases (the arity classes)
-    # declare no example and are dropped by documented?.
+    # documentable and has no descendants). Abstract bases are dropped by
+    # documented?: the arity classes declare no example, and the Symbol and
+    # Paren bases render nothing.
     def classes
       ensure_documentable_classes_loaded
       documentable_bases
         .flat_map { |base| [base, *descendants_of(base)] }
         .uniq
         .select(&:documented?)
-        .sort_by(&:catalog_name)
+        .sort_by { |klass| [klass.catalog_name, klass.catalog_type.to_s] }
     end
 
     def each(&block)
@@ -35,8 +41,8 @@ module Plurimath
       classes.map(&:catalog_entry)
     end
 
-    # Base classes whose documented descendants are catalogued. Grows as later
-    # PRs document the other arities and the symbols.
+    # Base classes whose documented descendants (and the bases themselves) are
+    # catalogued: the function arities, the table/n-ary bases, and the symbol tree.
     def documentable_bases
       [
         Math::Function::TernaryFunction,
@@ -44,27 +50,34 @@ module Plurimath
         Math::Function::UnaryFunction,
         Math::Function::Table,
         Math::Function::Nary,
+        Math::Symbols::Symbol,
       ]
     end
 
     # descendants only sees loaded classes, so require the source files of every
-    # documentable base before enumerating. Only the function tree is loaded
-    # today; once Symbols::Symbol becomes documentable this widens to match.
-    # Memoized so repeated catalog calls don't re-glob the tree.
+    # documentable base before enumerating — the function tree and the symbol
+    # tree. Memoized so repeated catalog calls don't re-glob.
     def ensure_documentable_classes_loaded
       return if @documentable_classes_loaded
 
-      # Dir.glob/require need a filesystem; under Opal the tree is build-loaded,
+      # Dir.glob/require need a filesystem; under Opal the trees are build-loaded,
       # so skip enumeration there rather than crash (mirrors symbols.rb).
       if RUBY_ENGINE != "opal"
-        pattern = File.join(__dir__, "math", "function", "**", "*.rb")
-        Dir.glob(pattern).each { |file| require file }
+        # math/symbols.rb loads the Symbol base (and nested bases) before their
+        # subclasses; a raw sorted Dir.glob would require symbols/alpha before
+        # symbols/symbol and raise NameError. The function tree loads its bases
+        # first, so glob it directly.
+        require File.join(__dir__, "math", "symbols")
+        Dir.glob(File.join(__dir__, "math", "function", "**", "*.rb")).each do |file|
+          require file
+        end
       end
       @documentable_classes_loaded = true
     end
 
     # descendants lists only direct subclasses, so walk the whole subtree —
-    # nested families (e.g. FontStyle's styles) live below the arity bases.
+    # nested families (FontStyle's styles, the Paren delimiters) live below
+    # their group base.
     def descendants_of(klass)
       Array(klass.descendants)
         .flat_map { |descendant| [descendant, *descendants_of(descendant)] }
