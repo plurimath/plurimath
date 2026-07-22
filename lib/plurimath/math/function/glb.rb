@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Glb < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The greatest lower bound (infimum) operator."
+        REFERENCE = "https://en.wikipedia.org/wiki/Infimum_and_supremum"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Cancel < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Strikes its argument through with a diagonal line."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/menclose"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def to_mathml_without_math_tag(intent, options:)
           cancel_tag = XmlHelper.ox_element(
             "menclose",

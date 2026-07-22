@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Sup < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The supremum (least upper bound) of a set."
+        REFERENCE = "https://en.wikipedia.org/wiki/Infimum_and_supremum"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def to_mathml_without_math_tag(intent, options:)
           mo_tag = ox_element("mo") << "sup"
           first_value = mathml_value(intent, options: options)

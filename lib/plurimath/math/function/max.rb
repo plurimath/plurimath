@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Max < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The maximum of a set."
+        REFERENCE = "https://en.wikipedia.org/wiki/Maximum_and_minimum"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

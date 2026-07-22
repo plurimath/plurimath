@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Norm < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The norm of its argument, written between double bars."
+        REFERENCE = "https://en.wikipedia.org/wiki/Norm_(mathematics)"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         attr_accessor :open_paren, :close_paren
 
         def to_asciimath(options:)
