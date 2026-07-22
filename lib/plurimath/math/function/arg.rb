@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Arg < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An expression given an `arg` name for reference from an ancestor MathML `intent` annotation."
+        REFERENCE = "https://www.w3.org/TR/mathml4/#mixing_intent"
+        EXAMPLE = -> { new(sym("x"), sym("x")) }
+        # --- end catalog documentation ---
+
         def to_mathml_without_math_tag(intent, options:)
           first_value = parameter_one.to_mathml_without_math_tag(intent,
                                                                  options: options)

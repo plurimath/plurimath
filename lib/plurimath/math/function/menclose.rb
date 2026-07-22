@@ -4,6 +4,15 @@ module Plurimath
   module Math
     module Function
       class Menclose < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        # Menclose wraps a single visible expression, so the catalog lists it as
+        # unary (overriding BinaryFunction's :binary) to match the site.
+        CATALOG_TYPE = :unary
+        DESCRIPTION = "An expression wrapped in an enclosing notation, such as a box, circle, or strike."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/menclose"
+        EXAMPLE = -> { new("box", sym("x")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "enclosure",
           first_value: "enclosure type",

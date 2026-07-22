@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Root < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A root of a radicand with an explicit index (degree)."
+        REFERENCE = "https://en.wikipedia.org/wiki/Nth_root"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "root",
           first_value: "radicand",
