@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Longdiv < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Sets its argument under a long-division bracket."
+        REFERENCE = "https://en.wikipedia.org/wiki/Long_division"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def to_asciimath(options:)
           asciimath_value(options: options)
         end

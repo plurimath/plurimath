@@ -17,8 +17,14 @@ RSpec.describe Plurimath::Catalog do
       italic monospace normal sansserif sansserifbolditalic sansserifitalic
       script
     ]
+    unary = %w[
+      abs arccos arcsin arctan bar cancel ceil cos cosh cot coth csc csch ddot
+      deg det dim dot exp floor gcd glb hat hom ker lcm lg liminf limsup ln
+      longdiv lub max mbox merror min norm obrace overleftrightarrow phantom sec
+      sech sin sinh sqrt sup tan tanh text tilde ubrace ul vec
+    ]
     names = described_class.classes.map(&:catalog_name)
-    expect(names).to eq((ternary + binary + font_styles).sort)
+    expect(names).to eq((ternary + binary + font_styles + unary).sort)
   end
 
   it "overrides catalog_type to the site's semantic arity for font styles and menclose" do
@@ -63,21 +69,25 @@ RSpec.describe Plurimath::Catalog do
   end
 
   it "renders each example from one shared formula without mutating it across formats" do
+    formats = %i[asciimath latex mathml omml]
     described_class.classes.each do |klass|
       shared = klass.example_formula
-      # Render all four formats off the SAME object, in sequence.
-      sequential = {
-        asciimath: shared.to_asciimath,
-        latex: shared.to_latex,
-        mathml: shared.to_mathml,
-        omml: shared.to_omml,
-      }
+      # Render every format off the SAME object TWICE, in sequence, so a
+      # mutation surfaces either as a later format diverging from a fresh
+      # render or as a format's own second pass diverging from its first.
+      first_pass = formats.to_h do |format|
+        [format, shared.public_send("to_#{format}")]
+      end
+      second_pass = formats.to_h do |format|
+        [format, shared.public_send("to_#{format}")]
+      end
       aggregate_failures(klass.catalog_name) do
-        # A fresh formula rendered to one format must match the shared one; a
-        # divergence would mean an earlier render mutated the shared AST.
-        sequential.each do |format, shared_output|
-          fresh_output = klass.example_formula.public_send("to_#{format}")
-          expect(shared_output).to eq(fresh_output)
+        # A fresh formula rendered once is the mutation-free reference; both
+        # passes off the shared object must still match it.
+        formats.each do |format|
+          reference = klass.example_formula.public_send("to_#{format}")
+          expect(first_pass[format]).to eq(reference)
+          expect(second_pass[format]).to eq(reference)
         end
       end
     end
@@ -95,5 +105,11 @@ RSpec.describe Plurimath::Catalog do
     expect(frac["type"]).to eq("binary")
     expect(frac["asciimath"]).to eq("frac(x)(y)")
     expect(frac["latexmath"]).to eq("\\frac{x}{y}")
+
+    sin = Plurimath::Math::Function::Sin.catalog_entry
+    expect(sin["name"]).to eq("sin")
+    expect(sin["type"]).to eq("unary")
+    expect(sin["asciimath"]).to eq("sinx")
+    expect(sin["latexmath"]).to eq("\\sin{x}")
   end
 end

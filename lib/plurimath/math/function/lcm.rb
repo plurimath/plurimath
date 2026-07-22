@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Lcm < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The least common multiple operator."
+        REFERENCE = "https://en.wikipedia.org/wiki/Least_common_multiple"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end
