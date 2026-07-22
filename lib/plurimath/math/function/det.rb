@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Det < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The determinant of a matrix."
+        REFERENCE = "https://en.wikipedia.org/wiki/Determinant"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

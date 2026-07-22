@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Floor < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The floor of a value, rounded down to an integer."
+        REFERENCE = "https://en.wikipedia.org/wiki/Floor_and_ceiling_functions"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         attr_accessor :open_paren, :close_paren
 
         def to_latex(options:)

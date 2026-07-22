@@ -4,6 +4,10 @@ module Plurimath
   module Math
     module Function
       class UnaryFunction < Core
+        extend Documentation
+
+        CATALOG_TYPE = :unary
+
         attr_accessor :parameter_one, :hide_function_name
 
         def initialize(parameter_one = nil)

@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Exp < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The exponential function."
+        REFERENCE = "https://en.wikipedia.org/wiki/Exponential_function"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

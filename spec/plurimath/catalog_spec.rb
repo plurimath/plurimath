@@ -8,8 +8,14 @@ RSpec.describe Plurimath::Catalog do
     binary = %w[
       base frac inf lim log mod over power root stackrel
     ]
+    unary = %w[
+      abs arccos arcsin arctan bar ceil cos cosh cot coth csc csch ddot deg det
+      dim dot exp floor gcd hat hom ker lg liminf limsup ln lub max min
+      obrace overleftrightarrow sec sech sin sinh sqrt sup tan tanh tilde ubrace
+      ul vec
+    ]
     names = described_class.classes.map(&:catalog_name)
-    expect(names).to eq((ternary + binary).sort)
+    expect(names).to eq((ternary + binary + unary).sort)
   end
 
   it "renders every documented example across all four formats without error" do
@@ -69,5 +75,11 @@ RSpec.describe Plurimath::Catalog do
     expect(frac["type"]).to eq("binary")
     expect(frac["asciimath"]).to eq("frac(x)(y)")
     expect(frac["latexmath"]).to eq("\\frac{x}{y}")
+
+    sin = Plurimath::Math::Function::Sin.catalog_entry
+    expect(sin["name"]).to eq("sin")
+    expect(sin["type"]).to eq("unary")
+    expect(sin["asciimath"]).to eq("sinx")
+    expect(sin["latexmath"]).to eq("\\sin{x}")
   end
 end
