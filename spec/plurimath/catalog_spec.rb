@@ -1,7 +1,12 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Catalog do
-  it "enumerates exactly the documented classes, sorted by catalog name" do
+  # Independently gather a class's full subtree (descendants is direct-only).
+  def symbol_subtree(klass)
+    Array(klass.descendants).flat_map { |d| [d, *symbol_subtree(d)] }
+  end
+
+  it "enumerates exactly the documented functions, sorted by catalog name" do
     ternary = %w[
       fenced int limits multiscript oint powerbase prod rule sum underover
     ]
@@ -14,8 +19,24 @@ RSpec.describe Plurimath::Catalog do
       obrace overleftrightarrow sec sech sin sinh sqrt sup tan tanh tilde ubrace
       ul vec
     ]
-    names = described_class.classes.map(&:catalog_name)
-    expect(names).to eq((ternary + binary + unary).sort)
+    functions = described_class.classes
+      .reject { |klass| klass.catalog_type == :symbol }
+      .map(&:catalog_name)
+    expect(functions).to eq((ternary + binary + unary).sort)
+  end
+
+  it "catalogs every concrete symbol, with the abstract Paren base excluded" do
+    symbols = described_class.classes.select { |klass| klass.catalog_type == :symbol }
+    # Every class below Symbols::Symbol (recursively — nested families such as
+    # the Paren delimiters included) except the abstract Paren base, which
+    # renders nothing. Symbol is not among its own descendants.
+    paren = Plurimath::Math::Symbols::Paren
+    expected = symbol_subtree(Plurimath::Math::Symbols::Symbol) - [paren]
+    expect(symbols).to match_array(expected)
+
+    names = symbols.map(&:catalog_name)
+    expect(names).to eq(names.uniq)
+    expect(names).to include("alpha", "leq", "bigwedge", "lround")
   end
 
   it "renders every documented example across all four formats without error" do
@@ -30,20 +51,26 @@ RSpec.describe Plurimath::Catalog do
     end
   end
 
-  it "exposes every metadata and rendering key in each catalog entry" do
-    keys = %w[name type description reference asciimath latexmath mathml omml]
+  it "exposes the right keys for each entry type" do
+    symbol_keys = %w[name type asciimath latexmath mathml omml]
+    function_keys = symbol_keys + %w[description reference]
     described_class.entries.each do |entry|
       aggregate_failures(entry["name"]) do
-        expect(entry.keys).to match_array(keys)
-        keys.each { |key| expect(entry[key]).not_to be_nil }
-        expect(entry["type"]).not_to be_empty
-        expect(entry["reference"]).to start_with("http")
+        symbol_keys.each { |key| expect(entry[key]).not_to be_nil }
+        if entry["type"] == "symbol"
+          expect(entry.keys).to match_array(symbol_keys)
+        else
+          expect(entry.keys).to match_array(function_keys)
+          expect(entry["description"]).not_to be_nil
+          expect(entry["reference"]).to start_with("http")
+        end
       end
     end
   end
 
-  it "renders each example from one shared formula without mutating it across formats" do
-    described_class.classes.each do |klass|
+  it "renders each function example from one shared formula without mutating it" do
+    functions = described_class.classes.reject { |klass| klass.catalog_type == :symbol }
+    functions.each do |klass|
       shared = klass.example_formula
       # Render all four formats off the SAME object, in sequence.
       sequential = {
@@ -63,7 +90,7 @@ RSpec.describe Plurimath::Catalog do
     end
   end
 
-  it "builds full entries for representative classes end to end" do
+  it "builds full entries for representative functions end to end" do
     sum = Plurimath::Math::Function::Sum.catalog_entry
     expect(sum["name"]).to eq("sum")
     expect(sum["type"]).to eq("ternary")
@@ -81,5 +108,14 @@ RSpec.describe Plurimath::Catalog do
     expect(sin["type"]).to eq("unary")
     expect(sin["asciimath"]).to eq("sinx")
     expect(sin["latexmath"]).to eq("\\sin{x}")
+  end
+
+  it "builds a lean entry for a representative symbol end to end" do
+    alpha = Plurimath::Math::Symbols::Alpha.catalog_entry
+    expect(alpha["name"]).to eq("alpha")
+    expect(alpha["type"]).to eq("symbol")
+    expect(alpha["asciimath"]).to eq("alpha")
+    expect(alpha["latexmath"]).to eq("\\alpha")
+    expect(alpha).not_to have_key("description")
   end
 end
