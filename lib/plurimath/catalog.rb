@@ -16,6 +16,7 @@ module Plurimath
       ensure_documentable_classes_loaded
       documentable_bases
         .flat_map(&:descendants)
+        .uniq
         .select(&:documented?)
         .sort_by(&:catalog_name)
     end
