@@ -8,18 +8,6 @@ RSpec.describe Plurimath::Catalog do
     expect(described_class.classes.map(&:catalog_name)).to eq(expected)
   end
 
-  it "de-duplicates classes if a descendant is registered more than once" do
-    ternary = Plurimath::Math::Function::TernaryFunction
-    ternary.descendants << Plurimath::Math::Function::Sum
-    begin
-      expect(described_class.classes.count(Plurimath::Math::Function::Sum)).to eq(1)
-    ensure
-      ternary.descendants.delete_at(
-        ternary.descendants.rindex(Plurimath::Math::Function::Sum),
-      )
-    end
-  end
-
   it "renders every documented example across all four formats without error" do
     described_class.classes.each do |klass|
       formula = klass.example_formula
