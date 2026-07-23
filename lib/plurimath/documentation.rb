@@ -35,7 +35,14 @@ module Plurimath
     # until the catalog is generated. nil when the class declares no example.
     def example_formula
       block = declared_constant(:EXAMPLE)
-      expr(instance_exec(&block)) if block
+      return unless block
+
+      result = instance_exec(&block)
+      case result
+      when Math::Formula then result   # lambda already built one — don't re-wrap
+      when Array then expr(*result)    # splat a multi-part example
+      else expr(result)                # wrap a bare node
+      end
     end
 
     # Catalogued only when a class carries the full three-declaration contract —
