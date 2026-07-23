@@ -43,8 +43,12 @@ module Plurimath
     def ensure_documentable_classes_loaded
       return if @documentable_classes_loaded
 
-      pattern = File.join(__dir__, "math", "function", "**", "*.rb")
-      Dir.glob(pattern).each { |file| require file }
+      # Dir.glob/require need a filesystem; under Opal the tree is build-loaded,
+      # so skip enumeration there rather than crash (mirrors symbols.rb).
+      if RUBY_ENGINE != "opal"
+        pattern = File.join(__dir__, "math", "function", "**", "*.rb")
+        Dir.glob(pattern).each { |file| require file }
+      end
       @documentable_classes_loaded = true
     end
 
