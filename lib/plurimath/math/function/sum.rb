@@ -4,7 +4,11 @@ module Plurimath
   module Math
     module Function
       class Sum < TernaryFunction
-        attr_accessor :options
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The summation of a sequence of terms over an index range."
+        REFERENCE = "https://en.wikipedia.org/wiki/Summation"
+        EXAMPLE = -> { new(sym("x"), sym("y"), sym("z")) }
+        # --- end catalog documentation ---
 
         FUNCTION = {
           name: "summation",
@@ -12,6 +16,8 @@ module Plurimath
           second_value: "supscript",
           third_value: "term",
         }.freeze
+
+        attr_accessor :options
 
         def evaluate(evaluator)
           if parameter_one.nil? || parameter_two.nil? || parameter_three.nil?
