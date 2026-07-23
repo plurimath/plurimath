@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Overset < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An expression set as an overscript above a base."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mover"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         attr_accessor :options
 
         FUNCTION = {

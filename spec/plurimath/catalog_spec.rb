@@ -1,11 +1,41 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Catalog do
-  it "enumerates the documented ternary functions in a stable, sorted order" do
-    expected = %w[
+  it "enumerates exactly the documented classes, sorted by catalog name" do
+    ternary = %w[
       fenced int limits multiscript oint powerbase prod rule sum underover
     ]
-    expect(described_class.classes.map(&:catalog_name)).to eq(expected)
+    # Grouped by declaring arity base (class hierarchy), not by catalog type:
+    # Menclose subclasses BinaryFunction but renders as unary (its catalog type
+    # is asserted below); the FontStyle subtree is listed separately.
+    binary = %w[
+      arg base color frac inf intent lim log menclose mod over overset power
+      root semantics stackrel underset
+    ]
+    font_styles = %w[
+      bold boldfraktur bolditalic boldsansserif boldscript doublestruck fraktur
+      italic monospace normal sansserif sansserifbolditalic sansserifitalic
+      script
+    ]
+    names = described_class.classes.map(&:catalog_name)
+    expect(names).to eq((ternary + binary + font_styles).sort)
+  end
+
+  it "overrides catalog_type to the site's semantic arity for font styles and menclose" do
+    type_of = described_class.classes.to_h { |k| [k.catalog_name, k.catalog_type] }
+    # Font styles (14) and Menclose subclass BinaryFunction but the site lists
+    # them as unary, so each overrides the inherited :binary type.
+    unary = %w[
+      menclose bold boldfraktur bolditalic boldsansserif boldscript
+      doublestruck fraktur italic monospace normal sansserif
+      sansserifbolditalic sansserifitalic script
+    ]
+    # The remaining un-excluded binary-arity classes keep the inherited :binary.
+    binary = %w[arg color intent overset semantics underset]
+    aggregate_failures do
+      unary.each { |name| expect(type_of[name]).to eq(:unary), "#{name} should be unary" }
+      binary.each { |name| expect(type_of[name]).to eq(:binary), "#{name} should be binary" }
+    end
   end
 
   it "renders every documented example across all four formats without error" do
@@ -26,7 +56,7 @@ RSpec.describe Plurimath::Catalog do
       aggregate_failures(entry["name"]) do
         expect(entry.keys).to match_array(keys)
         keys.each { |key| expect(entry[key]).not_to be_nil }
-        expect(entry["type"]).to eq("ternary")
+        expect(entry["type"]).not_to be_empty
         expect(entry["reference"]).to start_with("http")
       end
     end
@@ -53,12 +83,17 @@ RSpec.describe Plurimath::Catalog do
     end
   end
 
-  it "builds a full entry for a representative class end to end" do
-    entry = Plurimath::Math::Function::Sum.catalog_entry
+  it "builds full entries for representative classes end to end" do
+    sum = Plurimath::Math::Function::Sum.catalog_entry
+    expect(sum["name"]).to eq("sum")
+    expect(sum["type"]).to eq("ternary")
+    expect(sum["asciimath"]).to eq("sum_(x)^(y) z")
+    expect(sum["latexmath"]).to eq("\\sum_{x}^{y} z")
 
-    expect(entry["name"]).to eq("sum")
-    expect(entry["type"]).to eq("ternary")
-    expect(entry["asciimath"]).to eq("sum_(x)^(y) z")
-    expect(entry["latexmath"]).to eq("\\sum_{x}^{y} z")
+    frac = Plurimath::Math::Function::Frac.catalog_entry
+    expect(frac["name"]).to eq("frac")
+    expect(frac["type"]).to eq("binary")
+    expect(frac["asciimath"]).to eq("frac(x)(y)")
+    expect(frac["latexmath"]).to eq("\\frac{x}{y}")
   end
 end

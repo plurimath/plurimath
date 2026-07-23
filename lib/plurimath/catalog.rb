@@ -15,7 +15,7 @@ module Plurimath
     def classes
       ensure_documentable_classes_loaded
       documentable_bases
-        .flat_map(&:descendants)
+        .flat_map { |base| descendants_of(base) }
         .uniq
         .select(&:documented?)
         .sort_by(&:catalog_name)
@@ -33,7 +33,7 @@ module Plurimath
     # Base classes whose documented descendants are catalogued. Grows as later
     # PRs document the other arities and the symbols.
     def documentable_bases
-      [Math::Function::TernaryFunction]
+      [Math::Function::TernaryFunction, Math::Function::BinaryFunction]
     end
 
     # descendants only sees loaded classes, so require the source files of every
@@ -52,6 +52,14 @@ module Plurimath
       @documentable_classes_loaded = true
     end
 
-    private_class_method :documentable_bases, :ensure_documentable_classes_loaded
+    # descendants lists only direct subclasses, so walk the whole subtree —
+    # nested families (e.g. FontStyle's styles) live below the arity bases.
+    def descendants_of(klass)
+      Array(klass.descendants)
+        .flat_map { |descendant| [descendant, *descendants_of(descendant)] }
+    end
+
+    private_class_method :documentable_bases, :ensure_documentable_classes_loaded,
+                         :descendants_of
   end
 end

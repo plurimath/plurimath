@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Intent < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An expression carrying an `intent` annotation for MathML accessibility semantics."
+        REFERENCE = "https://www.w3.org/TR/mathml4/#mixing_intent"
+        EXAMPLE = -> { new(expr(sym("x")), Text.new("variable")) }
+        # --- end catalog documentation ---
+
         def to_mathml_without_math_tag(intent, options:)
           first_value = parameter_one.to_mathml_without_math_tag(intent,
                                                                  options: options)
