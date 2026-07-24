@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class Table
         class Multline < Table
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "Splits a single long equation across several lines."
+          REFERENCE = "https://en.wikibooks.org/wiki/LaTeX/Advanced_Mathematics"
+          EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+          # --- end catalog documentation ---
+
           def initialize(value,
                          open_paren = "[",
                          close_paren = "]",

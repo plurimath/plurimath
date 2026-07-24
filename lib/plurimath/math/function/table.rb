@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Function
       class Table < Core
+        extend Documentation
+
         autoload :Align, "#{__dir__}/table/align"
         autoload :Array, "#{__dir__}/table/array"
         autoload :Bmatrix, "#{__dir__}/table/bmatrix"
@@ -14,6 +16,14 @@ module Plurimath
         autoload :Pmatrix, "#{__dir__}/table/pmatrix"
         autoload :Split, "#{__dir__}/table/split"
         autoload :Vmatrix, "#{__dir__}/table/vmatrix"
+
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        # Declared once on the base and inherited by every matrix subclass.
+        CATALOG_TYPE = :unary
+        DESCRIPTION = "Arranges rows and cells into a two-dimensional table or matrix."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mtable"
+        EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+        # --- end catalog documentation ---
 
         attr_accessor :value, :open_paren, :close_paren, :options
 

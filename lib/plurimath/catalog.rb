@@ -12,10 +12,15 @@ module Plurimath
     module_function
 
     # Every documented class, sorted by catalog name for stable output.
+    # descendants_of returns a base's descendants but not the base itself, so
+    # each base is enumerated alongside them — otherwise a base that is itself
+    # documentable is missed (Table's own `table` page; Nary, which is both
+    # documentable and has no descendants). Abstract bases (the arity classes)
+    # declare no example and are dropped by documented?.
     def classes
       ensure_documentable_classes_loaded
       documentable_bases
-        .flat_map { |base| descendants_of(base) }
+        .flat_map { |base| [base, *descendants_of(base)] }
         .uniq
         .select(&:documented?)
         .sort_by(&:catalog_name)
@@ -37,6 +42,8 @@ module Plurimath
         Math::Function::TernaryFunction,
         Math::Function::BinaryFunction,
         Math::Function::UnaryFunction,
+        Math::Function::Table,
+        Math::Function::Nary,
       ]
     end
 

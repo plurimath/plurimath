@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class Table
         class Array < Table
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "Lays out entries in a matrix-like grid with per-column alignment."
+          REFERENCE = "https://en.wikibooks.org/wiki/LaTeX/Mathematics"
+          EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+          # --- end catalog documentation ---
+
           def initialize(value = [],
                          open_paren = "[",
                          close_paren = "]",

@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class Table
         class Eqarray < Table
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "Aligns an array of equations across multiple columns."
+          REFERENCE = "https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.2.pdf"
+          EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+          # --- end catalog documentation ---
+
           def initialize(value = [],
                          open_paren = "",
                          close_paren = "",

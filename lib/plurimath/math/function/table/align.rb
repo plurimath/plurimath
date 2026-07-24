@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class Table
         class Align < Table
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "Aligns a sequence of equations at designated alignment points, one equation per row."
+          REFERENCE = "https://en.wikibooks.org/wiki/LaTeX/Advanced_Mathematics"
+          EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+          # --- end catalog documentation ---
+
           def initialize(value,
                          open_paren = "[",
                          close_paren = "]",

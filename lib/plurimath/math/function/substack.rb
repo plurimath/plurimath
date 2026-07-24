@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Substack < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Stacks multiple lines within a subscript or superscript, as under a summation."
+        REFERENCE = "https://en.wikibooks.org/wiki/LaTeX/Advanced_Mathematics"
+        EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "substack",
           first_value: "above",

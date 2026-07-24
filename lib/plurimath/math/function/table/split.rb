@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class Table
         class Split < Table
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "Splits a single equation across aligned lines within another display."
+          REFERENCE = "https://en.wikibooks.org/wiki/LaTeX/Advanced_Mathematics"
+          EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+          # --- end catalog documentation ---
+
           def initialize(value,
                          open_paren = "[",
                          close_paren = "]",

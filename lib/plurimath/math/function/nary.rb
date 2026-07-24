@@ -4,6 +4,17 @@ module Plurimath
   module Math
     module Function
       class Nary < Core
+        extend Documentation
+
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        # The page slug is "n-ary" rather than the derived "nary".
+        CATALOG_NAME = "n-ary"
+        CATALOG_TYPE = :binary
+        DESCRIPTION = "A large n-ary operator, such as an integral, sum, or product, carrying optional lower and upper limits and an operand."
+        REFERENCE = "https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.2.pdf"
+        EXAMPLE = -> { new(sym("v"), sym("x"), sym("y"), sym("z")) }
+        # --- end catalog documentation ---
+
         attr_accessor :parameter_one, :parameter_two, :parameter_three,
                       :parameter_four, :options
 
