@@ -4,6 +4,14 @@ module Plurimath
   module Math
     module Function
       class Merror < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        # MathML-only element: it has no AsciiMath/LaTeX form, so those render
+        # empty — accepted for the catalog (no page vanishes).
+        DESCRIPTION = "Displays its argument as a MathML error message."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/merror"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def to_asciimath(**); end
 
         def to_latex(**); end

@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Text < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Typesets its argument as literal text."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mtext"
+        EXAMPLE = -> { new("x") }
+        # --- end catalog documentation ---
+
         PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}
 
         def initialize(parameter_one = "", lang: nil)

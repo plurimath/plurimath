@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Deg < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The degree of a polynomial."
+        REFERENCE = "https://en.wikipedia.org/wiki/Degree_of_a_polynomial"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end
