@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class Table
         class Vmatrix < Table
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "A matrix enclosed in single vertical bars, denoting a determinant; its capitalized Vmatrix form uses double bars for a norm."
+          REFERENCE = "https://en.wikipedia.org/wiki/Determinant"
+          EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+          # --- end catalog documentation ---
+
           def initialize(value,
                          open_paren = "|",
                          close_paren = "|",
