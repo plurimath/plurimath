@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Scarries < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Marks carries or borrows over a row in elementary arithmetic layout."
+        REFERENCE = "https://www.w3.org/TR/mathml4/#presm_mscarries"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def to_asciimath(options:)
           asciimath_value(options: options)
         end
