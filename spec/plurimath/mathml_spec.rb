@@ -4070,4 +4070,32 @@ RSpec.describe Plurimath::Mathml do
       end
     end
   end
+
+  # An operator with no dedicated Plurimath symbol class used to round-trip as
+  # `<mi rspace="...">`. Among token elements `rspace` is valid on `mo`, never
+  # on `mi`. plurimath/plurimath#476
+  describe "unrecognised operator with rspace round trip" do
+    subject(:token) do
+      xml = described_class.new(string).to_formula.to_mathml
+      Nokogiri::XML(xml).xpath("//*[@rspace]").first
+    end
+
+    context "contains an unrecognised operator carrying rspace" do
+      let(:string) do
+        '<math><mo rspace="thickmathspace">&#x2062;</mo></math>'
+      end
+
+      it "keeps the operator element" do
+        expect(token&.name).to eq("mo")
+      end
+
+      it "keeps the rspace attribute" do
+        expect(token&.attr("rspace")).to eq("thickmathspace")
+      end
+
+      it "keeps the invisible times character" do
+        expect(token&.text).to eq("⁢")
+      end
+    end
+  end
 end

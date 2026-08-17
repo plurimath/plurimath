@@ -46,11 +46,16 @@ module Plurimath
           if value&.include?("&#x2147;")
             attributes[:intent] = Utility.html_entity_to_unicode(value)
           end
-          attributes[:rspace] = @options[:rspace] if @options&.key?(:rspace)
-          mi_tag = ox_element("mi", attributes: attributes)
-          return mi_tag if ["{:", ":}"].include?(value)
+          # `rspace` is an operator attribute: MathML 4 allows it on `mo` (and
+          # `mpadded`), never on `mi`. A generic token that carries one must
+          # therefore serialize as `mo`, whatever produced it.
+          rspace = @options&.[](:rspace)
+          attributes[:rspace] = rspace unless rspace.nil?
+          tag_name = rspace.nil? ? "mi" : "mo"
+          token_tag = ox_element(tag_name, attributes: attributes)
+          return token_tag if ["{:", ":}"].include?(value)
 
-          value ? mi_tag << value : mi_tag
+          value ? token_tag << value : token_tag
         end
 
         def to_latex(**)
