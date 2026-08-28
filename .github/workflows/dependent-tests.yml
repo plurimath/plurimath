@@ -15,3 +15,5 @@ jobs:
     with:
       command: bundle exec rspec
       repos-json-file: .github/workflows/dependent-repos-ruby.json
+    secrets:
+      pat_token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
