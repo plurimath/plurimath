@@ -16,3 +16,5 @@ jobs:
       command: npm run build
       matrix_os: '["ubuntu-latest"]'
       repos-json-file: .github/workflows/dependent-repos-js.json
+    secrets:
+      pat_token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
