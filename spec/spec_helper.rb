@@ -8,6 +8,13 @@ if RUBY_ENGINE != "opal"
 end
 require "plurimath"
 require "plurimath/xml_engine/oga"
+begin
+  # leptris is a soft dependency; when the gem is available every example
+  # also runs against the LeptrisEngine (see the around hook below)
+  require "plurimath/xml_engine/leptris_engine"
+rescue LoadError
+  nil
+end
 require "rspec/matchers"
 require "rspec/core"
 if RUBY_ENGINE == "opal"
@@ -35,6 +42,14 @@ RSpec.configure do |config|
     Plurimath.xml_engine = Plurimath::XmlEngine::Oga
     Mml::V4::Configuration.adapter = :oga
     example.run
+    if defined?(Plurimath::XmlEngine::LeptrisEngine)
+      Plurimath.xml_engine = Plurimath::XmlEngine::LeptrisEngine
+      # mml's serialization adapter is a separate (moxml) layer from
+      # plurimath's engine; the leptris run inherits the oga run's :oga
+      # adapter — a :leptris mml adapter needs moxml >= 0.5, which the
+      # suite does not pull in
+      example.run
+    end
   end
 
   config.expect_with :rspec do |c|

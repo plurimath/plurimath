@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gemspec
 
 gem "canon"
+gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "oga"
 # gem "omml", github: "plurimath/omml", branch: "main"
