@@ -4,13 +4,19 @@ module Plurimath
   module Math
     module Function
       class Oint < TernaryFunction
-        attr_accessor :options
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The contour integral of a function along a closed path."
+        REFERENCE = "https://en.wikipedia.org/wiki/Contour_integration"
+        EXAMPLE = -> { new(sym("x"), sym("y"), sym("z")) }
+        # --- end catalog documentation ---
 
         FUNCTION = {
           name: "contour integral",
           first_value: "subscript",
           second_value: "supscript",
         }.freeze
+
+        attr_accessor :options
 
         def initialize(parameter_one = nil,
                        parameter_two = nil,

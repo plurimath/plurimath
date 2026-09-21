@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Fenced < TernaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Content enclosed by a pair of delimiters (fences), such as parentheses or brackets."
+        REFERENCE = "https://en.wikipedia.org/wiki/Bracket_(mathematics)"
+        EXAMPLE = -> { new(Math::Symbols::Paren::Lround.new, [sym("x")], Math::Symbols::Paren::Rround.new) }
+        # --- end catalog documentation ---
+
         include Mathml::FormulaTransformation
 
         attr_accessor :options

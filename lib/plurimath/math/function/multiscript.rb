@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Multiscript < TernaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A base carrying prescripts set before it, optionally alongside postscripts after it."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mmultiscripts"
+        EXAMPLE = -> { new(PowerBase.new(sym("x"), sym("y"), sym("z")), [sym("a")], [sym("b")]) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "multiscript",
           first_value: "base",

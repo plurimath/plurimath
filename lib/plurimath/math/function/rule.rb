@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Rule < TernaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A typographic rule — a filled rectangle used for spacing or lines, as in LaTeX's rule."
+        REFERENCE = "https://latexref.xyz/_005crule.html"
+        EXAMPLE = -> { new(sym("5pt"), sym("5pt"), sym("5pt")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "rule",
           first_value: "first argument",
