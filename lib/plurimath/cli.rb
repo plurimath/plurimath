@@ -2,8 +2,14 @@
 
 require "thor"
 require_relative "../plurimath"
+require_relative "cli/helpers"
+require_relative "cli/convert"
+require_relative "cli/render"
 
 module Plurimath
+  # Thor entry point. Declares each command's options and delegates to an
+  # independent, standalone command object (Cli::Convert / Cli::Render) that can
+  # also be used directly: `Plurimath::Cli::Render.new(options).call`.
   class Cli < Thor
     desc "convert", "Convert between math formats"
 
@@ -48,65 +54,57 @@ module Plurimath
            desc: "XML engine to use for parsing and rendering (ox or oga)"
 
     def convert
-      input          = options[:input]
-      input_string   = options[:file_path] ? File.read(options[:file_path]) : input
-      warn_and_exit("missing generator argument --input or --file-input") unless input_string
-
-      input_format   = options[:input_format]
-      output_format  = options[:output_format]
-      configure_xml_engine(input_format, output_format)
-      formula = Plurimath::Math.parse(input_string, input_format)
-      return puts formula.to_display(output_format.to_sym) if options[:math_rendering].to_s == "true"
-
-      display_style  = options[:display_style]
-      split          = options[:split_on_linebreak]
-      style          = display_style.to_s.empty? ? "true" : display_style
-      output_text = case output_format
-                    when "unicodemath"
-                      formula.to_unicodemath
-                    when "asciimath"
-                      formula.to_asciimath
-                    when "mathml"
-                      formula.to_mathml(display_style: style,
-                                        split_on_linebreak: split)
-                    when "latex"
-                      formula.to_latex
-                    when "omml"
-                      formula.to_omml(display_style: style,
-                                      split_on_linebreak: split)
-                    else
-                      warn_and_exit("Invalid output format: #{output_format}")
-                    end
-
-      puts output_text
+      Convert.new(options).call
     end
 
-    no_commands do
-      def configure_xml_engine(input_format, output_format)
-        xml_formats = %w[mathml omml]
-        return unless xml_formats.include?(input_format) || xml_formats.include?(output_format)
+    desc "render", "Render math to an image (svg/png/pdf/ps) via the optional lasem gem"
 
-        set_xml_engine(options[:xml_engine])
-      end
+    option :input,
+           aliases: "-i",
+           desc: "Input value should be in quoted string"
 
-      def set_xml_engine(engine)
-        engine_class = case engine
-                       when "ox"
-                         require_relative "setup/ox_engine"
-                         Plurimath::XmlEngine::OxEngine
-                       when "oga"
-                         require_relative "setup/oga"
-                         Plurimath::XmlEngine::Oga
-                       else
-                         warn_and_exit("Invalid XML engine: #{engine}. Use 'ox' or 'oga'.")
-                       end
-        Plurimath.xml_engine = engine_class
-      end
+    option :input_format,
+           aliases: "-f",
+           default: "asciimath",
+           desc: "Input format should be in quoted string => \"asciimath\""
 
-      def warn_and_exit(message)
-        warn(message)
-        abort
-      end
+    option :file_path,
+           aliases: "-p",
+           desc: "Reads input from a file instead of the command line input. Use this for larger inputs or when input contains special characters.",
+           force: :boolean
+
+    option :output,
+           aliases: "-o",
+           desc: "Output file path; the image format is taken from its extension (.svg/.png/.pdf/.ps). When omitted, the rendered bytes are written to stdout."
+
+    option :format,
+           aliases: "-r",
+           desc: "Image format (svg, png, pdf, ps). Used for stdout or when --output has no usable extension; a file's extension takes precedence. Defaults to svg."
+
+    option :display_style,
+           aliases: "-d",
+           desc: "DisplayStyle, Boolean only. Defaults to the parsed formula's display style.",
+           force: :boolean
+
+    option :split_on_linebreak,
+           aliases: "-s",
+           desc: "Splits into multiple equations. Note: lasem renders a single MathML document.",
+           force: :boolean
+
+    option :ppi, type: :numeric, desc: "Pixels per inch for raster output (lasem)"
+    option :zoom, type: :numeric, desc: "Render scale factor (lasem)"
+    option :width, type: :numeric, desc: "Explicit output width (lasem)"
+    option :height, type: :numeric, desc: "Explicit output height (lasem)"
+    option :offset_x, type: :numeric, desc: "Horizontal offset (lasem)"
+    option :offset_y, type: :numeric, desc: "Vertical offset (lasem)"
+
+    option :xml_engine,
+           aliases: "-e",
+           default: "ox",
+           desc: "XML engine to use for parsing and rendering (ox or oga)"
+
+    def render
+      Render.new(options).call
     end
   end
 end
