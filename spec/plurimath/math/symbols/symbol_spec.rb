@@ -99,6 +99,40 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
     end
   end
 
+  describe ".to_mathml with token options" do
+    subject(:formula) do
+      Plurimath.xml_engine.dump(
+        described_class.new(first_value, options: options)
+          .to_mathml_without_math_tag(false, options: {}),
+        indent: 2,
+      ).gsub("&amp;", "&")
+    end
+
+    # `rspace` is an operator attribute: MathML 4 admits it on `mo`, never on
+    # `mi`, so a generic token carrying one must serialize as an operator.
+    context "contains an rspace option" do
+      let(:first_value) { "&#x2062;" }
+      let(:options) { { rspace: "thickmathspace" } }
+
+      it "returns an mo element that keeps the rspace" do
+        expect(formula).to be_xml_equivalent_to(
+          '<mo rspace="thickmathspace">&#x2062;</mo>',
+        )
+      end
+    end
+
+    # Guards the condition above against being widened to "any option present":
+    # spacing symbols carry options too and must stay identifiers.
+    context "contains a non-operator option" do
+      let(:first_value) { "&#x2009;" }
+      let(:options) { { space: true } }
+
+      it "returns an mi element" do
+        expect(formula).to be_xml_equivalent_to("<mi>&#x2009;</mi>")
+      end
+    end
+  end
+
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex }
 
