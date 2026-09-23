@@ -37,4 +37,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "parslet"
   spec.add_dependency "thor"
   spec.add_dependency "unitsml", "~> 0.6.4"
+
+  # nokogiri is used by the MathML specs only (spec/spec_helper.rb,
+  # mathml_spec.rb); declared here so the suite resolves standalone —
+  # lutaml-model 0.8.5x no longer carries it transitively.
+  spec.add_development_dependency "nokogiri"
 end
