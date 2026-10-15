@@ -241,15 +241,14 @@ options:)
         end
 
         def underover(display_style, options:)
-          # Build Overset from source argument positions, not OMML child names,
-          # so shared under/over functions keep the same format-neutral model.
-          overset = Overset.new(parameter_one, parameter_three)
+          # Overset and Underset take script before base; OMML stores base in m:e.
+          overset = Overset.new(parameter_three, parameter_one)
           unless parameter_two
             return overset.to_omml_without_math_tag(display_style,
                                                     options: options)
           end
 
-          Underset.new(overset, parameter_two)&.to_omml_without_math_tag(
+          Underset.new(parameter_two, overset)&.to_omml_without_math_tag(
             display_style, options: options
           )
         end
