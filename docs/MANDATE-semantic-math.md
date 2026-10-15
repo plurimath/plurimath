@@ -51,11 +51,17 @@ constraint assertions all evaluate through this engine.
 
 ### P2 — the expression evaluation
 
-- **The grammar**: the precedence-climbing expression parser over the
-  Formula tree (or the direct parse): `implies` < `or` < `xor` < `and` <
+- **The grammar is formalized in PARG** — the same discipline as the
+  Primmel language itself (`expressions.parg` in this repository, compiled
+  through the parsanol toolchain): `implies` < `or` < `xor` < `and` <
   comparison (`<= >= < > = ≠`) < additive < multiplicative < unary <
   primary (the literals, the bound names, the calls, the parenthesised
-  groups). The booleans evaluate to `true/false`; `implies` short-circuits.
+  groups). One compiled artifact, every runtime: the Ruby reference via
+  parsanol-ruby, the JS/TS distributions via parsanol-ts's wasm runtime,
+  and Primmel's kernel embeds the same artifact for its limit blocks —
+  one grammar, three implementations, one vector suite as the gate. The
+  parse materializes the Formula tree (the semantic layer rides the
+  existing universal model — no second AST).
 - **The scope**: `Scope` — the bindings `name → QuantityValue | Boolean |
   Series`; the parse-time resolution (an unbound name is a parse error);
   the scope composes (the containment: the member scopes chain).
@@ -109,10 +115,12 @@ constraint assertions all evaluate through this engine.
 - The Primmel kernel parses the model, resolves the bindings, and builds
   the `Scope`; plurimath parses the expression source, typechecks it against
   the scope, evaluates, and returns the typed result + the diagnostics.
-- The expression grammar is **shared by contract**: the test vectors (the
-  source → the AST → the result) are the cross-implementation normative
-  suite; primmel-ts's TypeScript path and plurimath's Ruby reference both
-  pass them.
+- The expression grammar is **shared by artifact**: `expressions.parg` is
+  the single source; the compiled artifacts (Ruby, wasm/JS) are
+  checksummed like every PARG artifact; the `.pgtest` suites (the source →
+  the AST → the result) are the cross-implementation normative suite, and
+  Primmel's conformance runner gains the grammar-leg over the same
+  artifact. No implementation hand-writes the precedence climbing.
 - The distributions: the Ruby reference implementation here; the TS
   consumption through `plurimath-js`/`plurimath-ts` (existing) or the
   wasm — the vector suite is the integration gate either way.
