@@ -188,7 +188,7 @@ RSpec.describe Plurimath::Math::Formula do
                     </mstyle>
                     <mn>3</mn>
                   </msup>
-                  <mi rspace="thickmathspace">&#x2062;</mi>
+                  <mo rspace="thickmathspace">&#x2062;</mo>
                   <mstyle mathvariant="normal">
                     <mi>A</mi>
                   </mstyle>
@@ -198,6 +198,41 @@ RSpec.describe Plurimath::Math::Formula do
           </math>
         MATHML
         expect(mathml).to eql(expected_value)
+      end
+    end
+
+    # A composed unit inserts one multiplier spacer per separator, on top of
+    # the leading spacer. Those inner spacers used to be emitted as
+    # `<mi rspace="...">`, which no MathML 4 profile admits.
+    # plurimath/plurimath#476
+    context "contains a composed unit whose spacers must stay operators" do
+      let(:unitsml) { { xml: true, multiplier: :space } }
+      let(:exp) do
+        described_class.new([
+                              Plurimath::Math::Number.new("9"),
+                              Plurimath::Unitsml.new("kg*m/s^2").to_formula,
+                            ])
+      end
+
+      # Scoped to the presentation tree: the embedded UnitsML `UnitSymbol`
+      # carries its own MathML, whose spacers are the unitsml gem's output and
+      # not what this example is about.
+      let(:presentation) do
+        doc = Nokogiri::XML(mathml)
+        doc.xpath("//*[namespace-uri()='https://schema.unitsml.org/unitsml/1.0']")
+          .each(&:remove)
+        doc
+      end
+
+      it "emits no identifier carrying an rspace" do
+        expect(presentation.xpath("//*[local-name()='mi'][@rspace]")).to be_empty
+      end
+
+      it "emits an operator spacer for the leading and both separators" do
+        spacers = presentation
+          .xpath("//*[local-name()='mo'][@rspace='thickmathspace']")
+        expect(spacers.size).to eq(3)
+        expect(spacers.map(&:text).uniq).to eq(["⁢"])
       end
     end
   end
