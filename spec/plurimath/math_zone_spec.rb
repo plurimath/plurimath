@@ -198,8 +198,8 @@ RSpec.describe Plurimath::Math do
           |_ Math zone
             |_ "overset(sigma)(theta)"
                |_ "overset(sigma)(theta)" overset
-                  |_ "sigma" supscript
-                  |_ "theta" base
+                  |_ "sigma" base
+                  |_ "theta" supscript
         MATHZONE
         expect(formula).to eql(expected_value)
       end
@@ -729,8 +729,8 @@ RSpec.describe Plurimath::Math do
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover></mstyle></math>"
                |_ "<mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover>" overset
-                  |_ "<mi>&#x3c3;</mi>" supscript
-                  |_ "<mi>&#x3b8;</mi>" base
+                  |_ "<mi>&#x3c3;</mi>" base
+                  |_ "<mi>&#x3b8;</mi>" supscript
         MATHZONE
         expect(formula).to eql(expected_value)
       end
@@ -1715,8 +1715,8 @@ RSpec.describe Plurimath::Math do
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
                |_ "<m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3c3;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3b8;</m:t></m:r></m:lim></m:limUpp>" overset
-                  |_ "<m:t>&#x3b8;</m:t>" supscript
-                  |_ "<m:t>&#x3c3;</m:t>" base
+                  |_ "<m:t>&#x3b8;</m:t>" base
+                  |_ "<m:t>&#x3c3;</m:t>" supscript
         MATHZONE
         expect(formula).to eql(expected_value)
       end
@@ -2475,29 +2475,29 @@ RSpec.describe Plurimath::Math do
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3c3;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
                |_ "<m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3c3;</m:t></m:r></m:lim></m:limUpp>" overset
-                  |_ "<m:t>&#x3c3;</m:t>" supscript
-                  |_ "<m:t>&#x3b8;</m:t>" base
+                  |_ "<m:t>&#x3c3;</m:t>" base
+                  |_ "<m:t>&#x3b8;</m:t>" supscript
         OMML
         latex = <<~LATEX
           |_ Math zone
             |_ "\\overset{\\sigma}{\\theta}"
                |_ "\\overset{\\sigma}{\\theta}" overset
-                  |_ "\\sigma" supscript
-                  |_ "\\theta" base
+                  |_ "\\sigma" base
+                  |_ "\\theta" supscript
         LATEX
         mathml = <<~MATHML
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover></mstyle></math>"
                |_ "<mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover>" overset
-                  |_ "<mi>&#x3c3;</mi>" supscript
-                  |_ "<mi>&#x3b8;</mi>" base
+                  |_ "<mi>&#x3c3;</mi>" base
+                  |_ "<mi>&#x3b8;</mi>" supscript
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
             |_ "overset(sigma)(theta)"
                |_ "overset(sigma)(theta)" overset
-                  |_ "sigma" supscript
-                  |_ "theta" base
+                  |_ "sigma" base
+                  |_ "theta" supscript
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
@@ -3350,29 +3350,29 @@ RSpec.describe Plurimath::Math do
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3c3;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
                |_ "<m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3c3;</m:t></m:r></m:lim></m:limUpp>" overset
-                  |_ "<m:t>&#x3c3;</m:t>" supscript
-                  |_ "<m:t>&#x3b8;</m:t>" base
+                  |_ "<m:t>&#x3c3;</m:t>" base
+                  |_ "<m:t>&#x3b8;</m:t>" supscript
         OMML
         latex = <<~LATEX
           |_ Math zone
             |_ "\\overset{\\sigma}{\\theta}"
                |_ "\\overset{\\sigma}{\\theta}" overset
-                  |_ "\\sigma" supscript
-                  |_ "\\theta" base
+                  |_ "\\sigma" base
+                  |_ "\\theta" supscript
         LATEX
         mathml = <<~MATHML
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover></mstyle></math>"
                |_ "<mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover>" overset
-                  |_ "<mi>&#x3c3;</mi>" supscript
-                  |_ "<mi>&#x3b8;</mi>" base
+                  |_ "<mi>&#x3c3;</mi>" base
+                  |_ "<mi>&#x3b8;</mi>" supscript
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
             |_ "overset(sigma)(theta)"
                |_ "overset(sigma)(theta)" overset
-                  |_ "sigma" supscript
-                  |_ "theta" base
+                  |_ "sigma" base
+                  |_ "theta" supscript
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
@@ -4377,29 +4377,29 @@ RSpec.describe Plurimath::Math do
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3c3;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
                |_ "<m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3c3;</m:t></m:r></m:lim></m:limUpp>" overset
-                  |_ "<m:t>&#x3c3;</m:t>" supscript
-                  |_ "<m:t>&#x3b8;</m:t>" base
+                  |_ "<m:t>&#x3c3;</m:t>" base
+                  |_ "<m:t>&#x3b8;</m:t>" supscript
         OMML
         latex = <<~LATEX
           |_ Math zone
             |_ "\\overset{\\sigma}{\\theta}"
                |_ "\\overset{\\sigma}{\\theta}" overset
-                  |_ "\\sigma" supscript
-                  |_ "\\theta" base
+                  |_ "\\sigma" base
+                  |_ "\\theta" supscript
         LATEX
         mathml = <<~MATHML
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover></mstyle></math>"
                |_ "<mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover>" overset
-                  |_ "<mi>&#x3c3;</mi>" supscript
-                  |_ "<mi>&#x3b8;</mi>" base
+                  |_ "<mi>&#x3c3;</mi>" base
+                  |_ "<mi>&#x3b8;</mi>" supscript
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
             |_ "overset(sigma)(theta)"
                |_ "overset(sigma)(theta)" overset
-                  |_ "sigma" supscript
-                  |_ "theta" base
+                  |_ "sigma" base
+                  |_ "theta" supscript
         ASCIIMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)
@@ -5291,36 +5291,36 @@ RSpec.describe Plurimath::Math do
           |_ Math zone
             |_ "<m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"><m:oMath><m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3c3;</m:t></m:r></m:lim></m:limUpp></m:oMath></m:oMathPara>"
                |_ "<m:limUpp><m:limUppPr><m:ctrlPr><w:rPr><w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/></w:rPr></m:ctrlPr></m:limUppPr><m:e><m:r><m:t>&#x3b8;</m:t></m:r></m:e><m:lim><m:r><m:t>&#x3c3;</m:t></m:r></m:lim></m:limUpp>" overset
-                  |_ "<m:t>&#x3c3;</m:t>" supscript
-                  |_ "<m:t>&#x3b8;</m:t>" base
+                  |_ "<m:t>&#x3c3;</m:t>" base
+                  |_ "<m:t>&#x3b8;</m:t>" supscript
         OMML
         latex = <<~LATEX
           |_ Math zone
             |_ "\\overset{\\sigma}{\\theta}"
                |_ "\\overset{\\sigma}{\\theta}" overset
-                  |_ "\\sigma" supscript
-                  |_ "\\theta" base
+                  |_ "\\sigma" base
+                  |_ "\\theta" supscript
         LATEX
         mathml = <<~MATHML
           |_ Math zone
             |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover></mstyle></math>"
                |_ "<mover><mi>&#x3b8;</mi><mi>&#x3c3;</mi></mover>" overset
-                  |_ "<mi>&#x3c3;</mi>" supscript
-                  |_ "<mi>&#x3b8;</mi>" base
+                  |_ "<mi>&#x3c3;</mi>" base
+                  |_ "<mi>&#x3b8;</mi>" supscript
         MATHML
         asciimath = <<~ASCIIMATH
           |_ Math zone
             |_ "overset(sigma)(theta)"
                |_ "overset(sigma)(theta)" overset
-                  |_ "sigma" supscript
-                  |_ "theta" base
+                  |_ "sigma" base
+                  |_ "theta" supscript
         ASCIIMATH
         unicodemath = <<~UNICODEMATH
           |_ Math zone
             |_ "(θ)┴(σ)"
                |_ "(θ)┴(σ)" overset
-                  |_ "σ" supscript
-                  |_ "θ" base
+                  |_ "σ" base
+                  |_ "θ" supscript
         UNICODEMATH
         expect(formula.to_display(:omml)).to eql(omml)
         expect(formula.to_display(:latex)).to eql(latex)

@@ -8,8 +8,8 @@ module Plurimath
 
         FUNCTION = {
           name: "overset",
-          first_value: "supscript",
-          second_value: "base",
+          first_value: "base",
+          second_value: "supscript",
         }.freeze
 
         def initialize(
