@@ -97,8 +97,11 @@ module Plurimath
                        when "oga"
                          require_relative "setup/oga"
                          Plurimath::XmlEngine::Oga
+                       when "leptris"
+                         require_relative "setup/leptris_engine"
+                         Plurimath::XmlEngine::LeptrisEngine
                        else
-                         warn_and_exit("Invalid XML engine: #{engine}. Use 'ox' or 'oga'.")
+                         warn_and_exit("Invalid XML engine: #{engine}. Use 'ox', 'oga' or 'leptris'.")
                        end
         Plurimath.xml_engine = engine_class
       end
