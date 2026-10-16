@@ -23,7 +23,7 @@ module Plurimath
         end
 
         def to_latex(options:)
-          "\\operatorname{lcm}{#{latex_value(options: options)}}"
+          "lcm{#{latex_value(options: options)}}"
         end
 
         def to_omml_without_math_tag(display_style, options:)

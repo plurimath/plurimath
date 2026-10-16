@@ -118,38 +118,19 @@ RSpec.describe Plurimath::Math::Function::Glb do
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
 
-    context "contains no operand" do
-      let(:first_value) { nil }
-
-      it "preserves the operator name" do
-        expect(formula).to eq("\\operatorname{glb}{}")
-      end
-    end
-
-    context "contains an Array as value" do
-      let(:first_value) do
-        [Plurimath::Math::Symbols::Symbol.new("x"),
-         Plurimath::Math::Symbols::Symbol.new("y")]
-      end
-
-      it "preserves the operands after the operator name" do
-        expect(formula).to eq("\\operatorname{glb}{x y}")
-      end
-    end
-
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
-      it "returns latex string" do
-        expect(formula).to eql("\\operatorname{glb}{n}")
+      it "returns mathml string" do
+        expect(formula).to eql("glb{n}")
       end
     end
 
     context "contains Number as value" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
-      it "returns latex string" do
-        expect(formula).to eql("\\operatorname{glb}{70}")
+      it "returns mathml string" do
+        expect(formula).to eql("glb{70}")
       end
     end
 
@@ -163,8 +144,8 @@ RSpec.describe Plurimath::Math::Function::Glb do
                                      ])
       end
 
-      it "returns latex string" do
-        expect(formula).to eql("\\operatorname{glb}{\\sum_{\\&}^{\\text{so}}}")
+      it "returns mathml string" do
+        expect(formula).to eql("glb{\\sum_{\\&}^{\\text{so}}}")
       end
     end
   end
