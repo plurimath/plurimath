@@ -11,7 +11,7 @@ module Plurimath
         end
 
         def to_latex(options:)
-          "{\\lVert #{parameter_one&.to_latex(options: options)} \\lVert}"
+          "{\\lVert #{parameter_one&.to_latex(options: options)} \\rVert}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
