@@ -9,7 +9,7 @@ module Plurimath
         end
 
         def to_latex(options:)
-          "glb{#{latex_value(options: options)}}"
+          "\\operatorname{glb}{#{latex_value(options: options)}}"
         end
 
         def to_omml_without_math_tag(display_style, options:)
