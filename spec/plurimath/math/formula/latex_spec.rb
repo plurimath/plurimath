@@ -13585,7 +13585,7 @@ RSpec.describe Plurimath::Math::Formula do
                             ])
       end
       let(:expected_value) do
-        "a_{\\{\\left.\\begin{matrix}{a}11\\end{matrix}\\right.\\}}^{4terms}"
+        "a_{\\{\\left.\\begin{matrix}11\\end{matrix}\\right.\\}}^{4terms}"
       end
 
       it "returns formula" do

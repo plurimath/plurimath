@@ -15,9 +15,24 @@ module Plurimath
         hex_number |
           binary_number |
           octal_number |
-          (match("[0-9]").repeat(1) >> decimal_marker >> match("[0-9]").repeat(1)).as(:number) |
-          match("[0-9]").repeat(1).as(:number) |
+          decimal_number.as(:number) |
           str(".").as(:symbol)
+      end
+
+      rule(:decimal_number) do
+        (match("[0-9]").repeat(1) >> decimal_marker >> match("[0-9]").repeat(1)) |
+          match("[0-9]").repeat(1)
+      end
+
+      rule(:decimal_operand) do
+        (hex_number | binary_number | octal_number).absent? >> decimal_number
+      end
+
+      rule(:signed_number) { (str("-") >> decimal_operand).as(:number) }
+      rule(:script_operand) { signed_number | sequence }
+      rule(:mod_operand) do
+        (str("-") >> decimal_operand.present? >> iteration).as(:negative_mod_operand) |
+          iteration
       end
 
       rule(:controversial_symbols)   { power_base | expression }
@@ -92,9 +107,9 @@ module Plurimath
       end
 
       rule(:power_base) do
-        (base >> space? >> sequence.as(:base_value) >> power >> (power >> power.maybe).absent? >> space? >> sequence.as(:power_value)) |
-          (space? >> base >> space? >> sequence.as(:base_value)).as(:base) |
-          (space? >> power >> (power >> power.maybe).absent? >> space? >> sequence.as(:power_value)).as(:power) |
+        (base >> space? >> script_operand.as(:base_value) >> power >> (power >> power.maybe).absent? >> space? >> script_operand.as(:power_value)) |
+          (space? >> base >> space? >> script_operand.as(:base_value)).as(:base) |
+          (space? >> power >> (power >> power.maybe).absent? >> space? >> script_operand.as(:power_value)).as(:power) |
           (space? >> base >> space? >> power.as(:symbol).as(:base_value)).as(:base) |
           (space? >> power >> (power >> power.maybe).absent? >> space? >> base.as(:symbol).as(:power_value)).as(:power)
       end
@@ -135,9 +150,9 @@ module Plurimath
       end
 
       rule(:mod) do
-        (sequence.as(:dividend) >> space? >> str("mod").as(:mod) >> space? >> iteration.as(:divisor)).as(:mod) |
-          ((power_base_rules >> power_base).as(:dividend) >> space? >> str("mod").as(:mod) >> space? >> iteration.as(:divisor)).as(:mod) |
-          (power_base_rules.as(:dividend) >> space? >> str("mod").as(:mod) >> space? >> iteration.as(:divisor)).as(:mod)
+        (sequence.as(:dividend) >> space? >> str("mod").as(:mod) >> space? >> mod_operand.as(:divisor)).as(:mod) |
+          ((power_base_rules >> power_base).as(:dividend) >> space? >> str("mod").as(:mod) >> space? >> mod_operand.as(:divisor)).as(:mod) |
+          (power_base_rules.as(:dividend) >> space? >> str("mod").as(:mod) >> space? >> mod_operand.as(:divisor)).as(:mod)
       end
 
       rule(:iteration) do
