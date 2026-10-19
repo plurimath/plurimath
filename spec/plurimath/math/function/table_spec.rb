@@ -182,6 +182,49 @@ RSpec.describe Plurimath::Math::Function::Table do
       described_class.new([first_value]).to_latex(options: {})
     end
 
+    context "contains multiple rows" do
+      subject(:formula) do
+        described_class.new([first_value, first_value]).to_latex(options: {})
+      end
+
+      let(:first_value) do
+        Plurimath::Math::Function::Tr.new([
+                                            Plurimath::Math::Function::Td.new([
+                                                                                Plurimath::Math::Symbols::Symbol.new("x"),
+                                                                              ]),
+                                            Plurimath::Math::Function::Td.new([
+                                                                                Plurimath::Math::Symbols::Symbol.new("y"),
+                                                                              ]),
+                                          ])
+      end
+
+      it "preserves the rows without adding column text" do
+        expect(formula).to eq("\\left .\\begin{matrix}x & y \\\\ x & y\\end{matrix}\\right .")
+      end
+
+      context "contains explicit parentheses" do
+        subject(:formula) do
+          described_class.new([first_value, first_value], "(", ")").to_latex(options: {})
+        end
+
+        it "preserves the surrounding parentheses" do
+          expect(formula).to eq("\\left (\\begin{matrix}x & y \\\\ x & y\\end{matrix}\\right )")
+        end
+      end
+
+      context "contains norm delimiters" do
+        subject(:formula) do
+          described_class.new([first_value, first_value],
+                              Plurimath::Math::Symbols::Paren::Norm.new,
+                              Plurimath::Math::Symbols::Paren::Norm.new).to_latex(options: {})
+        end
+
+        it "preserves the Vmatrix environment" do
+          expect(formula).to eq("\\begin{Vmatrix}x & y \\\\ x & y\\end{Vmatrix}")
+        end
+      end
+    end
+
     context "contains Symbol as value" do
       let(:first_value) do
         Plurimath::Math::Function::Tr.new([
@@ -191,8 +234,8 @@ RSpec.describe Plurimath::Math::Function::Table do
                                           ])
       end
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\left .\\begin{matrix}{a}\\kappa\\end{matrix}\\right .")
+      it "returns latex string" do
+        expect(formula).to eql("\\left .\\begin{matrix}\\kappa\\end{matrix}\\right .")
       end
     end
 
@@ -206,8 +249,8 @@ RSpec.describe Plurimath::Math::Function::Table do
                                           ])
       end
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\left .\\begin{matrix}{a}\\kappa 70\\end{matrix}\\right .")
+      it "returns latex string" do
+        expect(formula).to eql("\\left .\\begin{matrix}\\kappa 70\\end{matrix}\\right .")
       end
     end
 
@@ -228,8 +271,8 @@ RSpec.describe Plurimath::Math::Function::Table do
                                           ])
       end
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\left .\\begin{matrix}{aa}\\kappa & \\sum_{\\&}^{\\text{so}}\\end{matrix}\\right .")
+      it "returns latex string" do
+        expect(formula).to eql("\\left .\\begin{matrix}\\kappa & \\sum_{\\&}^{\\text{so}}\\end{matrix}\\right .")
       end
     end
   end

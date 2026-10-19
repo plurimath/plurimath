@@ -2611,7 +2611,7 @@ RSpec.describe Plurimath::Math do
         OMML
         latex = <<~LATEX
           |_ Math zone
-            |_ "\\abs{x} {\\lfloor x \\rfloor} {\\lceil x \\rceil} {\\lVert \\vec{x} \\lVert}"
+            |_ "\\abs{x} {\\lfloor x \\rfloor} {\\lceil x \\rceil} {\\lVert \\vec{x} \\rVert}"
                |_ "\\abs{x}" function apply
                |  |_ "abs" function name
                |  |_ "x" argument
@@ -2621,7 +2621,7 @@ RSpec.describe Plurimath::Math do
                |_ "{\\lceil x \\rceil}" function apply
                |  |_ "ceil" function name
                |  |_ "x" argument
-               |_ "{\\lVert \\vec{x} \\lVert}" function apply
+               |_ "{\\lVert \\vec{x} \\rVert}" function apply
                   |_ "norm" function name
                   |_ "\\vec{x}" argument
                      |_ "\\vec{x}" function apply

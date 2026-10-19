@@ -121,19 +121,29 @@ RSpec.describe Plurimath::Math::Function::Norm do
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
 
+    context "contains a nested norm" do
+      let(:first_value) do
+        described_class.new(Plurimath::Math::Symbols::Symbol.new("x"))
+      end
+
+      it "closes both norms with a right delimiter" do
+        expect(formula).to eq("{\\lVert {\\lVert x \\rVert} \\rVert}")
+      end
+    end
+
     context "contains Symbol as value" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
 
-      it "returns mathml string" do
-        expect(formula).to eql("{\\lVert n \\lVert}")
+      it "returns latex string" do
+        expect(formula).to eql("{\\lVert n \\rVert}")
       end
     end
 
     context "contains Number as value" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
 
-      it "returns mathml string" do
-        expect(formula).to eql("{\\lVert 70 \\lVert}")
+      it "returns latex string" do
+        expect(formula).to eql("{\\lVert 70 \\rVert}")
       end
     end
 
@@ -147,8 +157,8 @@ RSpec.describe Plurimath::Math::Function::Norm do
                                      ])
       end
 
-      it "returns mathml string" do
-        expect(formula).to eql("{\\lVert \\sum_{\\&}^{\\text{so}} \\lVert}")
+      it "returns latex string" do
+        expect(formula).to eql("{\\lVert \\sum_{\\&}^{\\text{so}} \\rVert}")
       end
     end
   end
