@@ -30,7 +30,7 @@ RSpec.describe Plurimath::Math::Symbols::Bigwedge do
 
       it "matches MathML string" do
         string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mi>&#x22c0;</mi>")
+        expect(string).to eq("<mo>&#x22c0;</mo>")
       end
 
       it "matches HTML string" do
