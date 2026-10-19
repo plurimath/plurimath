@@ -218,19 +218,24 @@ RSpec.describe Plurimath::Math::Formula do
       # carries its own MathML, whose spacers are the unitsml gem's output and
       # not what this example is about.
       let(:presentation) do
-        doc = Nokogiri::XML(mathml)
-        doc.xpath("//*[namespace-uri()='https://schema.unitsml.org/unitsml/1.0']")
-          .each(&:remove)
+        doc = Oga.parse_xml(mathml)
+        doc.xpath("//*").select do |node|
+          node.namespace&.uri == "https://schema.unitsml.org/unitsml/1.0"
+        end.each(&:remove)
         doc
       end
 
       it "emits no identifier carrying an rspace" do
-        expect(presentation.xpath("//*[local-name()='mi'][@rspace]")).to be_empty
+        identifiers = presentation.xpath("//*").select do |node|
+          node.name == "mi" && node.get("rspace")
+        end
+        expect(identifiers).to be_empty
       end
 
       it "emits an operator spacer for the leading and both separators" do
-        spacers = presentation
-          .xpath("//*[local-name()='mo'][@rspace='thickmathspace']")
+        spacers = presentation.xpath("//*").select do |node|
+          node.name == "mo" && node.get("rspace") == "thickmathspace"
+        end
         expect(spacers.size).to eq(3)
         expect(spacers.map(&:text).uniq).to eq(["⁢"])
       end

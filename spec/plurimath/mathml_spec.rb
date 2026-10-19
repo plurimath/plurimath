@@ -4077,7 +4077,7 @@ RSpec.describe Plurimath::Mathml do
   describe "unrecognised operator with rspace round trip" do
     subject(:token) do
       xml = described_class.new(string).to_formula.to_mathml
-      Nokogiri::XML(xml).xpath("//*[@rspace]").first
+      Oga.parse_xml(xml).xpath("//*[@rspace]").first
     end
 
     context "contains an unrecognised operator carrying rspace" do
@@ -4090,7 +4090,7 @@ RSpec.describe Plurimath::Mathml do
       end
 
       it "keeps the rspace attribute" do
-        expect(token&.attr("rspace")).to eq("thickmathspace")
+        expect(token&.get("rspace")).to eq("thickmathspace")
       end
 
       it "keeps the invisible times character" do
