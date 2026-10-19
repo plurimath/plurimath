@@ -4,6 +4,103 @@ RSpec.describe Plurimath::Asciimath::Parser do
   describe ".parse" do
     subject(:formula) { described_class.new(string).parse }
 
+    [
+      ["a^-2", :Power, ["-2"]],
+      ["a_-2", :Base, ["-2"]],
+      ["a_1^-2", :PowerBase, ["1", "-2"]],
+      ["a_-2^3", :PowerBase, ["-2", "3"]],
+      ["a^-2.5", :Power, ["-2.5"]],
+    ].each do |input, function, operands|
+      context "when contains signed numeric operand #{input}" do
+        let(:string) { input }
+        let(:expected_value) do
+          Plurimath::Math::Formula.new([
+                                         Plurimath::Math::Function.const_get(function).new(
+                                           Plurimath::Math::Symbols::Symbol.new("a"),
+                                           *operands.map { |value| Plurimath::Math::Number.new(value) },
+                                         ),
+                                       ])
+        end
+
+        it "keeps the signed number inside the script operand" do
+          expect(formula).to eq(expected_value)
+        end
+      end
+    end
+
+    context "when contains signed numeric operand 7 mod -3" do
+      let(:string) { "7 mod -3" }
+      let(:expected_value) do
+        Plurimath::Math::Formula.new([
+                                       Plurimath::Math::Function::Mod.new(
+                                         Plurimath::Math::Number.new("7"),
+                                         Plurimath::Math::Number.new("-3"),
+                                       ),
+                                     ])
+      end
+
+      it "keeps the signed number inside the modulo operand" do
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains a signed numeric operand with a decimal comma" do
+      around do |example|
+        Plurimath.with_configuration do |config|
+          config.locale = :fr
+          example.run
+        end
+      end
+
+      let(:string) { "a^-2,5" }
+      let(:expected_value) do
+        Plurimath::Math::Formula.new([
+                                       Plurimath::Math::Function::Power.new(
+                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                         Plurimath::Math::Number.new("-2,5"),
+                                       ),
+                                     ])
+      end
+
+      it "keeps the locale's signed decimal inside the script" do
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains a signed base-prefixed script operand" do
+      let(:string) { "a^-0xFF" }
+      let(:expected_value) do
+        Plurimath::Math::Formula.new([
+                                       Plurimath::Math::Function::Power.new(
+                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                         Plurimath::Math::Symbols::Minus.new,
+                                       ),
+                                       Plurimath::Math::Number.new("FF", base: 16),
+                                     ])
+      end
+
+      it "preserves base-prefixed tokens outside the decimal fix" do
+        expect(formula).to eq(expected_value)
+      end
+    end
+
+    context "when contains a leading plus in a script operand" do
+      let(:string) { "a^+2" }
+      let(:expected_value) do
+        Plurimath::Math::Formula.new([
+                                       Plurimath::Math::Function::Power.new(
+                                         Plurimath::Math::Symbols::Symbol.new("a"),
+                                         Plurimath::Math::Symbols::Plus.new,
+                                       ),
+                                       Plurimath::Math::Number.new("2"),
+                                     ])
+      end
+
+      it "preserves the reference AsciiMath plus-sign binding" do
+        expect(formula).to eq(expected_value)
+      end
+    end
+
     context "when contains Cos function string" do
       let(:string) { "unitsml(V*s//A,symbol:V cdot s//A)" }
 

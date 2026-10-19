@@ -15,6 +15,14 @@ module Plurimath
       rule(rparen: simple(:rparen)) { Utility.asciimath_symbol_object(rparen) }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
+      rule(negative_mod_operand: simple(:operand)) do
+        if operand.is_a?(Math::Number)
+          Math::Number.new("-#{operand.value}")
+        else
+          Math::Formula.new([Math::Symbols::Minus.new, operand])
+        end
+      end
+
       rule(ternary: simple(:ternary))       { ternary }
       rule(sequence: simple(:sequence))     { sequence }
       rule(table_row: simple(:table_row))   { table_row }

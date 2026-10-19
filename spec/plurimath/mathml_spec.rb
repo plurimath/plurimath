@@ -1948,7 +1948,7 @@ RSpec.describe Plurimath::Mathml do
             </mstyle>
           </math>
         MATHML
-        latex = "\\left .\\begin{matrix}{a}\\cup F \\\\ \\cup E\\end{matrix}\\right ."
+        latex = "\\left .\\begin{matrix}\\cup F \\\\ \\cup E\\end{matrix}\\right ."
         asciimath = "[[uu F], [uu E]]"
         expect(formula.to_latex).to eq(latex)
         expect(formula.to_mathml(unary_function_spacing: false)).to be_xml_equivalent_to(mathml)
