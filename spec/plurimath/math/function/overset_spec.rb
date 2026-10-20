@@ -9,14 +9,14 @@ RSpec.describe Plurimath::Math::Function::Overset do
     [true, false].each do |display_style|
       context "with display_style #{display_style}" do
         it "exports the base and script in their OMML fields" do
-          document = Nokogiri::XML(formula.to_omml(display_style: display_style))
+          document = Oga.parse_xml(formula.to_omml(display_style: display_style))
           namespace = { "m" => "http://schemas.openxmlformats.org/officeDocument/2006/math" }
           object_tag = display_style ? "limUpp" : "sSup"
           script_tag = display_style ? "lim" : "sup"
-          object = document.at_xpath("//m:#{object_tag}", namespace)
+          object = document.at_xpath("//m:#{object_tag}", namespaces: namespace)
 
-          expect(object.at_xpath("m:e", namespace).text.strip).to eq("y")
-          expect(object.at_xpath("m:#{script_tag}", namespace).text.strip).to eq("x")
+          expect(object.at_xpath("m:e", namespaces: namespace).text.strip).to eq("y")
+          expect(object.at_xpath("m:#{script_tag}", namespaces: namespace).text.strip).to eq("x")
         end
       end
     end

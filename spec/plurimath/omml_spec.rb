@@ -1,5 +1,4 @@
 require "spec_helper"
-require "nokogiri"
 require "plurimath/fixtures/formula_modules/line_break_values"
 
 RSpec.describe Plurimath::Omml do
@@ -679,9 +678,9 @@ RSpec.describe Plurimath::Omml do
         formula = described_class.new([
                                         Plurimath::Math::Function.const_get(function).new(base),
                                       ])
-        document = Nokogiri::XML(formula.to_omml, &:noblanks)
-        expect(document.at_xpath("//m:limUpp/m:e | //m:limLow/m:e", namespaces).text).to eq("body")
-        expect(document.at_xpath("//m:limUpp/m:lim | //m:limLow/m:lim", namespaces).text).to eq(script)
+        document = Oga.parse_xml(formula.to_omml)
+        expect(document.xpath("//m:limUpp/m:e//m:t | //m:limLow/m:e//m:t", namespaces: namespaces).map(&:text).join).to eq("body")
+        expect(document.xpath("//m:limUpp/m:lim//m:t | //m:limLow/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq(script)
       end
     end
 
@@ -689,25 +688,27 @@ RSpec.describe Plurimath::Omml do
       formula = described_class.new([
                                       Plurimath::Math::Function::Lim.new(subscript, superscript),
                                     ])
-      document = Nokogiri::XML(formula.to_omml, &:noblanks)
-      expect(document.at_xpath("//m:limLow/m:lim", namespaces).text).to eq("lower")
-      expect(document.at_xpath("//m:limLow/m:e/m:limUpp/m:lim", namespaces).text).to eq("upper")
-      expect(document.at_xpath("//m:limLow/m:e/m:limUpp/m:e", namespaces).text).to eq("lim")
+      document = Oga.parse_xml(formula.to_omml)
+      expect(document.xpath("//m:limLow/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq("lower")
+      expect(document.xpath("//m:limLow/m:e/m:limUpp/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq("upper")
+      expect(document.xpath("//m:limLow/m:e/m:limUpp/m:e//m:t", namespaces: namespaces).map(&:text).join).to eq("lim")
     end
 
     it "keeps both limits around a ternary base expression" do
       formula = described_class.new([
                                       Plurimath::Math::Function::Underover.new(base, subscript, superscript),
                                     ])
-      document = Nokogiri::XML(formula.to_omml, &:noblanks)
-      expect(document.at_xpath("//m:limLow/m:lim", namespaces).text).to eq("lower")
-      expect(document.at_xpath("//m:limLow/m:e/m:limUpp/m:lim", namespaces).text).to eq("upper")
-      expect(document.at_xpath("//m:limLow/m:e/m:limUpp/m:e", namespaces).text).to eq("body")
+      document = Oga.parse_xml(formula.to_omml)
+      expect(document.xpath("//m:limLow/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq("lower")
+      expect(document.xpath("//m:limLow/m:e/m:limUpp/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq("upper")
+      expect(document.xpath("//m:limLow/m:e/m:limUpp/m:e//m:t", namespaces: namespaces).map(&:text).join).to eq("body")
     end
 
     it "keeps the continuation of a split hat expression as a base" do
-      document = Nokogiri::XML(LineBreakValues::LineBreak_019.to_omml(split_on_linebreak: true), &:noblanks)
-      bases = document.xpath("//m:limUpp/m:e", namespaces).map(&:text)
+      document = Oga.parse_xml(LineBreakValues::LineBreak_019.to_omml(split_on_linebreak: true))
+      bases = document.xpath("//m:limUpp/m:e", namespaces: namespaces).map do |base|
+        base.xpath(".//m:t", namespaces: namespaces).map(&:text).join
+      end
       expect(bases).to eq(["as", "df"])
     end
   end
