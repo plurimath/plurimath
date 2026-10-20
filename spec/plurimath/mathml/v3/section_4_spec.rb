@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../../../support/shared_model_fixtures"
 
 RSpec.describe Plurimath::Mathml::Parser do
   subject(:formula) { described_class.new(exp).parse }
@@ -13,9 +14,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Number.new("0x7F800000"),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-027", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -33,12 +34,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Base.new(
-                                                        Plurimath::Math::Number.new("7FE0"),
-                                                        Plurimath::Math::Number.new("16"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-021", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -57,13 +55,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Number.new("22"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("/"),
-                                                                                     Plurimath::Math::Number.new("7"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-028", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -84,15 +78,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Number.new("12.3"),
-                                                                                     Plurimath::Math::Symbols::Plus.new,
-                                                                                     Plurimath::Math::Number.new("5"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("i"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-029", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -114,20 +102,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("Polar"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                         Plurimath::Math::Number.new("3.1415"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-004", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -145,12 +122,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Power.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("C"),
-                                                        Plurimath::Math::Number.new("2"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-022", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -173,19 +147,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                        [
-                                                          Plurimath::Math::Function::Ms.new("A"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Function::Ms.new("B"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Function::Ms.new("   "),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/partial-render", "mathml-partial-020", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -214,25 +178,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("&#xa;    F&#xa;    "),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      A1&#xa;      "),
-                                                                                         Plurimath::Math::Symbols::Comma.new,
-                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      ...&#xa;      "),
-                                                                                         Plurimath::Math::Symbols::Comma.new,
-                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      A2&#xa;      "),
-                                                                                         Plurimath::Math::Symbols::Comma.new,
-                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      An&#xa;      "),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-030", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -258,26 +206,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Underset.new(
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new(" X "),
-                                                                                                                      Plurimath::Math::Symbols::In.new,
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new(" D "),
-                                                                                                                    ]),
-                                                                                       Plurimath::Math::Symbols::Symbol.new("&#xa;      Op&#xa;      "),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("&#xa;      Expression-in-X&#xa;      "),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/over-under", "mathml-over-under-027", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -303,20 +234,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("&#xa;    B&#xa;    "),
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("&#xa;      x1&#xa;      "),
-                                                                                                                    Plurimath::Math::Symbols::Comma.new,
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("&#xa;      ...&#xa;      "),
-                                                                                                                    Plurimath::Math::Symbols::Comma.new,
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("&#xa;      xn&#xa;    "),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Period.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("&#xa;    S&#xa;  "),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-031", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -365,16 +285,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lround.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("x"),
-                                                          Plurimath::Math::Number.new("1"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rround.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-005", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -392,16 +305,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lsquare.new,
-                                                        [
-                                                          Plurimath::Math::Number.new("0"),
-                                                          Plurimath::Math::Number.new("1"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rsquare.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-006", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -419,16 +325,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lround.new,
-                                                        [
-                                                          Plurimath::Math::Number.new("0"),
-                                                          Plurimath::Math::Number.new("1"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rsquare.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-007", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -446,16 +345,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lsquare.new,
-                                                        [
-                                                          Plurimath::Math::Number.new("0"),
-                                                          Plurimath::Math::Number.new("1"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rround.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-008", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -477,18 +369,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Power.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("f"),
-                                                        Plurimath::Math::Function::Fenced.new(
-                                                          Plurimath::Math::Symbols::Paren::Lround.new,
-                                                          [
-                                                            Plurimath::Math::Number.new("-1"),
-                                                          ],
-                                                          Plurimath::Math::Symbols::Paren::Rround.new,
-                                                        ),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-023", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -516,28 +399,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                       Plurimath::Math::Function::Fenced.new(
-                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                         [
-                                                                                           Plurimath::Math::Number.new("-1"),
-                                                                                         ],
-                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                       ),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-024", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -569,33 +433,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Lambda.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                     Plurimath::Math::Symbols::Period.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Function::Sin.new(
-                                                                                                                          Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                        ),
-                                                                                                                        Plurimath::Math::Function::Fenced.new(
-                                                                                                                          Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                          [
-                                                                                                                            Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                            Plurimath::Math::Symbols::Plus.new,
-                                                                                                                            Plurimath::Math::Number.new("1"),
-                                                                                                                          ],
-                                                                                                                          Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                        ),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-009", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -624,26 +464,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                     Plurimath::Math::Symbols::Mapsto.new,
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Function::Sin.new(
-                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    ),
-                                                                                                                    Plurimath::Math::Function::Fenced.new(
-                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                      [
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                        Plurimath::Math::Symbols::Plus.new,
-                                                                                                                        Plurimath::Math::Number.new("1"),
-                                                                                                                      ],
-                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                    ),
-                                                                                                                  ]),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-032", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -664,15 +487,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                     Plurimath::Math::Symbols::Circ.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("g"),
-                                                                                     Plurimath::Math::Symbols::Circ.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("h"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-033", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -715,51 +532,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Function::Fenced.new(
-                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                      [
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                        Plurimath::Math::Symbols::Circ.new,
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("g"),
-                                                                                                                      ],
-                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                    ),
-                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    Plurimath::Math::Function::Fenced.new(
-                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                      [
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                      ],
-                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                    ),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    Plurimath::Math::Function::Fenced.new(
-                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                      [
-                                                                                                                        Plurimath::Math::Formula.new([
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("g"),
-                                                                                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                                                       Plurimath::Math::Function::Fenced.new(
-                                                                                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                                                         [
-                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                                                         ],
-                                                                                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                                                       ),
-                                                                                                                                                     ]),
-                                                                                                                      ],
-                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                    ),
-                                                                                                                  ]),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-010", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -789,26 +564,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                    Plurimath::Math::Symbols::Circ.new,
-                                                                                                                    Plurimath::Math::Function::Power.new(
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                      Plurimath::Math::Function::Fenced.new(
-                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                        [
-                                                                                                                          Plurimath::Math::Number.new("-1"),
-                                                                                                                        ],
-                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("id"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-025", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -833,26 +591,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("domain"),
-                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    Plurimath::Math::Function::Fenced.new(
-                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                      [
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                      ],
-                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                    ),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                                                                                       Plurimath::Math::Symbols::Symbol.new("R"),
-                                                                                       "double-struck",
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-011", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -877,26 +618,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("codomain"),
-                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    Plurimath::Math::Function::Fenced.new(
-                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                      [
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                      ],
-                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                    ),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                                                                                       Plurimath::Math::Symbols::Symbol.new("Q"),
-                                                                                       "double-struck",
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-012", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -924,30 +648,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("image"),
-                                                                                                                    Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    Plurimath::Math::Function::Fenced.new(
-                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                      [
-                                                                                                                        Plurimath::Math::Function::Sin.new,
-                                                                                                                      ],
-                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                    ),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lsquare.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Number.new("-1"),
-                                                                                         Plurimath::Math::Number.new("1"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rsquare.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-013", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1091,17 +794,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lfloor.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("a"),
-                                                          Plurimath::Math::Symbols::Symbol.new("/"),
-                                                          Plurimath::Math::Symbols::Symbol.new("b"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rfloor.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-034", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1119,12 +814,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("n"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("!"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-035", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1143,13 +835,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("/"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-036", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1175,21 +863,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Max.new(
-                                                        Plurimath::Math::Function::Fenced.new(
-                                                          Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                          [
-                                                            Plurimath::Math::Number.new("2"),
-                                                            Plurimath::Math::Symbols::Comma.new,
-                                                            Plurimath::Math::Number.new("3"),
-                                                            Plurimath::Math::Symbols::Comma.new,
-                                                            Plurimath::Math::Number.new("5"),
-                                                          ],
-                                                          Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                        ),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-037", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1223,33 +899,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Max.new(
-                                                        Plurimath::Math::Function::Fenced.new(
-                                                          Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                          [
-                                                            Plurimath::Math::Symbols::Symbol.new("y"),
-                                                            Plurimath::Math::Symbols::Paren::Vert.new,
-                                                            Plurimath::Math::Formula.new([
-                                                                                           Plurimath::Math::Function::Power.new(
-                                                                                             Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                             Plurimath::Math::Number.new("3"),
-                                                                                           ),
-                                                                                           Plurimath::Math::Symbols::In.new,
-                                                                                           Plurimath::Math::Function::Fenced.new(
-                                                                                             Plurimath::Math::Symbols::Paren::Lsquare.new,
-                                                                                             [
-                                                                                               Plurimath::Math::Number.new("0"),
-                                                                                               Plurimath::Math::Number.new("1"),
-                                                                                             ],
-                                                                                             Plurimath::Math::Symbols::Paren::Rsquare.new,
-                                                                                           ),
-                                                                                         ]),
-                                                          ],
-                                                          Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                        ),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-026", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1273,19 +925,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Min.new(
-                                                        Plurimath::Math::Function::Fenced.new(
-                                                          Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                          [
-                                                            Plurimath::Math::Symbols::Symbol.new("a"),
-                                                            Plurimath::Math::Symbols::Comma.new,
-                                                            Plurimath::Math::Symbols::Symbol.new("b"),
-                                                          ],
-                                                          Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                        ),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-038", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1316,26 +958,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Min.new(
-                                                        Plurimath::Math::Function::Fenced.new(
-                                                          Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                          [
-                                                            Plurimath::Math::Function::Power.new(
-                                                              Plurimath::Math::Symbols::Symbol.new("x"),
-                                                              Plurimath::Math::Number.new("2"),
-                                                            ),
-                                                            Plurimath::Math::Symbols::Paren::Vert.new,
-                                                            Plurimath::Math::Formula.new([
-                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                           Plurimath::Math::Symbols::Nin.new,
-                                                                                           Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                         ]),
-                                                          ],
-                                                          Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                        ),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-027", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1353,12 +978,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Minus.new,
-                                                                                     Plurimath::Math::Number.new("3"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-039", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1377,13 +999,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                     Plurimath::Math::Symbols::Minus.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-040", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1404,15 +1022,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                     Plurimath::Math::Symbols::Plus.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                     Plurimath::Math::Symbols::Plus.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("z"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-041", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1430,12 +1042,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Power.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                        Plurimath::Math::Number.new("3"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-028", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1454,12 +1063,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Mod.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("a"),
-                                                        Plurimath::Math::Symbols::Symbol.new("b"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-042", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1478,13 +1084,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-043", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1502,12 +1104,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Root.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("n"),
-                                                        Plurimath::Math::Symbols::Symbol.new("a"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/roots", "mathml-roots-004", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1530,22 +1129,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Gcd.new(
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     ),
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                         Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                         Plurimath::Math::Symbols::Symbol.new("c"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-014", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1564,13 +1150,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::Land.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-044", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1647,13 +1229,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::Lor.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-045", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1672,13 +1250,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("xor"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-046", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1696,12 +1270,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Lnot.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-047", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1720,13 +1291,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::UpcaseRightarrow.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-048", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1756,28 +1323,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Aa.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                     Plurimath::Math::Symbols::Period.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Formula.new([
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                                                       Plurimath::Math::Symbols::Minus.new,
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                                                     ]),
-                                                                                                                        Plurimath::Math::Symbols::Equal.new,
-                                                                                                                        Plurimath::Math::Number.new("0"),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-015", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1826,55 +1374,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Aa.new,
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Formula.new([
-                                                                                                                                                   Plurimath::Math::Symbols::Symbol.new("p"),
-                                                                                                                                                   Plurimath::Math::Symbols::In.new,
-                                                                                                                                                   Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                                                                                                                                                     Plurimath::Math::Symbols::Symbol.new("Q"),
-                                                                                                                                                     "double-struck",
-                                                                                                                                                   ),
-                                                                                                                                                 ]),
-                                                                                                                    Plurimath::Math::Symbols::Land.new,
-                                                                                                                    Plurimath::Math::Formula.new([
-                                                                                                                                                   Plurimath::Math::Symbols::Symbol.new("q"),
-                                                                                                                                                   Plurimath::Math::Symbols::In.new,
-                                                                                                                                                   Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                                                                                                                                                     Plurimath::Math::Symbols::Symbol.new("Q"),
-                                                                                                                                                     "double-struck",
-                                                                                                                                                   ),
-                                                                                                                                                 ]),
-                                                                                                                    Plurimath::Math::Symbols::Land.new,
-                                                                                                                    Plurimath::Math::Function::Fenced.new(
-                                                                                                                      Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                      [
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("p"),
-                                                                                                                        Plurimath::Math::Symbols::Less.new,
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("q"),
-                                                                                                                      ],
-                                                                                                                      Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                    ),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Period.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("p"),
-                                                                                                                        Plurimath::Math::Symbols::Less.new,
-                                                                                                                        Plurimath::Math::Function::Power.new(
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("q"),
-                                                                                                                          Plurimath::Math::Number.new("2"),
-                                                                                                                        ),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-029", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1935,71 +1437,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Aa.new,
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("p"),
-                                                                                                                    Plurimath::Math::Symbols::Comma.new,
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("q"),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Period.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Function::Fenced.new(
-                                                                                                                          Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                          [
-                                                                                                                            Plurimath::Math::Formula.new([
-                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("p"),
-                                                                                                                                                           Plurimath::Math::Symbols::In.new,
-                                                                                                                                                           Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                                                                                                                                                             Plurimath::Math::Symbols::Symbol.new("Q"),
-                                                                                                                                                             "double-struck",
-                                                                                                                                                           ),
-                                                                                                                                                         ]),
-                                                                                                                            Plurimath::Math::Symbols::Land.new,
-                                                                                                                            Plurimath::Math::Formula.new([
-                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("q"),
-                                                                                                                                                           Plurimath::Math::Symbols::In.new,
-                                                                                                                                                           Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                                                                                                                                                             Plurimath::Math::Symbols::Symbol.new("Q"),
-                                                                                                                                                             "double-struck",
-                                                                                                                                                           ),
-                                                                                                                                                         ]),
-                                                                                                                            Plurimath::Math::Symbols::Land.new,
-                                                                                                                            Plurimath::Math::Function::Fenced.new(
-                                                                                                                              Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                              [
-                                                                                                                                Plurimath::Math::Symbols::Symbol.new("p"),
-                                                                                                                                Plurimath::Math::Symbols::Less.new,
-                                                                                                                                Plurimath::Math::Symbols::Symbol.new("q"),
-                                                                                                                              ],
-                                                                                                                              Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                            ),
-                                                                                                                          ],
-                                                                                                                          Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                        ),
-                                                                                                                        Plurimath::Math::Symbols::UpcaseRightarrow.new,
-                                                                                                                        Plurimath::Math::Function::Fenced.new(
-                                                                                                                          Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                          [
-                                                                                                                            Plurimath::Math::Symbols::Symbol.new("p"),
-                                                                                                                            Plurimath::Math::Symbols::Less.new,
-                                                                                                                            Plurimath::Math::Function::Power.new(
-                                                                                                                              Plurimath::Math::Symbols::Symbol.new("q"),
-                                                                                                                              Plurimath::Math::Number.new("2"),
-                                                                                                                            ),
-                                                                                                                          ],
-                                                                                                                          Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                        ),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-030", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2025,34 +1465,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Ee.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                     Plurimath::Math::Symbols::Period.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Formula.new([
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                                                       Plurimath::Math::Function::Fenced.new(
-                                                                                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                                                         [
-                                                                                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                                                         ],
-                                                                                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                                                       ),
-                                                                                                                                                     ]),
-                                                                                                                        Plurimath::Math::Symbols::Equal.new,
-                                                                                                                        Plurimath::Math::Number.new("0"),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-016", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2146,15 +1561,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Vert.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("x"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Vert.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-049", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2180,19 +1589,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Bar.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                       Plurimath::Math::Symbols::Plus.new,
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Number.new("ⅈ"),
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                    ]),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/over-under", "mathml-over-under-028", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2221,27 +1620,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("arg"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                        Plurimath::Math::Symbols::Plus.new,
-                                                                                                                        Plurimath::Math::Formula.new([
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("i"),
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                                                     ]),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-018", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2266,27 +1647,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("&#x211b;"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                        Plurimath::Math::Symbols::Plus.new,
-                                                                                                                        Plurimath::Math::Formula.new([
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("i"),
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                                                     ]),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-019", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2311,27 +1674,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Im.new,
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                        Plurimath::Math::Symbols::Plus.new,
-                                                                                                                        Plurimath::Math::Formula.new([
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("i"),
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                                                                                                                                                       Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                                                     ]),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-020", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2354,22 +1699,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Lcm.new(
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     ),
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                         Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                         Plurimath::Math::Symbols::Symbol.new("c"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-021", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2388,15 +1720,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lfloor.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("a"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rfloor.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-050", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2415,15 +1741,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lceil.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("a"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rceil.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-051", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2450,21 +1770,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Number.new("2"),
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("/"),
-                                                                                                                    Plurimath::Math::Number.new("4"),
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Number.new("1"),
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("/"),
-                                                                                                                    Plurimath::Math::Number.new("2"),
-                                                                                                                  ]),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-052", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2483,13 +1791,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Number.new("3"),
-                                                                                     Plurimath::Math::Symbols::Ne.new,
-                                                                                     Plurimath::Math::Number.new("4"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-053", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2508,13 +1812,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Number.new("3"),
-                                                                                     Plurimath::Math::Symbols::Greater.new,
-                                                                                     Plurimath::Math::Number.new("2"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-054", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2535,15 +1835,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Number.new("2"),
-                                                                                     Plurimath::Math::Symbols::Less.new,
-                                                                                     Plurimath::Math::Number.new("3"),
-                                                                                     Plurimath::Math::Symbols::Less.new,
-                                                                                     Plurimath::Math::Number.new("4"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-055", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2564,15 +1858,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Number.new("4"),
-                                                                                     Plurimath::Math::Symbols::Ge.new,
-                                                                                     Plurimath::Math::Number.new("3"),
-                                                                                     Plurimath::Math::Symbols::Ge.new,
-                                                                                     Plurimath::Math::Number.new("3"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-056", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2593,15 +1881,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Number.new("3"),
-                                                                                     Plurimath::Math::Symbols::Le.new,
-                                                                                     Plurimath::Math::Number.new("3"),
-                                                                                     Plurimath::Math::Symbols::Le.new,
-                                                                                     Plurimath::Math::Number.new("4"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-057", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2626,19 +1908,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::Equiv.new,
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Symbols::Lnot.new,
-                                                                                                                    Plurimath::Math::Formula.new([
-                                                                                                                                                   Plurimath::Math::Symbols::Lnot.new,
-                                                                                                                                                   Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                                                                                 ]),
-                                                                                                                  ]),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-058", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2661,17 +1933,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Pi.new,
-                                                                                     Plurimath::Math::Symbols::Simeq.new,
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Number.new("22"),
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("/"),
-                                                                                                                    Plurimath::Math::Number.new("7"),
-                                                                                                                  ]),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-059", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2690,13 +1954,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::Paren::Vert.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-060", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2718,16 +1978,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Function::Int.new,
-                                                                                                                    Plurimath::Math::Function::Sin.new,
-                                                                                                                  ]),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Function::Cos.new,
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-061", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2749,13 +2002,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Int.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("a"),
-                                                        Plurimath::Math::Symbols::Symbol.new("b"),
-                                                        Plurimath::Math::Function::Cos.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-031", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2782,20 +2031,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Int.new(
-                                                                                       Plurimath::Math::Number.new("0"),
-                                                                                       Plurimath::Math::Number.new("1"),
-                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("d"),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-032", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2813,12 +2051,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Power.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("f"),
-                                                        Plurimath::Math::Symbols::Prime.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-033", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2854,32 +2089,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Frac.new(
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("d"),
-                                                                                                                      Plurimath::Math::Formula.new([
-                                                                                                                                                     Plurimath::Math::Function::Sin.new(
-                                                                                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                                                     ),
-                                                                                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                                                   ]),
-                                                                                                                    ]),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("d"),
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                    ]),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Function::Cos.new(
-                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    ),
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                  ]),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fractions", "mathml-fractions-013", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2912,27 +2124,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Frac.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                         Plurimath::Math::Symbols::Symbol.new("d"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ),
-                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         Plurimath::Math::Number.new("4"),
-                                                                                       ),
-                                                                                     ]),
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("d"),
-                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-034", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -2959,21 +2153,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Base.new(
-                                                                                       Plurimath::Math::Symbols::Symbol.new("D"),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Number.new("1"),
-                                                                                                                      Plurimath::Math::Symbols::Comma.new,
-                                                                                                                      Plurimath::Math::Number.new("1"),
-                                                                                                                      Plurimath::Math::Symbols::Comma.new,
-                                                                                                                      Plurimath::Math::Number.new("3"),
-                                                                                                                    ]),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-035", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3017,42 +2199,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Frac.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                         Plurimath::Math::Symbols::Del.new,
-                                                                                         Plurimath::Math::Number.new("3"),
-                                                                                       ),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                      Plurimath::Math::Function::Fenced.new(
-                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                        [
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("z"),
-                                                                                                                        ],
-                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                      ),
-                                                                                                                    ]),
-                                                                                     ]),
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Del.new,
-                                                                                                                      Plurimath::Math::Function::Power.new(
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                        Plurimath::Math::Number.new("2"),
-                                                                                                                      ),
-                                                                                                                    ]),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Del.new,
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("z"),
-                                                                                                                    ]),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-036", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3092,38 +2241,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Frac.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                         Plurimath::Math::Symbols::Del.new,
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                      Plurimath::Math::Function::Fenced.new(
-                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                        [
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                        ],
-                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                      ),
-                                                                                                                    ]),
-                                                                                     ]),
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Del.new,
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                    ]),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Del.new,
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                    ]),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-037", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3169,44 +2289,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Frac.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                         Plurimath::Math::Symbols::Del.new,
-                                                                                         Plurimath::Math::Symbols::Symbol.new("k"),
-                                                                                       ),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                      Plurimath::Math::Function::Fenced.new(
-                                                                                                                        Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                        [
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                        ],
-                                                                                                                        Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                      ),
-                                                                                                                    ]),
-                                                                                     ]),
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Del.new,
-                                                                                                                      Plurimath::Math::Function::Power.new(
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("m"),
-                                                                                                                      ),
-                                                                                                                    ]),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Del.new,
-                                                                                                                      Plurimath::Math::Function::Power.new(
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("n"),
-                                                                                                                      ),
-                                                                                                                    ]),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-038", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3227,19 +2312,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("div"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-022", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3260,19 +2335,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("div"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("E"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-023", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3291,13 +2356,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Grad.new,
-                                                                                     Plurimath::Math::Symbols::Cdot.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("E"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-062", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3419,19 +2480,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("grad"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-024", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3452,19 +2503,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Grad.new,
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-025", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3499,35 +2540,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("grad"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Function::Fenced.new(
-                                                                                           Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                           [
-                                                                                             Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                             Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                             Plurimath::Math::Symbols::Symbol.new("z"),
-                                                                                           ],
-                                                                                           Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                         ),
-                                                                                         Plurimath::Math::Symbols::Mapsto.new,
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("&#x2062;"),
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("z"),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-026", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3548,19 +2563,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("curl"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-027", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3579,13 +2584,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Grad.new,
-                                                                                     Plurimath::Math::Symbols::Times.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-063", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3609,22 +2610,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Symbols::Grad.new,
-                                                                                       Plurimath::Math::Number.new("2"),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("E"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-039", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3663,43 +2651,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Symbols::Grad.new,
-                                                                                       Plurimath::Math::Number.new("2"),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Function::Fenced.new(
-                                                                                           Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                           [
-                                                                                             Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                             Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                             Plurimath::Math::Symbols::Symbol.new("z"),
-                                                                                           ],
-                                                                                           Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                         ),
-                                                                                         Plurimath::Math::Symbols::Mapsto.new,
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                                                        Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                        Plurimath::Math::Function::Fenced.new(
-                                                                                                                          Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                                                          [
-                                                                                                                            Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                            Plurimath::Math::Symbols::Symbol.new("y"),
-                                                                                                                          ],
-                                                                                                                          Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                                                        ),
-                                                                                                                      ]),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-040", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3722,19 +2676,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("a"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Symbols::Symbol.new("b"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Symbols::Symbol.new("c"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-064", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3759,21 +2703,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("x"),
-                                                          Plurimath::Math::Symbols::Paren::Vert.new,
-                                                          Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         Plurimath::Math::Symbols::Less.new,
-                                                                                         Plurimath::Math::Number.new("5"),
-                                                                                       ]),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-065", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3794,21 +2726,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("S"),
-                                                          Plurimath::Math::Symbols::Paren::Vert.new,
-                                                          Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Symbols::Symbol.new("S"),
-                                                                                         Plurimath::Math::Symbols::In.new,
-                                                                                         Plurimath::Math::Symbols::Symbol.new("T"),
-                                                                                       ]),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-066", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3843,36 +2763,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lcurly.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("x"),
-                                                          Plurimath::Math::Symbols::Paren::Vert.new,
-                                                          Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Function::Fenced.new(
-                                                                                           Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                           [
-                                                                                             Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                             Plurimath::Math::Symbols::Less.new,
-                                                                                             Plurimath::Math::Number.new("5"),
-                                                                                           ],
-                                                                                           Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                         ),
-                                                                                         Plurimath::Math::Symbols::Land.new,
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                        Plurimath::Math::Symbols::In.new,
-                                                                                                                        Plurimath::Math::Function::FontStyle::DoubleStruck.new(
-                                                                                                                          Plurimath::Math::Symbols::Symbol.new("N"),
-                                                                                                                          "double-struck",
-                                                                                                                        ),
-                                                                                                                      ]),
-                                                                                       ]),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rcurly.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-067", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3895,19 +2788,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lround.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("a"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Symbols::Symbol.new("b"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Symbols::Symbol.new("c"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rround.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-068", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3932,21 +2815,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Lround.new,
-                                                        [
-                                                          Plurimath::Math::Symbols::Symbol.new("x"),
-                                                          Plurimath::Math::Symbols::Paren::Vert.new,
-                                                          Plurimath::Math::Formula.new([
-                                                                                         Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         Plurimath::Math::Symbols::Less.new,
-                                                                                         Plurimath::Math::Number.new("5"),
-                                                                                       ]),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rround.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-069", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -3965,13 +2836,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::Uu.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-070", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4019,13 +2886,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::Cap.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-071", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4073,13 +2936,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::In.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-072", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4098,13 +2957,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     Plurimath::Math::Symbols::Nin.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-073", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4123,13 +2978,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::Sube.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-074", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4148,13 +2999,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::Sub.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-075", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4173,13 +3020,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::Subseteq.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-076", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4198,13 +3041,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::Nsub.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-077", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4223,13 +3062,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::Setminus.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-078", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4252,19 +3087,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Vert.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Vert.new,
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Number.new("5"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-079", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4283,13 +3108,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("A"),
-                                                                                     Plurimath::Math::Symbols::Times.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-080", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4321,27 +3142,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Sum.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                       Plurimath::Math::Symbols::Equal.new,
-                                                                                       Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     ]),
-                                                        Plurimath::Math::Symbols::Symbol.new("b"),
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                       Plurimath::Math::Function::Fenced.new(
-                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                         [
-                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         ],
-                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                       ),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/over-under", "mathml-over-under-029", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4372,27 +3175,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Sum.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                       Plurimath::Math::Symbols::In.new,
-                                                                                       Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                     ]),
-                                                        nil,
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                       Plurimath::Math::Function::Fenced.new(
-                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                         [
-                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         ],
-                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                       ),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/over-under", "mathml-over-under-030", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4413,13 +3198,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Sum.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("B"),
-                                                        nil,
-                                                        Plurimath::Math::Symbols::Symbol.new("f"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/over-under", "mathml-over-under-031", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4451,27 +3232,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Prod.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                       Plurimath::Math::Symbols::Equal.new,
-                                                                                       Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                     ]),
-                                                        Plurimath::Math::Symbols::Symbol.new("b"),
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                       Plurimath::Math::Function::Fenced.new(
-                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                         [
-                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         ],
-                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                       ),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/over-under", "mathml-over-under-032", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4502,27 +3265,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Prod.new(
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                       Plurimath::Math::Symbols::In.new,
-                                                                                       Plurimath::Math::Symbols::Symbol.new("B"),
-                                                                                     ]),
-                                                        nil,
-                                                        Plurimath::Math::Formula.new([
-                                                                                       Plurimath::Math::Symbols::Symbol.new("f"),
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                       Plurimath::Math::Function::Fenced.new(
-                                                                                         Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                         [
-                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                         ],
-                                                                                         Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                       ),
-                                                                                     ]),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/over-under", "mathml-over-under-033", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4551,24 +3296,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Underset.new(
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                      Plurimath::Math::Function::Vec.new,
-                                                                                                                      Plurimath::Math::Number.new("0"),
-                                                                                                                    ]),
-                                                                                       Plurimath::Math::Symbols::Symbol.new("lim"),
-                                                                                     ),
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Function::Sin.new(
-                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    ),
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                  ]),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/partial-render", "mathml-partial-024", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4600,27 +3330,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Underset.new(
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                      Plurimath::Math::Function::Vec.new,
-                                                                                                                      Plurimath::Math::Function::Power.new(
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                                                        Plurimath::Math::Symbols::Plus.new,
-                                                                                                                      ),
-                                                                                                                    ]),
-                                                                                       Plurimath::Math::Symbols::Symbol.new("lim"),
-                                                                                     ),
-                                                                                     Plurimath::Math::Formula.new([
-                                                                                                                    Plurimath::Math::Function::Sin.new(
-                                                                                                                      Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                    ),
-                                                                                                                    Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                  ]),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/partial-render", "mathml-partial-025", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4648,22 +3360,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                       Plurimath::Math::Number.new("2"),
-                                                                                     ),
-                                                                                     Plurimath::Math::Function::Vec.new,
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                         Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ),
-                                                                                       Plurimath::Math::Symbols::Plus.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/partial-render", "mathml-partial-026", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4799,14 +3498,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Sin.new(
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-081", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4838,30 +3532,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Sin.new(
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     ),
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Formula.new([
-                                                                                                                        Plurimath::Math::Function::Cos.new(
-                                                                                                                          Plurimath::Math::Symbols::Funcapply.new,
-                                                                                                                        ),
-                                                                                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                                                      ]),
-                                                                                         Plurimath::Math::Symbols::Plus.new,
-                                                                                         Plurimath::Math::Function::Power.new(
-                                                                                           Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                           Plurimath::Math::Number.new("3"),
-                                                                                         ),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-041", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4880,14 +3553,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Arcsin.new(
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-082", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4912,19 +3580,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Function::Sin.new,
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Minus.new,
-                                                                                                                      Plurimath::Math::Number.new("1"),
-                                                                                                                    ]),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-042", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4943,14 +3601,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Sinh.new(
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-083", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -4969,13 +3622,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("arcsinh"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-084", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5000,19 +3649,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Function::Sinh.new,
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Symbols::Minus.new,
-                                                                                                                      Plurimath::Math::Number.new("1"),
-                                                                                                                    ]),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-043", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5030,12 +3669,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Power.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("e"),
-                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-044", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5054,14 +3690,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Ln.new(
-                                                                                       Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-085", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5083,15 +3714,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Log.new(
-                                                                                       Plurimath::Math::Number.new("3"),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-045", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5110,13 +3735,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Log.new,
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-086", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5136,23 +3757,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Fenced.new(
-                                                        Plurimath::Math::Symbols::Paren::Langle.new,
-                                                        [
-                                                          Plurimath::Math::Number.new("3"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Number.new("4"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Number.new("3"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Number.new("7"),
-                                                          Plurimath::Math::Symbols::Comma.new,
-                                                          Plurimath::Math::Number.new("4"),
-                                                        ],
-                                                        Plurimath::Math::Symbols::Paren::Rangle.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-087", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5170,11 +3777,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Bar.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("X"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/over-under", "mathml-over-under-034", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5198,22 +3803,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Sigma.new,
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Number.new("3"),
-                                                                                         Plurimath::Math::Number.new("4"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-028", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5234,19 +3826,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Sigma.new,
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("X"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-029", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5273,25 +3855,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Symbols::Sigma.new,
-                                                                                       Plurimath::Math::Number.new("2"),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Number.new("3"),
-                                                                                         Plurimath::Math::Number.new("4"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-046", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5315,22 +3881,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Function::Power.new(
-                                                                                       Plurimath::Math::Symbols::Sigma.new,
-                                                                                       Plurimath::Math::Number.new("2"),
-                                                                                     ),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Symbols::Symbol.new("X"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-047", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5354,22 +3907,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("median"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Number.new("3"),
-                                                                                         Plurimath::Math::Number.new("4"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-030", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5393,22 +3933,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("mode"),
-                                                                                     Plurimath::Math::Symbols::Funcapply.new,
-                                                                                     Plurimath::Math::Function::Fenced.new(
-                                                                                       Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                                       [
-                                                                                         Plurimath::Math::Number.new("3"),
-                                                                                         Plurimath::Math::Number.new("4"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                       ],
-                                                                                       Plurimath::Math::Symbols::Paren::Rround.new,
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/fences", "mathml-fences-031", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5439,31 +3966,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Base.new(
-                                                        Plurimath::Math::Function::Fenced.new(
-                                                          Plurimath::Math::Symbols::Paren::Langle.new,
-                                                          [
-                                                            Plurimath::Math::Function::Power.new(
-                                                              Plurimath::Math::Function::Fenced.new(
-                                                                Plurimath::Math::Symbols::Paren::Lround.new,
-                                                                [
-                                                                  Plurimath::Math::Number.new("6"),
-                                                                  Plurimath::Math::Number.new("4"),
-                                                                  Plurimath::Math::Number.new("2"),
-                                                                  Plurimath::Math::Number.new("2"),
-                                                                  Plurimath::Math::Number.new("5"),
-                                                                ],
-                                                                Plurimath::Math::Symbols::Paren::Rround.new,
-                                                              ),
-                                                              Plurimath::Math::Number.new("3"),
-                                                            ),
-                                                          ],
-                                                          Plurimath::Math::Symbols::Paren::Rangle.new,
-                                                        ),
-                                                        Plurimath::Math::Symbols::Symbol.new("mean"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-048", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -5488,21 +3993,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Base.new(
-                                                        Plurimath::Math::Function::Fenced.new(
-                                                          Plurimath::Math::Symbols::Paren::Langle.new,
-                                                          [
-                                                            Plurimath::Math::Function::Power.new(
-                                                              Plurimath::Math::Symbols::Symbol.new("X"),
-                                                              Plurimath::Math::Number.new("3"),
-                                                            ),
-                                                          ],
-                                                          Plurimath::Math::Symbols::Paren::Rangle.new,
-                                                        ),
-                                                        Plurimath::Math::Symbols::Symbol.new("p"),
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-049", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end

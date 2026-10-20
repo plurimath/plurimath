@@ -2395,6 +2395,14 @@ corpora fail the run. The golden bytes were recorded with Ox, so these specs
 run once with Ox. Existing native specs still run with Ox and Oga. The native
 filesystem/YAML adapter is excluded from Opal test discovery.
 
+Selected native MathML parser specs also load their expected model objects
+from this corpus. They retain their direct parser calls and Ox/Oga coverage;
+their Node/Opal runs read the same fixtures from the repository root. A
+fixture lookup checks the exact input and case ID and returns fresh objects.
+Only constructor expectations proved equivalent under the original equality
+assertion are migrated; unsupported model shapes and additional assertions
+remain in the native specs.
+
 == Copyright and license
 
 Copyright Ribose. BSD 2-clause license.

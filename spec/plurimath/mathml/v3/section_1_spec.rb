@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../../../support/shared_model_fixtures"
 
 RSpec.describe Plurimath::Mathml::Parser do
   subject(:formula) { described_class.new(exp).parse }
@@ -46,42 +47,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of sin from mathml string" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Formula.new([
-                                                                                     Plurimath::Math::Symbols::Symbol.new("x"),
-                                                                                     Plurimath::Math::Symbols::Equal.new,
-                                                                                     Plurimath::Math::Function::Frac.new(
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Formula.new([
-                                                                                                                                                     Plurimath::Math::Symbols::Minus.new,
-                                                                                                                                                     Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                                                                                   ]),
-                                                                                                                      Plurimath::Math::Symbols::Pm.new,
-                                                                                                                      Plurimath::Math::Function::Sqrt.new(
-                                                                                                                        Plurimath::Math::Formula.new([
-                                                                                                                                                       Plurimath::Math::Function::Power.new(
-                                                                                                                                                         Plurimath::Math::Symbols::Symbol.new("b"),
-                                                                                                                                                         Plurimath::Math::Number.new("2"),
-                                                                                                                                                       ),
-                                                                                                                                                       Plurimath::Math::Symbols::Minus.new,
-                                                                                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                                                                                      Plurimath::Math::Number.new("4"),
-                                                                                                                                                                                      Plurimath::Math::Function::Prod.new,
-                                                                                                                                                                                      Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                                                                                                                      Plurimath::Math::Function::Sum.new,
-                                                                                                                                                                                      Plurimath::Math::Symbols::Symbol.new("c"),
-                                                                                                                                                                                    ]),
-                                                                                                                                                     ]),
-                                                                                                                      ),
-                                                                                                                    ]),
-                                                                                       Plurimath::Math::Formula.new([
-                                                                                                                      Plurimath::Math::Number.new("2"),
-                                                                                                                      Plurimath::Math::Symbols::Angmsd.new,
-                                                                                                                      Plurimath::Math::Symbols::Symbol.new("a"),
-                                                                                                                    ]),
-                                                                                     ),
-                                                                                   ]),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-012", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end

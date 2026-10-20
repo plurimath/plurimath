@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../../../support/shared_model_fixtures"
 
 RSpec.describe Plurimath::Mathml::Parser do
   subject(:formula) { described_class.new(exp).parse }
@@ -13,9 +14,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Symbols::Symbol.new("&#x27;&#x27;"),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/tokens", "mathml-tokens-088", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -33,12 +34,9 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
 
     it "returns formula of decimal values" do
-      expected_value = Plurimath::Math::Formula.new([
-                                                      Plurimath::Math::Function::Power.new(
-                                                        Plurimath::Math::Symbols::Symbol.new("x"),
-                                                        Plurimath::Math::Symbols::Prime.new,
-                                                      ),
-                                                    ])
+      expected_value = SharedModelFixtures.model(
+        "mathml/scripts", "mathml-scripts-050", input: exp
+      )
       expect(formula).to eq(expected_value)
     end
   end
