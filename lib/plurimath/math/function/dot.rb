@@ -39,7 +39,7 @@ module Plurimath
             acc_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new(".")
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+            Overset.new(symbol, parameter_one).to_omml_without_math_tag(true,
                                                                         options: options)
           end
         end

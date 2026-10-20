@@ -3130,12 +3130,12 @@ RSpec.describe Plurimath::Mathml do
                 </m:sSubPr>
                 <m:e>
                   <m:r>
-                    <m:t>p</m:t>
+                    <m:t>s</m:t>
                   </m:r>
                 </m:e>
                 <m:sub>
                   <m:r>
-                    <m:t>s</m:t>
+                    <m:t>p</m:t>
                   </m:r>
                 </m:sub>
               </m:sSub>
@@ -3150,12 +3150,12 @@ RSpec.describe Plurimath::Mathml do
                 </m:sSupPr>
                 <m:e>
                   <m:r>
-                    <m:t>d</m:t>
+                    <m:t>&#x3b8;</m:t>
                   </m:r>
                 </m:e>
                 <m:sup>
                   <m:r>
-                    <m:t>&#x3b8;</m:t>
+                    <m:t>d</m:t>
                   </m:r>
                 </m:sup>
               </m:sSup>

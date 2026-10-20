@@ -5,6 +5,44 @@ require "plurimath/fixtures/formula_modules/expected_values"
 
 RSpec.describe Plurimath::Omml::Translator do
   describe "#omml_to_plurimath" do
+    [["limUpp", :Overset], ["limLow", :Underset]].each do |tag, function|
+      context "with OMML operand order in #{tag}" do
+        let(:script_text) { "x" }
+        let(:script_value) { Plurimath::Math::Function::Text.new(script_text, lang: :omml) }
+        let(:source) do
+          <<~OMML
+            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+              <m:#{tag}>
+                <m:e><m:r><m:t>y</m:t></m:r></m:e>
+                <m:lim><m:r><m:t>#{script_text}</m:t></m:r></m:lim>
+              </m:#{tag}>
+            </m:oMath>
+          OMML
+        end
+        let(:expected_value) do
+          Plurimath::Math::Formula.new([
+                                         Plurimath::Math::Function.const_get(function).new(
+                                           script_value,
+                                           Plurimath::Math::Function::Text.new("y", lang: :omml),
+                                         ),
+                                       ])
+        end
+
+        it "imports the limit as script and e as base" do
+          expect(Plurimath::Omml.new(source).to_formula).to eq(expected_value)
+        end
+
+        context "with a named operator as script label" do
+          let(:script_text) { "min" }
+          let(:script_value) { Plurimath::Math::Function::Min.new }
+
+          it "keeps the operator in the script position" do
+            expect(Plurimath::Omml.new(source).to_formula).to eq(expected_value)
+          end
+        end
+      end
+    end
+
     it "raises for unsupported typed nodes" do
       expect { described_class.new.omml_to_plurimath(Object.new) }
         .to raise_error(
