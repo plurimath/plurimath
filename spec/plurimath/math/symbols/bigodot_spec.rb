@@ -30,7 +30,7 @@ RSpec.describe Plurimath::Math::Symbols::Bigodot do
 
       it "matches MathML string" do
         string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mi>&#x2a00;</mi>")
+        expect(string).to eq("<mo>&#x2a00;</mo>")
       end
 
       it "matches HTML string" do

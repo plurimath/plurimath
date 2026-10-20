@@ -41,6 +41,38 @@ RSpec.describe Plurimath::Mathml do
     end
   end
 
+  describe "large-operator symbol round trips" do
+    {
+      bigwedge: "⋀", bigoplus: "⨁", bigotimes: "⨂", bigodot: "⨀",
+      coprod: "∐", biguplus: "⨄", bigsqcup: "⨆"
+    }.each do |name, glyph|
+      it "preserves #{name} as an operator" do
+        source = "<math><mo>#{glyph}</mo></math>"
+        output = described_class.new(source).to_formula.to_mathml
+        tokens = Oga.parse_xml(output).xpath("//*").select do |node|
+          node.name.match?(/\Am[io]\z/)
+        end
+
+        expect(tokens.map { |node| [node.name, node.text] }).to eq([["mo", glyph]])
+      end
+    end
+
+    it "keeps the large operator before the lower and upper limits of a Nary" do
+      symbols = Plurimath::Math::Symbols
+      nary = Plurimath::Math::Function::Nary.new(
+        symbols::Bigwedge.new, symbols::Symbol.new("l"), symbols::Symbol.new("u"),
+        nil, { type: "undOvr" }
+      )
+      output = dump_ox_nodes(nary.to_mathml_without_math_tag(false, options: {}))
+      limits = Oga.parse_xml(output).xpath("//*").find { |node| node.name == "munderover" }
+      children = limits.children.grep(Oga::XML::Element)
+
+      expect(children.map { |node| [node.name, node.text] }).to eq(
+        [["mo", "⋀"], ["mi", "l"], ["mi", "u"]],
+      )
+    end
+  end
+
   describe "MathML round-tripping" do
     shared_examples "pretty MathML operand order" do
       subject(:formula) { described_class.new(string).to_formula }
