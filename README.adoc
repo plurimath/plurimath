@@ -2375,6 +2375,26 @@ NOTE: To regenerate these files, delete them and run:
 * link:OMML-Supported-Data.adoc[OMML Supported Data]
 * link:UnitsML-Supported-Data.adoc[UnitsML Supported Data]
 
+== Shared conformance fixtures
+
+The language-independent YAML expectations used by the TypeScript port are
+pinned at `submodules/plurimath-testsuite`. Initialize the test data before
+running specs:
+
+[source,sh]
+----
+git submodule update --init --recursive
+bundle exec rspec spec/conformance
+----
+
+The conformance specs validate the dataset and compare preprocessing, parser
+trees, formula models, rendering outcomes, rejection positions and recorded
+formatter/UnitsML calls. Cases are read directly from the pinned repository;
+the test run never regenerates expectations. Missing, empty or unsupported
+corpora fail the run. The golden bytes were recorded with Ox, so these specs
+run once with Ox. Existing native specs still run with Ox and Oga. The native
+filesystem/YAML adapter is excluded from Opal test discovery.
+
 == Copyright and license
 
 Copyright Ribose. BSD 2-clause license.
