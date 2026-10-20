@@ -1,4 +1,5 @@
 require "spec_helper"
+require "plurimath/fixtures/formula_modules/line_break_values"
 
 RSpec.describe Plurimath::Omml do
   describe ".initialize" do
@@ -662,6 +663,53 @@ RSpec.describe Plurimath::Omml do
         formula = Plurimath::Math.parse(input, :mathml)
         expect(formula.to_omml).to eq(expected_output)
       end
+    end
+  end
+
+  describe Plurimath::Math::Formula, "#to_omml helper operand order" do
+    let(:base) { Plurimath::Math::Function::Text.new("body", lang: :omml) }
+    let(:subscript) { Plurimath::Math::Function::Text.new("lower", lang: :omml) }
+    let(:superscript) { Plurimath::Math::Function::Text.new("upper", lang: :omml) }
+    let(:namespaces) { { "m" => "http://schemas.openxmlformats.org/officeDocument/2006/math" } }
+
+    { Ubrace: "⏟", Obrace: "⏞", Vec: "→", Ddot: "..", Overleftrightarrow: "\u20e1",
+      Tilde: "~", Dot: ".", Ul: "\u0332", Hat: "\u0302" }.each do |function, script|
+      it "keeps the expression as the base for #{function}" do
+        formula = described_class.new([
+                                        Plurimath::Math::Function.const_get(function).new(base),
+                                      ])
+        document = Oga.parse_xml(formula.to_omml)
+        expect(document.xpath("//m:limUpp/m:e//m:t | //m:limLow/m:e//m:t", namespaces: namespaces).map(&:text).join).to eq("body")
+        expect(document.xpath("//m:limUpp/m:lim//m:t | //m:limLow/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq(script)
+      end
+    end
+
+    it "keeps both limits around a binary function name" do
+      formula = described_class.new([
+                                      Plurimath::Math::Function::Lim.new(subscript, superscript),
+                                    ])
+      document = Oga.parse_xml(formula.to_omml)
+      expect(document.xpath("//m:limLow/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq("lower")
+      expect(document.xpath("//m:limLow/m:e/m:limUpp/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq("upper")
+      expect(document.xpath("//m:limLow/m:e/m:limUpp/m:e//m:t", namespaces: namespaces).map(&:text).join).to eq("lim")
+    end
+
+    it "keeps both limits around a ternary base expression" do
+      formula = described_class.new([
+                                      Plurimath::Math::Function::Underover.new(base, subscript, superscript),
+                                    ])
+      document = Oga.parse_xml(formula.to_omml)
+      expect(document.xpath("//m:limLow/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq("lower")
+      expect(document.xpath("//m:limLow/m:e/m:limUpp/m:lim//m:t", namespaces: namespaces).map(&:text).join).to eq("upper")
+      expect(document.xpath("//m:limLow/m:e/m:limUpp/m:e//m:t", namespaces: namespaces).map(&:text).join).to eq("body")
+    end
+
+    it "keeps the continuation of a split hat expression as a base" do
+      document = Oga.parse_xml(LineBreakValues::LineBreak_019.to_omml(split_on_linebreak: true))
+      bases = document.xpath("//m:limUpp/m:e", namespaces: namespaces).map do |base|
+        base.xpath(".//m:t", namespaces: namespaces).map(&:text).join
+      end
+      expect(bases).to eq(["as", "df"])
     end
   end
 end

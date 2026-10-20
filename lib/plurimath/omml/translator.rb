@@ -173,18 +173,19 @@ module Plurimath
         )
       end
 
-      # Keep OMML read and write using the same order: `m:e` is the first
-      # value and `m:lim` is the second. Other formats, current or future,
-      # should place those same values in the order their output needs.
+      # Overset and Underset take the script first and the base second;
+      # OMML stores the base in m:e and the script in m:lim.
+      # A named operator in m:lim is a script label, not an accent.
       def upper_limit_to_plurimath(node)
         base = omml_argument_value(node.e)
         limit = omml_argument_value(node.lim)
 
-        if empty_unary_function?(limit)
+        if empty_unary_function?(limit) &&
+            !Mathml::Constants.named_function_word?(limit.class_name)
           limit.parameter_one = base
           limit
         else
-          Math::Function::Overset.new(base, limit)
+          Math::Function::Overset.new(limit, base)
         end
       end
 
@@ -192,11 +193,12 @@ module Plurimath
         base = omml_argument_value(node.e)
         limit = omml_argument_value(node.lim)
 
-        if empty_unary_function?(limit)
+        if empty_unary_function?(limit) &&
+            !Mathml::Constants.named_function_word?(limit.class_name)
           limit.parameter_one = base
           limit
         else
-          Math::Function::Underset.new(base, limit)
+          Math::Function::Underset.new(limit, base)
         end
       end
 

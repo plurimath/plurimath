@@ -987,26 +987,26 @@ module ExpectedValues
                                         ])
   EX_100 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Dot.new,
                                             Plurimath::Math::Function::Text.new(
                                               "a", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Dot.new,
                                           ),
                                         ])
   EX_101 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Ddot.new,
                                             Plurimath::Math::Function::Text.new(
                                               "a", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Ddot.new,
                                           ),
                                         ])
   EX_102 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Ddot.new,
                                             Plurimath::Math::Function::Text.new(
                                               "a", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Ddot.new,
                                           ),
                                         ])
   EX_103 = Plurimath::Math::Formula.new([
@@ -1019,58 +1019,58 @@ module ExpectedValues
                                         ])
   EX_104 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Check.new,
                                             Plurimath::Math::Function::Text.new(
                                               "b", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Check.new,
                                           ),
                                         ])
   EX_105 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Acute.new,
                                             Plurimath::Math::Function::Text.new(
                                               "b", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Acute.new,
                                           ),
                                         ])
   EX_106 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Grave.new,
                                             Plurimath::Math::Function::Text.new(
                                               "b", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Grave.new,
                                           ),
                                         ])
   EX_107 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Breve.new,
                                             Plurimath::Math::Function::Text.new(
                                               "b", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Breve.new,
                                           ),
                                         ])
   EX_108 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Symbol.new("&#x303;"),
                                             Plurimath::Math::Function::Text.new(
                                               "c", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Symbol.new("&#x303;"),
                                           ),
                                         ])
   EX_109 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Function::Bar.new,
                                             Plurimath::Math::Function::Text.new(
                                               "c", lang: :omml
                                             ),
+                                            Plurimath::Math::Function::Bar.new,
                                           ),
                                         ])
   EX_110 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Symbols::Symbol.new("&#x33f;"),
                                             Plurimath::Math::Function::Text.new(
                                               "c", lang: :omml
                                             ),
+                                            Plurimath::Math::Symbols::Symbol.new("&#x33f;"),
                                           ),
                                         ])
   EX_111 = Plurimath::Math::Formula.new([
@@ -1090,43 +1090,43 @@ module ExpectedValues
                                         ])
   EX_113 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
-                                            Plurimath::Math::Function::Text.new(
-                                              "d", lang: :omml
-                                            ),
                                             Plurimath::Math::Function::Obrace.new(
                                               Plurimath::Math::Function::Text.new(
                                                 "e", lang: :omml
                                               ),
                                               { accent: true },
                                             ),
+                                            Plurimath::Math::Function::Text.new(
+                                              "d", lang: :omml
+                                            ),
                                           ),
                                         ])
   EX_114 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
-                                            Plurimath::Math::Function::Text.new(
-                                              "e", lang: :omml
-                                            ),
                                             Plurimath::Math::Function::Ubrace.new(
                                               Plurimath::Math::Function::Text.new(
                                                 "d", lang: :omml
                                               ),
                                             ),
+                                            Plurimath::Math::Function::Text.new(
+                                              "e", lang: :omml
+                                            ),
                                           ),
                                         ])
   EX_115 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::Lvec.new,
                                             Plurimath::Math::Function::Text.new(
                                               "d", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Lvec.new,
                                           ),
                                         ])
   EX_116 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::Vec.new,
                                             Plurimath::Math::Function::Text.new(
                                               "e", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Vec.new,
                                           ),
                                         ])
   EX_117 = Plurimath::Math::Formula.new([
@@ -1138,18 +1138,18 @@ module ExpectedValues
                                         ])
   EX_118 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::Symbol.new("&#x20d0;"),
                                             Plurimath::Math::Function::Text.new(
                                               "e", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Symbol.new("&#x20d0;"),
                                           ),
                                         ])
   EX_119 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::Rightharpoonaccent.new,
                                             Plurimath::Math::Function::Text.new(
                                               "e", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Rightharpoonaccent.new,
                                           ),
                                         ])
   EX_120 = Plurimath::Math::Formula.new([
@@ -1189,12 +1189,12 @@ module ExpectedValues
                                         ])
   EX_122 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
-                                            Plurimath::Math::Function::Text.new(
-                                              "over", lang: :omml
-                                            ),
                                             Plurimath::Math::Function::FontStyle::Normal.new(
                                               Plurimath::Math::Function::Bar.new,
                                               "mathrm",
+                                            ),
+                                            Plurimath::Math::Function::Text.new(
+                                              "over", lang: :omml
                                             ),
                                           ),
                                         ])
@@ -1208,34 +1208,34 @@ module ExpectedValues
                                         ])
   EX_124 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
-                                            Plurimath::Math::Function::Text.new(
-                                              "A", lang: :omml
-                                            ),
                                             Plurimath::Math::Function::FontStyle::Normal.new(
                                               Plurimath::Math::Function::Bar.new,
                                               "mathrm",
+                                            ),
+                                            Plurimath::Math::Function::Text.new(
+                                              "A", lang: :omml
                                             ),
                                           ),
                                         ])
   EX_125 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
-                                            Plurimath::Math::Function::Text.new(
-                                              "ABC", lang: :omml
-                                            ),
                                             Plurimath::Math::Function::FontStyle::Normal.new(
                                               Plurimath::Math::Function::Bar.new,
                                               "mathrm",
+                                            ),
+                                            Plurimath::Math::Function::Text.new(
+                                              "ABC", lang: :omml
                                             ),
                                           ),
                                         ])
   EX_126 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
-                                            Plurimath::Math::Function::Text.new(
-                                              "x⊕y", lang: :omml
-                                            ),
                                             Plurimath::Math::Function::FontStyle::Normal.new(
                                               Plurimath::Math::Function::Bar.new,
                                               "mathrm",
+                                            ),
+                                            Plurimath::Math::Function::Text.new(
+                                              "x⊕y", lang: :omml
                                             ),
                                           ),
                                         ])
@@ -1259,10 +1259,10 @@ module ExpectedValues
   EX_129 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
                                             Plurimath::Math::Function::Text.new(
-                                              "lim", lang: :omml
+                                              "y", lang: :omml
                                             ),
                                             Plurimath::Math::Function::Text.new(
-                                              "y", lang: :omml
+                                              "lim", lang: :omml
                                             ),
                                           ),
                                           Plurimath::Math::Function::Text.new(
@@ -1271,10 +1271,10 @@ module ExpectedValues
                                         ])
   EX_130 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
-                                            Plurimath::Math::Function::Min.new,
                                             Plurimath::Math::Function::Text.new(
                                               "y", lang: :omml
                                             ),
+                                            Plurimath::Math::Function::Min.new,
                                           ),
                                           Plurimath::Math::Function::Text.new(
                                             "x", lang: :omml
@@ -1282,10 +1282,10 @@ module ExpectedValues
                                         ])
   EX_131 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
-                                            Plurimath::Math::Function::Max.new,
                                             Plurimath::Math::Function::Text.new(
                                               "y", lang: :omml
                                             ),
+                                            Plurimath::Math::Function::Max.new,
                                           ),
                                           Plurimath::Math::Function::Text.new(
                                             "x", lang: :omml
@@ -1300,10 +1300,10 @@ module ExpectedValues
   EX_133 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
                                             Plurimath::Math::Function::Text.new(
-                                              "lim", lang: :omml
+                                              "n→∞", lang: :omml
                                             ),
                                             Plurimath::Math::Function::Text.new(
-                                              "n→∞", lang: :omml
+                                              "lim", lang: :omml
                                             ),
                                           ),
                                           Plurimath::Math::Function::Power.new(
@@ -1328,10 +1328,10 @@ module ExpectedValues
                                         ])
   EX_134 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
-                                            Plurimath::Math::Function::Max.new,
                                             Plurimath::Math::Function::Text.new(
                                               "0≤x≤1", lang: :omml
                                             ),
+                                            Plurimath::Math::Function::Max.new,
                                           ),
                                           Plurimath::Math::Function::Text.new(
                                             "x", lang: :omml
@@ -1416,10 +1416,10 @@ module ExpectedValues
                                         ])
   EX_142 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::Gets.new,
                                             Plurimath::Math::Function::Text.new(
                                               "c", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Gets.new,
                                           ),
                                         ])
   EX_143 = Plurimath::Math::Formula.new([
@@ -1431,10 +1431,10 @@ module ExpectedValues
                                         ])
   EX_144 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
+                                            Plurimath::Math::Symbols::Gets.new,
                                             Plurimath::Math::Function::Text.new(
                                               "c", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Gets.new,
                                           ),
                                         ])
   EX_145 = Plurimath::Math::Formula.new([
@@ -1446,66 +1446,66 @@ module ExpectedValues
                                         ])
   EX_146 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::Larr.new,
                                             Plurimath::Math::Function::Text.new(
                                               "d", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Larr.new,
                                           ),
                                         ])
   EX_147 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::UpcaseRightarrow.new,
                                             Plurimath::Math::Function::Text.new(
                                               "d", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::UpcaseRightarrow.new,
                                           ),
                                         ])
   EX_148 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
+                                            Plurimath::Math::Symbols::Larr.new,
                                             Plurimath::Math::Function::Text.new(
                                               "d", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Larr.new,
                                           ),
                                         ])
   EX_149 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
+                                            Plurimath::Math::Symbols::UpcaseRightarrow.new,
                                             Plurimath::Math::Function::Text.new(
                                               "d", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::UpcaseRightarrow.new,
                                           ),
                                         ])
   EX_150 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::Rel.new,
                                             Plurimath::Math::Function::Text.new(
                                               "e", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Rel.new,
                                           ),
                                         ])
   EX_151 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
+                                            Plurimath::Math::Symbols::Rel.new,
                                             Plurimath::Math::Function::Text.new(
                                               "e", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Rel.new,
                                           ),
                                         ])
   EX_152 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Overset.new(
+                                            Plurimath::Math::Symbols::Harr.new,
                                             Plurimath::Math::Function::Text.new(
                                               "e", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Harr.new,
                                           ),
                                         ])
   EX_153 = Plurimath::Math::Formula.new([
                                           Plurimath::Math::Function::Underset.new(
+                                            Plurimath::Math::Symbols::Harr.new,
                                             Plurimath::Math::Function::Text.new(
                                               "e", lang: :omml
                                             ),
-                                            Plurimath::Math::Symbols::Harr.new,
                                           ),
                                         ])
   EX_154 = Plurimath::Math::Formula.new([

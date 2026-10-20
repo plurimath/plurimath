@@ -1,6 +1,31 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Function::Underset do
+  describe "OMML operand order" do
+    let(:script) { Plurimath::Math::Function::Text.new("x", lang: :omml) }
+    let(:base) { Plurimath::Math::Function::Text.new("y", lang: :omml) }
+    let(:formula) { Plurimath::Math::Formula.new([described_class.new(script, base)]) }
+
+    [true, false].each do |display_style|
+      context "with display_style #{display_style}" do
+        it "exports the base and script in their OMML fields" do
+          document = Oga.parse_xml(formula.to_omml(display_style: display_style))
+          namespace = { "m" => "http://schemas.openxmlformats.org/officeDocument/2006/math" }
+          object_tag = display_style ? "limLow" : "sSub"
+          script_tag = display_style ? "lim" : "sub"
+          object = document.at_xpath("//m:#{object_tag}", namespaces: namespace)
+
+          expect(object.at_xpath("m:e", namespaces: namespace).text.strip).to eq("y")
+          expect(object.at_xpath("m:#{script_tag}", namespaces: namespace).text.strip).to eq("x")
+        end
+      end
+    end
+
+    it "preserves the model through display OMML export and import" do
+      expect(Plurimath::Omml.new(formula.to_omml).to_formula).to eq(formula)
+    end
+  end
+
   describe ".initialize" do
     it "returns instance of Underset" do
       underset = described_class.new("70", "=")
