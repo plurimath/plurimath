@@ -21,7 +21,20 @@ module SharedModelFixtures
 
   module_function
 
+  def input(payload, id)
+    case_data(payload, id).fetch("input").dup
+  end
+
   def model(payload, id, input:)
+    row = case_data(payload, id)
+    unless row.fetch("input") == input
+      raise Error, "shared model input differs for #{payload}/#{id}"
+    end
+
+    build(row.fetch("model"))
+  end
+
+  def case_data(payload, id)
     unless %r{\A(?:mathml|omml)/[a-z0-9-]+\z}.match?(payload)
       raise Error, "unsupported shared model payload #{payload.inspect}"
     end
@@ -32,11 +45,11 @@ module SharedModelFixtures
     raise Error, "expected one shared model for #{payload}/#{id}" unless matches.length == 1
 
     row = matches.first
-    unless row.fetch("input_format") == payload.split("/").first && row.fetch("input") == input
-      raise Error, "shared model input differs for #{payload}/#{id}"
+    unless row.fetch("input_format") == payload.split("/").first
+      raise Error, "shared model format differs for #{payload}/#{id}"
     end
 
-    build(row.fetch("model"))
+    row
   end
 
   def load_payload(payload)

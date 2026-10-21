@@ -10,6 +10,10 @@ RSpec.describe SharedModelFixtures do
     described_class.model("mathml/tokens", "mathml-tokens-027", input: input)
   end
 
+  it "reads the exact recorded input for a selected case" do
+    expect(described_class.input("mathml/tokens", "mathml-tokens-027")).to eq(input)
+  end
+
   it "loads the recorded formula and number state" do
     formula = shared_number
 
@@ -27,6 +31,13 @@ RSpec.describe SharedModelFixtures do
   end
 
   unless RUBY_ENGINE == "opal"
+    it "does not share mutable input strings with cached YAML" do
+      original = described_class.input("mathml/tokens", "mathml-tokens-027")
+      original.replace("changed")
+
+      expect(described_class.input("mathml/tokens", "mathml-tokens-027")).to eq(input)
+    end
+
     it "does not share mutable strings with cached YAML" do
       original = shared_number
       original.value.first.value.replace("changed")

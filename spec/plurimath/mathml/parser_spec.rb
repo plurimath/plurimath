@@ -1,32 +1,67 @@
 require "spec_helper"
-require_relative "../../support/shared_model_fixtures"
+require_relative "../../support/shared_xml_parser_examples"
 
 RSpec.describe Plurimath::Mathml::Parser do
   subject(:formula) { described_class.new(exp).parse }
 
-  context "contains mathml string of sin formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle displaystyle='true'>
-            <mi>sin</mi>
-            <mn>1</mn>
-          </mstyle>
-        </math>
-      MATHML
-    end
+  it_behaves_like "shared XML parser models", "mathml/layout", %w[
+    mathml-layout-001
+    mathml-layout-002
+    mathml-layout-003
+    mathml-layout-004
+    mathml-layout-005
+    mathml-layout-006
+    mathml-layout-007
+  ]
+  # mathml-over-under-016: a bare <mo>frac</mo> is a literal Symbol, not
+  # Function::Frac; an actual fraction uses <mfrac>. See PR #450.
+  it_behaves_like "shared XML parser models", "mathml/over-under", %w[
+    mathml-over-under-002
+    mathml-over-under-003
+    mathml-over-under-005
+    mathml-over-under-006
+    mathml-over-under-007
+    mathml-over-under-008
+    mathml-over-under-009
+    mathml-over-under-010
+    mathml-over-under-011
+    mathml-over-under-012
+    mathml-over-under-013
+    mathml-over-under-014
+    mathml-over-under-016
+    mathml-over-under-017
+  ]
+  it_behaves_like "shared XML parser models", "mathml/scripts", %w[
+    mathml-scripts-001
+    mathml-scripts-002
+    mathml-scripts-003
+    mathml-scripts-005
+    mathml-scripts-009
+    mathml-scripts-011
+  ]
+  it_behaves_like "shared XML parser models", "mathml/tokens", %w[
+    mathml-tokens-003
+    mathml-tokens-004
+    mathml-tokens-005
+    mathml-tokens-006
+    mathml-tokens-007
+    mathml-tokens-009
+    mathml-tokens-010
+  ]
+  it_behaves_like "shared XML parser models", "mathml/roots", %w[
+    mathml-roots-001
+    mathml-roots-002
+    mathml-roots-003
+  ]
+  it_behaves_like "shared XML parser models", "mathml/partial-render", %w[
+    mathml-partial-001
+    mathml-partial-002
+    mathml-partial-005
+    mathml-partial-006
+    mathml-partial-007
+  ]
+  it_behaves_like "shared XML parser models", "mathml/fractions", ["mathml-fractions-001"]
 
-    it "returns formula of sin from mathml string" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/layout", "mathml-layout-001", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  # The combining tilde has no function mapping, so it used to leak into the
-  # accent slot as a raw entity. It is now promoted to the Tilde function in an
-  # accent position, mirroring &#x302; -> Hat.
   context "contains a combining tilde in an mover accent position" do
     let(:exp) do
       <<~MATHML
@@ -101,48 +136,6 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml string of sum and prod formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munderover>
-            <mo>&#x2211;</mo>
-            <mo>&#x220f;</mo>
-            <mo>&#x22c1;</mo>
-          </munderover>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum and prod" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-002", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sum formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munderover>
-            <mo>&#x2211;</mo>
-            <mi>x</mi>
-            <mi>s</mi>
-          </munderover>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum and prod" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-003", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
   context "contains mathml string of sum with text formula" do
     let(:exp) do
       <<~MATHML
@@ -181,109 +174,6 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml string of sin with sum formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msub>
-            <mi>sin</mi>
-            <mo>&#x2211;</mo>
-          </msub>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sin" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/scripts", "mathml-scripts-001", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sin and sum formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msup>
-            <mi>sin</mi>
-            <mo>&#x2211;</mo>
-          </msup>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sin" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/scripts", "mathml-scripts-002", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sin sum and prod formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msubsup>
-            <mi>sin</mi>
-            <mo>&#x220f;</mo>
-            <mo>&#x2211;</mo>
-          </msubsup>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sin" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/scripts", "mathml-scripts-003", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sum with symbol formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munderover>
-            <mo>&#x2211;</mo>
-            <mn>1</mn>
-            <mi>n</mi>
-          </munderover>
-          <msup>
-            <mi>i</mi>
-            <mn>3</mn>
-          </msup>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-005", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of simple sin formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mi>sin</mi>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sin" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/tokens", "mathml-tokens-003", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
   context "contains mathml string of simple text formula" do
     let(:exp) do
       <<~MATHML
@@ -318,128 +208,6 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml string of sum frac formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munderover>
-            <mo>&#x2211;</mo>
-            <mn>1</mn>
-            <mi>n</mi>
-          </munderover>
-          <msup>
-            <mi>i</mi>
-            <mn>3</mn>
-          </msup>
-          <mo>=</mo>
-          <msup>
-            <mfrac>
-              <mi>n</mi>
-              <mn>2</mn>
-            </mfrac>
-            <mn>2</mn>
-          </msup>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum and frac" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-006", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sin sum and theta formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mi>sin</mi>
-          <mover>
-            <mo>&#x2211;</mo>
-            <mi>&#x3B8;</mi>
-          </mover>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-007", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sum only exponent formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mover>
-            <mo>&#x2211;</mo>
-            <mn>3</mn>
-          </mover>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-008", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sum with Theta formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mover>
-            <mo>&#x2211;</mo>
-            <mo>&#x398;</mo>
-          </mover>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-009", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sum with square formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munderover>
-            <mo>&#x2211;</mo>
-            <mrow>
-              <mi>i</mi>
-              <mo>=</mo>
-              <mfrac>
-                <mn>12</mn>
-                <mo>&#x25A1;</mo>
-              </mfrac>
-            </mrow>
-            <mn>33</mn>
-          </munderover>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-010", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
   context "contains mathml string of log text formula" do
     let(:exp) do
       <<~MATHML
@@ -460,46 +228,6 @@ RSpec.describe Plurimath::Mathml::Parser do
                                                         Plurimath::Math::Function::Text.new("4 terms"),
                                                       ),
                                                     ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of simple symbol formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mover>
-            <mi>i</mi>
-            <mn>1234</mn>
-          </mover>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of symbol" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-011", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of mod formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mn>12</mn>
-          <mo>mod</mo>
-          <mn>1234</mn>
-          <mi>i</mi>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of mod" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/tokens", "mathml-tokens-004", input: exp
-      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -537,81 +265,6 @@ RSpec.describe Plurimath::Mathml::Parser do
                                                         Plurimath::Math::Function::Text.new("4 terms"),
                                                       ),
                                                     ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sqrt formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msqrt>
-            <mo>&#x2211;</mo>
-          </msqrt>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sqrt" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/roots", "mathml-roots-001", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of empty sqrt formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msqrt/>
-        </math>
-      MATHML
-    end
-
-    it "returns sqrt formula without an array radicand" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/partial-render", "mathml-partial-001", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sqrt formula with empty token radicand" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msqrt>
-            <mi></mi>
-          </msqrt>
-        </math>
-      MATHML
-    end
-
-    it "returns sqrt formula without an array radicand" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/partial-render", "mathml-partial-002", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sqrt formula with multiple radicands" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msqrt>
-            <mi>s</mi>
-            <mi>t</mi>
-          </msqrt>
-        </math>
-      MATHML
-    end
-
-    it "returns sqrt formula with the radicands grouped as a formula" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/roots", "mathml-roots-002", input: exp
-      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -718,31 +371,6 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml string of int and f formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msubsup>
-            <mo>&#x222B;</mo>
-            <mn>0</mn>
-            <mn>1</mn>
-          </msubsup>
-          <mi>f</mi>
-          <mi>x</mi>
-          <mi>d</mi>
-          <mi>x</mi>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of int and f" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/scripts", "mathml-scripts-005", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
   context "contains mathml string of log and text formula" do
     let(:exp) do
       <<~MATHML
@@ -770,87 +398,6 @@ RSpec.describe Plurimath::Mathml::Parser do
                                                         Plurimath::Math::Function::Text.new("4 terms"),
                                                       ),
                                                     ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of prod and theta formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munder>
-            <mo>&#x220F;</mo>
-            <mi>&#x3B8;</mi>
-          </munder>
-          <mi>i</mi>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of prod and theta" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-012", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of root and theta formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mroot>
-            <mi>&#x3B8;</mi>
-            <mi>x</mi>
-          </mroot>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of root and theta" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/roots", "mathml-roots-003", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of ubrace formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mover>
-            <mn>4</mn>
-            <mo>&#x23DF;</mo>
-          </mover>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of ubrace" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-013", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of obrace formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munder>
-            <mn>4</mn>
-            <mo>&#x23DE;</mo>
-          </munder>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of obrace" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-014", input: exp
-      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -888,202 +435,6 @@ RSpec.describe Plurimath::Mathml::Parser do
                                                         Plurimath::Math::Number.new("33"),
                                                       ),
                                                     ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sum and frac formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munderover>
-            <mo>&#x2211;</mo>
-            <mrow>
-              <mi>i</mi>
-              <mo>=</mo>
-              <mo>frac</mo>
-            </mrow>
-            <mn>33</mn>
-          </munderover>
-        </math>
-      MATHML
-    end
-
-    # A bare <mo>frac</mo> is a literal identifier (a fraction is <mfrac>), so it
-    # parses as a Symbol, not Function::Frac. See PR #450.
-    it "returns formula of sum with a literal frac identifier" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-016", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of sum sin and frac formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <munderover>
-            <mo>&#x2211;</mo>
-            <mn>1</mn>
-            <mi>n</mi>
-          </munderover>
-          <msup>
-            <mi>i</mi>
-            <mn>3</mn>
-          </msup>
-          <mo>=</mo>
-          <msup>
-            <mrow>
-              <mi>sin</mi>
-              <mfrac>
-                <mi>n</mi>
-                <mn>2</mn>
-              </mfrac>
-            </mrow>
-            <mn>2</mn>
-          </msup>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of sum sin and frac" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/over-under", "mathml-over-under-017", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of abs formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mo>|</mo>
-          <mn>4</mn>
-          <mo>|</mo>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of abs" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/tokens", "mathml-tokens-005", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of mathfrak formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle mathvariant="fraktur">
-            <mi>f</mi>
-          </mstyle>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of mathfrak" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/layout", "mathml-layout-002", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathsf formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle mathvariant="sans-serif">
-            <mi>f</mi>
-          </mstyle>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of Mathsf" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/layout", "mathml-layout-003", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathtt formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle mathvariant="monospace">
-            <mi>f</mi>
-          </mstyle>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of Mathtt" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/layout", "mathml-layout-004", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathcal formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle mathvariant="script">
-            <mi>f</mi>
-          </mstyle>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of Mathcal" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/layout", "mathml-layout-005", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathbb formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle mathvariant="double-struck">
-            <mi>s</mi>
-          </mstyle>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of Mathbb" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/layout", "mathml-layout-006", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of Mathbf formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mstyle mathvariant="bold">
-            <mi>d</mi>
-          </mstyle>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of Mathbf" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/layout", "mathml-layout-007", input: exp
-      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1183,65 +534,6 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml string of Mathbf formula" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msgroup>
-            <mi>n</mi>
-            <mi>&#x3c;</mi>
-            <mn>1</mn>
-          </msgroup>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of Mathbf" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/partial-render", "mathml-partial-005", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of dot decimal values only" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msgroup>
-            <mn>1.4</mn>
-          </msgroup>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of decimal values" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/partial-render", "mathml-partial-006", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of comma decimal values only" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <msgroup>
-            <mn>1,4</mn>
-          </msgroup>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of decimal values" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/partial-render", "mathml-partial-007", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
   context "contains mathml string of comma decimal values only" do
     let(:exp) do
       <<~MATHML
@@ -1319,45 +611,6 @@ RSpec.describe Plurimath::Mathml::Parser do
                                                         Plurimath::Math::Number.new("12"),
                                                       ),
                                                     ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of comma decimal values only" do
-    let(:exp) do
-      <<~MATHML
-        <math>
-          <mo>Δ</mo>
-          <mrow>
-            <mi>ν</mi>
-          </mrow>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of decimal values" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/tokens", "mathml-tokens-006", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml string of comma decimal values only" do
-    let(:exp) do
-      <<~MATHML
-        <math>
-          <mrow xref="U_GOhm">
-            <mi mathvariant="normal">GΩ</mi>
-          </mrow>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of decimal values" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/tokens", "mathml-tokens-007", input: exp
-      )
       expect(formula).to eq(expected_value)
     end
   end
@@ -1636,55 +889,6 @@ RSpec.describe Plurimath::Mathml::Parser do
     end
   end
 
-  context "contains mathml string from issue #89 Exp #1" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML">
-          <msub>
-            <mrow>
-              <mstyle mathvariant="italic">
-                <mi>D</mi>
-              </mstyle>
-            </mrow>
-            <mrow>
-              <mi>i</mi>
-            </mrow>
-          </msub>
-          <mo>=</mo>
-          <msub>
-            <mrow>
-              <mi>x</mi>
-            </mrow>
-            <mrow>
-              <mi>i</mi>
-            </mrow>
-          </msub>
-          <mo>−</mo>
-          <msub>
-            <mrow>
-              <mi>x</mi>
-            </mrow>
-            <mrow>
-              <mrow>
-                <mi mathvariant="normal">S</mi>
-                <mi mathvariant="normal">R</mi>
-                <mi mathvariant="normal">P</mi>
-                <mn>27</mn>
-              </mrow>
-            </mrow>
-          </msub>
-        </math>
-      MATHML
-    end
-
-    it "returns formula of decimal values" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/scripts", "mathml-scripts-009", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
   context "contains mathml string from issue #89 Exp #2" do
     let(:exp) do
       <<~MATHML
@@ -1832,170 +1036,6 @@ RSpec.describe Plurimath::Mathml::Parser do
                                                         { attributes: { accent: true } },
                                                       ),
                                                     ])
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml equation from metanorma/metanorma-ieee#713 example#1" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mstyle mathvariant="normal">
-              <mrow>
-                <mi>&#x394;</mi>
-                <mi>A</mi>
-              </mrow>
-            </mstyle>
-            <mo>=</mo>
-            <mstyle mathvariant="normal">
-              <mfrac>
-                <mi>b</mi>
-                <mrow>
-                  <mn>2</mn>
-                  <mo>&#x22c5;</mo>
-                  <mi>C</mi>
-                  <mi>C</mi>
-                </mrow>
-              </mfrac>
-            </mstyle>
-          </mstyle>
-        </math>
-      MATHML
-    end
-
-    it "returns formula with Delta, fraction, and centered dot symbols from the mathml equation" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/fractions", "mathml-fractions-001", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains mathml equation from metanorma/metanorma-ieee#713 example#2" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mstyle mathvariant="normal">
-              <mrow>
-                <mi>t</mi>
-                <mi>g</mi>
-                <mi>t</mi>
-                <msub>
-                  <mo>&#x27;</mo>
-                  <mrow>
-                    <mi>D</mi>
-                    <mi>C</mi>
-                    <mi>X</mi>
-                  </mrow>
-                </msub>
-              </mrow>
-            </mstyle>
-            <mrow>
-              <mo>(</mo>
-              <mi>&#x394;</mi>
-              <msub>
-                <mi>t</mi>
-                <mi>s</mi>
-              </msub>
-              <mo>,</mo>
-              <mi>&#x394;</mi>
-              <mi>f</mi>
-              <mo>&#x27;</mo>
-              <mo>)</mo>
-            </mrow>
-            <mo>=</mo>
-            <mstyle mathvariant="normal">
-              <mrow>
-                <mi>t</mi>
-                <mi>g</mi>
-                <msub>
-                  <mi>t</mi>
-                  <mrow>
-                    <mi>D</mi>
-                    <mi>C</mi>
-                    <mi>X</mi>
-                  </mrow>
-                </msub>
-              </mrow>
-            </mstyle>
-            <mrow>
-              <mo>(</mo>
-              <mi>&#x394;</mi>
-              <msub>
-                <mi>t</mi>
-                <mi>s</mi>
-              </msub>
-              <mo>)</mo>
-            </mrow>
-            <mrow>
-              <mo>[</mo>
-              <mn>1</mn>
-              <mo>+</mo>
-              <mstyle mathvariant="normal">
-                <mrow>
-                  <mi>U</mi>
-                  <mi>F</mi>
-                  <msub>
-                    <mi>D</mi>
-                    <mrow>
-                      <mi>D</mi>
-                      <mi>C</mi>
-                      <mi>X</mi>
-                    </mrow>
-                  </msub>
-                </mrow>
-              </mstyle>
-              <mo>&#x22c5;</mo>
-              <mi>&#x394;</mi>
-              <mi>f</mi>
-              <mo>&#x27;</mo>
-              <mo>]</mo>
-            </mrow>
-          </mstyle>
-        </math>
-      MATHML
-    end
-
-    it "returns formula subscripted DDCX term, Delta symbols, and prime notation" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/scripts", "mathml-scripts-011", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains a bare <mi> whose name collides with an accent (unitsml/unitsdb#123)" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mi>bar</mi>
-        </math>
-      MATHML
-    end
-
-    it "treats the accent name as a literal symbol, not an overline accent" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/tokens", "mathml-tokens-009", input: exp
-      )
-      expect(formula).to eq(expected_value)
-    end
-  end
-
-  context "contains an upright <mi> whose name collides with an accent (unitsml/unitsdb#123)" do
-    let(:exp) do
-      <<~MATHML
-        <math xmlns='http://www.w3.org/1998/Math/MathML'>
-          <mi mathvariant='normal'>bar</mi>
-        </math>
-      MATHML
-    end
-
-    it "treats the upright identifier as a literal symbol, not an overline accent" do
-      expected_value = SharedModelFixtures.model(
-        "mathml/tokens", "mathml-tokens-010", input: exp
-      )
       expect(formula).to eq(expected_value)
     end
   end
