@@ -4,9 +4,10 @@ require "support/shared_renderer_fixtures"
 
 RSpec.shared_examples "shared renderer fixture" do |id|
   row = SharedRendererFixtures.row(id)
+  let(:__shared_renderer_example_memo) { {} }
   it "#{id}: #{row.fetch('description')}" do
-    # Construct and render inside each example execution: the surrounding hook
-    # executes this once with Ox and once with Oga, including under Opal.
+    # Each engine invokes the example body. Explicit source let/subject values
+    # retain their original RSpec lifetime; direct calls execute on each run.
     check = lambda do |observed, value, comparison|
       expected = value.is_a?(String) ? value.dup : value
       case comparison
@@ -33,7 +34,7 @@ RSpec.shared_examples "shared renderer fixture" do |id|
     end
     if row["program"]
       execute = lambda do
-        SharedRendererFixtures.run_program(row, context: self) { |actual, expected, comparison| check.call(actual, expected, comparison) }
+        SharedRendererFixtures.run_program(row, context: self, example_memo: __shared_renderer_example_memo) { |actual, expected, comparison| check.call(actual, expected, comparison) }
       end
       if row.fetch("program")["no_error"]
         expect { execute.call }.not_to raise_error
@@ -43,7 +44,7 @@ RSpec.shared_examples "shared renderer fixture" do |id|
         execute.call
       end
     else
-      actual = SharedRendererFixtures.render(row)
+      actual = SharedRendererFixtures.render(row, example_memo: __shared_renderer_example_memo)
       observations = row["observations"] || [{ "comparison" => row.fetch("comparison"), "expected" => row.fetch("expected") }]
       observations.each do |observation|
         observed = observation["observation"] ? SharedRendererFixtures.observe(actual, observation.fetch("observation")) : actual

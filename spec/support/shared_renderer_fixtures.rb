@@ -7,11 +7,11 @@ module SharedRendererFixtures
   METHODS = %w[to_asciimath to_latex to_html to_mathml to_omml to_unicodemath to_display to_mathml_without_math_tag to_omml_without_math_tag].freeze
   COMPARISONS = %w[eq eql not_eq not_eql match be_xml_equivalent_to be_empty not_be_nil include not_include start_with not_start_with end_with not_end_with model_class not_model_class text_kind].freeze
   STEP_FIELDS = {
-    "build" => [%w[kind save recipe], []],
-    "render" => [%w[kind save source operation], []],
-    "decode" => [%w[kind save source boundary format], %w[format_argument]],
-    "transform" => [%w[kind save source normalization], []],
-    "observe" => [%w[kind save source observation], %w[arguments]],
+    "build" => [%w[kind save recipe], %w[memo]],
+    "render" => [%w[kind save source operation], %w[memo]],
+    "decode" => [%w[kind save source boundary format], %w[format_argument memo]],
+    "transform" => [%w[kind save source normalization], %w[memo]],
+    "observe" => [%w[kind save source observation], %w[arguments memo]],
     "configure_number_formatter" => [%w[kind recipe], []],
     "assert" => [%w[kind source comparison assertion_line], %w[expected expected_slot]],
   }.freeze
@@ -26,6 +26,31 @@ module SharedRendererFixtures
          end
   class Error < StandardError; end
 
+  # RSpec's around hook invokes the same example twice. Source lets retain
+  # their values across those invocations; ordinary local assignments do not.
+  class ModelMemo < Hash
+    def initialize(example_values)
+      super()
+      @example_values = example_values
+    end
+
+    def key?(key)
+      key.start_with?("let:") ? @example_values.key?(key) : super
+    end
+
+    def fetch(key, *defaults, &block)
+      key.start_with?("let:") ? @example_values.fetch(key, *defaults, &block) : super
+    end
+
+    def []=(key, value)
+      key.start_with?("let:") ? @example_values[key] = value : super
+    end
+
+    def delete(key)
+      key.start_with?("let:") ? @example_values.delete(key) : super
+    end
+  end
+
   module_function
 
   def fields!(record, required, optional = [])
@@ -35,7 +60,8 @@ module SharedRendererFixtures
   end
 
   def validate_operation!(operation)
-    fields!(operation, %w[method args kwargs normalizations], %w[observation dump roundtrip])
+    fields!(operation, %w[method args kwargs normalizations], %w[observation dump roundtrip memo])
+    validate_memo!(operation.fetch("memo")) if operation.key?("memo")
     raise Error, "unsupported renderer operation" unless METHODS.include?(operation.fetch("method"))
     raise Error, "renderer arguments must be an array" unless operation.fetch("args").is_a?(Array)
     raise Error, "renderer kwargs must be a typed map" unless operation.fetch("kwargs").is_a?(Hash) && operation.fetch("kwargs")["kind"] == "map"
@@ -59,6 +85,20 @@ module SharedRendererFixtures
     # Check the entire boundary before any model construction, rendering or
     # configuration changes, including invalid fields on later assertions.
     steps.each { |step| validate_step!(step) }
+    available = []
+    steps.each do |step|
+      %w[source expected_slot].each do |field|
+        raise Error, "unknown renderer source slot" if step.key?(field) && !available.include?(step.fetch(field))
+      end
+      if step["memo"] && (step.fetch("memo").fetch("dependencies") - available).any?
+        raise Error, "unknown source-let dependency slot"
+      end
+      if step["save"]
+        raise Error, "renderer sequence slot reused" if available.include?(step.fetch("save"))
+
+        available << step.fetch("save")
+      end
+    end
     unless steps.any? { |step| step.fetch("kind") == "assert" } || program["no_error"] == true
       raise Error, "renderer program needs an assertion or explicit no-error acceptance"
     end
@@ -68,6 +108,7 @@ module SharedRendererFixtures
     raise Error, "renderer step must be a mapping" unless step.is_a?(Hash)
     required, optional = STEP_FIELDS.fetch(step["kind"]) { raise Error, "unsupported renderer sequence step" }
     fields!(step, required, optional)
+    validate_memo!(step.fetch("memo"), program: true) if step.key?("memo")
     %w[save source expected_slot].each do |field|
       next unless step.key?(field)
 
@@ -107,6 +148,54 @@ module SharedRendererFixtures
     end
   end
 
+  def validate_memo!(metadata, program: false)
+    if program
+      fields!(metadata, %w[ids dependencies])
+      dependencies = metadata.fetch("dependencies")
+      unless dependencies.is_a?(Array) && dependencies.uniq == dependencies && dependencies.all? { |id| id.is_a?(String) && id.match?(/\Av[1-9][0-9]*\z/) }
+        raise Error, "invalid source-let memo dependencies"
+      end
+      ids = metadata.fetch("ids")
+    else
+      ids = metadata
+    end
+    unless ids.is_a?(Array) && !ids.empty? && ids.uniq == ids && ids.all? { |id| id.is_a?(String) && id.match?(/\Alet:[A-Za-z_][A-Za-z0-9_]*\z/) }
+      raise Error, "invalid source-let memo identifiers"
+    end
+  end
+
+  def model_memo(example_memo)
+    raise Error, "example memo must be a mapping" unless example_memo.is_a?(Hash)
+
+    ModelMemo.new(example_memo["models"] ||= {})
+  end
+
+  def memoized(ids, definition, example_memo)
+    return yield unless ids
+
+    validate_memo!(ids)
+    cache = example_memo["calls"] ||= {}
+    existing = ids.filter_map { |id| cache[id] }
+    existing.each do |entry|
+      raise Error, "cyclic source-let memo" if entry.fetch(:building)
+      raise Error, "conflicting source-let memo definition" unless entry.fetch(:definition) == definition
+    end
+    if existing.any?
+      value = existing.first.fetch(:value)
+      raise Error, "conflicting source-let aliases" unless existing.all? { |entry| entry.fetch(:value).equal?(value) }
+    else
+      ids.each { |id| cache[id] = { definition: definition, building: true } }
+      begin
+        value = yield
+      rescue StandardError
+        ids.each { |id| cache.delete(id) }
+        raise
+      end
+    end
+    ids.each { |id| cache[id] = { definition: definition, building: false, value: value } }
+    value
+  end
+
   def rows
     @rows ||= begin
       text = File.read(File.join(ROOT, "renderer-expectations.yaml"))
@@ -129,65 +218,109 @@ module SharedRendererFixtures
     matches.first
   end
 
-  def render(row)
-    memo = {}
-    input = row.fetch("input")
-    model = case input.fetch("kind")
-            when "model" then SharedModelRecipes.build(input.fetch("recipe"), memo)
-            when "parse"
-              format = input.fetch("format")
-              raise Error, "unsupported parser format" unless %w[asciimath latex mathml omml unicode html].include?(format)
+  def build_input(input, memo, example_memo)
+    case input.fetch("kind")
+    when "model"
+      recipe = input.fetch("recipe")
+      if input.key?("memo")
+        validate_memo!(input.fetch("memo"))
+        input.fetch("memo").reverse_each { |id| recipe = { "kind" => "memo", "id" => id, "value" => recipe } }
+      end
+      SharedModelRecipes.build(recipe, memo)
+    when "parse"
+      format = input.fetch("format")
+      raise Error, "unsupported parser format" unless %w[asciimath latex mathml omml unicode html].include?(format)
 
-              Plurimath::Math.parse(input.fetch("text").dup, format.to_sym)
-            else raise Error, "unsupported renderer input"
-            end
-    render_model(model, row.fetch("operation"), memo)
+      memoized(input["memo"], input.reject { |key, _| key == "memo" }, example_memo) do
+        Plurimath::Math.parse(input.fetch("text").dup, format.to_sym)
+      end
+    else raise Error, "unsupported renderer input"
+    end
   end
 
-  def render_model(model, operation, memo)
-    validate_operation!(operation)
-    raise Error, "renderer input must be a Math::Core node" unless model.is_a?(Plurimath::Math::Core)
+  def render(row, example_memo: {})
+    memo = model_memo(example_memo)
+    builder = -> { build_input(row.fetch("input"), memo, example_memo) }
+    render_model(nil, row.fetch("operation"), memo, example_memo: example_memo, model_builder: builder, source_definition: row.fetch("input"))
+  end
 
+  def render_model(model, operation, memo, example_memo: {}, model_builder: nil, source_definition: nil)
+    validate_operation!(operation)
     method = operation.fetch("method")
     raise Error, "unsupported renderer operation" unless METHODS.include?(method)
 
-    args = operation.fetch("args").map { |recipe| SharedModelRecipes.build(recipe, memo) }
-    kwargs = SharedModelRecipes.build(operation.fetch("kwargs"), memo)
-    actual = kwargs.empty? ? model.public_send(method, *args) : model.public_send(method, *args, **kwargs)
-    if operation.key?("roundtrip")
-      raise Error, "unsupported renderer roundtrip" unless operation.fetch("roundtrip") == "omml"
+    definition = { "operation" => operation.reject { |key, _| key == "memo" }, "input" => source_definition }
+    actual, source_model = memoized(operation["memo"], definition, example_memo) do
+      model = model_builder.call if model_builder
+      raise Error, "renderer input must be a Math::Core node" unless model.is_a?(Plurimath::Math::Core)
 
-      return { actual: Plurimath::Omml.new(actual).to_formula, expected: model }
+      args = operation.fetch("args").map { |recipe| SharedModelRecipes.build(recipe, memo) }
+      kwargs = SharedModelRecipes.build(operation.fetch("kwargs"), memo)
+      output = kwargs.empty? ? model.public_send(method, *args) : model.public_send(method, *args, **kwargs)
+      case operation["dump"]
+      when nil
+      when "xml_engine_indent_2" then output = Plurimath.xml_engine.dump(output, indent: 2)
+      when "dump_ox_nodes" then output = Plurimath::Math::Core.new.dump_ox_nodes(output)
+      end
+      operation.fetch("normalizations").each { |normalization| output = transform(output, normalization) }
+      [output, model]
     end
-    case operation["dump"]
-    when nil
-    when "xml_engine_indent_2" then actual = Plurimath.xml_engine.dump(actual, indent: 2)
-    when "dump_ox_nodes" then actual = Plurimath::Math::Core.new.dump_ox_nodes(actual)
-    else raise Error, "unsupported renderer dump"
-    end
-    operation.fetch("normalizations").each do |normalization|
-      actual = case normalization
-               when "remove_whitespace" then actual.gsub(/\s/, "")
-               when "unescape_ampersand" then actual.gsub("&amp;", "&")
-               when "strip" then actual.strip
-               else raise Error, "unsupported renderer normalization"
-               end
+    if operation.key?("roundtrip")
+      return { actual: Plurimath::Omml.new(actual).to_formula, expected: source_model }
     end
     observe(actual, operation["observation"])
   end
 
-  def run_program(row, context: nil)
+  def program_memo_definition(step, steps)
+    pending = [step]
+    definitions = {}
+    until pending.empty?
+      node = pending.shift
+      key = node.fetch("save")
+      next if definitions.key?(key)
+
+      definitions[key] = node.reject { |field, _| field == "memo" }
+      if node["source"]
+        pending << steps.find { |entry| entry["save"] == node.fetch("source") }
+      end
+    end
+    definitions
+  end
+
+  def run_program(row, context: nil, example_memo: {})
     program = row.fetch("program")
     validate_program!(program)
-    memo = {}
+    memo = model_memo(example_memo)
     slots = {}
     steps = program.fetch("steps")
     configured_formatter = steps.any? { |step| step.fetch("kind") == "configure_number_formatter" }
     previous_formatter = Plurimath.configuration.number_formatter if configured_formatter
+    cached_slots = {}
+    skipped = []
+    steps.select { |step| step["memo"] }.each do |step|
+      ids = step.fetch("memo").fetch("ids")
+      next unless ids.any? { |id| example_memo.fetch("calls", {}).key?(id) }
+
+      cached_slots[step.fetch("save")] = memoized(ids, program_memo_definition(step, steps), example_memo) { raise Error, "missing cached let" }
+      skipped.concat(step.fetch("memo").fetch("dependencies"))
+    end
     steps.each do |step|
-      actual = case step.fetch("kind")
+      if cached_slots.key?(step["save"])
+        slots[step.fetch("save")] = cached_slots.fetch(step.fetch("save"))
+        next
+      end
+      if skipped.include?(step["save"])
+        recipe = step["recipe"]
+        if step.fetch("kind") == "build" && recipe["kind"] == "memo" && recipe.fetch("id").start_with?("let:") && memo.key?(recipe.fetch("id"))
+          slots[step.fetch("save")] = SharedModelRecipes.build(recipe, memo)
+        end
+        next
+      end
+      ids = step["memo"] && step.fetch("memo").fetch("ids")
+      actual = memoized(ids, ids && program_memo_definition(step, steps), example_memo) do
+        case step.fetch("kind")
                when "build" then SharedModelRecipes.build(step.fetch("recipe"), memo)
-               when "render" then render_model(slots.fetch(step.fetch("source")), step.fetch("operation"), memo)
+               when "render" then render_model(slots.fetch(step.fetch("source")), step.fetch("operation"), memo, example_memo: example_memo)
                when "decode" then decode(slots.fetch(step.fetch("source")), step, memo, context: context)
                when "transform" then transform(slots.fetch(step.fetch("source")), step.fetch("normalization"))
                when "observe" then observe(slots.fetch(step.fetch("source")), step.fetch("observation"), step.fetch("arguments", {}))
@@ -203,6 +336,7 @@ module SharedRendererFixtures
                  nil
                else raise Error, "unsupported renderer sequence step"
                end
+      end
       if step["save"]
         raise Error, "renderer sequence slot reused" if slots.key?(step.fetch("save"))
 

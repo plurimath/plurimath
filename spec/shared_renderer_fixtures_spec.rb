@@ -119,4 +119,80 @@ RSpec.describe SharedRendererFixtures do
     steps[1]["format_argument"] = literal("latex")
     expect { described_class.run_program(row) {} }.to raise_error(described_class::Error, /argument differs from boundary/)
   end
+  it "repeats direct render calls while retaining an explicit source-let output" do
+    model = Plurimath::Math::Number.new("12")
+    expect(model).to receive(:to_latex).twice.and_return("first", "second")
+    cache = {}
+    direct = 2.times.map { described_class.render_model(model, operation, {}, example_memo: cache) }
+    expect(direct).to eq(%w[first second])
+
+    cached_model = Plurimath::Math::Number.new("12")
+    expect(cached_model).to receive(:to_latex).once.and_return("cached")
+    cached_operation = operation.merge("memo" => ["let:mathml"])
+    values = 2.times.map { described_class.render_model(cached_model, cached_operation, {}, example_memo: cache) }
+    expect(values).to eq(%w[cached cached])
+    expect(values.first).to equal(values.last)
+  end
+
+  it "retains a parsed subject while direct renders run on each invocation" do
+    row = { "program" => { "assertion_lines" => [1], "steps" => [
+      { "kind" => "build", "save" => "v1", "recipe" => literal("12") },
+      { "kind" => "decode", "source" => "v1", "save" => "v2", "boundary" => "wrapper", "format" => "latex", "memo" => { "ids" => ["let:formula"], "dependencies" => ["v1"] } },
+      { "kind" => "render", "source" => "v2", "save" => "v3", "operation" => operation },
+      { "kind" => "assert", "source" => "v3", "comparison" => "eq", "expected" => "12", "assertion_line" => 1 },
+    ] } }
+    model = Plurimath::Math::Number.new("12")
+    expect(described_class).to receive(:decode).once.and_return(model)
+    expect(model).to receive(:to_latex).twice.and_return("12")
+    cache = {}
+    2.times do
+      described_class.run_program(row, example_memo: cache) { |actual, expected, _| expect(actual).to eq(expected) }
+    end
+  end
+
+  it "shares typed source-let models but rebuilds locals and constants per invocation" do
+    recipe = program_row.fetch("program").fetch("steps").first.fetch("recipe")
+    cache = {}
+    first = described_class.model_memo(cache)
+    second = described_class.model_memo(cache)
+    build = lambda do |scope, id|
+      SharedModelRecipes.build({ "kind" => "memo", "id" => id, "value" => recipe }, scope)
+    end
+    expect(build.call(first, "let:formula")).to equal(build.call(second, "let:formula"))
+    expect(build.call(first, "local:formula:1")).not_to equal(build.call(second, "local:formula:1"))
+    expect(build.call(first, "constant:FORMULA")).not_to equal(build.call(second, "constant:FORMULA"))
+    expect(build.call(first, "let:formula")).not_to equal(build.call(described_class.model_memo({}), "let:formula"))
+  end
+
+  it "retains source aliases and rejects conflicting memo definitions" do
+    cache = {}
+    definition = { "boundary" => "wrapper", "format" => "latex" }
+    value = described_class.memoized(["let:formula", "let:alias"], definition, cache) { Object.new }
+    expect(described_class.memoized(["let:alias"], definition, cache) { raise "alias was rebuilt" }).to equal(value)
+    expect { described_class.memoized(["let:formula"], definition.merge("format" => "omml"), cache) {} }
+      .to raise_error(described_class::Error, /conflicting source-let memo/)
+    expect { described_class.validate_memo!(["local:formula:1"]) }
+      .to raise_error(described_class::Error, /invalid source-let memo/)
+  end
+
+  it "skips an anonymous input constructor when its rendered source let is cached" do
+    row = { "input" => { "kind" => "model", "recipe" => program_row.fetch("program").fetch("steps").first.fetch("recipe") },
+      "operation" => operation.merge("memo" => ["let:mathml"]) }
+    expect(Plurimath::Math::Number).to receive(:new).with("12").once.and_call_original
+    cache = {}
+    expect(2.times.map { described_class.render(row, example_memo: cache) }).to eq(%w[12 12])
+  end
+
+  it "skips cached let-body dependencies but repeats original local assignments" do
+    row = program_row
+    steps = row.fetch("program").fetch("steps")
+    steps[1]["memo"] = { "ids" => ["let:mathml"], "dependencies" => ["v1"] }
+    local_recipe = { "kind" => "constructor", "class" => "Math::Number", "args" => [literal("99")], "kwargs" => { "kind" => "map", "entries" => [] } }
+    steps.unshift({ "kind" => "build", "save" => "v4", "recipe" => local_recipe })
+    expect(Plurimath::Math::Number).to receive(:new).with("12").once.and_call_original
+    expect(Plurimath::Math::Number).to receive(:new).with("99").twice.and_call_original
+    cache = {}
+    2.times { described_class.run_program(row, example_memo: cache) { |actual, expected, _| expect(actual).to eq(expected) } }
+  end
+
 end
