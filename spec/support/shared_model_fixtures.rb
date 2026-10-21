@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-if RUBY_ENGINE == "opal"
-  require "nodejs/yaml"
-else
-  require "yaml"
-end
+require "yaml"
 
 # Expected objects for native parser specs. Keep the parser calls and the
 # Ox/Oga/Opal examples; obtain their model data from the pinned shared corpus.

@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Color do
   describe ".initialize" do
@@ -19,39 +20,11 @@ RSpec.describe Plurimath::Math::Function::Color do
       described_class.new(first_value, second_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("red") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-color-22-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("color(red)(n)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-color-31-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("blue") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("color(\"blue\")(70)")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("blac") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("color(\"blac\")(sum_(&)^(\"so\"))")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-color-40-1"
   end
 
   describe ".to_mathml" do
@@ -63,60 +36,11 @@ RSpec.describe Plurimath::Math::Function::Color do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("red") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-color-66-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mstyle mathcolor="red">
-            <mi>n</mi>
-          </mstyle>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-color-80-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("red") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mstyle mathcolor="red">
-            <mn>70</mn>
-          </mstyle>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("blac") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mstyle mathcolor="blac">
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </mstyle>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-color-94-1"
   end
 
   describe ".to_latex" do
@@ -124,39 +48,11 @@ RSpec.describe Plurimath::Math::Function::Color do
       described_class.new(first_value, second_value).to_latex(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("nas") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-color-127-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("{\\color{\"nas\"} n}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-color-136-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("pink") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("{\\color{pink} 70}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("red") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("{\\color{red} \\sum_{\\&}^{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-color-145-1"
   end
 
   describe ".to_html" do
@@ -164,38 +60,10 @@ RSpec.describe Plurimath::Math::Function::Color do
       described_class.new(first_value, second_value).to_html(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("nas") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-color-167-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<i>nas</i><i>n</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-color-176-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("rad") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("<i>rad</i><i>70</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Function::Text.new("red") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("<i>red</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-color-185-1"
   end
 end

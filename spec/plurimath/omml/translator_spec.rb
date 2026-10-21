@@ -1,47 +1,14 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "plurimath/fixtures/formula_modules/expected_values"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Omml::Translator do
   describe "#omml_to_plurimath" do
-    [["limUpp", :Overset], ["limLow", :Underset]].each do |tag, function|
-      context "with OMML operand order in #{tag}" do
-        let(:script_text) { "x" }
-        let(:script_value) { Plurimath::Math::Function::Text.new(script_text, lang: :omml) }
-        let(:source) do
-          <<~OMML
-            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
-              <m:#{tag}>
-                <m:e><m:r><m:t>y</m:t></m:r></m:e>
-                <m:lim><m:r><m:t>#{script_text}</m:t></m:r></m:lim>
-              </m:#{tag}>
-            </m:oMath>
-          OMML
-        end
-        let(:expected_value) do
-          Plurimath::Math::Formula.new([
-                                         Plurimath::Math::Function.const_get(function).new(
-                                           script_value,
-                                           Plurimath::Math::Function::Text.new("y", lang: :omml),
-                                         ),
-                                       ])
-        end
-
-        it "imports the limit as script and e as base" do
-          expect(Plurimath::Omml.new(source).to_formula).to eq(expected_value)
-        end
-
-        context "with a named operator as script label" do
-          let(:script_text) { "min" }
-          let(:script_value) { Plurimath::Math::Function::Min.new }
-
-          it "keeps the operator in the script position" do
-            expect(Plurimath::Omml.new(source).to_formula).to eq(expected_value)
-          end
-        end
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-translator-operand-limUpp-text"
+    it_behaves_like "shared renderer fixture", "renderer-translator-operand-limUpp-operator"
+    it_behaves_like "shared renderer fixture", "renderer-translator-operand-limLow-text"
+    it_behaves_like "shared renderer fixture", "renderer-translator-operand-limLow-operator"
 
     it "raises for unsupported typed nodes" do
       expect { described_class.new.omml_to_plurimath(Object.new) }
@@ -74,205 +41,32 @@ RSpec.describe Plurimath::Omml::Translator do
   end
 
   describe "Plurimath::Omml#to_formula" do
-    {
-      "001" => ExpectedValues::EX_001,
-      "057" => ExpectedValues::EX_057,
-      "121" => ExpectedValues::EX_121,
-      "187" => ExpectedValues::EX_187,
-    }.each do |fixture_id, expected_formula|
-      context "with ##{fixture_id}.omml" do
-        let(:file_name) { "spec/plurimath/fixtures/omml/#{fixture_id}.omml" }
-
-        it "parses through the omml repo typed models" do
-          expect(Plurimath::Omml.new(File.read(file_name)).to_formula)
-            .to eq(expected_formula)
-        end
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-translator-fixture-001"
+    it_behaves_like "shared renderer fixture", "renderer-translator-fixture-057"
+    it_behaves_like "shared renderer fixture", "renderer-translator-fixture-121"
+    it_behaves_like "shared renderer fixture", "renderer-translator-fixture-187"
 
     context "when the omml context has not been populated yet" do
-      let(:file_name) { "spec/plurimath/fixtures/omml/001.omml" }
-
-      it "populates the omml context before parsing" do
+      before do
         require "omml"
-
         Omml::Configuration.reset_context!
-
-        expect(Plurimath::Omml.new(File.read(file_name)).to_formula)
-          .to eq(ExpectedValues::EX_001)
       end
+      it_behaves_like "shared renderer fixture", "renderer-translator-reset-context"
     end
 
-    it "unwraps box elements as transparent containers" do
-      omml = <<~OMML
-        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
-          <m:oMath>
-            <m:box>
-              <m:e>
-                <m:r><m:t>x</m:t></m:r>
-              </m:e>
-            </m:box>
-          </m:oMath>
-        </m:oMathPara>
-      OMML
+    it_behaves_like "shared renderer fixture", "renderer-omml-translator-translator-106-1"
 
-      expect(Plurimath::Omml.new(omml).to_formula.to_asciimath).to eq('"x"')
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-translator-translator-122-1"
 
-    it "ignores non-semantic typed property and empty node tags" do
-      omml = <<~OMML
-        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
-          <m:oMathParaPr/>
-          <m:oMath>
-            <m:f>
-              <m:fPr/>
-              <m:num>
-                <m:argPr/>
-                <m:r><m:lastRenderedPageBreak/><m:t>x</m:t></m:r>
-                <m:ctrlPr/>
-              </m:num>
-              <m:den>
-                <m:r><m:t>y</m:t></m:r>
-              </m:den>
-            </m:f>
-            <m:box>
-              <m:boxPr/>
-              <m:e>
-                <m:r><m:t>2</m:t></m:r>
-              </m:e>
-            </m:box>
-          </m:oMath>
-        </m:oMathPara>
-      OMML
+    it_behaves_like "shared renderer fixture", "renderer-omml-translator-translator-152-1"
 
-      expect(Plurimath::Omml.new(omml).to_formula.to_asciimath)
-        .to eq('frac("x")("y") 2')
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-translator-translator-173-1"
 
-    context "when an m:r carries both m:rPr and w:rPr styling" do
-      let(:omml) do
-        <<~OMML
-          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                   xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-            <m:r>
-              <m:rPr><m:sty m:val="p"/></m:rPr>
-              <w:rPr><w:i/></w:rPr>
-              <m:t>x</m:t>
-            </m:r>
-          </m:oMath>
-        OMML
-      end
-
-      it "prefers the math-namespace style and renders without raising" do
-        formula = Plurimath::Omml.new(omml).to_formula
-        expect(formula.to_asciimath).to eq('rm("x")')
-        expect(formula.to_latex).to eq("\\mathrm{\\text{x}}")
-      end
-    end
-
-    context "when m:rPr/m:sty=b coexists with w:rPr/w:i" do
-      let(:omml) do
-        <<~OMML
-          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                   xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-            <m:r>
-              <m:rPr><m:sty m:val="b"/></m:rPr>
-              <w:rPr><w:i/></w:rPr>
-              <m:t>x</m:t>
-            </m:r>
-          </m:oMath>
-        OMML
-      end
-
-      it "prefers the math-namespace style (bold) over the Word-namespace italic" do
-        expect(Plurimath::Omml.new(omml).to_formula.to_asciimath)
-          .to eq('mathbf("x")')
-      end
-    end
-
-    context "when an m:r carries WordprocessingML run inner content" do
-      shared_examples "round-trips without raising" do
-        it "parses and renders without raising UnsupportedNodeError" do
-          formula = Plurimath::Omml.new(omml).to_formula
-          expect { formula.to_asciimath }.not_to raise_error
-          expect { formula.to_latex }.not_to raise_error
-          expect { formula.to_mathml }.not_to raise_error
-        end
-      end
-
-      context "with <w:br/> (line break)" do
-        let(:omml) do
-          <<~OMML
-            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-              <m:r><m:t>x</m:t><w:br/></m:r>
-            </m:oMath>
-          OMML
-        end
-
-        include_examples "round-trips without raising"
-
-        it "emits a Linebreak node for the break" do
-          formula = Plurimath::Omml.new(omml).to_formula
-          expect(formula.to_asciimath).to include("\\")
-        end
-      end
-
-      context "with text on both sides of <w:br/>" do
-        let(:omml) do
-          <<~OMML
-            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-              <m:r><m:t>x</m:t><w:br/><m:t>y</m:t></m:r>
-            </m:oMath>
-          OMML
-        end
-
-        it "preserves the text after the line break" do
-          formula = Plurimath::Omml.new(omml).to_formula
-          expect(formula.to_asciimath).to eq("\"x\" \\\n  \"y\"")
-          expect(formula.to_latex).to eq("\\text{x} \\\\  \\text{y}")
-        end
-      end
-
-      context "with <w:tab/>" do
-        let(:omml) do
-          <<~OMML
-            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-              <m:r><m:t>a</m:t><w:tab/><m:t>b</m:t></m:r>
-            </m:oMath>
-          OMML
-        end
-
-        include_examples "round-trips without raising"
-      end
-
-      context "with <w:cr/> (carriage return)" do
-        let(:omml) do
-          <<~OMML
-            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-              <m:r><m:t>a</m:t><w:cr/><m:t>b</m:t></m:r>
-            </m:oMath>
-          OMML
-        end
-
-        include_examples "round-trips without raising"
-      end
-
-      context "with <w:noBreakHyphen/>" do
-        let(:omml) do
-          <<~OMML
-            <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-                     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-              <m:r><m:t>a</m:t><w:noBreakHyphen/><m:t>b</m:t></m:r>
-            </m:oMath>
-          OMML
-        end
-
-        include_examples "round-trips without raising"
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-translator-word-content-1-acceptance"
+    it_behaves_like "shared renderer fixture", "renderer-translator-word-content-1-output"
+    it_behaves_like "shared renderer fixture", "renderer-translator-word-content-2-output"
+    it_behaves_like "shared renderer fixture", "renderer-translator-word-content-3-acceptance"
+    it_behaves_like "shared renderer fixture", "renderer-translator-word-content-4-acceptance"
+    it_behaves_like "shared renderer fixture", "renderer-translator-word-content-5-acceptance"
   end
 end
