@@ -1,19 +1,21 @@
 # B1 — Model (#493)
 
-## What it delivers
-The uncertainty node in `lib/plurimath/math/`, registered in
-`math/function.rb`, with equality, cloning and the attributes the design note
-names.
+Dependency: approved B0 contract and unit attachment; reconcile any A0 consumer migration before overlapping edits. Implements C1/C7. No AsciiMath grammar or `INPUT` vocabulary changes.
 
-## Why here
-Every format in B2 and B3 reads or writes this node, so it comes first and is
-small.
+| Task | Exact existing/proposed touchpoints and result | Effort (person-days) |
+|---|---|---|
+| B1.1 | Proposed `lib/plurimath/math/function/uncertainty.rb`, register in existing `lib/plurimath/math/function.rb`: implement signed variants/fields, validation and errors | 2–3 |
+| B1.2 | Proposed `spec/plurimath/math/function/uncertainty_spec.rb`: equality over all signed semantics, unknown/supplied metadata, precision and unit policy; retain exact decimal spelling | 1–2 |
+| B1.3 | Existing `Math::Core#cloned_objects`, `Math::Formula#==`/`#cloned_objects` integration and proposed `spec/plurimath/math/formula/uncertainty_spec.rb`: nested values/units clone independently, traverse correctly | 1–2 |
+| Total | | **4–7** |
 
-## Risks and notes
-- New files only, plus one autoload line. Nothing in `asciimath/`.
-- No AsciiMath spelling is added to any `INPUT` table here (see the vocabulary
-  rule in [cross-cutting](https://github.com/plurimath/amath/blob/feat/amath-extraction/TODO.plan/cross-cutting.md)).
+`Core#cloned_objects` constructs `self.class.new(nil)` before copying variables. Support that path or override cloning in the new node; do not weaken validation merely to make a broken clone succeed. Existing `Math::Number` stores strings; do not coerce to Float. Existing `Math::Function::Unitsml` has its own clone behavior; if selected as a child, test it directly and through Formula. Shared consumer edits need the A0 ownership decision; generic cleanup is excluded.
 
-## Exit criteria
-Work items are written when B0 is approved.
-- [ ] Node specs pass; `bundle exec rake spec` still passes.
+At phase entry expand exact constructor/spec cases from signed B0. Planned commands from the Plurimath root:
+
+```sh
+bundle exec rspec spec/plurimath/math/function/uncertainty_spec.rb spec/plurimath/math/formula/uncertainty_spec.rb
+bundle exec rake spec
+```
+
+Exit: all signed valid/invalid/equality/clone cases pass, changed nested clones do not alter originals, existing suite stays green. Include explicit unequal standard/expanded and distinct lower/upper cases. Record commands/head/results; status pending. Next: B2 outputs and B3 inputs against this constructor revision.

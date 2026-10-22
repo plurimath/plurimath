@@ -1,50 +1,52 @@
 # Plan: measurement uncertainty (#493)
 
-Modelling measurement uncertainty, as the GUM (JCGM 100) describes it, in
-Plurimath's model and in AsciiMath, MathML, OMML and UnicodeMath
-([#493](https://github.com/plurimath/plurimath/issues/493)).
+Represent reported measurement uncertainty in the model and math languages required by [#493](https://github.com/plurimath/plurimath/issues/493): AsciiMath, MathML, OMML and UnicodeMath. Provide six outputs: those four, LaTeX and HTML. This is representation and conversion, with no uncertainty propagation, statistical estimation or calculation of `U`, `k` or coverage probability. Ordinary `+-` / `±` retains `Math::Symbols::Pm` semantics.
 
-> This plan lives on the `feat/gum-uncertainty` branch only. `/TODO.*/` is
-> ignored on `main`, so it was added here deliberately for review and is
-> removed before this branch merges.
+The baseline is Plurimath `ae20be111a26fdd988c58be0bfb2b7f6fe6e352f`; no uncertainty node or format convention is established there. B0 resolves the design before implementation. This review-only plan may be removed before merge **only after** its approved contracts and acceptance fixtures are retained in the permanent homes below.
 
-## Blocked on amath for AsciiMath input
+## Completion floor and acceptance mapping
 
-AsciiMath *input* for uncertainty (B4) is blocked until the AsciiMath parser
-has moved into [`plurimath/amath`](https://github.com/plurimath/amath)
-([#494](https://github.com/plurimath/plurimath/issues/494)). It will be added
-to the amath grammar, not to Plurimath's current parser, so it is not written
-twice. Everything else here — design, model, output for every format including
-AsciiMath, and input for the other formats — goes ahead in parallel.
+The proposed minimum below must be confirmed in B0; it is a requirement for implementation, not a claim of observed support or approved syntax. A required language cannot be labelled wholly unsupported or output only and still satisfy #493. If it cannot meet the floor, obtain an explicit issue-scope decision and record the outstanding gap before claiming completion.
 
-The rules both issues share — which files each side may edit, the symbol
-vocabulary, sync points, open decisions — are in amath's plan:
-[cross-cutting](https://github.com/plurimath/amath/blob/feat/amath-extraction/TODO.plan/cross-cutting.md)
-and
-[open decisions](https://github.com/plurimath/amath/blob/feat/amath-extraction/TODO.plan/open-decisions.md).
+| Criterion | Required outcome | Work and proof |
+|---|---|---|
+| C1 model | Measured value, absolute standard magnitude, symmetric expanded magnitude and supplied metadata have distinct representations; asymmetric payload is decided before freezing the node | B0 semantic examples; B1 equality, validation, cloning and Formula tests |
+| C2 AsciiMath | Emit and recognize one explicit canonical measurement form for each supported semantic variant; preserve value, magnitude/components, variant and declared precision; preserve supplied metadata or document an approved exact loss | B0 signed wire examples; B2 output; B4 installed dependency round trips and independent examples |
+| C3 MathML | Same minimum in one agreed structure/semantic convention, with MathML intent handling specified | B0, B2 Formula output, B3 translator input |
+| C4 OMML | Same minimum in one agreed explicit structure; ordinary algebra must not be reclassified | B0, B2 output, B3 translator input |
+| C5 UnicodeMath | Same minimum in one explicit canonical form, disjoint from ordinary `±` | B0, B2 output, B3 grammar/transform input |
+| C6 six outputs | All six serializers produce the agreed rendering for supported variants, with explicit loss behavior | B2 golden fixtures and Formula traversal; B4 final replay |
+| C7 preservation and handoff | Existing algebra, parentheses, numeric spelling, parser contracts and supported units remain compatible; signed contracts survive plan removal | B1–B4 preservation suites; durable docs and fixtures |
 
-## Phases
+Standard and symmetric expanded uncertainty belong in the minimum. Asymmetric reporting remains planned scope, but its scientific meaning, payload and notation are a B0 decision; exclusion or reduction requires an explicit scope decision, not an unsupported table cell. LaTeX input and additional notation aliases are optional and cannot replace C2–C5. Exact strings/XML, metadata projections and errors must be signed before dependent code begins; see [B0](b0-design/01-design-note.md).
 
-| Phase | Delivers | Waits for | Status |
-|---|---|---|---|
-| [B0 — Design](b0-design/) | Design note approved by Ronald | — | ▶ next |
-| [B1 — Model](b1-model/) | The uncertainty node | B0 | planned |
-| [B2 — Output](b2-output/) | Every format writes it | B1 | planned |
-| [B3 — Input](b3-input/) | MathML, OMML, UnicodeMath (and LaTeX if B0 says) read it | B1 to start, B2 to finish | planned |
-| [B4 — AsciiMath input](b4-asciimath-input/) | AsciiMath reads it; every acceptance-table cell passes → **#493 done** | B2, B3, **amath (#494) released and merged** | blocked |
+## Phases, dependencies and effort
 
-## How this is organised
+All statuses are pending; no implementation or application tests are claimed. Effort is **person-days (8 working hours)**, includes investigation, implementation and focused validation, and excludes external waiting. Bounds are provisional because B0 and A0 can change integration scope.
 
-Every phase is a directory whose `README.md` answers four questions in order:
-*what it delivers*, *why here*, *risks and notes*, *exit criteria*. A phase
-gains numbered work items (`## Why`, `## Scope`, `## Done when`) when work on it
-starts; only B0 has items so far.
+| Phase | Delivers | Dependency | Effort | Status |
+|---|---|---|---|---|
+| [B0](b0-design/) | Approved semantic and required-format contract | — | 5–8 days | next |
+| [B1](b1-model/) | Node, equality, clone, Formula integration | B0 | 4–7 days | pending |
+| [B2](b2-output/) | Six outputs | B1 | 7–12 days | pending |
+| [B3](b3-input/) | MathML, OMML, UnicodeMath inputs | B0/B1 to start; B2 to finish | 8–15 days | pending |
+| [B4](b4-asciimath-input/) | amath grammar, release, dependency integration | B2/B3 and #494 A4 released/merged | 6–11 days | blocked |
+| **Total core scope** | C1–C7 | | **30–53 days (240–424 hours)** | pending |
 
-## Why this order
+Separate contingency: 5–10 person-days for unresolved asymmetric/format limits or Slice migration integration, used only for identified work and re-estimated after B0/A0. Optional LaTeX input adds 2–4 days if selected, outside core and contingency. UnitsML dependency changes are not estimated as a separate repository implementation until their owner/scope is agreed in B0; if required, add their estimate before B1 sign-off. No release waiting time is included. B2 and B3 may overlap after their shared contracts are frozen; effort sums are not elapsed schedules. Expand numbered tasks at each phase entry without weakening C1–C7.
 
-1. **B0 before any code** because Plurimath already reads `+-` as a plain ±
-   (`Math::Symbols::Pm`). Which inputs mean a measurement, and how each format
-   writes it, has to be agreed before either side is built.
-2. **Model, then output, then input**, because every format shares one model,
-   and input can only be checked by round trip once output exists.
-3. **AsciiMath input last**, for the amath reason above.
+## Copyable cross-repository handoff
+
+The shared rules are canonical in amath's [cross-cutting plan](https://github.com/plurimath/amath/blob/feat/amath-extraction/TODO.plan/cross-cutting.md) and [decisions](https://github.com/plurimath/amath/blob/feat/amath-extraction/TODO.plan/open-decisions.md). This compact contract must be reconciled with those records at B0/A0 and copied into permanent docs; a mutable branch link is insufficient evidence of a signed decision.
+
+- A owns extraction, grammar/artifact and parser runtime in amath through A4. Plurimath retains its AsciiMath transform. B owns Plurimath uncertainty work through B3 and **also** the subsequent amath uncertainty grammar, regeneration/tests/version/release and Plurimath dependency/transform work in B4. B never adds uncertainty to the old Plurimath AsciiMath grammar.
+- Freeze A's oracle before new syntax. Do not add AsciiMath words through node `INPUT` tables before A4. Vocabulary fingerprints include word/category mapping, effective ordering and generated grammar inputs, distinct from artifact checksums. B4 extends the signed configuration and replays the unchanged corpus.
+- A0 chooses a real `Parslet::Slice` boundary adapter or explicitly authorized consumer migration. If migration is needed, A updates the exact shared file ownership list before A3; B reconciles any affected `math/number.rb`, `math/function/unary_function.rb`, `utility.rb`, `asciimath/utility.rb` or transform edits against that decision. B does not assume a string-equivalent leaf is compatible. Preserve leaf class, empty/text behavior, offsets and conversions.
+- A3 resolves retirement timing of the browser update/test path and disposition of all overlapping [#430](https://github.com/plurimath/plurimath/pull/430) work (HTML, UnicodeMath, shared Slice/dependencies as well as AsciiMath). B3 uses that agreed baseline. Do not remove Parslet while the adapter or other parsers need it; Opal implementation remains excluded.
+- A4 supplies released amath version, commit/artifact checksum, corpus pin/context, installed-gem engine/error contract and compatibility decision. B4 starts only after that release and Plurimath switch merge. `ae20be11` is the Plurimath oracle, not amath's repository base; record each repository's actual merge/release SHA.
+
+## Durable documentation and next action
+
+Proposed permanent Plurimath home: `docs/uncertainty.adoc`, linked from existing `README.adoc`; executable cases in proposed `spec/plurimath/fixtures/uncertainty/contract.yml` and phase specs. Retain meanings, constructors, exact required/optional format examples, metadata losses, unit policy, errors, numeric context and B4 handoff. amath retains API/engine/Slice/vocabulary contracts in proposed `docs/parser-contract.adoc` and extraction pins/coordination in `docs/extraction-handoff.adoc`. Replace historical branch references with immutable commit links once approved. Check all retained links and fixture references before deleting TODO scaffolding.
+
+Next action: execute B0 task 01: fill and approve semantic examples, required-format wire forms and projections, asymmetric decision, units attachment, optional LaTeX input and durable handoff. Record the approving issue/PR decision link and revision; approval is pending. No B1 constructor or serializer contract is frozen yet.
