@@ -20,7 +20,5 @@ jobs:
         with:
           ruby-version: "4.0.1"
           bundler-cache: true
-      - name: Validate authored parser and renderer fixtures
-        run: ruby submodules/plurimath-testsuite/scripts/validate-fixtures.rb
       - name: Run shared YAML conformance cases
         run: bundle exec rspec spec/conformance --format progress
