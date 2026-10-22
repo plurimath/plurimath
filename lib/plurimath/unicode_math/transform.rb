@@ -960,7 +960,7 @@ module Plurimath
       rule(intent: simple(:intent),
            intent_expr: simple(:expr)) do
         intent_string = expr.parameter_two.shift
-        Math::Function::Intent.new(
+        Utility.intent_or_uncertainty(
           Utility.filter_values(expr.parameter_two),
           intent_string,
         )
@@ -3585,6 +3585,30 @@ module Plurimath
         )
       end
 
+      rule(open_paren: simple(:open_paren),
+           text: simple(:text),
+           operand: sequence(:operand),
+           exp: simple(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Math::Function::Text.new(text)] + operand + [exp],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           text: simple(:text),
+           operand: sequence(:operand),
+           exp: sequence(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Math::Function::Text.new(text)] + operand + exp,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
       rule(nary_class: simple(:nary_class),
            mask: simple(:mask),
            sub: simple(:sub),
@@ -3871,7 +3895,7 @@ module Plurimath
            intent_arguments: simple(:args),
            first_value: simple(:value),
            close_paren: simple(:close_paren)) do
-        Math::Function::Intent.new(value, args)
+        Utility.intent_or_uncertainty(value, args)
       end
 
       rule(intent: simple(:intent),
@@ -3879,7 +3903,7 @@ module Plurimath
            intent_arguments: simple(:args),
            first_value: sequence(:value),
            close_paren: simple(:close_paren)) do
-        Math::Function::Intent.new(Utility.filter_values(value), args)
+        Utility.intent_or_uncertainty(Utility.filter_values(value), args)
       end
 
       rule(paren_open_prefix: simple(:open_paren),
