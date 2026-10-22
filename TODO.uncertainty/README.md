@@ -2,7 +2,7 @@
 
 Represent reported measurement uncertainty in the model and math languages required by [#493](https://github.com/plurimath/plurimath/issues/493): AsciiMath, MathML, OMML and UnicodeMath. Provide six outputs: those four, LaTeX and HTML. This is representation and conversion, with no uncertainty propagation, statistical estimation or calculation of `U`, `k` or coverage probability. Ordinary `+-` / `±` retains `Math::Symbols::Pm` semantics.
 
-The baseline is Plurimath `ae20be111a26fdd988c58be0bfb2b7f6fe6e352f`; no uncertainty node or format convention is established there. B0 resolves the design before implementation. This review-only plan may be removed before merge **only after** its approved contracts and acceptance fixtures are retained in the permanent homes below.
+The baseline is Plurimath `ae20be111a26fdd988c58be0bfb2b7f6fe6e352f`; no uncertainty node or format convention is established there. B0 resolves the design before implementation. This plan is kept on `main` for visibility (`/TODO.*/` is otherwise ignored here) and is removed when #493 is finished, **only after** its approved contracts and acceptance fixtures are retained in the permanent homes below.
 
 ## Completion floor and acceptance mapping
 
@@ -36,7 +36,7 @@ Optional LaTeX input is outside the core scope. UnitsML dependency changes are s
 
 ## Copyable cross-repository handoff
 
-The shared rules are canonical in amath's [cross-cutting plan](https://github.com/plurimath/amath/blob/feat/amath-extraction/TODO.plan/cross-cutting.md) and [decisions](https://github.com/plurimath/amath/blob/feat/amath-extraction/TODO.plan/open-decisions.md). This compact contract must be reconciled with those records at B0/A0 and copied into permanent docs; a mutable branch link is insufficient evidence of a signed decision.
+The shared rules are canonical in amath's [cross-cutting plan](https://github.com/plurimath/amath/blob/main/TODO.plan/cross-cutting.md) and [decisions](https://github.com/plurimath/amath/blob/main/TODO.plan/open-decisions.md). This compact contract must be reconciled with those records at B0/A0 and copied into permanent docs; a mutable branch link is insufficient evidence of a signed decision.
 
 - A owns extraction, grammar/artifact and parser runtime in amath through A4. Plurimath retains its AsciiMath transform. B owns Plurimath uncertainty work through B3 and **also** the subsequent amath uncertainty grammar, regeneration/tests/version/release and Plurimath dependency/transform work in B4. B never adds uncertainty to the old Plurimath AsciiMath grammar.
 - Freeze A's oracle before new syntax. Do not add AsciiMath words through node `INPUT` tables before A4. Vocabulary fingerprints include word/category mapping, effective ordering and generated grammar inputs, distinct from artifact checksums. B4 extends the signed configuration and replays the unchanged corpus.
