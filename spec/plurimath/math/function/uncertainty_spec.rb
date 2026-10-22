@@ -309,7 +309,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
     it "writes the symmetric interval kind" do
       node = interval(interval_kind: :probabilistically_symmetric)
       expect(node.to_asciimath(options: options))
-        .to eq("ucov(1.024, 0.983, 1.088, 0.95, probabilistically-symmetric)")
+        .to eq("ucov(1.024, 0.983, 1.088, 0.95, symmetric)")
     end
   end
 end

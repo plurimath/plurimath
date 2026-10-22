@@ -36,6 +36,12 @@ module Plurimath
           probabilistically_symmetric: "probabilistically-symmetric",
         }.freeze
 
+        # AsciiMath reads "-" as minus, so the symmetric kind has its own spelling.
+        ASCIIMATH_INTERVAL_KIND_NAMES = {
+          shortest: "shortest",
+          probabilistically_symmetric: "symmetric",
+        }.freeze
+
         PLUS_MINUS = "&#xb1;"
 
         attr_reader :value, :category, :magnitude, :coverage_factor,
@@ -135,7 +141,7 @@ module Plurimath
                  else
                    [text(value), text(lower), text(upper),
                     text(coverage_probability),
-                    INTERVAL_KIND_NAMES[interval_kind]]
+                    ASCIIMATH_INTERVAL_KIND_NAMES[interval_kind]]
                  end
           args << asciimath_unit(options) if unit
           "#{ASCIIMATH_NAMES[category]}(#{args.compact.join(', ')})"
