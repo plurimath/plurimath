@@ -4,12 +4,11 @@
 
 Complete [task 01](01-design-note.md), then obtain the maintainer's explicit approval of the semantic/format contract. Approval has not been recorded. B0 blocks B1; unsupported optional variants cannot substitute for the [required language floor](../README.md#completion-floor-and-acceptance-mapping).
 
-| Task | Effort (person-days) | Status |
-|---|---|---|
-| B0.1 Semantic subset, payload/validation and cited examples | 2–3 | pending |
-| B0.2 Four required wire forms, six outputs, unit/loss decisions and independent fixtures | 2–3 | pending |
-| B0.3 Durable record, acceptance mapping and sign-off | 1–2 | pending |
-| Total | **5–8** | pending |
+| Task | Status |
+|---|---|
+| B0.1 Semantic subset, payload/validation and cited examples | pending |
+| B0.2 Four required wire forms, six outputs, unit/loss decisions and independent fixtures | pending |
+| B0.3 Durable record, acceptance mapping and sign-off | pending |
 
 ## Exit criteria
 

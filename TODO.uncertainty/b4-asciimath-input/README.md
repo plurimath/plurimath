@@ -6,13 +6,12 @@ B owns this **cross-repository** phase: amath grammar/artifact/tests/version and
 
 Record actual Plurimath main/A4 merge SHA and amath release SHA/version, artifact checksum, corpus revision/context, vocabulary fingerprint, Slice decision and installed-gem engine/error policy from retained amath `docs/parser-contract.adoc` and `docs/extraction-handoff.adoc`. The original Plurimath oracle `ae20be11` is not an amath base. Rebase B onto the actual integrated main; resolve only relevant overlaps against A0/B0 contracts.
 
-| Task | Exact/proposed touchpoints and result | Effort (person-days) |
-|---|---|---|
-| B4.1 | Reconcile entry pins, ownership and signed AsciiMath token/tree/precedence contract; update proposed Plurimath `docs/uncertainty.adoc` | 1–2 |
-| B4.2 | amath proposed `grammars/asciimath.parg` and generated artifact selected by A0/A2, proposed `spec/amath/uncertainty_spec.rb`, existing/proposed `scripts/check.rb` parity corpus; add only signed explicit measurement syntax | 2–4 |
-| B4.3 | amath packaged-gem verification, version/release coordination; Plurimath existing `plurimath.gemspec` and `lib/plurimath/asciimath/transform.rb`, proposed `spec/plurimath/asciimath/uncertainty_spec.rb` | 2–3 |
-| B4.4 | Integrated floor replay, full suite, permanent docs/fixture/link check and release handoff | 1–2 |
-| Total | | **6–11** |
+| Task | Exact/proposed touchpoints and result |
+|---|---|
+| B4.1 | Reconcile entry pins, ownership and signed AsciiMath token/tree/precedence contract; update proposed Plurimath `docs/uncertainty.adoc` |
+| B4.2 | amath proposed `grammars/asciimath.parg` and generated artifact selected by A0/A2, proposed `spec/amath/uncertainty_spec.rb`, existing/proposed `scripts/check.rb` parity corpus; add only signed explicit measurement syntax |
+| B4.3 | amath packaged-gem verification, version/release coordination; Plurimath existing `plurimath.gemspec` and `lib/plurimath/asciimath/transform.rb`, proposed `spec/plurimath/asciimath/uncertainty_spec.rb` |
+| B4.4 | Integrated floor replay, full suite, permanent docs/fixture/link check and release handoff |
 
 A2 proposes `grammars/asciimath.parg`; A0/A2 confirm that source path, the artifact path and regeneration command; before B4.2 starts, replace that discovery target with their retained paths/symbols/commands and a pinned base. Do not invent a pre-existing amath grammar API. The completion condition is a reproducibly regenerated packaged artifact with new accepted/rejected typed trees on both supported engines and unchanged old corpus behavior.
 

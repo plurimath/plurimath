@@ -2,12 +2,11 @@
 
 Dependency: approved B0 contract and unit attachment; reconcile any A0 consumer migration before overlapping edits. Implements C1/C7. No AsciiMath grammar or `INPUT` vocabulary changes.
 
-| Task | Exact existing/proposed touchpoints and result | Effort (person-days) |
-|---|---|---|
-| B1.1 | Proposed `lib/plurimath/math/function/uncertainty.rb`, register in existing `lib/plurimath/math/function.rb`: implement signed variants/fields, validation and errors | 2–3 |
-| B1.2 | Proposed `spec/plurimath/math/function/uncertainty_spec.rb`: equality over all signed semantics, unknown/supplied metadata, precision and unit policy; retain exact decimal spelling | 1–2 |
-| B1.3 | Existing `Math::Core#cloned_objects`, `Math::Formula#==`/`#cloned_objects` integration and proposed `spec/plurimath/math/formula/uncertainty_spec.rb`: nested values/units clone independently, traverse correctly | 1–2 |
-| Total | | **4–7** |
+| Task | Exact existing/proposed touchpoints and result |
+|---|---|
+| B1.1 | Proposed `lib/plurimath/math/function/uncertainty.rb`, register in existing `lib/plurimath/math/function.rb`: implement signed variants/fields, validation and errors |
+| B1.2 | Proposed `spec/plurimath/math/function/uncertainty_spec.rb`: equality over all signed semantics, unknown/supplied metadata, precision and unit policy; retain exact decimal spelling |
+| B1.3 | Existing `Math::Core#cloned_objects`, `Math::Formula#==`/`#cloned_objects` integration and proposed `spec/plurimath/math/formula/uncertainty_spec.rb`: nested values/units clone independently, traverse correctly |
 
 `Core#cloned_objects` constructs `self.class.new(nil)` before copying variables. Support that path or override cloning in the new node; do not weaken validation merely to make a broken clone succeed. Existing `Math::Number` stores strings; do not coerce to Float. Existing `Math::Function::Unitsml` has its own clone behavior; if selected as a child, test it directly and through Formula. Shared consumer edits need the A0 ownership decision; generic cleanup is excluded.
 

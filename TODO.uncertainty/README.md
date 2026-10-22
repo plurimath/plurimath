@@ -20,20 +20,19 @@ The proposed minimum below must be confirmed in B0; it is a requirement for impl
 
 Standard and symmetric expanded uncertainty belong in the minimum. Asymmetric reporting remains planned scope, but its scientific meaning, payload and notation are a B0 decision; exclusion or reduction requires an explicit scope decision, not an unsupported table cell. LaTeX input and additional notation aliases are optional and cannot replace C2–C5. Exact strings/XML, metadata projections and errors must be signed before dependent code begins; see [B0](b0-design/01-design-note.md).
 
-## Phases, dependencies and effort
+## Phases and dependencies
 
-All statuses are pending; no implementation or application tests are claimed. Effort is **person-days (8 working hours)**, includes investigation, implementation and focused validation, and excludes external waiting. Bounds are provisional because B0 and A0 can change integration scope.
+All statuses are pending; no implementation or application tests are claimed.
 
-| Phase | Delivers | Dependency | Effort | Status |
-|---|---|---|---|---|
-| [B0](b0-design/) | Approved semantic and required-format contract | — | 5–8 days | next |
-| [B1](b1-model/) | Node, equality, clone, Formula integration | B0 | 4–7 days | pending |
-| [B2](b2-output/) | Six outputs | B1 | 7–12 days | pending |
-| [B3](b3-input/) | MathML, OMML, UnicodeMath inputs | B0/B1 to start; B2 to finish | 8–15 days | pending |
-| [B4](b4-asciimath-input/) | amath grammar, release, dependency integration | B2/B3 and #494 A4 released/merged | 6–11 days | blocked |
-| **Total core scope** | C1–C7 | | **30–53 days (240–424 hours)** | pending |
+| Phase | Delivers | Dependency | Status |
+|---|---|---|---|
+| [B0](b0-design/) | Approved semantic and required-format contract | — | next |
+| [B1](b1-model/) | Node, equality, clone, Formula integration | B0 | pending |
+| [B2](b2-output/) | Six outputs | B1 | pending |
+| [B3](b3-input/) | MathML, OMML, UnicodeMath inputs | B0/B1 to start; B2 to finish | pending |
+| [B4](b4-asciimath-input/) | amath grammar, release, dependency integration | B2/B3 and #494 A4 released/merged | blocked |
 
-Separate contingency: 5–10 person-days for unresolved asymmetric/format limits or Slice migration integration, used only for identified work and re-estimated after B0/A0. Optional LaTeX input adds 2–4 days if selected, outside core and contingency. UnitsML dependency changes are not estimated as a separate repository implementation until their owner/scope is agreed in B0; if required, add their estimate before B1 sign-off. No release waiting time is included. B2 and B3 may overlap after their shared contracts are frozen; effort sums are not elapsed schedules. Expand numbered tasks at each phase entry without weakening C1–C7.
+Optional LaTeX input is outside the core scope. UnitsML dependency changes are scoped in B0 if required. B2 and B3 may overlap after their shared contracts are frozen. Expand numbered tasks at each phase entry without weakening C1–C7.
 
 ## Copyable cross-repository handoff
 
@@ -42,7 +41,7 @@ The shared rules are canonical in amath's [cross-cutting plan](https://github.co
 - A owns extraction, grammar/artifact and parser runtime in amath through A4. Plurimath retains its AsciiMath transform. B owns Plurimath uncertainty work through B3 and **also** the subsequent amath uncertainty grammar, regeneration/tests/version/release and Plurimath dependency/transform work in B4. B never adds uncertainty to the old Plurimath AsciiMath grammar.
 - Freeze A's oracle before new syntax. Do not add AsciiMath words through node `INPUT` tables before A4. Vocabulary fingerprints include word/category mapping, effective ordering and generated grammar inputs, distinct from artifact checksums. B4 extends the signed configuration and replays the unchanged corpus.
 - A0 chooses a real `Parslet::Slice` boundary adapter or explicitly authorized consumer migration. If migration is needed, A updates the exact shared file ownership list before A3; B reconciles any affected `math/number.rb`, `math/function/unary_function.rb`, `utility.rb`, `asciimath/utility.rb` or transform edits against that decision. B does not assume a string-equivalent leaf is compatible. Preserve leaf class, empty/text behavior, offsets and conversions.
-- A3 resolves retirement timing of the browser update/test path and disposition of all overlapping [#430](https://github.com/plurimath/plurimath/pull/430) work (HTML, UnicodeMath, shared Slice/dependencies as well as AsciiMath). B3 uses that agreed baseline. Do not remove Parslet while the adapter or other parsers need it; Opal implementation remains excluded.
+- A3's PR removes the browser update/test path; Ronald's review of it decides. [#430](https://github.com/plurimath/plurimath/pull/430) overlaps B1/B3 files but is not built on: it waits until #493/#494 merge and is then rebased. B uses `ae20be11` without #430 as its baseline. Do not remove Parslet while the adapter or other parsers need it; Opal implementation remains excluded.
 - A4 supplies released amath version, commit/artifact checksum, corpus pin/context, installed-gem engine/error contract and compatibility decision. B4 starts only after that release and Plurimath switch merge. `ae20be11` is the Plurimath oracle, not amath's repository base; record each repository's actual merge/release SHA.
 
 ## Durable documentation and next action
