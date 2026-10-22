@@ -2375,6 +2375,45 @@ NOTE: To regenerate these files, delete them and run:
 * link:OMML-Supported-Data.adoc[OMML Supported Data]
 * link:UnitsML-Supported-Data.adoc[UnitsML Supported Data]
 
+== Shared conformance fixtures
+
+The language-independent YAML expectations used by the TypeScript port are
+pinned at `submodules/plurimath-testsuite`. Initialize the test data before
+running specs:
+
+[source,sh]
+----
+git submodule update --init --recursive
+bundle exec rspec spec/conformance
+----
+
+The conformance specs validate the dataset and compare preprocessing, parser
+trees, formula models, rendering outcomes, rejection positions and recorded
+formatter/UnitsML calls. Cases are read directly from the pinned repository;
+the test run never regenerates expectations. Missing, empty or unsupported
+corpora fail the run. The golden bytes were recorded with Ox, so these specs
+run once with Ox. Existing native specs still run with Ox and Oga. The native
+filesystem/YAML adapter is excluded from Opal test discovery.
+
+Portable parser and renderer expectations also live in the pinned repository's
+`fixtures/` directory. Native specs select shared case IDs instead of embedding
+expected trees, constructor graphs or output strings. The authored datasets
+retain each assertion's source revision and location. They are extracted from
+the original expectations, independently of production parser or renderer output.
+
+The adapters preserve the original entry points, argument types, configuration,
+operation order and comparisons. Typed constructor recipes distinguish symbols,
+string keys, positional arguments and keyword arguments. Memo references preserve
+sharing within one example, while each example receives fresh mutable values.
+Raw grammar fixtures preserve their preprocessing and tree projection steps.
+External UnicodeMath fixtures retain the original inputs, expected raw trees,
+models and refusal patterns.
+
+These examples continue to run through the native Ox/Oga hooks. Node/Opal uses
+the same YAML files from the checkout. Ruby API, configuration, identity and
+extension-hook tests remain native. Missing cases, unsupported schemas and
+unknown recipe operations fail rather than silently skipping coverage.
+
 == Copyright and license
 
 Copyright Ribose. BSD 2-clause license.

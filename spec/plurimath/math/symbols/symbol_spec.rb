@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Symbols::Symbol do
   describe ".initialize" do
@@ -40,29 +41,11 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
   describe ".to_asciimath" do
     subject(:formula) { described_class.new(first_value).to_asciimath }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-43-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("n")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-51-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("70")
-      end
-    end
-
-    context "contains Unicode as value" do
-      let(:first_value) { "&#x2212;" }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("&#x2212;")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-59-1"
   end
 
   describe ".to_mathml" do
@@ -74,29 +57,11 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-77-1"
 
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mi>n</mi>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-85-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mi>70</mi>")
-      end
-    end
-
-    context "contains Function name as value" do
-      let(:first_value) { "sum" }
-
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mi>sum</mi>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-93-1"
   end
 
   describe ".to_mathml with token options" do
@@ -110,55 +75,21 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
 
     # `rspace` is an operator attribute: MathML 4 admits it on `mo`, never on
     # `mi`, so a generic token carrying one must serialize as an operator.
-    context "contains an rspace option" do
-      let(:first_value) { "&#x2062;" }
-      let(:options) { { rspace: "thickmathspace" } }
-
-      it "returns an mo element that keeps the rspace" do
-        expect(formula).to be_xml_equivalent_to(
-          '<mo rspace="thickmathspace">&#x2062;</mo>',
-        )
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-113-1"
 
     # Guards the condition above against being widened to "any option present":
     # spacing symbols carry options too and must stay identifiers.
-    context "contains a non-operator option" do
-      let(:first_value) { "&#x2009;" }
-      let(:options) { { space: true } }
-
-      it "returns an mi element" do
-        expect(formula).to be_xml_equivalent_to("<mi>&#x2009;</mi>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-126-1"
   end
 
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-139-1"
 
-      it "returns latex string" do
-        expect(formula).to eql("n")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-147-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns latex string" do
-        expect(formula).to eql("70")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "sum" }
-
-      it "returns latex string" do
-        expect(formula).to eql("sum")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-155-1"
   end
 
   describe ".to_omml" do
@@ -167,57 +98,21 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
                                                                            "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-170-1"
 
-      it "returns omml string" do
-        expect(formula).to eql("n")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-178-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns omml string" do
-        expect(formula).to eql("70")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "sum" }
-
-      it "returns omml string" do
-        expect(formula).to eql("sum")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-186-1"
   end
 
   describe ".to_html" do
     subject(:formula) { described_class.new(first_value).to_html }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-198-1"
 
-      it "returns html string" do
-        expect(formula).to eql("n")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-206-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns html string" do
-        expect(formula).to eql("70")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "&sum;" }
-
-      it "returns html string" do
-        expect(formula).to eql("&sum;")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-symbol-symbol-214-1"
   end
 
   describe ".validate_function_formula" do

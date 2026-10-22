@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../../../support/shared_formatter_examples"
 
 RSpec.describe Plurimath::Formatter::Numbers::Significant do
   let(:symbols) { { decimal: ".", significant: 2 } }
@@ -62,19 +63,19 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
       it "rounds fractional values across leading zeros" do
         parts = Plurimath::Formatter::Numbers::Source.new("0.0999").to_parts
 
-        expect(formatter.apply_parts(parts).to_s).to eq("0.10")
+        expect_shared_formatter_output("significant-065", formatter.apply_parts(parts).to_s)
       end
 
       it "rounds across the integer boundary" do
         parts = Plurimath::Formatter::Numbers::Source.new("9.99").to_parts
 
-        expect(formatter.apply_parts(parts).to_s).to eq("10")
+        expect_shared_formatter_output("significant-071", formatter.apply_parts(parts).to_s)
       end
 
       it "removes trailing fraction when rounding produces an integer" do
         parts = Plurimath::Formatter::Numbers::Source.new("1.99").to_parts
 
-        expect(formatter.apply_parts(parts).to_s).to eq("2")
+        expect_shared_formatter_output("significant-077", formatter.apply_parts(parts).to_s)
       end
     end
 
@@ -86,7 +87,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Significant do
       it "keeps the rounded significant digits" do
         parts = Plurimath::Formatter::Numbers::Source.new("123.456").to_parts
 
-        expect(formatter.apply_parts(parts).to_s).to eq("123.5")
+        expect_shared_formatter_output("significant-089", formatter.apply_parts(parts).to_s)
       end
     end
   end
