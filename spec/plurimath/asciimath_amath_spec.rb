@@ -168,25 +168,21 @@ RSpec.describe Plurimath::Asciimath do
 
   describe Plurimath::Asciimath::Parser do
     # Records each Amath.parse call and answers with the real amath result.
-    let(:recording_amath) do
-      real = Amath
-      Module.new do
-        define_singleton_method(:calls) { @calls ||= [] }
-        define_singleton_method(:parse) do |text, **options|
-          calls << [text, options]
-          real.parse(text, **options)
-        end
+    let(:amath_calls) { [] }
+
+    before do
+      allow(Amath).to receive(:parse).and_wrap_original do |original, text, **options|
+        amath_calls << [text, options]
+        original.call(text, **options)
       end
     end
-
-    before { stub_const("Amath", recording_amath) }
 
     it "parses the preprocessed text with amath" do
       raw = "text(a b) {: x :} + sum_(i=1)^n i^2"
       formula = described_class.new(raw).parse
 
       expect(formula).to be_a(Plurimath::Math::Formula)
-      expect(Amath.calls.last.first).to eq(described_class.new(raw).text)
+      expect(amath_calls.last.first).to eq(described_class.new(raw).text)
       expect(formula.to_asciimath).to include("sum_(i = 1)^(n)")
     end
 
@@ -196,7 +192,7 @@ RSpec.describe Plurimath::Asciimath do
 
       described_class.new("1,5").parse
 
-      expect(Amath.calls.last.last).to eq(decimal: ",")
+      expect(amath_calls.last.last).to eq(decimal: ",")
     ensure
       Plurimath.configuration.locale = locale
     end
