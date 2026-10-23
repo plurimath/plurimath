@@ -11,6 +11,21 @@ module Plurimath
           first_value
         end
 
+        # The intent string is metadata, not content: OMML has no slot for it,
+        # so only the wrapped content is written. The inherited BinaryFunction
+        # rendering wrapped both parameters in an <m:r>, nesting runs (invalid
+        # OMML) and printing the intent text as a visible run.
+        def to_omml_without_math_tag(display_style, options:)
+          return [] unless parameter_one
+
+          parameter_one.insert_t_tag(display_style, options: options)
+        end
+
+        # Same leak as OMML: the inherited rendering printed the intent text.
+        def to_html(options:)
+          "<i>#{parameter_one.to_html(options: options)}</i>" if parameter_one
+        end
+
         def to_unicodemath(options:)
           first_value = "(#{parameter_two.to_unicodemath(options: options)}#{parameter_one.to_unicodemath(options: options)})" if parameter_one || parameter_two
           "ⓘ#{first_value}"
