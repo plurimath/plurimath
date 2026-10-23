@@ -1,0 +1,1765 @@
+# Acceptance contract for measurement uncertainty (plurimath#493).
+# Status: proposal, not yet approved. Do not build B1-B4 on it until the
+# maintainer approves it; record the approval link and revision here then.
+# Human-readable design: docs/uncertainty.adoc
+---
+schema_version: 1
+status: proposal, not yet approved
+issue: https://github.com/plurimath/plurimath/issues/493
+design_note: docs/uncertainty.adoc
+baseline: plurimath d2aa3236 (lib/ identical to ae20be11)
+conventions:
+  mathml: Full Formula#to_mathml output with default options. Inputs use the same string.
+  omml: 'outputs.omml is the m:oMath element of Formula#to_omml with the two-space indentation of the m:oMathPara wrapper removed; the wrapper and its namespace list are unchanged from today. inputs.omml declares only the m: namespace.'
+  numbers: All model numbers are lexical strings held in Math::Number (no Float). Full stop decimal marker only.
+  marker_authority: In MathML, OMML and UnicodeMath the marker (intent text) is authoritative; the visible content is regenerated on output.
+  asciimath_input_phase: AsciiMath input is implemented in amath at B4; until then AsciiMath is output-only.
+cases:
+- id: standard
+  status: proposal
+  summary: Standard uncertainty built without a notation choice renders in the default absolute-parentheses form.
+  examples:
+  - id: standard.default
+    source: JCGM 100:2008 7.2.2 (form 3, absolute value in parentheses)
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: standard
+      value: '1.230'
+      magnitude: '0.004'
+      notation: absolute
+      coverage_factor: null
+      coverage_probability: null
+      lower: null
+      upper: null
+      interval_kind: null
+      unit: null
+    inputs:
+      asciimath: ustd(1.230, 0.004)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty(1.230,0.004)">
+              <mn>1.230</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>0.004</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>standard-uncertainty(1.230,0.004)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:r>
+                  <m:t>1.230</m:t>
+                </m:r>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>0.004</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
+    outputs:
+      asciimath: ustd(1.230, 0.004)
+      latex: 1.230(0.004)
+      html: 1.230(0.004)
+      unicodemath: ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty(1.230,0.004)">
+              <mn>1.230</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>0.004</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>standard-uncertainty(1.230,0.004)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:r>
+                <m:t>1.230</m:t>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>0.004</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+            </m:e>
+          </m:box>
+        </m:oMath>
+- id: expanded
+  status: proposal
+  summary: Symmetric expanded uncertainty; coverage factor k is required, coverage probability p is optional.
+  examples:
+  - id: expanded.k_only
+    source: JCGM 100:2008 6.2.1, 7.2.3 (4)
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: expanded
+      value: '10.0'
+      magnitude: '0.3'
+      notation: null
+      coverage_factor: '2'
+      coverage_probability: null
+      lower: null
+      upper: null
+      interval_kind: null
+      unit: null
+    inputs:
+      asciimath: uexp(10.0, 0.3, 2)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="expanded-uncertainty(10.0,0.3,2)">
+              <mrow>
+                <mo>(</mo>
+                <mn>10.0</mn>
+                <mo>&#xb1;</mo>
+                <mn>0.3</mn>
+                <mo>)</mo>
+              </mrow>
+              <mo>,</mo>
+              <mi>k</mi>
+              <mo>=</mo>
+              <mn>2</mn>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>expanded-uncertainty(10.0,0.3,2)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>10.0</m:t>
+                    </m:r>
+                    <m:r>
+                      <m:t>&#xb1;</m:t>
+                    </m:r>
+                    <m:r>
+                      <m:t>0.3</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+                <m:r>
+                  <m:t>,</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>k</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>=</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>2</m:t>
+                </m:r>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("expanded-uncertainty(10.0,0.3,2)"(10.0±0.3), k=2)
+    outputs:
+      asciimath: uexp(10.0, 0.3, 2)
+      latex: "(10.0 \\pm 0.3),\\ k = 2"
+      html: "(10.0 &#xb1; 0.3), k = 2"
+      unicodemath: ⓘ("expanded-uncertainty(10.0,0.3,2)"(10.0±0.3), k=2)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="expanded-uncertainty(10.0,0.3,2)">
+              <mrow>
+                <mo>(</mo>
+                <mn>10.0</mn>
+                <mo>&#xb1;</mo>
+                <mn>0.3</mn>
+                <mo>)</mo>
+              </mrow>
+              <mo>,</mo>
+              <mi>k</mi>
+              <mo>=</mo>
+              <mn>2</mn>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>expanded-uncertainty(10.0,0.3,2)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>10.0</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>&#xb1;</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>0.3</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+              <m:r>
+                <m:t>,</m:t>
+              </m:r>
+              <m:r>
+                <m:t>k</m:t>
+              </m:r>
+              <m:r>
+                <m:t>=</m:t>
+              </m:r>
+              <m:r>
+                <m:t>2</m:t>
+              </m:r>
+            </m:e>
+          </m:box>
+        </m:oMath>
+  - id: expanded.k_and_p
+    source: JCGM 100:2008 7.2.3 (4)-(5), 7.2.4 (values without unit)
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: expanded
+      value: '100.02147'
+      magnitude: '0.00079'
+      notation: null
+      coverage_factor: '2'
+      coverage_probability: '0.95'
+      lower: null
+      upper: null
+      interval_kind: null
+      unit: null
+    inputs:
+      asciimath: uexp(100.02147, 0.00079, 2, 0.95)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="expanded-uncertainty(100.02147,0.00079,2,0.95)">
+              <mrow>
+                <mo>(</mo>
+                <mn>100.02147</mn>
+                <mo>&#xb1;</mo>
+                <mn>0.00079</mn>
+                <mo>)</mo>
+              </mrow>
+              <mo>,</mo>
+              <mi>k</mi>
+              <mo>=</mo>
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>p</mi>
+              <mo>=</mo>
+              <mn>0.95</mn>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>expanded-uncertainty(100.02147,0.00079,2,0.95)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>100.02147</m:t>
+                    </m:r>
+                    <m:r>
+                      <m:t>&#xb1;</m:t>
+                    </m:r>
+                    <m:r>
+                      <m:t>0.00079</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+                <m:r>
+                  <m:t>,</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>k</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>=</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>2</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>,</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>p</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>=</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>0.95</m:t>
+                </m:r>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,0.95)"(100.02147±0.00079), k=2, p=0.95)
+    outputs:
+      asciimath: uexp(100.02147, 0.00079, 2, 0.95)
+      latex: "(100.02147 \\pm 0.00079),\\ k = 2,\\ p = 0.95"
+      html: "(100.02147 &#xb1; 0.00079), k = 2, p = 0.95"
+      unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,0.95)"(100.02147±0.00079), k=2, p=0.95)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="expanded-uncertainty(100.02147,0.00079,2,0.95)">
+              <mrow>
+                <mo>(</mo>
+                <mn>100.02147</mn>
+                <mo>&#xb1;</mo>
+                <mn>0.00079</mn>
+                <mo>)</mo>
+              </mrow>
+              <mo>,</mo>
+              <mi>k</mi>
+              <mo>=</mo>
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>p</mi>
+              <mo>=</mo>
+              <mn>0.95</mn>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>expanded-uncertainty(100.02147,0.00079,2,0.95)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>100.02147</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>&#xb1;</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>0.00079</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+              <m:r>
+                <m:t>,</m:t>
+              </m:r>
+              <m:r>
+                <m:t>k</m:t>
+              </m:r>
+              <m:r>
+                <m:t>=</m:t>
+              </m:r>
+              <m:r>
+                <m:t>2</m:t>
+              </m:r>
+              <m:r>
+                <m:t>,</m:t>
+              </m:r>
+              <m:r>
+                <m:t>p</m:t>
+              </m:r>
+              <m:r>
+                <m:t>=</m:t>
+              </m:r>
+              <m:r>
+                <m:t>0.95</m:t>
+              </m:r>
+            </m:e>
+          </m:box>
+        </m:oMath>
+- id: asymmetric
+  status: proposal_needs_maintainer_decision
+  summary: Asymmetric uncertainty represented as a coverage interval given by its endpoints, per JCGM 101 5.3 and 5.5. The '+a/-b' deviation layout is NOT proposed.
+  examples:
+  - id: asymmetric.shortest_interval
+    source: 'JCGM 101:2008 5.3.2, 5.3.4, 5.5 (example: y = 1.024 V, shortest 95 % coverage interval [0.983, 1.088] V; unit omitted here)'
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: coverage_interval
+      value: '1.024'
+      magnitude: null
+      notation: null
+      coverage_factor: null
+      coverage_probability: '0.95'
+      lower: '0.983'
+      upper: '1.088'
+      interval_kind: shortest
+      unit: null
+    inputs:
+      asciimath: ucov(1.024, 0.983, 1.088, 0.95, shortest)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="coverage-interval:shortest(1.024,0.983,1.088,0.95)">
+              <mn>1.024</mn>
+              <mo>,</mo>
+              <mrow>
+                <mo>[</mo>
+                <mn>0.983</mn>
+                <mo>,</mo>
+                <mn>1.088</mn>
+                <mo>]</mo>
+              </mrow>
+              <mo>,</mo>
+              <mi>p</mi>
+              <mo>=</mo>
+              <mn>0.95</mn>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>coverage-interval:shortest(1.024,0.983,1.088,0.95)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:r>
+                  <m:t>1.024</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>,</m:t>
+                </m:r>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="["/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val="]"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>0.983</m:t>
+                    </m:r>
+                    <m:r>
+                      <m:t>,</m:t>
+                    </m:r>
+                    <m:r>
+                      <m:t>1.088</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+                <m:r>
+                  <m:t>,</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>p</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>=</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>0.95</m:t>
+                </m:r>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"1.024, [0.983, 1.088], p=0.95)
+    outputs:
+      asciimath: ucov(1.024, 0.983, 1.088, 0.95, shortest)
+      latex: 1.024,\ [0.983, 1.088],\ p = 0.95
+      html: 1.024, [0.983, 1.088], p = 0.95
+      unicodemath: ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"1.024, [0.983, 1.088], p=0.95)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="coverage-interval:shortest(1.024,0.983,1.088,0.95)">
+              <mn>1.024</mn>
+              <mo>,</mo>
+              <mrow>
+                <mo>[</mo>
+                <mn>0.983</mn>
+                <mo>,</mo>
+                <mn>1.088</mn>
+                <mo>]</mo>
+              </mrow>
+              <mo>,</mo>
+              <mi>p</mi>
+              <mo>=</mo>
+              <mn>0.95</mn>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>coverage-interval:shortest(1.024,0.983,1.088,0.95)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:r>
+                <m:t>1.024</m:t>
+              </m:r>
+              <m:r>
+                <m:t>,</m:t>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="["/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val="]"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>0.983</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>,</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>1.088</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+              <m:r>
+                <m:t>,</m:t>
+              </m:r>
+              <m:r>
+                <m:t>p</m:t>
+              </m:r>
+              <m:r>
+                <m:t>=</m:t>
+              </m:r>
+              <m:r>
+                <m:t>0.95</m:t>
+              </m:r>
+            </m:e>
+          </m:box>
+        </m:oMath>
+- id: concise_digits
+  status: proposal
+  summary: 'Concise notation: the number in parentheses is the uncertainty referred to the last digits of the value. The model always stores the absolute magnitude.'
+  rule: magnitude must have exactly as many decimal places as value; digits = magnitude without the decimal point and without leading zeros
+  examples:
+  - id: concise_digits.two_places
+    source: JCGM 100:2008 7.2.2 (form 2); plan example 1.23(4)
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: standard
+      value: '1.23'
+      magnitude: '0.04'
+      notation: concise
+      coverage_factor: null
+      coverage_probability: null
+      lower: null
+      upper: null
+      interval_kind: null
+      unit: null
+    inputs:
+      asciimath: ustd(1.23(4))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty:concise(1.23,0.04)">
+              <mn>1.23</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>4</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>standard-uncertainty:concise(1.23,0.04)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:r>
+                  <m:t>1.23</m:t>
+                </m:r>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>4</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("standard-uncertainty:concise(1.23,0.04)"1.23(4))
+    outputs:
+      asciimath: ustd(1.23(4))
+      latex: 1.23(4)
+      html: 1.23(4)
+      unicodemath: ⓘ("standard-uncertainty:concise(1.23,0.04)"1.23(4))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty:concise(1.23,0.04)">
+              <mn>1.23</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>4</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>standard-uncertainty:concise(1.23,0.04)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:r>
+                <m:t>1.23</m:t>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>4</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+            </m:e>
+          </m:box>
+        </m:oMath>
+  - id: concise_digits.three_places
+    source: JCGM 100:2008 7.2.2 (form 2); plan example 1.230(4)
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: standard
+      value: '1.230'
+      magnitude: '0.004'
+      notation: concise
+      coverage_factor: null
+      coverage_probability: null
+      lower: null
+      upper: null
+      interval_kind: null
+      unit: null
+    inputs:
+      asciimath: ustd(1.230(4))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty:concise(1.230,0.004)">
+              <mn>1.230</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>4</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>standard-uncertainty:concise(1.230,0.004)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:r>
+                  <m:t>1.230</m:t>
+                </m:r>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>4</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("standard-uncertainty:concise(1.230,0.004)"1.230(4))
+    outputs:
+      asciimath: ustd(1.230(4))
+      latex: 1.230(4)
+      html: 1.230(4)
+      unicodemath: ⓘ("standard-uncertainty:concise(1.230,0.004)"1.230(4))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty:concise(1.230,0.004)">
+              <mn>1.230</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>4</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>standard-uncertainty:concise(1.230,0.004)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:r>
+                <m:t>1.230</m:t>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>4</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+            </m:e>
+          </m:box>
+        </m:oMath>
+  - id: concise_digits.gum_mass
+    source: 'JCGM 100:2008 7.2.2 (form 2): m_S = 100.02147(35) g (unit omitted here)'
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: standard
+      value: '100.02147'
+      magnitude: '0.00035'
+      notation: concise
+      coverage_factor: null
+      coverage_probability: null
+      lower: null
+      upper: null
+      interval_kind: null
+      unit: null
+    inputs:
+      asciimath: ustd(100.02147(35))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty:concise(100.02147,0.00035)">
+              <mn>100.02147</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>35</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>standard-uncertainty:concise(100.02147,0.00035)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:r>
+                  <m:t>100.02147</m:t>
+                </m:r>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>35</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("standard-uncertainty:concise(100.02147,0.00035)"100.02147(35))
+    outputs:
+      asciimath: ustd(100.02147(35))
+      latex: 100.02147(35)
+      html: 100.02147(35)
+      unicodemath: ⓘ("standard-uncertainty:concise(100.02147,0.00035)"100.02147(35))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty:concise(100.02147,0.00035)">
+              <mn>100.02147</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>35</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>standard-uncertainty:concise(100.02147,0.00035)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:r>
+                <m:t>100.02147</m:t>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>35</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+            </m:e>
+          </m:box>
+        </m:oMath>
+- id: absolute_parentheses
+  status: proposal
+  summary: 'Absolute notation: the number in parentheses is the uncertainty in the unit of the value. Same magnitude as concise_digits.two_places but a different notation, so the models are not equal.'
+  not_equal_to:
+  - concise_digits.two_places
+  examples:
+  - id: absolute_parentheses.plan
+    source: JCGM 100:2008 7.2.2 (form 3); plan example 1.23(0.04)
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: standard
+      value: '1.23'
+      magnitude: '0.04'
+      notation: absolute
+      coverage_factor: null
+      coverage_probability: null
+      lower: null
+      upper: null
+      interval_kind: null
+      unit: null
+    inputs:
+      asciimath: ustd(1.23, 0.04)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty(1.23,0.04)">
+              <mn>1.23</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>0.04</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>standard-uncertainty(1.23,0.04)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:r>
+                  <m:t>1.23</m:t>
+                </m:r>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>0.04</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("standard-uncertainty(1.23,0.04)"1.23(0.04))
+    outputs:
+      asciimath: ustd(1.23, 0.04)
+      latex: 1.23(0.04)
+      html: 1.23(0.04)
+      unicodemath: ⓘ("standard-uncertainty(1.23,0.04)"1.23(0.04))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty(1.23,0.04)">
+              <mn>1.23</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>0.04</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>standard-uncertainty(1.23,0.04)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:r>
+                <m:t>1.23</m:t>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>0.04</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+            </m:e>
+          </m:box>
+        </m:oMath>
+  - id: absolute_parentheses.gum_mass
+    source: 'JCGM 100:2008 7.2.2 (form 3): m_S = 100.02147(0.00035) g (unit omitted here)'
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: standard
+      value: '100.02147'
+      magnitude: '0.00035'
+      notation: absolute
+      coverage_factor: null
+      coverage_probability: null
+      lower: null
+      upper: null
+      interval_kind: null
+      unit: null
+    inputs:
+      asciimath: ustd(100.02147, 0.00035)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty(100.02147,0.00035)">
+              <mn>100.02147</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>0.00035</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>standard-uncertainty(100.02147,0.00035)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:r>
+                  <m:t>100.02147</m:t>
+                </m:r>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>0.00035</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("standard-uncertainty(100.02147,0.00035)"100.02147(0.00035))
+    outputs:
+      asciimath: ustd(100.02147, 0.00035)
+      latex: 100.02147(0.00035)
+      html: 100.02147(0.00035)
+      unicodemath: ⓘ("standard-uncertainty(100.02147,0.00035)"100.02147(0.00035))
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="standard-uncertainty(100.02147,0.00035)">
+              <mn>100.02147</mn>
+              <mrow>
+                <mo>(</mo>
+                <mn>0.00035</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>standard-uncertainty(100.02147,0.00035)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:r>
+                <m:t>100.02147</m:t>
+              </m:r>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>0.00035</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+            </m:e>
+          </m:box>
+        </m:oMath>
+- id: units
+  status: proposal
+  summary: Optional unit child (Math::Function::Unitsml). The unit is placed after the bracketed result and before k, as in JCGM 100 7.2.4.
+  unit_round_trip:
+    asciimath: exact (UnitsML text kept)
+    mathml: unit restored as its rendered content, not as a Unitsml node (UnitsML text lost, as for every UnitsML node today)
+    omml: as mathml
+    unicodemath: as mathml; the ⓐ(unit ...) form is rejected by the current UnicodeMath parser and needs B3 grammar work
+  examples:
+  - id: units.expanded_gram
+    source: 'JCGM 100:2008 7.2.4: m_S = (100.02147 ± 0.00079) g, k = 2'
+    model:
+      class: Plurimath::Math::Function::Uncertainty
+      category: expanded
+      value: '100.02147'
+      magnitude: '0.00079'
+      notation: null
+      coverage_factor: '2'
+      coverage_probability: null
+      lower: null
+      upper: null
+      interval_kind: null
+      unit:
+        class: Plurimath::Math::Function::Unitsml
+        text: g
+    inputs:
+      asciimath: uexp(100.02147, 0.00079, 2, "unitsml(g)")
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="expanded-uncertainty(100.02147,0.00079,2,$unit)">
+              <mrow>
+                <mo>(</mo>
+                <mn>100.02147</mn>
+                <mo>&#xb1;</mo>
+                <mn>0.00079</mn>
+                <mo>)</mo>
+              </mrow>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow arg="unit">
+                <mstyle mathvariant="normal">
+                  <mi>g</mi>
+                </mstyle>
+              </mrow>
+              <mo>,</mo>
+              <mi>k</mi>
+              <mo>=</mo>
+              <mn>2</mn>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:box>
+              <m:e>
+                <m:phant>
+                  <m:phantPr>
+                    <m:show m:val="off"/>
+                    <m:zeroWid m:val="on"/>
+                    <m:zeroAsc m:val="on"/>
+                    <m:zeroDesc m:val="on"/>
+                  </m:phantPr>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>expanded-uncertainty(100.02147,0.00079,2,$unit)</m:t>
+                    </m:r>
+                  </m:e>
+                </m:phant>
+                <m:d>
+                  <m:dPr>
+                    <m:begChr m:val="("/>
+                    <m:sepChr m:val=""/>
+                    <m:endChr m:val=")"/>
+                  </m:dPr>
+                  <m:e>
+                    <m:r>
+                      <m:t>100.02147</m:t>
+                    </m:r>
+                    <m:r>
+                      <m:t>&#xb1;</m:t>
+                    </m:r>
+                    <m:r>
+                      <m:t>0.00079</m:t>
+                    </m:r>
+                  </m:e>
+                </m:d>
+                <m:box>
+                  <m:e>
+                    <m:r>
+                      <m:rPr>
+                        <m:sty m:val="p"/>
+                      </m:rPr>
+                      <m:t>g</m:t>
+                    </m:r>
+                  </m:e>
+                </m:box>
+                <m:r>
+                  <m:t>,</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>k</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>=</m:t>
+                </m:r>
+                <m:r>
+                  <m:t>2</m:t>
+                </m:r>
+              </m:e>
+            </m:box>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"(100.02147±0.00079)ⓐ(unit \mupg), k=2)
+    outputs:
+      asciimath: uexp(100.02147, 0.00079, 2, "unitsml(g)")
+      latex: "(100.02147 \\pm 0.00079) \\mathrm{g},\\ k = 2"
+      html: "(100.02147 &#xb1; 0.00079) g, k = 2"
+      unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"(100.02147±0.00079)ⓐ(unit \mupg), k=2)
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="expanded-uncertainty(100.02147,0.00079,2,$unit)">
+              <mrow>
+                <mo>(</mo>
+                <mn>100.02147</mn>
+                <mo>&#xb1;</mo>
+                <mn>0.00079</mn>
+                <mo>)</mo>
+              </mrow>
+              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mrow arg="unit">
+                <mstyle mathvariant="normal">
+                  <mi>g</mi>
+                </mstyle>
+              </mrow>
+              <mo>,</mo>
+              <mi>k</mi>
+              <mo>=</mo>
+              <mn>2</mn>
+            </mrow>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:box>
+            <m:e>
+              <m:phant>
+                <m:phantPr>
+                  <m:show m:val="off"/>
+                  <m:zeroWid m:val="on"/>
+                  <m:zeroAsc m:val="on"/>
+                  <m:zeroDesc m:val="on"/>
+                </m:phantPr>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>expanded-uncertainty(100.02147,0.00079,2,$unit)</m:t>
+                  </m:r>
+                </m:e>
+              </m:phant>
+              <m:d>
+                <m:dPr>
+                  <m:begChr m:val="("/>
+                  <m:sepChr m:val=""/>
+                  <m:endChr m:val=")"/>
+                </m:dPr>
+                <m:e>
+                  <m:r>
+                    <m:t>100.02147</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>&#xb1;</m:t>
+                  </m:r>
+                  <m:r>
+                    <m:t>0.00079</m:t>
+                  </m:r>
+                </m:e>
+              </m:d>
+              <m:box>
+                <m:e>
+                  <m:r>
+                    <m:rPr>
+                      <m:sty m:val="p"/>
+                    </m:rPr>
+                    <m:t>g</m:t>
+                  </m:r>
+                </m:e>
+              </m:box>
+              <m:r>
+                <m:t>,</m:t>
+              </m:r>
+              <m:r>
+                <m:t>k</m:t>
+              </m:r>
+              <m:r>
+                <m:t>=</m:t>
+              </m:r>
+              <m:r>
+                <m:t>2</m:t>
+              </m:r>
+            </m:e>
+          </m:box>
+        </m:oMath>
+- id: invalid
+  status: proposal
+  summary: Each entry must raise the named error. No entry may silently produce an ordinary expression or a different variant.
+  examples:
+  - id: invalid.negative_magnitude
+    constructor:
+      category: standard
+      value: '1.230'
+      magnitude: "-0.004"
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.standard_with_k
+    constructor:
+      category: standard
+      value: '1.230'
+      magnitude: '0.004'
+      coverage_factor: '1'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.standard_with_p
+    constructor:
+      category: standard
+      value: '1.230'
+      magnitude: '0.004'
+      coverage_probability: '0.68'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.expanded_without_k
+    constructor:
+      category: expanded
+      value: '10.0'
+      magnitude: '0.3'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.k_not_positive
+    constructor:
+      category: expanded
+      value: '10.0'
+      magnitude: '0.3'
+      coverage_factor: '0'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.p_out_of_range
+    constructor:
+      category: expanded
+      value: '10.0'
+      magnitude: '0.3'
+      coverage_factor: '2'
+      coverage_probability: '95'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.concise_not_representable
+    constructor:
+      category: standard
+      value: '1.2'
+      magnitude: '0.004'
+      notation: concise
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.notation_on_expanded
+    constructor:
+      category: expanded
+      value: '10.0'
+      magnitude: '0.3'
+      coverage_factor: '2'
+      notation: concise
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.exponent_number
+    constructor:
+      category: standard
+      value: '1.230e-3'
+      magnitude: '0.004e-3'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.comma_decimal
+    constructor:
+      category: standard
+      value: '1,230'
+      magnitude: '0,004'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.interval_bounds_reversed
+    constructor:
+      category: coverage_interval
+      value: '1.024'
+      lower: '1.088'
+      upper: '0.983'
+      coverage_probability: '0.95'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.interval_without_p
+    constructor:
+      category: coverage_interval
+      value: '1.024'
+      lower: '0.983'
+      upper: '1.088'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.interval_with_k
+    constructor:
+      category: coverage_interval
+      value: '1.024'
+      lower: '0.983'
+      upper: '1.088'
+      coverage_probability: '0.95'
+      coverage_factor: '2'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.unknown_category
+    constructor:
+      category: relative
+      value: '1.230'
+      magnitude: '0.004'
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.unit_not_unitsml
+    constructor:
+      category: standard
+      value: '1.230'
+      magnitude: '0.004'
+      unit: Plurimath::Math::Symbols::Symbol(g)
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.mathml_marker_missing_k
+    inputs:
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mrow intent="expanded-uncertainty(10.0,0.3)">
+              <mrow>
+                <mo>(</mo>
+                <mn>10.0</mn>
+                <mo>&#xb1;</mo>
+                <mn>0.3</mn>
+                <mo>)</mo>
+              </mrow>
+            </mrow>
+          </mstyle>
+        </math>
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.unicodemath_marker_bad_number
+    inputs:
+      unicodemath: ⓘ("standard-uncertainty(1.230,abc)"1.230(abc))
+    error: Plurimath::Errors::InvalidUncertainty
+  - id: invalid.asciimath_missing_k
+    inputs:
+      asciimath: uexp(10.0, 0.3)
+    error: Plurimath::Math::ParseError
+    phase: B4
+- id: ordinary_pm
+  status: baseline_behaviour_must_not_change
+  summary: Plain plus-minus stays Math::Symbols::Pm in every language. No uncertainty node is created.
+  examples:
+  - id: ordinary_pm.numbers
+    model:
+      class: Plurimath::Math::Formula
+      value:
+      - Plurimath::Math::Number(1.23)
+      - Plurimath::Math::Symbols::Pm
+      - Plurimath::Math::Number(0.04)
+    inputs:
+      asciimath: 1.23 +- 0.04
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mn>1.23</mn>
+            <mo>&#xb1;</mo>
+            <mn>0.04</mn>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
+          <m:oMath>
+            <m:r>
+              <m:t>1.23</m:t>
+            </m:r>
+            <m:r>
+              <m:t>&#xb1;</m:t>
+            </m:r>
+            <m:r>
+              <m:t>0.04</m:t>
+            </m:r>
+          </m:oMath>
+        </m:oMathPara>
+      unicodemath: 1.23±0.04
+      latex: 1.23 \pm 0.04
+    outputs:
+      asciimath: 1.23 pm 0.04
+      latex: 1.23 \pm 0.04
+      html: 1.23 &#xb1; 0.04
+      unicodemath: 1.23 ± 0.04
+      mathml: |
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mstyle displaystyle="true">
+            <mn>1.23</mn>
+            <mo>&#xb1;</mo>
+            <mn>0.04</mn>
+          </mstyle>
+        </math>
+      omml: |-
+        <m:oMath>
+          <m:r>
+            <m:t>1.23</m:t>
+          </m:r>
+          <m:r>
+            <m:t>&#xb1;</m:t>
+          </m:r>
+          <m:r>
+            <m:t>0.04</m:t>
+          </m:r>
+        </m:oMath>
+    known_baseline_defects:
+    - UnicodeMath input '1.23 ± 0.04' (with spaces, which is Plurimath's own UnicodeMath output) parses into raw arrays and fails to render; '1.23±0.04' works.
+    - 'OMML input returns the numbers as Math::Symbols::Symbol, not Math::Number: the OMML-read model is not == the AsciiMath-read model, and its MathML output has <mi>1.23</mi> and <mi>0.04</mi> instead of <mn>. All other input/output pairs above match the baseline exactly.'
+  - id: ordinary_pm.concise_lookalike
+    summary: Without the explicit form, 1.230(4) stays ordinary content (number followed by a bracketed number).
+    model:
+      class: Plurimath::Math::Formula
+      value:
+      - Plurimath::Math::Number(1.230)
+      - Plurimath::Math::Function::Fenced
+    inputs:
+      asciimath: 1.230(4)
+    outputs:
+      asciimath: 1.230 (4)
+      latex: 1.230 ( 4 )
+      unicodemath: 1.230 (4)
+      html: 1.230 <i>(</i>4<i>)</i>
