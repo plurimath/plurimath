@@ -8,8 +8,8 @@ module Plurimath
     # returns the Parslet-shaped tree Asciimath::Transform expects, and
     # raises Parslet::ParseFailed with a cause at amath's rejection position.
     class Parse
-      # amath is not released yet, so the Gemfile line points at GitHub.
-      AMATH_GEMFILE_LINE = 'gem "amath", github: "plurimath/amath"'
+      # The Gemfile line the missing-gem error suggests.
+      AMATH_GEMFILE_LINE = 'gem "amath"'
 
       def parse(text)
         load_amath
