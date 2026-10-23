@@ -24,13 +24,8 @@ module Plurimath
 
       private
 
-      # amath parses with a compiled Parsanol grammar; SliceAdapter turns its
-      # tree back into the Parslet-shaped tree Asciimath::Transform expects.
       def parse_tree
-        require "amath"
-
-        tree = ::Amath.parse(text, decimal: Plurimath.configuration.decimal)
-        SliceAdapter.convert(tree, text)
+        Parse.new.parse(text)
       end
     end
   end
