@@ -8,7 +8,7 @@ RSpec.describe Plurimath::Asciimath::Parse do
   let(:parse) { described_class.new }
   let(:message) do
     "[plurimath] AsciiMath parsing needs the amath gem, which could not be " \
-      "loaded; add gem \"amath\", github: \"plurimath/amath\" to your " \
+      "loaded; add gem \"amath\" to your " \
       "Gemfile and run `bundle install`."
   end
 
