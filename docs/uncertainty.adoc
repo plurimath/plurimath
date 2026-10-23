@@ -259,8 +259,19 @@ ucov(1.024, 0.983, 1.088, 0.95, shortest)    coverage interval (proposal)
 uexp(100.02147, 0.00079, 2, "unitsml(g)")    with a unit, always last
 ----
 +
-Arguments always use a full stop as decimal marker, whatever the parse locale,
-because the comma separates arguments.
+Arguments always use a full stop as decimal marker and a comma between
+arguments, whatever the parse locale. Under a parse locale whose decimal marker
+is not a full stop (for example `locale: :fr`, decimal `,`, or `:ar`, decimal
+`٫`), a comma between arguments that is directly followed by a digit, as in
+`ustd(1,5)`, `uexp(10,0, 0,3, 2)`, `ustd(1,230, 0,004)` or `ustd(1.230,0.004)`,
+is taken as a likely decimal comma: the AsciiMath parser raises
+`Plurimath::Errors::InvalidUncertainty` instead of guessing, which
+`Plurimath::Math.parse` reports as `Plurimath::Math::ParseError`.
+`ustd(1.230, 0.004)`, with a full stop and a space after each comma, reads the
+same under every locale. Input without `ustd(`, `uexp(` or `ucov(` is not
+checked. A value written with the Arabic decimal mark, such as
+`ustd(1٫230, 0٫004)` under `:ar`, is not an uncertainty form and is still read
+as the letters `u s t d` followed by a bracket.
 
 UnicodeMath::
 The existing intent form `ⓘ("marker"content)`:
