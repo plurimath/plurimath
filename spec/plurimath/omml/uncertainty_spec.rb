@@ -179,6 +179,21 @@ RSpec.describe Plurimath::Omml do
 
       expect { read(input) }.to raise_error(Plurimath::Errors::InvalidUncertainty)
     end
+
+    it "rejects a hidden phantom holding a marker run and a non-run element" do
+      superscript = "<m:sSup><m:e>#{run('x')}</m:e><m:sup>#{run('2')}</m:sup></m:sSup>"
+      input = wrap(
+        box(
+          "<m:phant><m:phantPr><m:show m:val=\"off\"/></m:phantPr><m:e>",
+          run("standard-uncertainty(1.230,0.004)"),
+          superscript,
+          "</m:e></m:phant>",
+          run("1.230"),
+        ),
+      )
+
+      expect { read(input) }.to raise_error(Plurimath::Errors::InvalidUncertainty)
+    end
   end
 
   it "reads a marker split over several runs" do

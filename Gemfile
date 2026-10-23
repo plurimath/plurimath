@@ -14,6 +14,7 @@ else
   gem "amath", github: "plurimath/amath", branch: "main"
 end
 # gem "omml", github: "plurimath/omml", branch: "main"
+gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 # Parsanol::Slice for the amath SliceAdapter specs.
 gem "parsanol", ">= 1.3.107"
