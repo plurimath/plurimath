@@ -530,6 +530,18 @@ module Plurimath
         [Utility.symbols_class(symbol, lang: :unicodemath), exp]
       end
 
+      rule(combined_symbols: simple(:combined_symbols),
+           expr: simple(:expr)) do
+        symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols
+        [Utility.symbols_class(symbol, lang: :unicodemath), expr]
+      end
+
+      rule(combined_symbols: simple(:combined_symbols),
+           expr: sequence(:expr)) do
+        symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols
+        [Utility.symbols_class(symbol, lang: :unicodemath)] + expr
+      end
+
       rule(operator: simple(:operator),
            sub_script: simple(:sub_script)) do
         [Utility.symbols_class(operator, lang: :unicodemath), sub_script]
