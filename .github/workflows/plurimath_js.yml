@@ -1,0 +1,18 @@
+name: plurimath-js-test
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ v* ]
+  pull_request:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [ release-passed ]
+
+jobs:
+  rake:
+    uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
+    with:
+      command: npm run build
+      matrix_os: '["ubuntu-latest"]'
+      repos-json-file: .github/workflows/dependent-repos-js.json
