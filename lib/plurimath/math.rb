@@ -8,6 +8,8 @@ module Plurimath
     autoload :ModelHelper, "#{__dir__}/math/model_helper"
     autoload :Function, "#{__dir__}/math/function"
     autoload :InvalidTypeError, "#{__dir__}/errors/invalid_type_error"
+    autoload :MissingDependencyError,
+             "#{__dir__}/errors/missing_dependency_error"
     autoload :Number, "#{__dir__}/math/number"
     autoload :ParseOptionError, "#{__dir__}/errors/parse_option_error"
     autoload :ParseError, "#{__dir__}/errors/parse_error"
