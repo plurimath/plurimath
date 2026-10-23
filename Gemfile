@@ -6,8 +6,13 @@ gemspec
 gem "canon"
 # gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "oga"
-# TODO(amath): enable once amath is pushed; pin the git ref, then the release.
-# gem "amath", github: "plurimath/amath", ref: "<sha>"
+# AsciiMath parser; tracks amath main until a release is published.
+# AMATH_PATH points at a local amath checkout instead.
+if ENV["AMATH_PATH"]
+  gem "amath", path: ENV["AMATH_PATH"]
+else
+  gem "amath", github: "plurimath/amath", branch: "main"
+end
 # gem "omml", github: "plurimath/omml", branch: "main"
 gem "ox"
 # Parsanol::Slice for the amath SliceAdapter specs.

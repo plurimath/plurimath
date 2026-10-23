@@ -3,7 +3,6 @@
 module Plurimath
   class Asciimath
     autoload :Constants, "#{__dir__}/asciimath/constants"
-    autoload :Parse, "#{__dir__}/asciimath/parse"
     autoload :Parser, "#{__dir__}/asciimath/parser"
     autoload :SliceAdapter, "#{__dir__}/asciimath/slice_adapter"
     autoload :Transform, "#{__dir__}/asciimath/transform"

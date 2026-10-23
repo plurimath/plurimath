@@ -49,9 +49,23 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    def parslet_tree(raw)
-      text = Plurimath::Asciimath::Parser.new(raw).text
-      [Plurimath::Asciimath::Parse.new.parse(text), text]
+    def leaves(node, found = [])
+      case node
+      when Hash then node.each_value { |value| leaves(value, found) }
+      when Array then node.each { |value| leaves(value, found) }
+      else found << node
+      end
+      found
+    end
+
+    def keys(node, found = [])
+      case node
+      when Hash
+        found.concat(node.keys)
+        node.each_value { |value| keys(value, found) }
+      when Array then node.each { |value| keys(value, found) }
+      end
+      found
     end
 
     describe ".convert on hand-built Parsanol trees" do
@@ -129,104 +143,67 @@ RSpec.describe Plurimath::Asciimath do
       end
     end
 
-    describe ".convert parity with Asciimath::Parse" do
+    describe ".convert on amath trees" do
       [
         "", "  ", "a", "x+ ", 'a ""', "text(αβ) ", "sin x  ", "αβ + γ ",
         "a\n b ", "a_ ", "x^", "1,2, 3", "(a) ", "mat(1,2) b", "ubrace(x) ",
         "{: a :}", "(: x :)", "|: x :|", "0x1F + 0b101", "sum_(i=1)^n i^2",
         "lim_(x->∞) 1/x", "bb \"A\" ℝ", "obrace(1+2)^\"3\"", "a/b\n\nc"
       ].each do |raw|
-        it "rebuilds the Parslet tree for #{raw.inspect}" do
-          tree, text = parslet_tree(raw)
-          converted = described_class.convert(parsanol_tree(tree, text), text)
+        it "gives Symbol keys and Parslet slices at their input offsets for #{raw.inspect}" do
+          text = Plurimath::Asciimath::Parser.new(raw).text
+          converted = described_class.convert(Amath.parse(text), text)
 
-          expect(snapshot(converted)).to eq(snapshot(tree))
+          expect(keys(converted)).to all(be_a(Symbol))
+          leaves(converted).each do |leaf|
+            expect(leaf).to be_an_instance_of(Parslet::Slice)
+            bytepos = leaf.position.bytepos
+            expect(text.byteslice(bytepos, leaf.to_s.bytesize)).to eq(leaf.to_s)
+            expect(leaf.offset).to eq(text.byteslice(0, bytepos).length)
+          end
         end
       end
     end
   end
 
   describe Plurimath::Asciimath::Parser do
-    around do |example|
-      saved = ENV.fetch(described_class::ENGINE_ENV, nil)
-      example.run
+    # Records each Amath.parse call and answers with the real amath result.
+    let(:recording_amath) do
+      real = Amath
+      Module.new do
+        define_singleton_method(:calls) { @calls ||= [] }
+        define_singleton_method(:parse) do |text, **options|
+          calls << [text, options]
+          real.parse(text, **options)
+        end
+      end
+    end
+
+    before { stub_const("Amath", recording_amath) }
+
+    it "parses the preprocessed text with amath" do
+      raw = "text(a b) {: x :} + sum_(i=1)^n i^2"
+      formula = described_class.new(raw).parse
+
+      expect(formula).to be_a(Plurimath::Math::Formula)
+      expect(Amath.calls.last.first).to eq(described_class.new(raw).text)
+      expect(formula.to_asciimath).to include("sum_(i = 1)^(n)")
+    end
+
+    it "passes the configured decimal marker to amath" do
+      locale = Plurimath.configuration.locale
+      Plurimath.configuration.locale = :fr
+
+      described_class.new("1,5").parse
+
+      expect(Amath.calls.last.last).to eq(decimal: ",")
     ensure
-      if saved.nil?
-        ENV.delete(described_class::ENGINE_ENV)
-      else
-        ENV[described_class::ENGINE_ENV] = saved
-      end
+      Plurimath.configuration.locale = locale
     end
+  end
 
-    describe ".engine" do
-      it "defaults to parslet" do
-        ENV.delete(described_class::ENGINE_ENV)
-
-        expect(described_class.engine).to eq("parslet")
-      end
-
-      it "rejects an unknown engine" do
-        ENV[described_class::ENGINE_ENV] = "treetop"
-
-        expect { described_class.engine }.to raise_error(ArgumentError, /treetop/)
-      end
-    end
-
-    describe "#parse with PLURIMATH_ASCIIMATH_ENGINE=amath" do
-      # Stands in for the amath gem until it is published: answers with the
-      # Parsanol-shaped tree for the same input and records the options.
-      let(:fake_amath) do
-        Module.new do
-          class << self
-            attr_reader :calls
-
-            def parse(text, **options)
-              (@calls ||= []) << [text, options]
-              tree = Plurimath::Asciimath::Parse.new.parse(text)
-              to_parsanol(tree, text)
-            end
-
-            def to_parsanol(node, input)
-              case node
-              when Hash then node.to_h { |k, v| [k, to_parsanol(v, input)] }
-              when Array then node.map { |v| to_parsanol(v, input) }
-              when Parslet::Slice
-                node.to_s.empty? ? "" : Parsanol::Slice.new(node.position.bytepos, node.to_s, input)
-              else node
-              end
-            end
-          end
-        end
-      end
-
-      before { stub_const("Amath", fake_amath) }
-
-      [
-        "sum_(i=1)^n i^2", "αβ + γ", "text(a b) {: x :}", "", "1.5 + 2,3",
-        "mat(1,2;3,4)", "f(x) = sin x / cos x"
-      ].each do |raw|
-        it "builds the same formula as the parslet engine for #{raw.inspect}" do
-          ENV[described_class::ENGINE_ENV] = "parslet"
-          expected = described_class.new(raw).parse
-          ENV[described_class::ENGINE_ENV] = "amath"
-          actual = described_class.new(raw).parse
-
-          expect(actual).to eq(expected)
-          expect(Amath.calls.last.first).to eq(described_class.new(raw).text)
-        end
-      end
-
-      it "passes the configured decimal marker to amath" do
-        ENV[described_class::ENGINE_ENV] = "amath"
-        locale = Plurimath.configuration.locale
-        Plurimath.configuration.locale = :fr
-
-        described_class.new("1,5").parse
-
-        expect(Amath.calls.last.last).to eq(decimal: ",")
-      ensure
-        Plurimath.configuration.locale = locale
-      end
-    end
+  it "reports an input amath rejects as Plurimath::Math::ParseError" do
+    expect { Plurimath::Math.parse("a/", :asciimath) }
+      .to raise_error(Plurimath::Math::ParseError)
   end
 end

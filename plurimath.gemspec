@@ -27,9 +27,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-  # TODO(amath): enable when amath is published (Asciimath::Parser's amath
-  # engine requires it lazily until then).
-  # spec.add_dependency "amath"
+  spec.add_dependency "amath", "~> 0.1"
   spec.add_dependency "bigdecimal"
   spec.add_dependency "htmlentities"
   spec.add_dependency "lutaml-model", "~> 0.8.65"

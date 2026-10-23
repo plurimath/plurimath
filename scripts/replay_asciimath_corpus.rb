@@ -537,20 +537,15 @@ module AsciimathCorpusReplay
     end
   end
 
-  # The deepest Parslet failure offset in the preprocessed text, the way the
-  # corpus generator recorded it; nil when the grammar does not fail.
+  # The grammar's deepest failure offset (in characters) in the preprocessed
+  # text, as amath reports it; nil when the grammar does not fail.
   def grammar_failure_index(preprocessed)
-    Plurimath::Asciimath::Parse.new.parse(preprocessed)
+    require "amath"
+
+    ::Amath.parse(preprocessed, decimal: Plurimath.configuration.decimal)
     nil
-  rescue Parslet::ParseFailed => e
-    deepest_position(e.parse_failure_cause)
-  end
-
-  def deepest_position(cause)
-    children = cause.children || []
-    return cause.pos.charpos if children.empty?
-
-    children.map { |child| deepest_position(child) }.max
+  rescue ::Amath::ParseError => e
+    e.char_offset
   end
 
   # --- CLI ------------------------------------------------------------------
