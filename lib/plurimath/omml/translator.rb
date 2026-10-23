@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../mathml/uncertainty_marker"
+
 module Plurimath
   class Omml
     class Translator
@@ -261,7 +263,60 @@ module Plurimath
       end
 
       def box_to_plurimath(node)
+        children = ordered_omml_children(first_omml_child(node.e))
+        marker = uncertainty_marker_text(children.first)
+        return box_to_uncertainty(marker, children.drop(1)) if marker
+
         omml_argument_value(node.e)
+      end
+
+      # An m:box whose first child is a hidden m:phant holding an
+      # uncertainty marker (plurimath#493). The marker is authoritative; the
+      # visible content is regenerated on output, so only the inner m:box
+      # holding the unit is read.
+      def box_to_uncertainty(marker, visible)
+        Mathml::UncertaintyMarker.build(marker) do
+          units = visible.select { |child| omml_class?(child, "CTBox") }
+          if units.length > 1
+            raise Errors::InvalidUncertainty.new(
+              "marker #{marker.inspect}: more than one m:box could hold the unit",
+            )
+          end
+
+          unit = units.first && box_to_plurimath(units.first)
+          unit.nil? || unit.is_a?(Math::Formula) ? unit : Math::Formula.new([unit])
+        end
+      end
+
+      def uncertainty_marker_text(phantom)
+        return unless omml_class?(phantom, "CTPhant") && hidden_phantom?(phantom)
+
+        text = phantom_run_text(phantom)
+        text if Mathml::UncertaintyMarker.marker?(text)
+      end
+
+      # The text of a phantom made only of runs, or nil.
+      def phantom_run_text(phantom)
+        runs = ordered_omml_children(first_omml_child(phantom.e))
+        return unless runs.any? && runs.all? { |run| omml_class?(run, "CTR") }
+
+        runs.map { |run| run_text(run) }.join
+      end
+
+      def hidden_phantom?(phantom)
+        show = first_omml_child(first_omml_child(phantom.phant_pr)&.show)
+        show && %w[0 false off].include?(show.val.to_s)
+      end
+
+      def run_text(run)
+        ordered_omml_children(run).filter_map do |child|
+          child.content.to_s if omml_class?(child, "CTText")
+        end.join
+      end
+
+      def omml_class?(node, name)
+        !node.nil? && !node.is_a?(String) &&
+          Lutaml::Model::Utils.base_class_name(node.class.name) == name
       end
 
       def word_run_properties_to_plurimath(node)
