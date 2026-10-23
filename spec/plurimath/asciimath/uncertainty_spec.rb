@@ -2,10 +2,11 @@
 
 require "spec_helper"
 require "yaml"
+require "amath"
 
-# Transform side of AsciiMath uncertainty input (plurimath#493). The trees are
-# built by hand in the shape of docs/uncertainty-asciimath-tree.md, because the
-# grammar that produces them is not written yet.
+# AsciiMath uncertainty input (plurimath#493). The amath grammar gives the
+# trees of docs/uncertainty-asciimath-tree.md; they are checked against amath,
+# fed to the transform by hand, and read end to end through Math.parse.
 module AsciimathUncertaintyTrees
   CONTRACT = YAML.safe_load_file(
     File.expand_path("../fixtures/uncertainty/contract.yml", __dir__),
@@ -82,12 +83,12 @@ RSpec.describe Plurimath::Asciimath::Transform do
     )
   end
 
-  # Math.parse with the grammar replaced by the hand-built tree.
-  def parse_with_tree(input, fields)
-    grammar = instance_double(Plurimath::Asciimath::Parse)
-    allow(grammar).to receive(:parse).with(input)
-      .and_return({ expr: { sequence: tree_of(fields) } })
-    allow(Plurimath::Asciimath::Parse).to receive(:new).and_return(grammar)
+  def amath_tree(input)
+    tree = Amath.parse(input, decimal: Plurimath.configuration.decimal)
+    Plurimath::Asciimath::SliceAdapter.convert(tree, input)
+  end
+
+  def read(input)
     Plurimath::Math.parse(input, :asciimath)
   end
 
@@ -102,27 +103,114 @@ RSpec.describe Plurimath::Asciimath::Transform do
       let(:fields) { AsciimathUncertaintyTrees::TREES.fetch(id) }
 
       if example["error"]
+        it "is rejected by the amath grammar" do
+          expect { amath_tree(input) }.to raise_error(Amath::ParseError)
+        end
+
         it "raises InvalidUncertainty from the transform" do
           expect { described_class.new.apply(tree_of(fields)) }
             .to raise_error(Plurimath::Errors::InvalidUncertainty)
         end
 
         it "raises #{example['error']} from Math.parse" do
-          expect { parse_with_tree(input, fields) }
-            .to raise_error(Plurimath::Math::ParseError)
+          expect { read(input) }.to raise_error(Plurimath::Math::ParseError)
         end
       else
         let(:expected) { node_of(AsciimathUncertaintyTrees::CELLS[id]["model"]) }
+
+        it "is parsed by amath into the documented tree" do
+          tree = amath_tree(input)
+          expect(tree.keys).to eq([:expr])
+          expect(tree[:expr].keys).to eq([:sequence])
+          leaves = tree.dig(:expr, :sequence, :uncertainty)
+          expect(leaves.values).to all(be_a(Parslet::Slice))
+          expect(leaves.transform_values(&:to_s)).to eq(fields)
+        end
 
         it "transforms the tree into the model" do
           expect(described_class.new.apply(tree_of(fields))).to eq(expected)
         end
 
-        it "reads back through Math.parse" do
-          expect(parse_with_tree(input, fields))
-            .to eq(Plurimath::Math::Formula.new([expected]))
+        it "reads through Math.parse" do
+          expect(read(input)).to eq(Plurimath::Math::Formula.new([expected]))
         end
       end
+    end
+  end
+
+  # node -> to_asciimath -> Math.parse gives the same node back.
+  context "with round trips" do
+    def uncertainty(value, **fields)
+      numbers = fields.to_h do |key, text|
+        [key, text.is_a?(String) ? Plurimath::Math::Number.new(text) : text]
+      end
+      Plurimath::Math::Function::Uncertainty.new(
+        Plurimath::Math::Number.new(value), **numbers
+      )
+    end
+
+    def gram
+      Plurimath::Math::Function::Unitsml.new("g")
+    end
+
+    contract_nodes = AsciimathUncertaintyTrees::CONTRACT["cases"]
+      .flat_map { |c| c["examples"] }
+      .select { |e| e.dig("model", "class") == AsciimathUncertaintyTrees::UNCERTAINTY }
+      .to_h { |e| [e["id"], e["model"]] }
+
+    contract_nodes.each do |id, model|
+      it "round-trips #{id}" do
+        node = node_of(model)
+        text = Plurimath::Math::Formula.new([node]).to_asciimath
+        expect(read(text)).to eq(Plurimath::Math::Formula.new([node]))
+      end
+    end
+
+    {
+      "a negative value" => -> {
+        uncertainty("-1.230", category: :standard, magnitude: "0.004")
+      },
+      "a concise negative value" => -> {
+        uncertainty("-1.230", category: :standard, magnitude: "0.004",
+                              notation: :concise)
+      },
+      "a concise value with a unit" => -> {
+        uncertainty("1.23", category: :standard, magnitude: "0.04",
+                            notation: :concise, unit: gram)
+      },
+      "a standard uncertainty with a unit" => -> {
+        uncertainty("1.23", category: :standard, magnitude: "0.04",
+                            unit: gram)
+      },
+      "an expanded uncertainty with k, p and a unit" => -> {
+        uncertainty("100.02147", category: :expanded, magnitude: "0.00079",
+                                 coverage_factor: "2",
+                                 coverage_probability: "0.95", unit: gram)
+      },
+      "a symmetric interval" => -> {
+        uncertainty("1.024", category: :coverage_interval, lower: "0.983",
+                             upper: "1.088", coverage_probability: "0.95",
+                             interval_kind: :probabilistically_symmetric)
+      },
+      "an interval without a kind" => -> {
+        uncertainty("1.024", category: :coverage_interval, lower: "0.983",
+                             upper: "1.088", coverage_probability: "0.95")
+      },
+      "an interval with a unit" => -> {
+        uncertainty("1.024", category: :coverage_interval, lower: "0.983",
+                             upper: "1.088", coverage_probability: "0.95",
+                             interval_kind: :shortest, unit: gram)
+      },
+    }.each do |name, build|
+      it "round-trips #{name}" do
+        formula = Plurimath::Math::Formula.new([instance_exec(&build)])
+        expect(read(formula.to_asciimath)).to eq(formula)
+      end
+    end
+
+    it "round-trips an uncertainty inside other content" do
+      text = "x + ustd(1.2, 0.1)"
+      expect(read(read(text).to_asciimath)).to eq(read(text))
     end
   end
 

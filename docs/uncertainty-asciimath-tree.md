@@ -3,8 +3,9 @@
 The amath grammar turns `ustd(...)`, `uexp(...)` and `ucov(...)` into the tree
 below. `Plurimath::Asciimath::Transform` (rule `uncertainty:`) turns it into
 `Math::Function::Uncertainty`. Design: `docs/uncertainty.adoc`; cases:
-`spec/plurimath/fixtures/uncertainty/contract.yml`; transform spec:
-`spec/plurimath/asciimath/uncertainty_spec.rb`.
+`spec/plurimath/fixtures/uncertainty/contract.yml`; spec that checks this
+tree against amath, the transform and `Math.parse`, and round-trips every case
+through `to_asciimath`: `spec/plurimath/asciimath/uncertainty_spec.rb`.
 
 ## Shape
 
@@ -46,10 +47,12 @@ must write `symmetric` so that output reads back.
 
 ## Errors
 
-- Wrong argument count (for example `uexp(10.0, 0.3)`, no `k`): the grammar
-  should reject it. If it passes the tree through anyway, the node raises
-  `Errors::InvalidUncertainty`, which `Plurimath::Math.parse` reports as
-  `Math::ParseError`, the error the contract asks for.
+- Wrong argument count (for example `uexp(10.0, 0.3)`, no `k`): the amath
+  grammar rejects it with `Amath::ParseError`, which `Plurimath::Math.parse`
+  reports as `Math::ParseError`, the error the contract asks for. Should a tree
+  with too few fields reach the transform anyway, the node raises
+  `Errors::InvalidUncertainty`, which `Math.parse` also reports as
+  `Math::ParseError`.
 - An unknown `uncertainty_class`, an unexpected key, a non-text leaf, both
   `magnitude` and `concise_digits`, non-digit `concise_digits` or an unknown
   `interval_kind` raise `Errors::InvalidUncertainty`.

@@ -76,6 +76,23 @@ module UncertaintyContract
     end
   end
 
+  # Whether an AsciiMath read gives the case's model: the Uncertainty node
+  # itself, or for ordinary content the listed items in order (a bare class
+  # name checks the class only, `Class(text)` also checks the value).
+  def read_matches?(read, example)
+    return read == formula(example) if uncertainty?(example)
+
+    items = example["model"]["value"]
+    read.value.length == items.length &&
+      read.value.zip(items).all? { |node, item| item_matches?(node, item) }
+  end
+
+  def item_matches?(node, item)
+    name, text = item.match(/\A([\w:]+)(?:\((.*)\))?\z/).captures
+    node.instance_of?(Object.const_get(name)) &&
+      (text.nil? || node.value == text)
+  end
+
   def uncertainty?(example)
     example.dig("model", "class") == UNCERTAINTY
   end
@@ -98,7 +115,8 @@ module UncertaintyContract
 end
 
 # Output cells are asserted against nodes built from each case's `model`.
-# Input cells belong to the readers (B3) and AsciiMath (B4) and are skipped.
+# AsciiMath input cells (B4) are read through amath and compared with the
+# model; the other input cells belong to the readers (B3) and are skipped.
 RSpec.describe Plurimath::Math::Function::Uncertainty do
   it "is built against the expected contract revision" do
     expect(UncertaintyContract::CONTRACT["schema_version"]).to eq(1)
@@ -147,10 +165,21 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
             end
           end
 
-          (example["inputs"] || {}).each_key do |format|
-            it "reads #{format}" do
-              phase = format == "asciimath" ? "B4 (amath)" : "B3 (readers)"
-              skip "input cells belong to the #{phase} lane, not the model lane"
+          (example["inputs"] || {}).each do |format, input|
+            if format == "asciimath"
+              it "reads asciimath" do
+                read = -> { Plurimath::Math.parse(input, :asciimath) }
+                if example["error"]
+                  expect(&read).to raise_error(Object.const_get(example["error"]))
+                else
+                  expect(UncertaintyContract.read_matches?(read.call, example))
+                    .to be(true)
+                end
+              end
+            else
+              it "reads #{format}" do
+                skip "input cells belong to the B3 (readers) lane"
+              end
             end
           end
         end
