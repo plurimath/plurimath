@@ -233,6 +233,13 @@ module Plurimath
         Utility.symbols_class((unicode || symbol), lang: :unicodemath)
       end
 
+      # \mup"g" is how a font over text is written (e.g. a unit read from
+      # OMML, plurimath#493).
+      rule(font_class: simple(:fonts),
+           text: simple(:text)) do
+        Utility::FONT_STYLES[fonts.to_sym].new(Math::Function::Text.new(text))
+      end
+
       rule(font_class: simple(:fonts),
            symbol: simple(:symbol)) do
         Utility::FONT_STYLES[fonts.to_sym].new(
@@ -2230,10 +2237,28 @@ module Plurimath
         )
       end
 
+      # Any other ⓐ shape has no Arg reading; fail here rather than leave
+      # the raw parse tree inside the Formula. Parslet tries later rules
+      # first, so these catch-alls must stay above the Arg rules below.
+      rule(arg: simple(:arg)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg), arg_arguments: simple(:args)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg), first_value: subtree(:first_value)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg),
+           arg_arguments: simple(:args),
+           first_value: subtree(:first_value)) { Utility.unsupported_arg! }
+
       rule(arg: simple(:arg),
            arg_arguments: simple(:args),
            first_value: simple(:first_value)) do
         Math::Function::Arg.new(first_value, args)
+      end
+
+      # ⓐ(unit \mupkg) reads its content as several nodes; keep them together
+      # so the argument (e.g. an uncertainty unit, plurimath#493) is not lost.
+      rule(arg: simple(:arg),
+           arg_arguments: simple(:args),
+           first_value: sequence(:first_value)) do
+        Math::Function::Arg.new(Math::Formula.new(first_value), args)
       end
 
       rule(whole: simple(:whole),
