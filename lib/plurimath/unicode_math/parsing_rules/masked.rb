@@ -35,8 +35,11 @@ module Plurimath
         rule(:root_symbols) do
           str("&#x24ad;") | str("&#x221a;") | str("\\root") | str("\\surd")
         end
+        # The middle form takes content of several terms, e.g. ⓐ(unit \mupkg);
+        # `expression` alone stops after the first term (plurimath#493).
         rule(:arg_function) do
           (str("&#x24d0;").as(:arg) >> str("(") >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe >> str(")")) |
+            (str("&#x24d0;").as(:arg) >> str("(") >> a_ascii.as(:arg_arguments) >> space? >> masked_recursive_value.as(:first_value) >> space? >> str(")")) |
             (str("&#x24d0;").as(:arg) >> a_ascii.as(:arg_arguments).maybe >> space? >> expression.as(:first_value).maybe)
         end
 

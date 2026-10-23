@@ -41,6 +41,10 @@ module Plurimath
           unit.nil? || unit.is_a?(Math::Formula) ? unit : Math::Formula.new([unit])
         end
 
+        def unsupported_arg!
+          raise ArgumentError, "ⓐ needs a name and content, as in ⓐ(name content)"
+        end
+
         def unicode_accents(accents, lang: :unicodemath)
           if accents.is_a?(Math::Function::BinaryFunction)
             accents
