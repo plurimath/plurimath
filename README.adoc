@@ -13,7 +13,8 @@ remains consistent and accurate regardless of the format it is presented in.
 Supported math representational languages:
 
 * https://www.w3.org/TR/MathML3/[MathML 3] (and https://www.w3.org/TR/mathml4/[MathML 4])
-* https://www.asciimath.org[AsciiMath]
+* https://www.asciimath.org[AsciiMath] (parsed by the
+https://github.com/plurimath/amath[amath] gem)
 * http://unicodemath.org[UnicodeMath] (https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.2.pdf[UnicodeMath v3.2])
 * LaTeX math
 * Microsoft Office Math Markup Language (OMML) https://devblogs.microsoft.com/math-in-office/officemath/["OfficeMath"]

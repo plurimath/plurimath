@@ -15,11 +15,17 @@ module Plurimath
       end
 
       def parse
-        nodes = Parse.new.parse(text)
+        nodes = parse_tree
         transformed_tree = Transform.new.apply(nodes)
         return transformed_tree if transformed_tree.is_a?(Math::Formula)
 
         Math::Formula.new(transformed_tree)
+      end
+
+      private
+
+      def parse_tree
+        Parse.new.parse(text)
       end
     end
   end
