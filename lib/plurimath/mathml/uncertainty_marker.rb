@@ -79,9 +79,18 @@ module Plurimath
         { value: Math::Number.new(value), options: options, unit: unit }
       end
 
+      # Whitespace follows the MathML 4 intent grammar (section 5.1):
+      #
+      #   application := expression '(' arguments? S ')'
+      #   expression  := S ( term property* ) S
+      #   property    := S ':' NCName
+      #
+      # so whitespace may come before a property's ':' and between the head
+      # (with its property) and '(', and around each argument, but not
+      # between ':' and the property name.
       def marker_match(text)
         name = Regexp.union(names.values)
-        pattern = /\A\s*(?<name>#{name})(?::(?<property>[^():,\s]+))?\((?<arguments>[^()]*)\)\s*\z/
+        pattern = /\A\s*(?<name>#{name})(?:\s*:(?<property>[^():,\s]+))?\s*\((?<arguments>[^()]*)\)\s*\z/
         pattern.match(text) || invalid!(text, "it is not of the form name[:property](arguments)")
       end
 
