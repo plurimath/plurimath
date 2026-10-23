@@ -56,7 +56,8 @@ module Plurimath
             (str("\\") >> custom_fonts.as(:unicoded_font_class) >> str("H").as(:symbol)) |
             (str("\\") >> str("mitBbb").as(:unicoded_font_class) >> match(/D|d|e|i|j/).as(:symbol)) |
             (op_fonts >> match["A-Za-z"].as(:symbol)) |
-            (op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number)))
+            (op_alphanumeric_fonts >> (match["A-Za-z"].as(:symbol) | match("[0-9]").as(:number))) |
+            ((op_fonts | op_alphanumeric_fonts) >> parsing_text)
         end
 
         rule(:unary_arg_functions) do
