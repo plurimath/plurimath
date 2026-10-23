@@ -1172,6 +1172,105 @@ module Plurimath
           Utility.asciimath_symbol_object(right),
         )
       end
+
+      # ustd(...), uexp(...) and ucov(...) (plurimath#493); the tree shape
+      # is docs/uncertainty-asciimath-tree.md.
+      rule(uncertainty: subtree(:uncertainty)) do
+        UncertaintyTree.node(uncertainty)
+      end
+
+      # Builds Math::Function::Uncertainty from the fields of an
+      # `uncertainty:` tree. Every leaf is the text exactly as written; the
+      # node's constructor does all validation of numbers and categories.
+      module UncertaintyTree
+        CATEGORIES = {
+          "ustd" => :standard,
+          "uexp" => :expanded,
+          "ucov" => :coverage_interval,
+        }.freeze
+
+        FIELDS = {
+          standard: %i[value magnitude concise_digits unit],
+          expanded: %i[value magnitude coverage_factor coverage_probability
+                       unit],
+          coverage_interval: %i[value lower upper coverage_probability
+                                interval_kind unit],
+        }.freeze
+
+        NUMBER_FIELDS = %i[magnitude coverage_factor coverage_probability
+                           lower upper].freeze
+
+        # `probabilistically-symmetric` would read as a subtraction in
+        # AsciiMath, so it is spelled `symmetric` there.
+        INTERVAL_KINDS = {
+          "shortest" => :shortest,
+          "symmetric" => :probabilistically_symmetric,
+        }.freeze
+
+        module_function
+
+        def node(tree)
+          fields = leaves(tree)
+          category = CATEGORIES[fields.delete(:uncertainty_class)]
+          invalid!("unknown uncertainty class in #{tree.inspect}") unless category
+          unknown = fields.keys - FIELDS[category]
+          invalid!("unexpected #{unknown.join(', ')} in #{tree.inspect}") unless unknown.empty?
+
+          Math::Function::Uncertainty.new(
+            number(fields[:value]),
+            category: category,
+            **options(fields),
+          )
+        end
+
+        def leaves(tree)
+          valid = tree.is_a?(Hash) &&
+            tree.values.all? { |leaf| leaf.is_a?(Parslet::Slice) || leaf.is_a?(String) }
+          invalid!("expected a hash of text fields, got #{tree.inspect}") unless valid
+
+          tree.transform_values(&:to_s)
+        end
+
+        def options(fields)
+          options = NUMBER_FIELDS.to_h { |field| [field, number(fields[field])] }
+          options[:interval_kind] = interval_kind(fields[:interval_kind])
+          options[:unit] = fields[:unit] && Math::Function::Unitsml.new(fields[:unit])
+          concise!(options, fields) if fields.key?(:concise_digits)
+          options
+        end
+
+        def interval_kind(name)
+          return if name.nil?
+
+          INTERVAL_KINDS.fetch(name) { invalid!("unknown interval kind #{name.inspect}") }
+        end
+
+        # ustd(1.230(4)): the digits count in units of the value's last
+        # decimal place, so 4 after 1.230 is 0.004.
+        def concise!(options, fields)
+          invalid!("ustd takes a magnitude or concise digits, not both") if fields.key?(:magnitude)
+          digits = fields[:concise_digits]
+          invalid!("concise digits #{digits.inspect} must be digits only") unless digits.match?(/\A[0-9]+\z/)
+
+          options[:magnitude] = number(concise_magnitude(fields[:value].to_s, digits))
+          options[:notation] = :concise
+        end
+
+        def concise_magnitude(value, digits)
+          places = value.include?(".") ? value.split(".", 2).last.length : 0
+          padded = digits.rjust(places + 1, "0")
+          whole = padded[0, padded.length - places].sub(/\A0+(?=[0-9])/, "")
+          places.zero? ? whole : "#{whole}.#{padded[-places..]}"
+        end
+
+        def number(text)
+          text && Math::Number.new(text)
+        end
+
+        def invalid!(detail)
+          raise Errors::InvalidUncertainty.new(detail)
+        end
+      end
     end
   end
 end
