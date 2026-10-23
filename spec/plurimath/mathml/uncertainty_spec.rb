@@ -156,6 +156,7 @@ RSpec.describe Plurimath::Mathml do
       "an unknown reference" => "expanded-uncertainty(10.0,0.3,2,$mass)",
       "trailing text" => "standard-uncertainty(1.230,0.004) extra",
       "a $unit reference with no unit child" => "expanded-uncertainty(10.0,0.3,2,$unit)",
+      "whitespace between ':' and the property name" => "standard-uncertainty: concise(1.23,0.04)",
     }.each do |description, marker|
       it "rejects #{description}", marker: marker do |ex|
         input = wrap("<mrow intent=\"#{ex.metadata[:marker]}\"><mn>10.0</mn><mn>0.3</mn></mrow>")
@@ -173,6 +174,20 @@ RSpec.describe Plurimath::Mathml do
       XML
 
       expect { read(input) }.to raise_error(Plurimath::Errors::InvalidUncertainty)
+    end
+  end
+
+  # MathML 4 intent grammar (section 5.1): expression := S ( term property* ) S
+  # and property := S ':' NCName, so whitespace before '(' and before ':' is
+  # allowed.
+  {
+    "whitespace before the argument list" => "standard-uncertainty (1.230, 0.004)",
+    "whitespace before a property" => "standard-uncertainty :concise (1.23,0.04)",
+  }.each do |description, marker|
+    it "accepts #{description}", marker: marker do |ex|
+      input = wrap("<mrow intent=\"#{ex.metadata[:marker]}\"><mn>1.230</mn></mrow>")
+
+      expect(read(input).value.map(&:class)).to eq([node_class])
     end
   end
 
