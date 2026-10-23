@@ -40,8 +40,6 @@ module AsciimathUncertaintyTrees
     "units.expanded_gram" =>
       { uncertainty_class: "uexp", value: "100.02147", magnitude: "0.00079",
         coverage_factor: "2", unit: "g" },
-    "invalid.asciimath_missing_k" =>
-      { uncertainty_class: "uexp", value: "10.0", magnitude: "0.3" },
   }.freeze
 
   # Every cell with an AsciiMath input that is (or fails to be) an
@@ -248,6 +246,32 @@ RSpec.describe Plurimath::Asciimath::Transform do
         expect([node.magnitude.value, node.notation])
           .to eq([magnitude, :concise])
       end
+    end
+  end
+
+  # A malformed call is not an uncertainty: amath falls back to the letter
+  # reading it had before the uncertainty words (plurimath/amath#9). The
+  # contract cell invalid.asciimath_missing_k records the same reading.
+  context "with a call missing its coverage factor: uexp(10.0, 0.3)" do
+    let(:input) { "uexp(10.0, 0.3)" }
+
+    it "is not given an uncertainty tree by amath" do
+      expect(amath_tree(input).to_s).not_to include("uncertainty")
+    end
+
+    it "reads as the letter u followed by exp(...)" do
+      formula = read(input)
+      expect(formula.value.map(&:class)).to eq(
+        [Plurimath::Math::Symbols::Symbol, Plurimath::Math::Function::Exp],
+      )
+      expect(formula.value.first.value).to eq("u")
+      expect(formula.to_asciimath).to eq("u exp(10.0 , 0.3)")
+    end
+
+    it "raises InvalidUncertainty if such a tree reaches the transform" do
+      tree = tree_of(uncertainty_class: "uexp", value: "10.0", magnitude: "0.3")
+      expect { described_class.new.apply(tree) }
+        .to raise_error(Plurimath::Errors::InvalidUncertainty)
     end
   end
 

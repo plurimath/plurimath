@@ -47,11 +47,13 @@ must write `symmetric` so that output reads back.
 
 ## Errors
 
-- Wrong argument count (for example `uexp(10.0, 0.3)`, no `k`): the amath
-  grammar rejects it with `Amath::ParseError`, which `Plurimath::Math.parse`
-  reports as `Math::ParseError`, the error the contract asks for. Should a tree
-  with too few fields reach the transform anyway, the node raises
-  `Errors::InvalidUncertainty`, which `Math.parse` also reports as
+- Wrong argument count (for example `uexp(10.0, 0.3)`, no `k`): the call is
+  not an uncertainty, and amath falls back to the letter reading it had before
+  the uncertainty words (plurimath/amath#9). `uexp(10.0, 0.3)` reads as the
+  symbol `u` followed by `exp(10.0, 0.3)`, as the contract cell
+  `invalid.asciimath_missing_k` records; no error is raised. Should a tree with
+  too few fields reach the transform anyway, the node raises
+  `Errors::InvalidUncertainty`, which `Math.parse` reports as
   `Math::ParseError`.
 - An unknown `uncertainty_class`, an unexpected key, a non-text leaf, both
   `magnitude` and `concise_digits`, non-digit `concise_digits` or an unknown

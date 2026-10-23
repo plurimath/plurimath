@@ -96,7 +96,9 @@ Validation runs in the constructor and raises a new
 * `notation: :concise` needs `magnitude` to have exactly as many decimal places
   as `value` (see <<concise>>).
 * `unit` is `nil`, a `Math::Function::Unitsml`, or a `Math::Formula` (only
-  produced by the MathML, OMML and UnicodeMath readers, see <<units>>).
+  produced by the MathML, OMML and UnicodeMath readers, see <<units>>). A
+  `Math::Formula` unit must not be empty and must not contain another
+  `Uncertainty`; either raises `Errors::InvalidUncertainty`.
 
 Equality (`==`) compares class and every field, including `notation` and the
 exact number text. `ustd(1.23(4))` and `ustd(1.23, 0.04)` hold the same
@@ -150,6 +152,11 @@ keeps its current meaning.
 A marker that uses one of the three names but is malformed (missing `k`, bad
 number, wrong argument count) raises `InvalidUncertainty`. It is never quietly
 read as ordinary content.
+
+AsciiMath has no marker, only the words. A malformed AsciiMath call, for
+example `uexp(10.0, 0.3)` with no `k`, is not an uncertainty and falls back to
+the letter reading it had before the words were added: `u` followed by
+`exp(10.0, 0.3)` (plurimath/amath#9). No error is raised.
 
 Word list note for B4: today `uexp(10.0, 0.3, 2)` is read as `u` followed by
 `exp(...)`, and `ustd`, `ucov` as separate letters. Adding the words changes
@@ -269,6 +276,17 @@ The existing intent form `ⓘ("marker"content)`:
 +
 `±` is written without spaces here because today's UnicodeMath reader fails on
 `1.23 ± 0.04` with spaces (see <<baseline>>).
++
+A negative value that would start the visible content is put in the invisible
+`〖〗` group, because the reader cannot take `"marker"-…`. The marker is
+unchanged:
++
+----
+ⓘ("standard-uncertainty(-1.230,0.004)"〖-1.230〗(0.004))
+ⓘ("coverage-interval(-1.024,0.983,1.088,0.95)"〖-1.024〗, [0.983, 1.088], p=0.95)
+----
++
+An expanded result already starts with `(`, so it is written as before.
 
 MathML::
 An `mrow` carrying the marker as `intent`, written whatever the `intent:`
@@ -398,7 +416,23 @@ Why:
 What survives a round trip:
 
 * AsciiMath: exact, the UnitsML text is written back
-  (`uexp(100.02147, 0.00079, 2, "unitsml(g)")`).
+  (`uexp(100.02147, 0.00079, 2, "unitsml(g)")`). A unit read from MathML,
+  OMML or UnicodeMath is a rendered `Math::Formula`; it is written back as
+  `"unitsml(...)"` when that is possible, by this rule:
+** The formula must be a product of unit symbols separated by `·`
+   (`Math::Symbols::Cdot`), each symbol optionally raised to an integer power,
+   which may be negative.
+** A unit symbol is ASCII letters only, upright (`Math::Function::FontStyle::Normal`)
+   or plain, held as a symbol or a text. `kg`, `m^2` and `s^-1` qualify; `µm`
+   and `°C` do not, because their rendered symbols are not UnitsML input.
+** The derived text, for example `kg*m^2` or `m*s^-1`, must parse as UnitsML
+   and UnitsML must render it back to the same product. A unit written as
+   `m/s` therefore comes back as `"unitsml(m*s^-1)"`, which renders the same.
+** Any other unit cannot be written in the AsciiMath call, whose grammar
+   accepts only a final `"unitsml(...)"` argument. It is written after the call
+   in its own AsciiMath form, for example `ustd(1.230, 0.004) mathbf(x)`. That
+   text still parses and shows the unit, but it reads back as an uncertainty
+   without a unit followed by the unit expression.
 * MathML: the unit is written with the usual UnitsML rendering in an
   `mrow arg="unit"`, referred to by `$unit` in the marker. On reading, the unit
   comes back as that rendered content (a `Math::Formula`), not as a `Unitsml`
