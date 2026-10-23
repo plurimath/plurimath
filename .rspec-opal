@@ -1,0 +1,14 @@
+--default-path=spec
+-I lib
+-q oga/setup_opal
+-q ll/setup_opal
+--opal-opt=-g,htmlentities
+--opal-opt=-g,parslet
+--opal-opt=-g,canon
+--opal-opt=-g,oga
+--format documentation
+--color
+--require spec_helper
+
+# The shared corpus adapter uses native filesystem/YAML validation.
+--exclude-pattern=spec/conformance/**/*_spec.rb
