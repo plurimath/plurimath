@@ -1179,6 +1179,24 @@ module Plurimath
         UncertaintyTree.node(uncertainty)
       end
 
+      # `sqrt ustd(1,2)`, `sin ustd(1,2)`: the unary rule splices its
+      # unnamed operand next to `unary_class`, so the uncertainty tree is a
+      # sibling key. Built like `sqrt x` (`unary_class` + `symbol`).
+      rule(unary_class: simple(:function),
+           uncertainty: subtree(:uncertainty)) do
+        Utility.get_class(function).new(UncertaintyTree.node(uncertainty))
+      end
+
+      # A hash that comes back from Parslet::Transform#apply matched no
+      # rule. One that still holds an uncertainty tree or node would reach
+      # the Formula as a raw Hash and fail only on output, so it is
+      # rejected here instead.
+      def apply(obj, context = nil)
+        result = super
+        UncertaintyTree.stranded!(result) if result.is_a?(Hash)
+        result
+      end
+
       # Builds Math::Function::Uncertainty from the fields of an
       # `uncertainty:` tree. Every leaf is the text exactly as written; the
       # node's constructor does all validation of numbers and categories.
@@ -1265,6 +1283,23 @@ module Plurimath
 
         def number(text)
           text && Math::Number.new(text)
+        end
+
+        def stranded!(hash)
+          return unless holds_uncertainty?(hash)
+
+          invalid!("no AsciiMath rule takes an uncertainty in #{hash.inspect}")
+        end
+
+        def holds_uncertainty?(tree)
+          case tree
+          when Hash
+            tree.key?(:uncertainty) || tree.each_value.any? { |v| holds_uncertainty?(v) }
+          when Array
+            tree.any? { |v| holds_uncertainty?(v) }
+          else
+            tree.is_a?(Math::Function::Uncertainty)
+          end
         end
 
         def invalid!(detail)
