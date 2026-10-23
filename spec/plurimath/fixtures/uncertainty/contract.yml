@@ -1551,7 +1551,7 @@ cases:
         </m:oMath>
 - id: invalid
   status: proposal
-  summary: Each entry must raise the named error. No entry may silently produce an ordinary expression or a different variant.
+  summary: Each entry must raise the named error. No entry may silently produce an ordinary expression or a different variant, except asciimath_missing_k, where a malformed AsciiMath call falls back to the letter reading it had before the uncertainty words (plurimath/amath#9).
   examples:
   - id: invalid.negative_magnitude
     constructor:
@@ -1680,10 +1680,13 @@ cases:
       unicodemath: ⓘ("standard-uncertainty(1.230,abc)"1.230(abc))
     error: Plurimath::Errors::InvalidUncertainty
   - id: invalid.asciimath_missing_k
+    model:
+      class: Plurimath::Math::Formula
+      value:
+      - Plurimath::Math::Symbols::Symbol(u)
+      - Plurimath::Math::Function::Exp
     inputs:
       asciimath: uexp(10.0, 0.3)
-    error: Plurimath::Math::ParseError
-    phase: B4
 - id: ordinary_pm
   status: baseline_behaviour_must_not_change
   summary: Plain plus-minus stays Math::Symbols::Pm in every language. No uncertainty node is created.
