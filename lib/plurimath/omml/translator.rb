@@ -295,12 +295,25 @@ module Plurimath
         text if Mathml::UncertaintyMarker.marker?(text)
       end
 
-      # The text of a phantom made only of runs, or nil.
+      # The text of a phantom made only of runs, or nil. A phantom whose
+      # leading runs spell a marker but which also holds anything other than
+      # runs is a malformed marker: it raises rather than being read as
+      # ordinary content.
       def phantom_run_text(phantom)
-        runs = ordered_omml_children(first_omml_child(phantom.e))
-        return unless runs.any? && runs.all? { |run| omml_class?(run, "CTR") }
+        children = ordered_omml_children(first_omml_child(phantom.e))
+        runs = children.take_while { |child| omml_class?(child, "CTR") }
+        text = runs.map { |run| run_text(run) }.join
+        return text if runs.any? && runs.length == children.length
 
-        runs.map { |run| run_text(run) }.join
+        reject_mixed_phantom(text)
+      end
+
+      def reject_mixed_phantom(text)
+        return unless Mathml::UncertaintyMarker.marker?(text)
+
+        raise Errors::InvalidUncertainty.new(
+          "marker #{text.inspect}: the hidden m:phant must hold only m:r runs",
+        )
       end
 
       def hidden_phantom?(phantom)

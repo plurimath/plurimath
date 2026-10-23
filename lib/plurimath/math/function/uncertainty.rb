@@ -44,6 +44,9 @@ module Plurimath
 
         PLUS_MINUS = "&#xb1;"
 
+        # One unit symbol as UnitsML writes it, for example "kg".
+        UNIT_SYMBOL = /\A[A-Za-z]+\z/
+
         attr_reader :value, :category, :magnitude, :coverage_factor,
                     :coverage_probability, :lower, :upper, :interval_kind,
                     :notation, :unit
@@ -143,8 +146,14 @@ module Plurimath
                     text(coverage_probability),
                     ASCIIMATH_INTERVAL_KIND_NAMES[interval_kind]]
                  end
-          args << asciimath_unit(options) if unit
-          "#{ASCIIMATH_NAMES[category]}(#{args.compact.join(', ')})"
+          unitsml = asciimath_unitsml if unit
+          args << "\"unitsml(#{unitsml})\"" if unitsml
+          call = "#{ASCIIMATH_NAMES[category]}(#{args.compact.join(', ')})"
+          return call if unit.nil? || unitsml
+
+          # Not expressible in UnitsML: keep it visible after the call, the
+          # only place the AsciiMath reader accepts it (docs/uncertainty.adoc).
+          "#{call} #{unit.to_asciimath(options: options)}"
         end
 
         def to_latex(options:)
@@ -177,12 +186,12 @@ module Plurimath
           unit_text = "ⓐ(unit #{unit.to_unicodemath(options: options)})" if unit
           visible = case category
                     when :standard
-                      "#{text(value)}(#{standard_parenthesised})#{unit_text}"
+                      "#{unicodemath_value}(#{standard_parenthesised})#{unit_text}"
                     when :expanded
                       "(#{text(value)}±#{text(magnitude)})#{unit_text}#{unicodemath_statements}"
                     else
                       interval = "[#{text(lower)}, #{text(upper)}]"
-                      "#{text(value)}, #{interval}#{unit_text}#{unicodemath_statements}"
+                      "#{unicodemath_value}, #{interval}#{unit_text}#{unicodemath_statements}"
                     end
           "ⓘ(\"#{marker}\"#{visible})"
         end
@@ -324,10 +333,74 @@ module Plurimath
           statements.map { |name, number| ", #{name}=#{text(number)}" }.join
         end
 
-        def asciimath_unit(options)
-          return "\"unitsml(#{unit.text})\"" if unit.is_a?(Unitsml)
+        # The UnicodeMath reader cannot take `"marker"-...`, so a negative
+        # leading value goes in an invisible 〖〗 group; the marker is unchanged.
+        def unicodemath_value
+          text(value).start_with?("-") ? "〖#{text(value)}〗" : text(value)
+        end
 
-          unit.to_asciimath(options: options)
+        # The UnitsML text for the AsciiMath unit argument, or nil when the
+        # unit cannot be written as UnitsML. A unit read from markup is its
+        # rendered Formula; it is written back as UnitsML only when it is a
+        # `*`-separated product of upright unit symbols with optional integer
+        # powers, and UnitsML renders that text back to the same product.
+        def asciimath_unitsml
+          return unit.text if unit.is_a?(Unitsml)
+
+          candidate = unit_text(unit)
+          return unless candidate
+
+          candidate if unit_text(::Unitsml.parse(candidate).to_plurimath({})) == candidate
+        rescue Parslet::ParseFailed
+          nil
+        end
+
+        def unit_text(node)
+          case node
+          when Math::Formula then unit_product(node.value)
+          when Power then unit_power(node)
+          else unit_symbol(node)
+          end
+        end
+
+        def unit_product(parts)
+          return if parts.empty? || parts.length.even?
+
+          texts = parts.each_with_index.map do |part, index|
+            if index.odd?
+              part.is_a?(Math::Symbols::Cdot) ? "*" : nil
+            else
+              unit_text(part)
+            end
+          end
+          texts.join unless texts.include?(nil)
+        end
+
+        def unit_power(node)
+          base = unit_symbol(node.parameter_one)
+          exponent = node.parameter_two
+          exponent = exponent.value if exponent.is_a?(Math::Formula)
+          exponent = Array(exponent)
+          sign = ""
+          if exponent.length == 2 && exponent.first.is_a?(Math::Symbols::Minus)
+            sign = "-"
+            exponent = exponent.drop(1)
+          end
+          number = exponent.first
+          return unless base && exponent.length == 1 &&
+            number.is_a?(Math::Number) && number.value.to_s.match?(/\A[0-9]+\z/)
+
+          "#{base}^#{sign}#{number.value}"
+        end
+
+        def unit_symbol(node)
+          node = node.parameter_one if node.is_a?(FontStyle::Normal)
+          string = case node
+                   when Text then node.parameter_one
+                   when Math::Symbols::Symbol
+                     node.value if node.instance_of?(Math::Symbols::Symbol)
+                   end
+          string if string.is_a?(String) && string.match?(UNIT_SYMBOL)
         end
 
         # MathML helpers
@@ -496,9 +569,33 @@ module Plurimath
         end
 
         def validate_unit
-          return if unit.nil? || unit.is_a?(Unitsml) || unit.is_a?(Math::Formula)
+          return if unit.nil? || unit.is_a?(Unitsml)
 
-          invalid!("unit must be a Math::Function::Unitsml, got #{unit.inspect}")
+          unless unit.is_a?(Math::Formula)
+            invalid!("unit must be a Math::Function::Unitsml, got #{unit.inspect}")
+          end
+          invalid!("unit must not be empty") if empty_formula?(unit)
+          return unless holds_uncertainty?(unit)
+
+          invalid!("unit must not contain an uncertainty")
+        end
+
+        def empty_formula?(formula)
+          Array(formula.value).compact.all? do |part|
+            part.is_a?(Math::Formula) && empty_formula?(part)
+          end
+        end
+
+        def holds_uncertainty?(node)
+          case node
+          when Uncertainty then true
+          when Array then node.any? { |item| holds_uncertainty?(item) }
+          when Math::Core
+            node.instance_variables.any? do |name|
+              holds_uncertainty?(node.instance_variable_get(name))
+            end
+          else false
+          end
         end
 
         def forbid(*fields)
