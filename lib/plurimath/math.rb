@@ -11,6 +11,7 @@ module Plurimath
     autoload :Number, "#{__dir__}/math/number"
     autoload :ParseOptionError, "#{__dir__}/errors/parse_option_error"
     autoload :ParseError, "#{__dir__}/errors/parse_error"
+    autoload :AmbiguousDecimalError, "#{__dir__}/errors/ambiguous_decimal_error"
     autoload :Symbols, "#{__dir__}/math/symbols"
 
     VALID_TYPES = {
