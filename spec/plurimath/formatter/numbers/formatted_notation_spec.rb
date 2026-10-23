@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../../../support/shared_formatter_examples"
 
 RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
   let(:decimal_notation) do
@@ -30,7 +31,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         exponent_separator: "e",
       )
 
-      expect(notation.to_s).to eq("1.40e4")
+      expect_shared_formatter_output("formatted-notation-033", notation.to_s)
     end
 
     it "renders e notation with custom exponent separator" do
@@ -41,7 +42,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         exponent_separator: "E",
       )
 
-      expect(notation.to_s).to eq("1.40E4")
+      expect_shared_formatter_output("formatted-notation-044", notation.to_s)
     end
 
     it "renders scientific notation with times symbol" do
@@ -52,7 +53,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         times_symbol: "×",
       )
 
-      expect(notation.to_s).to eq("1.40 × 10^4")
+      expect_shared_formatter_output("formatted-notation-055", notation.to_s)
     end
 
     it "renders engineering notation with times symbol" do
@@ -66,7 +67,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         times_symbol: "x",
       )
 
-      expect(notation.to_s).to eq("14,00 x 10^3")
+      expect_shared_formatter_output("formatted-notation-069", notation.to_s)
     end
 
     it "renders negative exponents correctly" do
@@ -77,7 +78,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         times_symbol: "×",
       )
 
-      expect(notation.to_s).to eq("1.40 × 10^-3")
+      expect_shared_formatter_output("formatted-notation-080", notation.to_s)
     end
 
     it "renders zero exponent as 0" do
@@ -88,7 +89,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         times_symbol: "×",
       )
 
-      expect(notation.to_s).to eq("1.40 × 10^0")
+      expect_shared_formatter_output("formatted-notation-091", notation.to_s)
     end
   end
 
@@ -112,7 +113,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         exponent: 0,
       )
 
-      expect(notation.formatted_exponent).to eq("0")
+      expect_shared_formatter_output("formatted-notation-115", notation.formatted_exponent)
     end
 
     it "returns the exponent as a string for positive values" do
@@ -122,7 +123,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         exponent: 4,
       )
 
-      expect(notation.formatted_exponent).to eq("4")
+      expect_shared_formatter_output("formatted-notation-125", notation.formatted_exponent)
     end
 
     it "prepends minus for negative exponents" do
@@ -132,7 +133,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         exponent: -3,
       )
 
-      expect(notation.formatted_exponent).to eq("-3")
+      expect_shared_formatter_output("formatted-notation-135", notation.formatted_exponent)
     end
 
     it "prepends plus when exponent_sign is :plus and exponent is positive" do
@@ -143,7 +144,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         exponent_sign: :plus,
       )
 
-      expect(notation.formatted_exponent).to eq("+4")
+      expect_shared_formatter_output("formatted-notation-146", notation.formatted_exponent)
     end
 
     it "does not prepend plus when exponent_sign is :plus but exponent is negative" do
@@ -154,7 +155,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         exponent_sign: :plus,
       )
 
-      expect(notation.formatted_exponent).to eq("-3")
+      expect_shared_formatter_output("formatted-notation-157", notation.formatted_exponent)
     end
 
     it "does not prepend plus when exponent_sign is nil" do
@@ -165,7 +166,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNotation do
         exponent_sign: nil,
       )
 
-      expect(notation.formatted_exponent).to eq("4")
+      expect_shared_formatter_output("formatted-notation-168", notation.formatted_exponent)
     end
   end
 

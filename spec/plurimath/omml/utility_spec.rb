@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 # Characterization specs (refactor phase A0) for the OMML-side token-resolution
 # class method. These pin CURRENT behavior on main — including known bugs, each
@@ -161,78 +162,10 @@ RSpec.describe Plurimath::Omml::Utility do
     end
   end
 
-  describe "parser integration" do
-    it "keeps structurally represented text-run words literal" do
-      expected = Plurimath::Math::Formula.new(
-        [Plurimath::Math::Function::Text.new("frac", lang: :omml)],
-      )
-
-      expect(parse_omml("<m:r><m:t>frac</m:t></m:r>"))
-        .to eq(expected)
-    end
-
-    it "uses the OMML mrow resolver for function names" do
-      formula = parse_omml(<<~OMML)
-        <m:func>
-          <m:fName><m:r><m:t>sin</m:t></m:r></m:fName>
-          <m:e><m:r><m:t>x</m:t></m:r></m:e>
-        </m:func>
-      OMML
-
-      expected = Plurimath::Math::Formula.new(
-        [
-          Plurimath::Math::Function::Sin.new(
-            Plurimath::Math::Function::Text.new("x", lang: :omml),
-          ),
-        ],
-      )
-      expect(formula).to eq(expected)
-    end
-
-    it "uses the OMML symbol resolver for n-ary characters" do
-      formula = parse_omml(<<~OMML)
-        <m:nary>
-          <m:naryPr>
-            <m:chr m:val="∑"/>
-            <m:limLoc m:val="subSup"/>
-          </m:naryPr>
-          <m:sub><m:r><m:t>1</m:t></m:r></m:sub>
-          <m:sup><m:r><m:t>n</m:t></m:r></m:sup>
-          <m:e><m:r><m:t>x</m:t></m:r></m:e>
-        </m:nary>
-      OMML
-
-      expected = Plurimath::Math::Formula.new(
-        [
-          Plurimath::Math::Function::Sum.new(
-            Plurimath::Math::Number.new("1"),
-            Plurimath::Math::Function::Text.new("n", lang: :omml),
-            Plurimath::Math::Function::Text.new("x", lang: :omml),
-          ),
-        ],
-      )
-      expect(formula).to eq(expected)
-    end
-
-    it "uses the OMML symbol resolver for accent characters" do
-      formula = parse_omml(<<~OMML)
-        <m:acc>
-          <m:accPr><m:chr m:val="¯"/></m:accPr>
-          <m:e><m:r><m:t>x</m:t></m:r></m:e>
-        </m:acc>
-      OMML
-
-      expected = Plurimath::Math::Formula.new(
-        [
-          Plurimath::Math::Function::Bar.new(
-            Plurimath::Math::Function::Text.new("x", lang: :omml),
-            { accent: true },
-          ),
-        ],
-      )
-      expect(formula).to eq(expected)
-    end
-  end
+  it_behaves_like "shared renderer fixture", "renderer-omml-utility-utility-164-1"
+  it_behaves_like "shared renderer fixture", "renderer-omml-utility-utility-164-2"
+  it_behaves_like "shared renderer fixture", "renderer-omml-utility-utility-164-3"
+  it_behaves_like "shared renderer fixture", "renderer-omml-utility-utility-164-4"
 
   describe ".populate_function_classes" do
     it "resolves a leading function-name String and gives it the next element" do

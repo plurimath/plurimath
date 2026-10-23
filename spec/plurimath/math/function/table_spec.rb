@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Table do
   describe ".initialize" do
@@ -25,58 +26,11 @@ RSpec.describe Plurimath::Math::Function::Table do
       described_class.new([first_value]).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                              ]),
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Symbol.new("n"),
-                                                                              ]),
-                                          ])
-      end
+    it_behaves_like "shared renderer fixture", "function-table-28-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("[[kappa, n]]")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-table-45-1"
 
-    context "contains Number as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                              ]),
-                                          ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("[[kappa]]")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                              ]),
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Formula.new([
-                                                                                                               Plurimath::Math::Function::Sum.new(
-                                                                                                                 Plurimath::Math::Symbols::Ampersand.new,
-                                                                                                                 Plurimath::Math::Function::Text.new("so"),
-                                                                                                               ),
-                                                                                                             ]),
-                                                                              ]),
-                                          ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("[[kappa, sum_(&)^(\"so\")]]")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-table-59-1"
   end
 
   describe ".to_mathml" do
@@ -88,93 +42,11 @@ RSpec.describe Plurimath::Math::Function::Table do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                              ]),
-                                          ])
-      end
+    it_behaves_like "shared renderer fixture", "function-table-91-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtable>
-            <mtr>
-              <mtd>
-                <mi>&#x3ba;</mi>
-              </mtd>
-            </mtr>
-          </mtable>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-table-114-1"
 
-    context "contains Number as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                                Plurimath::Math::Number.new("70"),
-                                                                              ]),
-                                          ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtable>
-            <mtr>
-              <mtd>
-                <mi>&#x3ba;</mi>
-                <mn>70</mn>
-              </mtd>
-            </mtr>
-          </mtable>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                              ]),
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Formula.new([
-                                                                                                               Plurimath::Math::Function::Sum.new(
-                                                                                                                 Plurimath::Math::Symbols::Ampersand.new,
-                                                                                                                 Plurimath::Math::Function::Text.new("so"),
-                                                                                                               ),
-                                                                                                             ]),
-                                                                              ]),
-                                          ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtable>
-            <mtr>
-              <mtd>
-                <mi>&#x3ba;</mi>
-              </mtd>
-              <mtd>
-                <mrow>
-                  <munderover>
-                    <mo>&#x2211;</mo>
-                    <mo>&</mo>
-                    <mtext>so</mtext>
-                  </munderover>
-                </mrow>
-              </mtd>
-            </mtr>
-          </mtable>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-table-139-1"
   end
 
   describe ".to_latex" do
@@ -198,83 +70,18 @@ RSpec.describe Plurimath::Math::Function::Table do
                                           ])
       end
 
-      it "preserves the rows without adding column text" do
-        expect(formula).to eq("\\left .\\begin{matrix}x & y \\\\ x & y\\end{matrix}\\right .")
-      end
+      it_behaves_like "shared renderer fixture", "function-table-201-1"
 
-      context "contains explicit parentheses" do
-        subject(:formula) do
-          described_class.new([first_value, first_value], "(", ")").to_latex(options: {})
-        end
+      it_behaves_like "shared renderer fixture", "function-table-205-1"
 
-        it "preserves the surrounding parentheses" do
-          expect(formula).to eq("\\left (\\begin{matrix}x & y \\\\ x & y\\end{matrix}\\right )")
-        end
-      end
-
-      context "contains norm delimiters" do
-        subject(:formula) do
-          described_class.new([first_value, first_value],
-                              Plurimath::Math::Symbols::Paren::Norm.new,
-                              Plurimath::Math::Symbols::Paren::Norm.new).to_latex(options: {})
-        end
-
-        it "preserves the Vmatrix environment" do
-          expect(formula).to eq("\\begin{Vmatrix}x & y \\\\ x & y\\end{Vmatrix}")
-        end
-      end
+      it_behaves_like "shared renderer fixture", "function-table-215-1"
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                              ]),
-                                          ])
-      end
+    it_behaves_like "shared renderer fixture", "function-table-228-1"
 
-      it "returns latex string" do
-        expect(formula).to eql("\\left .\\begin{matrix}\\kappa\\end{matrix}\\right .")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-table-242-1"
 
-    context "contains Number as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                                Plurimath::Math::Number.new("70"),
-                                                                              ]),
-                                          ])
-      end
-
-      it "returns latex string" do
-        expect(formula).to eql("\\left .\\begin{matrix}\\kappa 70\\end{matrix}\\right .")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                              ]),
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Formula.new([
-                                                                                                               Plurimath::Math::Function::Sum.new(
-                                                                                                                 Plurimath::Math::Symbols::Ampersand.new,
-                                                                                                                 Plurimath::Math::Function::Text.new("so"),
-                                                                                                               ),
-                                                                                                             ]),
-                                                                              ]),
-                                          ])
-      end
-
-      it "returns latex string" do
-        expect(formula).to eql("\\left .\\begin{matrix}\\kappa & \\sum_{\\&}^{\\text{so}}\\end{matrix}\\right .")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-table-257-1"
   end
 
   describe ".to_html" do
@@ -282,60 +89,8 @@ RSpec.describe Plurimath::Math::Function::Table do
       described_class.new([first_value]).to_html(options: {})
     end
 
-    context "contains Tr and Td as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Tr.new([
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Symbols::Kappa.new,
-                                                                              ]),
-                                            Plurimath::Math::Function::Td.new([
-                                                                                Plurimath::Math::Formula.new([
-                                                                                                               Plurimath::Math::Function::Sum.new(
-                                                                                                                 Plurimath::Math::Symbols::Ampersand.new,
-                                                                                                                 Plurimath::Math::Function::Text.new("so"),
-                                                                                                               ),
-                                                                                                             ]),
-                                                                              ]),
-                                          ])
-      end
+    it_behaves_like "shared renderer fixture", "function-table-285-1"
 
-      it "returns html string" do
-        expected_value = <<~HTML
-          <table>
-            <tr>
-              <td>&#x3ba;</td>
-              <td>
-                <i>&sum;</i>
-                <sub>&</sub>
-                <sup>so</sup>
-              </td>
-            </tr>
-          </table>
-        HTML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula and no tr or td" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expected_value = <<~HTML
-          <table>
-            <i>&sum;</i>
-            <sub>&</sub>
-            <sup>so</sup>
-          </table>
-        HTML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-table-319-1"
   end
 end
