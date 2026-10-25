@@ -1187,11 +1187,12 @@ module Plurimath
         Utility.get_class(function).new(UncertaintyTree.node(uncertainty))
       end
 
-      # A hash that comes back from Parslet::Transform#apply matched no
+      # A hash that comes back from Parslet::Transform#transform_elt matched no
       # rule. One that still holds an uncertainty tree or node would reach
       # the Formula as a raw Hash and fail only on output, so it is
-      # rejected here instead.
-      def apply(obj, context = nil)
+      # rejected here instead. This hook runs after child traversal; wrapping
+      # apply would add a stack frame at every level of the recursive descent.
+      def transform_elt(obj, context)
         result = super
         UncertaintyTree.stranded!(result) if result.is_a?(Hash)
         result
