@@ -355,11 +355,14 @@ module Plurimath
           nil
         end
 
-        # UnitsML raised Parslet::ParseFailed for text it cannot read until
-        # 0.6.10, and Parsanol::ParseFailed since it moved to Parsanol.
+        # What UnitsML raises for text it cannot read: Parslet::ParseFailed
+        # before 0.6.10, Parsanol::ParseFailed in 0.6.10 and 0.6.11, and its
+        # own Unitsml::Errors::ParseError after that.
         def unitsml_parse_errors
           [Parslet::ParseFailed,
-           (::Parsanol::ParseFailed if defined?(::Parsanol::ParseFailed))].compact
+           (::Parsanol::ParseFailed if defined?(::Parsanol::ParseFailed)),
+           (::Unitsml::Errors::ParseError if defined?(::Unitsml::Errors::ParseError))]
+            .compact
         end
 
         def unit_text(node)
