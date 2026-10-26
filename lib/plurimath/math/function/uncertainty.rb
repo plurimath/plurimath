@@ -351,8 +351,15 @@ module Plurimath
           return unless candidate
 
           candidate if unit_text(::Unitsml.parse(candidate).to_plurimath({})) == candidate
-        rescue Parslet::ParseFailed
+        rescue *unitsml_parse_errors
           nil
+        end
+
+        # UnitsML raised Parslet::ParseFailed for text it cannot read until
+        # 0.6.10, and Parsanol::ParseFailed since it moved to Parsanol.
+        def unitsml_parse_errors
+          [Parslet::ParseFailed,
+           (::Parsanol::ParseFailed if defined?(::Parsanol::ParseFailed))].compact
         end
 
         def unit_text(node)
