@@ -35,10 +35,58 @@ module Plurimath
           @cursor = 0
         end
 
-        def walk(node)
+        # Depth-first with an explicit stack instead of recursion: a long
+        # AsciiMath sum is a tree about two levels deep per term, which would
+        # overflow a small (1 MiB, as on Windows) stack. Children are visited
+        # in the same order as a recursive walk, so the cursor that places
+        # empty-string leaves sees the leaves in the same order.
+        def walk(root)
+          return leaf(root) unless container?(root)
+
+          result = empty_copy(root)
+          stack = [[entries(root), result, 0]]
+          until stack.empty?
+            frame = stack.last
+            items, out, index = frame
+            next stack.pop if index == items.size
+
+            frame[2] = index + 1
+            key, value = items[index]
+            if container?(value)
+              child = empty_copy(value)
+              store(out, key, child)
+              stack.push([entries(value), child, 0])
+            else
+              store(out, key, leaf(value))
+            end
+          end
+          result
+        end
+
+        private
+
+        def container?(node)
+          node.is_a?(Hash) || node.is_a?(Array)
+        end
+
+        def empty_copy(node)
+          node.is_a?(Hash) ? {} : []
+        end
+
+        def entries(node)
+          node.is_a?(Hash) ? node.to_a : node.each_with_index.map { |v, i| [i, v] }
+        end
+
+        def store(out, key, value)
+          if out.is_a?(Hash)
+            out[symbol_key(key)] = value
+          else
+            out << value
+          end
+        end
+
+        def leaf(node)
           case node
-          when Hash then node.to_h { |key, value| [symbol_key(key), walk(value)] }
-          when Array then node.map { |value| walk(value) }
           when ::Parslet::Slice then keep(node)
           when String then slice(@cursor, node)
           when nil then nil
@@ -48,8 +96,6 @@ module Plurimath
             node
           end
         end
-
-        private
 
         def keep(node)
           advance(node.position.bytepos, node.to_s)

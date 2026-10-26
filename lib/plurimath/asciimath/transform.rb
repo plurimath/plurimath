@@ -1187,11 +1187,49 @@ module Plurimath
         Utility.get_class(function).new(UncertaintyTree.node(uncertainty))
       end
 
+      # Parslet::Transform#apply, without recursion: it transforms every
+      # child left to right, then the node itself, exactly as Parslet does,
+      # but keeps its own stack. A long AsciiMath sum is a tree about two
+      # levels deep per term, which overflows a small (1 MiB, as on Windows)
+      # stack when each level is a Ruby call.
+      def apply(obj, context = nil)
+        return transform_elt(obj, context) unless obj.is_a?(Hash) || obj.is_a?(Array)
+
+        stack = [apply_frame(obj)]
+        loop do
+          frame = stack.last
+          if frame[:index] < frame[:items].size
+            key, value = frame[:items][frame[:index]]
+            frame[:index] += 1
+            next stack.push(apply_frame(value, key)) if value.is_a?(Hash) || value.is_a?(Array)
+
+            store_applied(frame[:out], key, transform_elt(value, context))
+          else
+            stack.pop
+            result = transform_elt(frame[:out], context)
+            return result if stack.empty?
+
+            store_applied(stack.last[:out], frame[:key], result)
+          end
+        end
+      end
+
+      def apply_frame(node, key = nil)
+        items = node.is_a?(Hash) ? node.to_a : node.each_with_index.map { |v, i| [i, v] }
+        { items: items, out: node.is_a?(Hash) ? {} : [], index: 0, key: key }
+      end
+
+      def store_applied(out, key, value)
+        out.is_a?(Hash) ? out[key] = value : out << value
+      end
+
+      private :apply_frame, :store_applied
+
       # A hash that comes back from Parslet::Transform#transform_elt matched no
       # rule. One that still holds an uncertainty tree or node would reach
       # the Formula as a raw Hash and fail only on output, so it is
-      # rejected here instead. This hook runs after child traversal; wrapping
-      # apply would add a stack frame at every level of the recursive descent.
+      # rejected here instead. This hook runs after child traversal, once per
+      # node, as #apply calls it.
       def transform_elt(obj, context)
         result = super
         UncertaintyTree.stranded!(result) if result.is_a?(Hash)
