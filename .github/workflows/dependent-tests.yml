@@ -13,5 +13,9 @@ jobs:
   rake:
     uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
     with:
-      command: bundle exec rspec
+      # Add Git-only amath after the shared workflow replaces Plurimath.
+      command: |
+        bundle add amath --github plurimath/amath --ref 262c6ee2590c571185c25ec56ed370578495f486
+        bundle add parsanol --version '= 1.3.109'
+        bundle exec rspec
       repos-json-file: .github/workflows/dependent-repos-ruby.json

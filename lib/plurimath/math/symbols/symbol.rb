@@ -70,6 +70,11 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(_, **)
+          # Office Math represents thick spacing with U+2004. Keep this
+          # explicit request separate from ordinary invisible multiplication.
+          if value == "&#x2062;" && @options&.[](:rspace) == "thickmathspace"
+            return "&#x2004;"
+          end
           # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
           return if value == "&#x2062;"
 
@@ -86,7 +91,7 @@ module Plurimath
 
         def insert_t_tag(_, options:)
           # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
-          return if value == "&#x2062;"
+          return if value == "&#x2062;" && !to_omml_without_math_tag(nil)
 
           [XmlHelper.ox_element("r", namespace: "m") << t_tag(options: options)]
         end
@@ -163,7 +168,11 @@ module Plurimath
         end
 
         def t_tag(options:)
-          output = value || to_omml_without_math_tag(nil, options: options)
+          output = if value == "&#x2062;"
+                     to_omml_without_math_tag(nil, options: options)
+                   else
+                     value || to_omml_without_math_tag(nil, options: options)
+                   end
           return t_element unless output
 
           t_element << output
