@@ -13,8 +13,8 @@ jobs:
   rake:
     uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
     with:
-      command: bundle exec rspec
-      # amath is Git-only and is not declared in Plurimath's gemspec yet.
-      before-setup-ruby: |
-        printf '\ngem "amath", github: "plurimath/amath", branch: "main"\n' >> Gemfile
+      # Add Git-only amath after the shared workflow replaces Plurimath.
+      command: |
+        bundle add amath --github plurimath/amath --branch main
+        bundle exec rspec
       repos-json-file: .github/workflows/dependent-repos-ruby.json
