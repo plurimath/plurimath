@@ -35,10 +35,23 @@ module Plurimath
           @cursor = 0
         end
 
+        # Preserve depth-first leaf order without using the Ruby call stack.
         def walk(node)
+          root = []
+          pending = [[node, root, 0]]
+          until pending.empty?
+            value, parent, key = pending.pop
+            parent[key] = convert_node(value, pending)
+          end
+          root.first
+        end
+
+        private
+
+        def convert_node(node, pending)
           case node
-          when Hash then node.to_h { |key, value| [symbol_key(key), walk(value)] }
-          when Array then node.map { |value| walk(value) }
+          when Hash then convert_hash(node, pending)
+          when Array then convert_array(node, pending)
           when ::Parslet::Slice then keep(node)
           when String then slice(@cursor, node)
           when nil then nil
@@ -49,7 +62,21 @@ module Plurimath
           end
         end
 
-        private
+        def convert_hash(node, pending)
+          converted = {}
+          node.to_a.reverse_each do |key, value|
+            pending << [value, converted, symbol_key(key)]
+          end
+          converted
+        end
+
+        def convert_array(node, pending)
+          converted = []
+          (node.length - 1).downto(0) do |index|
+            pending << [node[index], converted, index]
+          end
+          converted
+        end
 
         def keep(node)
           advance(node.position.bytepos, node.to_s)

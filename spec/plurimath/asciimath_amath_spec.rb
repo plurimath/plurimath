@@ -135,6 +135,21 @@ RSpec.describe Plurimath::Asciimath do
         expect(converted[:b].last).to equal(parslet)
       end
 
+      it "keeps leaf positions and order through deeply nested containers" do
+        text = "αβ"
+        nested = Parsanol::Slice.new(2, "β", text)
+        10_000.times { nested = { "expr" => [nested] } }
+
+        converted = described_class.convert({ deep: nested, tail: "" }, text)
+        leaf = converted[:deep]
+        10_000.times { leaf = leaf.fetch(:expr).fetch(0) }
+
+        expect(leaf).to be_an_instance_of(Parslet::Slice)
+        expect(leaf.to_s).to eq("β")
+        expect(leaf.offset).to eq(1)
+        expect(converted[:tail].position.bytepos).to eq(4)
+      end
+
       it "rejects a leaf whose offset is not a byte offset into the input" do
         char_offset_leaf = Parsanol::Slice.new(1, "β", "αβ")
 

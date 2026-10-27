@@ -47,8 +47,8 @@ jobs:
             Write-Host "DIRECT_PHASE=$phase RAW_EXIT=$code"
             if ($code -ne 0) { $failed = $true }
           }
-          & bundle exec rspec spec/plurimath/asciimath/transform_depth_spec.rb --example '750'
+          & bundle exec rspec spec/plurimath/asciimath/transform_depth_spec.rb spec/plurimath/asciimath_amath_spec.rb --example 'hand-built' --example 'transforms a sum'
           $code = $LASTEXITCODE
-          Write-Host "DIRECT_PHASE=rspec-750 RAW_EXIT=$code"
+          Write-Host "DIRECT_PHASE=rspec-depth-and-adapter RAW_EXIT=$code"
           if ($code -ne 0) { $failed = $true }
           if ($failed) { exit 1 }
