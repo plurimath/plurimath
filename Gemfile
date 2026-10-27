@@ -11,13 +11,14 @@ gem "oga"
 if ENV["AMATH_PATH"]
   gem "amath", path: ENV["AMATH_PATH"]
 else
-  gem "amath", github: "plurimath/amath", branch: "main"
+  gem "amath", github: "plurimath/amath", ref: "26fc914633b896f6add6a41a6d1fef068af057dc"
 end
 # gem "omml", github: "plurimath/omml", branch: "main"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 # Parsanol::Slice for the amath SliceAdapter specs.
-gem "parsanol", ">= 1.3.107"
+# 1.3.110 retains space nodes that the current transform cannot consume.
+gem "parsanol", "= 1.3.109"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"
