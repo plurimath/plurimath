@@ -17,7 +17,8 @@ end
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 # Parsanol::Slice for the amath SliceAdapter specs.
-gem "parsanol", ">= 1.3.107"
+# 1.3.110 changes parser trees used by the current AsciiMath/UnitsML transforms.
+gem "parsanol", "= 1.3.109"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"
