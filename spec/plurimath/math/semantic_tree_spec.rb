@@ -301,6 +301,16 @@ RSpec.describe "Semantic display trees" do
     expect(error).to be < Plurimath::Error
   end
 
+  it "keeps the Ruby class view separate from semantic language labels" do
+    formula = math.parse("a+b", :asciimath)
+    class_view = formula.to_display(:formula)
+
+    expect(class_view).to start_with("Plurimath::Math::Formula\n")
+    expect(formula.to_display(:formula, tree: :display)).to eq(class_view)
+    expect { formula.to_display(:formula, tree: :semantic) }.to raise_error(error, /label language :formula/)
+    expect { formula.to_display(:formula, tree: :other) }.to raise_error(ArgumentError, /Unknown display tree/)
+  end
+
   it "preserves numeric folds and numeric-only error behavior" do
     expect(math.parse("2+3*4", :asciimath).evaluate).to eq(14)
     expect(math.parse("-7 mod 3", :asciimath).evaluate).to eq(2)

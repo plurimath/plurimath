@@ -31,7 +31,10 @@ RSpec.describe Plurimath::Math::Formula do
       let(:string) { "theta" }
 
       it "raises an error" do
-        expect { formula.to_display(:formula) }.to raise_error(Plurimath::Math::InvalidTypeError)
+        expect { formula.to_display(:html) }.to raise_error(
+          Plurimath::Math::InvalidTypeError,
+          "Invalid type provided: html. Must be one of omml, latex, mathml, asciimath, unicodemath, formula.",
+        )
       end
     end
   end

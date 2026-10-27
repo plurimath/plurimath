@@ -5,6 +5,7 @@ module Plurimath
     class Formula < Core
       autoload :Mrow, "#{__dir__}/formula/mrow"
       autoload :Mstyle, "#{__dir__}/formula/mstyle"
+      autoload :ClassTree, "#{__dir__}/formula/class_tree"
 
       include Mathml::FormulaTransformation
 
@@ -13,7 +14,7 @@ module Plurimath
 
       POWER_BASE_CLASSES = %w[powerbase power base].freeze
       DERIVATIVE_CONSTS  = ["&#x1d451;", "&#x2145;", "&#x2146;", "d"].freeze
-      MATH_ZONE_TYPES    = %i[omml latex mathml asciimath unicodemath].freeze
+      MATH_ZONE_TYPES    = %i[omml latex mathml asciimath unicodemath formula].freeze
       OMML_NAMESPACES    = {
         "xmlns:m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
         "xmlns:mc": "http://schemas.openxmlformats.org/markup-compatibility/2006",
@@ -198,6 +199,9 @@ formatter: nil, unitsml: {})
 unary_function_spacing: true, tree: :display)
         unless %i[display semantic].include?(tree)
           raise ArgumentError, "Unknown display tree: #{tree.inspect}"
+        end
+        if tree == :display && type.downcase.to_sym == :formula
+          return ClassTree.new.render(self)
         end
         options = {
           formatter: formatter,

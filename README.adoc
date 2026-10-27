@@ -2100,8 +2100,29 @@ of the parsed mathematical expression.
 ----
 formula = Plurimath::Math.parse("sin(1)", :asciimath)
 formula.to_display(:formula)
-# ...
+# Plurimath::Math::Formula
+#   value[0]: Plurimath::Math::Function::Sin
+#     parameter_one: Plurimath::Math::Function::Fenced
+#       parameter_one: Plurimath::Math::Symbols::Paren::Lround
+#         value: nil
+#       parameter_two[0]: Plurimath::Math::Number
+#         value: "1"
+#       parameter_three: Plurimath::Math::Symbols::Paren::Rround
+#         value: nil
 ----
+
+This tree shows the stored Ruby objects, with their full class names and ordered
+content fields. Array entries have indexes; empty arrays are shown as `[]` and
+absent values as `nil`. Some symbol classes, such as `Lround`, represent their
+symbol through the class itself and store no literal value. String literals are
+escaped, so quotes, backslashes and newlines stay on one tree line.
+
+The tree preserves `Formula` and `Fenced` wrappers and does not group operators:
+the stored siblings in `a+b` remain siblings. It includes `value`, function
+parameters, table delimiters, UnitsML text and the declared uncertainty fields.
+Formatting flags and options, original input text, XML internals and rendering
+caches are omitted. Repeated references appear at each position; a reference to
+an ancestor is marked `<cycle: ClassName>`.
 
 === Displaying in the math language of expression
 
