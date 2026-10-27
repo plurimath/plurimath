@@ -195,13 +195,19 @@ formatter: nil, unitsml: {})
       end
 
       def to_display(type = nil, formatter: nil, unitsml: {},
-unary_function_spacing: true)
+unary_function_spacing: true, tree: :display)
+        unless %i[display semantic].include?(tree)
+          raise ArgumentError, "Unknown display tree: #{tree.inspect}"
+        end
         options = {
           formatter: formatter,
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing,
         }
         options[:formula] ||= self
+        if tree == :semantic
+          return SemanticTree.new(type.downcase.to_sym, options).render(self)
+        end
         return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type

@@ -54,6 +54,53 @@ module Plurimath
           bindings[name]
         end
 
+        # ExpressionParser delegates its folds to a backend. These operations
+        # retain the numeric contract; the semantic display uses the same
+        # precedence ladder with a backend that only builds a render view.
+        def normalize_tokens(tokens)
+          tokens
+        end
+
+        def relation_operator?(_node)
+          false
+        end
+
+        def add(left, right)
+          left + right
+        end
+
+        def subtract(left, right)
+          left - right
+        end
+
+        def multiply(left, right, implicit:)
+          left * right
+        end
+
+        def positive(value)
+          value
+        end
+
+        def negate(value)
+          -value
+        end
+
+        def negated_mod(node)
+          node.evaluate_negated(self)
+        end
+
+        def group(value)
+          value
+        end
+
+        def nary_function?(node)
+          node.is_a?(Function::Sum) || node.is_a?(Function::Prod)
+        end
+
+        def log_argument(node, argument)
+          real_result(node.evaluate_with_argument(self, argument))
+        end
+
         def divide(dividend, divisor)
           raise Errors::Evaluation::DivisionByZeroError if divisor.zero?
 

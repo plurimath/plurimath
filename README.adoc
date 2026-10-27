@@ -2132,6 +2132,87 @@ formula.to_display(:mathml)
 #            |_ "<mtext>1</mtext>" text
 ----
 
+=== Displaying a semantic operator tree
+
+Use `tree: :semantic` to see which operands each operator owns. The default
+`tree: :display` keeps the display tree shown above. Both views support
+`:asciimath`, `:latex`, `:mathml`, `:omml`, and `:unicodemath`; semantic leaf and
+operator labels use the existing writer for the selected language.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("a+b*c", :asciimath)
+puts formula.to_display(:unicodemath, tree: :semantic)
+# |_ Semantic tree
+#    |_ add "+"
+#       |_ symbol "a"
+#       |_ multiply
+#          |_ symbol "b"
+#          |_ symbol "c"
+----
+
+The semantic view shares numeric evaluation's precedence parser, but does not
+evaluate numbers or require variable bindings. It distinguishes explicit and
+implicit multiplication, retains explicit round groups, and preserves the
+parser's left nesting for chained subtraction, powers, and relations. Fractions,
+radicals, scripts, function arguments, and integral limits remain attached to
+their owning nodes. A square root has a radicand without an invented index child.
+
+For example, the original integral expression produces this UnicodeMath view:
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse(
+  '1/(2pi) int_0^(2pi) (bbb"d" theta) / (a + b sin⁡ theta) = 1/sqrt(a^2−b^2)',
+  :asciimath,
+)
+puts formula.to_display(:unicodemath, tree: :semantic)
+# |_ Semantic tree
+#    |_ relation "="
+#       |_ implicit multiply
+#          |_ fraction
+#             |_ number "1"
+#             |_ implicit multiply
+#                |_ number "2"
+#                |_ symbol "π"
+#          |_ integral
+#             |_ lower limit
+#                |_ number "0"
+#             |_ upper limit
+#                |_ implicit multiply
+#                   |_ number "2"
+#                   |_ symbol "π"
+#             |_ integrand
+#                |_ fraction
+#                   |_ implicit multiply
+#                      |_ symbol "\\Bbb\"d\""
+#                      |_ symbol "θ"
+#                   |_ add "+"
+#                      |_ symbol "a"
+#                      |_ implicit multiply
+#                         |_ symbol "b"
+#                         |_ apply "sin⁡"
+#                            |_ symbol "θ"
+#       |_ fraction
+#          |_ number "1"
+#          |_ square root
+#             |_ subtract "−"
+#                |_ power
+#                   |_ symbol "a"
+#                   |_ number "2"
+#                |_ power
+#                   |_ symbol "b"
+#                   |_ number "2"
+----
+
+The double-struck `d` remains a styled symbol multiplied by `theta`; the view
+does not infer a differential. It builds a temporary rendering view and leaves
+the stored Formula model unchanged. This is not a general symbolic algebra
+engine: unsupported or ambiguous constructs, including tables, text runs,
+non-round fences, missing operands, and adjacent number literals, raise
+`Plurimath::Errors::UnsupportedSemanticTreeError` naming the construct. Unknown
+`tree:` values raise `ArgumentError`.
+
 // == Integration
 
 // Integrate Plurimath into your project by requiring the gem and using its
