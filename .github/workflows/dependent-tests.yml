@@ -21,4 +21,8 @@ jobs:
         git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git 26fc914633b896f6add6a41a6d1fef068af057dc
         git -C ../amath checkout --detach FETCH_HEAD
         printf '\ngem "amath", path: "../amath"\ngem "parsanol", "= 1.3.109"\n' >> Gemfile
+        # Match UnitsML's schema 2.1.0 payload until unitsdb 2.2.10 is published.
+        if [ -f unitsml.gemspec ]; then
+          printf '\ngem "unitsdb", git: "https://github.com/unitsml/unitsdb-ruby.git", ref: "5a50bff3373ffdd90dd6061beef1bb51f9536f2f", submodules: true\n' >> Gemfile
+        fi
       repos-json-file: .github/workflows/dependent-repos-ruby.json
