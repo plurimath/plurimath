@@ -15,6 +15,6 @@ jobs:
     with:
       # Add Git-only amath after the shared workflow replaces Plurimath.
       command: |
-        bundle add amath --github plurimath/amath --branch main
+        bundle add amath --github plurimath/amath --ref 262c6ee2590c571185c25ec56ed370578495f486
         bundle exec rspec
       repos-json-file: .github/workflows/dependent-repos-ruby.json
