@@ -36,6 +36,36 @@ the input are left out, never given as nil.
 - `unit` must not use the existing `{unitsml: ...}` key: that rule turns the unit
   into a rendered `Formula`, but the node keeps a `Math::Function::Unitsml`.
 
+## Shared decimal exponents
+
+The following call forms add an optional `shared_exponent` slice containing
+signed exponent digits without `e`. No space is allowed before `e`:
+
+```asciimath
+ustd((3.85, 0.23)e4)
+ustd(680(41)e-3)
+uexp((3.85, 0.23)e+4, 2, 0.95)
+ucov((1.024, 0.983, 1.088)e-3, 0.95, shortest)
+```
+
+The transform shifts the decimal point using strings, never floating-point
+arithmetic. It scales value and magnitude, or value and both interval
+endpoints; coverage factors and probabilities remain unchanged. Concise
+magnitude is derived before applying the scale. The first two examples yield
+`38500` with magnitude `2300`, and `0.680` with magnitude `0.041`.
+Trailing decimal zeros remain significant stored text. Writers emit the
+normalized existing uncertainty form, which can be read back into the same
+model.
+
+Existing calls omit this key and retain their behavior. Bare inline uncertainty
+is part of the separate expression-language work in #513. To bound allocation,
+the reader rejects a shared exponent that would expand a number beyond
+1,000,000 decimal characters with `Errors::InvalidUncertainty`; no partial
+number or rounded approximation is returned.
+
+The shipped amath corpus `corpora/uncertainty-shared-exponent.yml` contains the
+input trees and exact normalized model expectations checked by the reader specs.
+
 ## Interval kind spelling
 
 `interval_kind` is a bare word: `shortest` or `symmetric`.

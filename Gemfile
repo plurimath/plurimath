@@ -11,7 +11,7 @@ gem "oga"
 if ENV["AMATH_PATH"]
   gem "amath", path: ENV["AMATH_PATH"]
 else
-  gem "amath", github: "plurimath/amath", ref: "26fc914633b896f6add6a41a6d1fef068af057dc"
+  gem "amath", github: "plurimath/amath", ref: "b67f924477ce129e85926eda5973d771c007dfec"
 end
 # gem "omml", github: "plurimath/omml", branch: "main"
 gem "opal-rspec", "~> 1.1.0a"
