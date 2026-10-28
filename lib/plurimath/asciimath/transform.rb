@@ -1256,6 +1256,8 @@ module Plurimath
 
         NUMBER_FIELDS = %i[magnitude coverage_factor coverage_probability
                            lower upper].freeze
+        SCALED_FIELDS = %i[magnitude lower upper].freeze
+        MAX_SCALED_DECIMAL_LENGTH = 1_000_000
 
         # `probabilistically-symmetric` would read as a subtraction in
         # AsciiMath, so it is spelled `symmetric` there.
@@ -1270,14 +1272,57 @@ module Plurimath
           fields = leaves(tree)
           category = CATEGORIES[fields.delete(:uncertainty_class)]
           invalid!("unknown uncertainty class in #{tree.inspect}") unless category
+          exponent = fields.delete(:shared_exponent)
           unknown = fields.keys - FIELDS[category]
           invalid!("unexpected #{unknown.join(', ')} in #{tree.inspect}") unless unknown.empty?
 
+          # Concise digits describe the unscaled value's last decimal place.
+          # Derive their magnitude before moving either decimal point.
+          attributes = options(fields)
+          value = number(fields[:value])
+          if exponent
+            invalid!("invalid shared exponent #{exponent.inspect}") unless exponent.match?(/\A[+-]?[0-9]+\z/)
+            power = Integer(exponent, 10)
+            value = scale_number(value, power)
+            SCALED_FIELDS.each do |field|
+              attributes[field] = scale_number(attributes[field], power)
+            end
+          end
           Math::Function::Uncertainty.new(
-            number(fields[:value]),
+            value,
             category: category,
-            **options(fields),
+            **attributes,
           )
+        end
+
+        # Keep the model's plain-decimal contract. A shared exponent changes
+        # text positions only; coverage factors/probabilities never pass here.
+        def scale_number(node, power)
+          return node if node.nil? || power.zero?
+
+          match = node.value.match(/\A(-?)([0-9]+)(?:\.([0-9]+))?\z/)
+          invalid!("invalid scaled decimal #{node.value.inspect}") unless match
+          sign, whole, fraction = match.captures
+          digits = whole + fraction.to_s
+          point = whole.length + power
+          length = if point <= 0
+                     2 - point + digits.length
+                   elsif point >= digits.length
+                     point
+                   else
+                     digits.length + 1
+                   end
+          if length + sign.length > MAX_SCALED_DECIMAL_LENGTH
+            invalid!("shared exponent expands beyond #{MAX_SCALED_DECIMAL_LENGTH} decimal characters")
+          end
+          text = if point <= 0
+                   "0.#{'0' * -point}#{digits}"
+                 elsif point >= digits.length
+                   digits + "0" * (point - digits.length)
+                 else
+                   "#{digits[0...point]}.#{digits[point..]}"
+                 end
+          number(sign + text.sub(/\A0+(?=[0-9])/, ""))
         end
 
         def leaves(tree)
