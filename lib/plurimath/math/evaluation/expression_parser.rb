@@ -149,7 +149,6 @@ module Plurimath
         def nary_body?(node)
           evaluator.nary_function?(node) &&
             node.parameter_three.nil? &&
-            node.parameter_one && node.parameter_two &&
             !eof? && operand_start?(current)
         end
 

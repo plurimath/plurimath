@@ -94,7 +94,8 @@ module Plurimath
         end
 
         def nary_function?(node)
-          node.is_a?(Function::Sum) || node.is_a?(Function::Prod)
+          (node.is_a?(Function::Sum) || node.is_a?(Function::Prod)) &&
+            node.parameter_one && node.parameter_two
         end
 
         def log_argument(node, argument)
