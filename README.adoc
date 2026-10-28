@@ -2153,6 +2153,107 @@ formula.to_display(:mathml)
 #            |_ "<mtext>1</mtext>" text
 ----
 
+=== Displaying a semantic operator tree
+
+Use `tree: :semantic` to see which operands each operator owns. The default
+`tree: :display` keeps the display tree shown above. Both views support
+`:asciimath`, `:latex`, `:mathml`, `:omml`, and `:unicodemath`; semantic expression,
+operand-role and leaf labels use the existing writer for the selected language.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("a+b*c", :asciimath)
+puts formula.to_display(:unicodemath, tree: :semantic)
+# |_ Semantic tree
+#    |_ expression "a + b × c"
+#       |_ add "+"
+#          |_ symbol "a"
+#          |_ multiply
+#             |_ symbol "b"
+#             |_ symbol "c"
+----
+
+The semantic view shares numeric evaluation's precedence parser, but does not
+evaluate numbers or require variable bindings. It distinguishes explicit and
+implicit multiplication, retains explicit round groups, and preserves the
+parser's left nesting for chained subtraction, powers, and relations. Fractions,
+radicals, scripts, function arguments, and integral limits remain attached to
+their owning nodes. Fractions expose numerator and denominator roles; functions
+expose their name and argument; powers expose base and script. A square root
+exposes the implicit-degree placeholder `⬚` and its radicand. Unbounded and
+partly bounded integrals, sums and products also retain their body, and a powered
+function such as `sin^2 x` binds `x` as the function argument inside the power.
+
+For example, the original integral expression produces this UnicodeMath view:
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse(
+  '1/(2pi) int_0^(2pi) (bbb"d" theta) / (a + b sin⁡ theta) = 1/sqrt(a^2−b^2)',
+  :asciimath,
+)
+puts formula.to_display(:unicodemath, tree: :semantic)
+# |_ Semantic tree
+#    |_ expression "(1)/(2 π) ∫_(0)^(2 π)▒〖(\\Bbb\"d\" θ)/(a + b sin⁡θ)〗 = (1)/(√(a^(2) − b^(2)))"
+#       |_ relation "="
+#          |_ implicit multiply
+#             |_ fraction "(1)/(2 π)"
+#                |_ numerator "1"
+#                   |_ number "1"
+#                |_ denominator "2 π"
+#                   |_ implicit multiply
+#                      |_ number "2"
+#                      |_ symbol "π"
+#             |_ integral "∫_(0)^(2 π)▒〖(\\Bbb\"d\" θ)/(a + b sin⁡θ)〗"
+#                |_ lower limit "0"
+#                   |_ number "0"
+#                |_ upper limit "2 π"
+#                   |_ implicit multiply
+#                      |_ number "2"
+#                      |_ symbol "π"
+#                |_ integrand "(\\Bbb\"d\" θ)/(a + b sin⁡θ)"
+#                   |_ fraction "(\\Bbb\"d\" θ)/(a + b sin⁡θ)"
+#                      |_ numerator "\\Bbb\"d\" θ"
+#                         |_ implicit multiply
+#                            |_ symbol "\\Bbb\"d\""
+#                            |_ symbol "θ"
+#                      |_ denominator "a + b sin⁡θ"
+#                         |_ add "+"
+#                            |_ symbol "a"
+#                            |_ implicit multiply
+#                               |_ symbol "b"
+#                               |_ apply "sin⁡θ"
+#                                  |_ function name "sin"
+#                                  |_ argument "θ"
+#                                     |_ symbol "θ"
+#          |_ fraction "(1)/(√(a^(2) − b^(2)))"
+#             |_ numerator "1"
+#                |_ number "1"
+#             |_ denominator "√(a^(2) − b^(2))"
+#                |_ square root "√(a^(2) − b^(2))"
+#                   |_ degree "⬚"
+#                   |_ radicand "a^(2) − b^(2)"
+#                      |_ subtract "−"
+#                         |_ power "a^(2)"
+#                            |_ base "a"
+#                               |_ symbol "a"
+#                            |_ script "2"
+#                               |_ number "2"
+#                         |_ power "b^(2)"
+#                            |_ base "b"
+#                               |_ symbol "b"
+#                            |_ script "2"
+#                               |_ number "2"
+----
+
+The double-struck `d` remains a styled symbol multiplied by `theta`; the view
+does not infer a differential. It builds a temporary rendering view and leaves
+the stored Formula model unchanged. This is not a general symbolic algebra
+engine: unsupported or ambiguous constructs, including tables, text runs,
+non-round fences, missing operands, and adjacent number literals, raise
+`Plurimath::Errors::UnsupportedSemanticTreeError` naming the construct. Unknown
+`tree:` values raise `ArgumentError`.
+
 // == Integration
 
 // Integrate Plurimath into your project by requiring the gem and using its

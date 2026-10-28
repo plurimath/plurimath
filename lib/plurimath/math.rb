@@ -4,6 +4,7 @@ module Plurimath
   module Math
     autoload :Core, "#{__dir__}/math/core"
     autoload :Evaluation, "#{__dir__}/math/evaluation"
+    autoload :SemanticTree, "#{__dir__}/math/semantic_tree"
     autoload :Formula, "#{__dir__}/math/formula"
     autoload :ModelHelper, "#{__dir__}/math/model_helper"
     autoload :Function, "#{__dir__}/math/function"
