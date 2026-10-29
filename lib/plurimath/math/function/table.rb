@@ -89,12 +89,11 @@ module Plurimath
         def to_latex(options:)
           return "\\begin{Vmatrix}#{latex_content(options: options)}\\end{Vmatrix}" if open_paren.is_a?(Math::Symbols::Paren::Norm)
 
-          separator = "{#{table_attribute(:latex)}}" if environment&.include?("array")
           left_paren = open_paren&.to_latex(options: options) || "."
           right_paren = close_paren&.to_latex(options: options) || "."
           left = "\\left #{left_paren.delete_prefix('\\left')}\\begin{matrix}"
           right = "\\end{matrix}\\right #{right_paren.delete_prefix('\\right')}"
-          "#{left}#{separator}#{latex_content(options: options)}#{right}"
+          "#{left}#{latex_content(options: options)}#{right}"
         end
 
         def to_html(options:)

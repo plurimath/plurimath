@@ -233,6 +233,13 @@ module Plurimath
         Utility.symbols_class((unicode || symbol), lang: :unicodemath)
       end
 
+      # \mup"g" is how a font over text is written (e.g. a unit read from
+      # OMML, plurimath#493).
+      rule(font_class: simple(:fonts),
+           text: simple(:text)) do
+        Utility::FONT_STYLES[fonts.to_sym].new(Math::Function::Text.new(text))
+      end
+
       rule(font_class: simple(:fonts),
            symbol: simple(:symbol)) do
         Utility::FONT_STYLES[fonts.to_sym].new(
@@ -528,6 +535,18 @@ module Plurimath
            exp: simple(:exp)) do
         symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym]
         [Utility.symbols_class(symbol, lang: :unicodemath), exp]
+      end
+
+      rule(combined_symbols: simple(:combined_symbols),
+           expr: simple(:expr)) do
+        symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols
+        [Utility.symbols_class(symbol, lang: :unicodemath), expr]
+      end
+
+      rule(combined_symbols: simple(:combined_symbols),
+           expr: sequence(:expr)) do
+        symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols
+        [Utility.symbols_class(symbol, lang: :unicodemath)] + expr
       end
 
       rule(operator: simple(:operator),
@@ -960,7 +979,7 @@ module Plurimath
       rule(intent: simple(:intent),
            intent_expr: simple(:expr)) do
         intent_string = expr.parameter_two.shift
-        Math::Function::Intent.new(
+        Utility.intent_or_uncertainty(
           Utility.filter_values(expr.parameter_two),
           intent_string,
         )
@@ -2218,10 +2237,28 @@ module Plurimath
         )
       end
 
+      # Any other ⓐ shape has no Arg reading; fail here rather than leave
+      # the raw parse tree inside the Formula. Parslet tries later rules
+      # first, so these catch-alls must stay above the Arg rules below.
+      rule(arg: simple(:arg)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg), arg_arguments: simple(:args)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg), first_value: subtree(:first_value)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg),
+           arg_arguments: simple(:args),
+           first_value: subtree(:first_value)) { Utility.unsupported_arg! }
+
       rule(arg: simple(:arg),
            arg_arguments: simple(:args),
            first_value: simple(:first_value)) do
         Math::Function::Arg.new(first_value, args)
+      end
+
+      # ⓐ(unit \mupkg) reads its content as several nodes; keep them together
+      # so the argument (e.g. an uncertainty unit, plurimath#493) is not lost.
+      rule(arg: simple(:arg),
+           arg_arguments: simple(:args),
+           first_value: sequence(:first_value)) do
+        Math::Function::Arg.new(Math::Formula.new(first_value), args)
       end
 
       rule(whole: simple(:whole),
@@ -3585,6 +3622,30 @@ module Plurimath
         )
       end
 
+      rule(open_paren: simple(:open_paren),
+           text: simple(:text),
+           operand: sequence(:operand),
+           exp: simple(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Math::Function::Text.new(text)] + operand + [exp],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           text: simple(:text),
+           operand: sequence(:operand),
+           exp: sequence(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Math::Function::Text.new(text)] + operand + exp,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
       rule(nary_class: simple(:nary_class),
            mask: simple(:mask),
            sub: simple(:sub),
@@ -3871,7 +3932,7 @@ module Plurimath
            intent_arguments: simple(:args),
            first_value: simple(:value),
            close_paren: simple(:close_paren)) do
-        Math::Function::Intent.new(value, args)
+        Utility.intent_or_uncertainty(value, args)
       end
 
       rule(intent: simple(:intent),
@@ -3879,7 +3940,7 @@ module Plurimath
            intent_arguments: simple(:args),
            first_value: sequence(:value),
            close_paren: simple(:close_paren)) do
-        Math::Function::Intent.new(Utility.filter_values(value), args)
+        Utility.intent_or_uncertainty(Utility.filter_values(value), args)
       end
 
       rule(paren_open_prefix: simple(:open_paren),

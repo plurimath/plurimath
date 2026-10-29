@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Symbols::Paren::Rangle do
   describe ".initialize" do
@@ -29,31 +30,11 @@ RSpec.describe Plurimath::Math::Symbols::Paren::Rangle do
   describe "All language conversion specs" do
     subject(:klass) { described_class.new }
 
-    context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Paren::Rangle" do
-      it "matches AsciiMath paren string" do
-        expect(klass.to_asciimath).to eq(">>")
-      end
-
-      it "matches LaTeX paren string" do
-        expect(klass.to_latex).to eq("\\rangle")
-      end
-
-      it "matches UnicodeMath paren string" do
-        expect(klass.to_unicodemath).to eq("⟩")
-      end
-
-      it "matches OMML paren string" do
-        expect(klass.to_omml_without_math_tag(true)).to eq("&#x27e9;")
-      end
-
-      it "matches MathML paren string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mi>&#x232a;</mi>")
-      end
-
-      it "matches HTML paren string" do
-        expect(klass.to_html).to eq("&#x232a;")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-paren-rangle-rangle-32-1"
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-paren-rangle-rangle-32-2"
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-paren-rangle-rangle-32-3"
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-paren-rangle-rangle-32-4"
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-paren-rangle-rangle-32-5"
+    it_behaves_like "shared renderer fixture", "renderer-math-symbols-paren-rangle-rangle-32-6"
   end
 end
