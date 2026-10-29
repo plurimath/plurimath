@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::PowerBase do
   describe ".initialize" do
@@ -55,56 +56,11 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
                           third_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:third_value) { Plurimath::Math::Number.new("70") }
+    it_behaves_like "shared renderer fixture", "function-power_base-58-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("n_(prod_(&)^(\"so\"))^(70)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-power_base-75-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-      let(:third_value) { Plurimath::Math::Symbols::Delta.new }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("n_(70)^(delta)")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) { Plurimath::Math::Function::Text.new("something") }
-      let(:third_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("(sum_(&)^(\"so\"))_(\"something\")^(prod_(&)^(\"so\"))")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-power_base-85-1"
   end
 
   describe ".to_mathml" do
@@ -116,108 +72,11 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-      let(:third_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
+    it_behaves_like "shared renderer fixture", "function-power_base-119-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <msubsup>
-            <mi>n</mi>
-            <mn>70</mn>
-            <mrow>
-              <munderover>
-                <mo>&#x220f;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </msubsup>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-power_base-149-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:third_value) { Plurimath::Math::Function::Text.new("s") }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <msubsup>
-            <mn>70</mn>
-            <mrow>
-              <munderover>
-                <mo>&#x220f;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-            <mtext>s</mtext>
-          </msubsup>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) { Plurimath::Math::Number.new("120") }
-      let(:third_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <msubsup>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-            <mn>120</mn>
-            <mrow>
-              <munderover>
-                <mo>&#x220f;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </msubsup>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-power_base-179-1"
   end
 
   describe ".to_latex" do
@@ -226,70 +85,11 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
                           third_value).to_latex(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:third_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
+    it_behaves_like "shared renderer fixture", "function-power_base-229-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("n_{\\prod_{\\&}^{\\text{so}}}^{\\prod_{\\&}^{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-power_base-253-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Vdash.new }
-      let(:third_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("70_{\\vdash}^{70}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:third_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Stackrel.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\sum_{\\&}^{\\text{so}}_{\\prod_{\\&}^{\\text{so}}}^{\\stackrel{\\&}{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-power_base-263-1"
   end
 
   describe ".to_html" do
@@ -298,102 +98,10 @@ RSpec.describe Plurimath::Math::Function::PowerBase do
                           third_value).to_html(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:third_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
+    it_behaves_like "shared renderer fixture", "function-power_base-301-1"
 
-      it "returns html string" do
-        expected_value = <<~HTML
-          <i>n</i>
-          <sub>
-            <i>&prod;</i>
-            <sub>&</sub>
-            <sup>so</sup>
-          </sub>
-          <sup>
-            <i>&sum;</i>
-            <sub>&</sub>
-            <sup>so</sup>
-          </sup>
-        HTML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-power_base-338-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("&#x2200;") }
-      let(:third_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expect(formula).to eql("<i>70</i><sub>&#x2200;</sub><sup><i>&sum;</i><sub>&</sub><sup>so</sup></sup>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Stackrel.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:third_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expected_value = <<~HTML
-          <i>
-            <i>&sum;</i>
-            <sub>&</sub>
-            <sup>so</sup>
-          </i>
-          <sub>&so</sub>
-          <sup>
-            <i>&prod;</i>
-            <sub>&</sub>
-            <sup>so</sup>
-          </sup>
-        HTML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-power_base-355-1"
   end
 end

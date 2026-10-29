@@ -10,6 +10,14 @@ module Plurimath
     class Utility < Plurimath::Utility
       extend Plurimath::Mathml::FunctionTokenResolver
 
+      # A run whose whole text is a number: digits with an optional
+      # decimal part. OMML has no <mn>/<mi> split, so the run's text
+      # decides. A mixed run such as "2x" stays text, "1,5" stays a
+      # symbol (list or decimal is ambiguous), and a signed run such as
+      # "-1" stays a symbol: the shared testsuite expects that for
+      # superscripts like sin^-1, and to_omml writes the sign as its own run.
+      NUMBER_RUN = /\A[[:digit:]]+(?:\.[[:digit:]]+)?\z/
+
       class << self
         def valid_class(object)
           text = object.extract_class_name_from_text
@@ -88,7 +96,7 @@ module Plurimath
           text = filter_values(text) unless text.is_a?(String)
           return text if text.is_a?(Math::Core)
 
-          if text.scan(/[[:digit:]]/).length == text.length
+          if text.match?(NUMBER_RUN)
             Math::Number.new(text)
           elsif text.match?(/[a-zA-Z]/)
             Math::Function::Text.new(text, lang: :omml)
