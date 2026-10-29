@@ -14,16 +14,16 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           mover = ox_element("mover")
           first_value = parameter_one&.to_mathml_without_math_tag(intent,
-                                                                    options: options)
+                                                                  options: options)
           if attributes && attributes[:accent]
             mover[:accent] =
               attributes[:accent]
           end
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             mover,
             [
               first_value,
-              Utility.ox_element("mo") << "&#x20e1;",
+              XmlHelper.ox_element("mo") << "&#x20e1;",
             ],
           )
         end
@@ -35,8 +35,8 @@ module Plurimath
             acc_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("\u20e1")
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(true,
-                                                                          options: options)
+            Overset.new(symbol, parameter_one).to_omml_without_math_tag(true,
+                                                                        options: options)
           end
         end
 
@@ -56,11 +56,11 @@ module Plurimath
         protected
 
         def acc_tag(display_style, options:)
-          acc_tag    = Utility.ox_element("acc", namespace: "m")
-          acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << Utility.ox_element("chr", namespace: "m",
-                                                  attributes: { "m:val": "\u20e1" })
-          Utility.update_nodes(
+          acc_tag    = XmlHelper.ox_element("acc", namespace: "m")
+          acc_pr_tag = XmlHelper.ox_element("accPr", namespace: "m")
+          acc_pr_tag << XmlHelper.ox_element("chr", namespace: "m",
+                                                    attributes: { "m:val": "\u20e1" })
+          XmlHelper.update_nodes(
             acc_tag,
             [
               acc_pr_tag,

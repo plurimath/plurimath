@@ -12,6 +12,10 @@ module Plurimath
           html: ["&#x22c5;", "&sdot;"],
         }.freeze
 
+        def multiply_operator?
+          true
+        end
+
         # output methods
         def to_latex(**)
           "\\cdot"

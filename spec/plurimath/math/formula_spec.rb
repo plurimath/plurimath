@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Formula do
   describe ".initialize" do
@@ -30,7 +31,10 @@ RSpec.describe Plurimath::Math::Formula do
       let(:string) { "theta" }
 
       it "raises an error" do
-        expect { formula.to_display(:formula) }.to raise_error(Plurimath::Math::InvalidTypeError)
+        expect { formula.to_display(:html) }.to raise_error(
+          Plurimath::Math::InvalidTypeError,
+          "Invalid type provided: html. Must be one of omml, latex, mathml, asciimath, unicodemath, formula.",
+        )
       end
     end
   end
@@ -74,889 +78,221 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
 
-    context "contains cos formula string" do
-      let(:exp) { "cos(2)" }
-
-      it "converts cos string back from formula" do
-        expect(formula).to eql("cos(2)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-77-1"
 
-    context "contains sin formula string with cos" do
-      let(:exp) { "sin(cos{theta})" }
-
-      it "converts sin string back from formula" do
-        expect(formula).to eql("sin(cos{theta})")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-85-1"
 
-    context "contains sin formula string with sum" do
-      let(:exp) { "sin(sum_(theta))" }
-
-      it "converts sin string back from formula" do
-        expect(formula).to eql("sin(sum_(theta))")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-93-1"
 
-    context "contains sin formula string with sum power base" do
-      let(:exp) { "sin(sum_(theta)^3)" }
-
-      it "converts formula back to Asciimath string for sin function" do
-        expect(formula).to eql("sin(sum_(theta)^(3))")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-101-1"
 
-    context "contains sinh formula string with sum power base" do
-      let(:exp) { "sinh(sum_(theta)^sin(theta))" }
-
-      it "converts formula back to Asciimath string for sinh function" do
-        expect(formula).to eql("sinh(sum_(theta)^(sin(theta)))")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-109-1"
 
-    context "contains csc formula string with sum power base" do
-      let(:exp) { "csc(sum_(theta)^sin(cong)) = {1+1}" }
-
-      it "converts formula back to Asciimath string for csc function" do
-        expect(formula).to eql("csc(sum_(theta)^(sin(~=))) = {1 + 1}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-117-1"
 
-    context "contains int formula string with sum power base" do
-      let(:exp) { "int_(i=1)^ni^3=sin((n(n+1))/2)^2" }
-
-      it "converts formula back to Asciimath string for int function" do
-        expect(formula).to eql("int_(i = 1)^(n) i^(3) = sin(frac(n (n + 1))(2))^(2)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-125-1"
 
-    context "contains sum formula string with sum power base" do
-      let(:exp) { "sum_(i=frac{1}{3})^33" }
-
-      it "converts formula back to Asciimath string for sum function" do
-        expect(formula).to eql("sum_(i = frac(1)(3))^(33)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-133-1"
 
-    context "contains sum formula string with frac power base" do
-      let(:exp) { "sum_(i=frac{13})^33" }
-
-      it "converts formula back to Asciimath string for sum function" do
-        expect(formula).to eql("sum_(i = frac(13))^(33)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-141-1"
 
-    context "contains sum formula string with color green" do
-      let(:exp) { "sum_(i=color{green}{3})^33" }
-
-      it "converts formula back to Asciimath string for color function" do
-        expect(formula).to eql("sum_(i = color(green)(3))^(33)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-149-1"
 
-    context "contains sum formula string with color and text power base" do
-      let(:exp) { "sum_(i=color{text(blue)})^33" }
-
-      it "converts formula back to Asciimath string for color function" do
-        expect(formula).to eql("sum_(i = c o l o r {\"blue\"})^(33)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-157-1"
 
-    context "contains sum formula string with color power number base" do
-      let(:exp) { "sum_(i=color{\"blue\"})^33" }
-
-      it "converts formula back to Asciimath string for color function" do
-        expect(formula).to eql('sum_(i = c o l o r {"blue"})^(33)')
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-165-1"
 
-    context "contains int formula string with color power base" do
-      let(:exp) { "int_0^1 f(x)dx" }
-
-      it "converts formula back to Asciimath string for simple text" do
-        expect(formula).to eql("int_(0)^(1) f (x) d x")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-173-1"
 
-    context "contains sum formula string with color power base" do
-      let(:exp) { "obrace(1+2+3+4)^(\"4 terms\")" }
-
-      it "converts formula back to Asciimath string for obrace function" do
-        expect(formula).to eql('obrace(1 + 2 + 3 + 4)^("4 terms")')
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-181-1"
 
-    context "contains obrace formula string with text" do
-      let(:exp) { "obrace(1+2+3+4)^text(4 terms)" }
-
-      it "converts formula back to Asciimath string for obrace function" do
-        expect(formula).to eql("obrace(1 + 2 + 3 + 4)^(\"4 terms\")")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-189-1"
 
-    context "contains obrace formula string with text" do
-      let(:exp) { "obrace(1+2+3+4)" }
-
-      it "converts formula back to Asciimath string for obrace function" do
-        expect(formula).to eql("obrace(1 + 2 + 3 + 4)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-197-1"
 
-    context "contains log formula string with text" do
-      let(:exp) { "log(1+2+3+4)^(\"4 terms\")" }
-
-      it "converts formula back to Asciimath string for log function" do
-        expect(formula).to eql('log (1 + 2 + 3 + 4)^("4 terms")')
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-205-1"
 
-    context "contains oint formula string with text" do
-      let(:exp) { "oint(1+2+3+4)^(text(4 terms))" }
-
-      it "converts formula back to Asciimath string for oint function" do
-        expect(formula).to eql("oint (1 + 2 + 3 + 4)^(\"4 terms\")")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-213-1"
 
-    context "contains abs formula string" do
-      let(:exp) { "abs(1+2+3+4)" }
-
-      it "converts formula back to Asciimath string for log function" do
-        expect(formula).to eql("abs(1 + 2 + 3 + 4)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-221-1"
 
-    context "contains root formula string" do
-      let(:exp) { "root1234(i)" }
-
-      it "converts formula back to Asciimath string for root function" do
-        expect(formula).to eql("root(1234)(i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-229-1"
 
-    context "contains bar formula string" do
-      let(:exp) { "bar(1234)(i)" }
-
-      it "converts formula back to Asciimath string for bar function" do
-        expect(formula).to eql("bar(1234) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-237-1"
 
-    context "contains overset formula string" do
-      let(:exp) { "overset(1234)(i)" }
-
-      it "converts formula back to Asciimath string for overset function" do
-        expect(formula).to eql("overset(1234)(i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-245-1"
 
-    context "contains arccos formula string" do
-      let(:exp) { "arccos1234(i)" }
-
-      it "converts formula back to Asciimath string for arccos function" do
-        expect(formula).to eql("arccos1234 (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-253-1"
 
-    context "contains underset formula string" do
-      let(:exp) { "underset(sum(sin(theta)))(i)" }
-
-      it "converts formula back to Asciimath string for underset function" do
-        expect(formula).to eql("underset(sum (sin(theta)))(i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-261-1"
 
-    context "contains arcsin formula string" do
-      let(:exp) { "arcsin1234(i)" }
-
-      it "converts formula back to Asciimath string for arcsin function" do
-        expect(formula).to eql("arcsin1234 (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-269-1"
 
-    context "contains mod formula string" do
-      let(:exp) { "12mod1234(i)" }
-
-      it "converts formula back to Asciimath string for mod function" do
-        expect(formula).to eql("12 mod 1234 (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-277-1"
 
-    context "contains arctan formula string" do
-      let(:exp) { "12arctan(1234)(i)" }
-
-      it "converts formula back to Asciimath string for arctan function" do
-        expect(formula).to eql("12 arctan(1234) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-285-1"
 
-    context "contains mod formula string with sin" do
-      let(:exp) { "12mod(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for mod function" do
-        expect(formula).to eql("12 mod (sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-293-1"
 
-    context "contains ceil formula string with sin" do
-      let(:exp) { "ceil(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for ceil function" do
-        expect(formula).to eql("ceil(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-301-1"
 
-    context "contains ceil formula string" do
-      let(:exp) { "ceil_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for ceil function" do
-        expect(formula).to eql("ceil_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-309-1"
 
-    context "contains abs formula string" do
-      let(:exp) { "abs(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for abs function" do
-        expect(formula).to eql("abs(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-317-1"
 
-    context "contains abs formula string with sin" do
-      let(:exp) { "abs_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for abs function" do
-        expect(formula).to eql("abs_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-325-1"
 
-    context "contains arccos formula string with sin function" do
-      let(:exp) { "arccos(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for arccos function" do
-        expect(formula).to eql("arccos(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-333-1"
 
-    context "contains arccos formula string with underscore and sin function" do
-      let(:exp) { "arccos_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for arccos function" do
-        expect(formula).to eql("arccos_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-341-1"
 
-    context "contains arcsin formula string with sin function" do
-      let(:exp) { "arcsin(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for arcsin function" do
-        expect(formula).to eql("arcsin(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-349-1"
 
-    context "contains arcsin formula string with underscore and sin function" do
-      let(:exp) { "arcsin_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for arcsin function" do
-        expect(formula).to eql("arcsin_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-357-1"
 
-    context "contains arctan formula string with sin function" do
-      let(:exp) { "arctan(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for arctan function" do
-        expect(formula).to eql("arctan(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-365-1"
 
-    context "contains arctan formula string with underscore and sin function" do
-      let(:exp) { "arctan_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for arctan function" do
-        expect(formula).to eql("arctan_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-373-1"
 
-    context "contains bar formula string with sin function" do
-      let(:exp) { "bar(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for bar function" do
-        expect(formula).to eql("bar(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-381-1"
 
-    context "contains bar formula string with underscore and sin function" do
-      let(:exp) { "bar_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for bar function" do
-        expect(formula).to eql("bar_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-389-1"
 
-    context "contains cancel formula string with sin function" do
-      let(:exp) { "cancel(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for cancel function" do
-        expect(formula).to eql("cancel(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-397-1"
 
-    context "contains cancel formula string with underscore and sin function" do
-      let(:exp) { "cancel_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for cancel function" do
-        expect(formula).to eql("cancel_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-405-1"
 
-    context "contains cos formula string with sin function" do
-      let(:exp) { "cos(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for cos function" do
-        expect(formula).to eql("cos(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-413-1"
 
-    context "contains cos formula string with underscore and sin function" do
-      let(:exp) { "cos_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for cos function" do
-        expect(formula).to eql("cos_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-421-1"
 
-    context "contains cosh formula string with sin function" do
-      let(:exp) { "cosh(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for cosh function" do
-        expect(formula).to eql("cosh(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-429-1"
 
-    context "contains cosh formula string with underscore and sin function" do
-      let(:exp) { "cosh_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for cosh function" do
-        expect(formula).to eql("cosh_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-437-1"
 
-    context "contains cot formula string with sin function" do
-      let(:exp) { "cot(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for cot function" do
-        expect(formula).to eql("cot(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-445-1"
 
-    context "contains cot formula string with underscore and sin function" do
-      let(:exp) { "cot_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for cot function" do
-        expect(formula).to eql("cot_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-453-1"
 
-    context "contains coth formula string with sin function" do
-      let(:exp) { "coth(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for coth function" do
-        expect(formula).to eql("coth(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-461-1"
 
-    context "contains coth formula string with underscore and sin function" do
-      let(:exp) { "coth_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for coth function" do
-        expect(formula).to eql("coth_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-469-1"
 
-    context "contains csc formula string with underscore and sin function" do
-      let(:exp) { "csc(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for csc function" do
-        expect(formula).to eql("csc(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-477-1"
 
-    context "contains coth formula string with underscore and sin function" do
-      let(:exp) { "csc_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for csc function" do
-        expect(formula).to eql("csc_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-485-1"
 
-    context "contains coth formula string with sin function" do
-      let(:exp) { "csch(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for csch function" do
-        expect(formula).to eql("csch(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-493-1"
 
-    context "contains coth formula string with underscore and sin function" do
-      let(:exp) { "csch_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for csch function" do
-        expect(formula).to eql("csch_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-501-1"
 
-    context "contains ddot formula string with sin function" do
-      let(:exp) { "ddot(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for ddot function" do
-        expect(formula).to eql("ddot(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-509-1"
 
-    context "contains ddot formula string with underscore and sin function" do
-      let(:exp) { "ddot_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for ddot function" do
-        expect(formula).to eql("ddot_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-517-1"
 
-    context "contains det formula string with sin function" do
-      let(:exp) { "det(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for det function" do
-        expect(formula).to eql("det(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-525-1"
 
-    context "contains det formula string with underscore and sin function" do
-      let(:exp) { "det_(sin(theta)) (i)" }
-
-      it "converts formula back to Asciimath string for det function" do
-        expect(formula).to eql("det_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-533-1"
 
-    context "contains dim formula string with sin function" do
-      let(:exp) { "dim(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for dim function" do
-        expect(formula).to eql("dim(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-541-1"
 
-    context "contains dim formula string with underscore and sin function" do
-      let(:exp) { "dim_(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for dim function" do
-        expect(formula).to eql("dim_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-549-1"
 
-    context "contains dot formula string with sin function" do
-      let(:exp) { "dot(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for dot function" do
-        expect(formula).to eql("dot(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-557-1"
 
-    context "contains dot formula string with underscore and sin function" do
-      let(:exp) { "dot_(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for dot function" do
-        expect(formula).to eql("dot_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-565-1"
 
-    context "contains exp formula string with power and sin function" do
-      let(:exp) { "exp^(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for exp function" do
-        expect(formula).to eql("exp^(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-573-1"
 
-    context "contains exp formula string with underscore and sin function" do
-      let(:exp) { "exp_(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for exp function" do
-        expect(formula).to eql("exp_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-581-1"
 
-    context "contains floor formula string with power and sin function" do
-      let(:exp) { "floor^(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for floor function" do
-        expect(formula).to eql("floor^(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-589-1"
 
-    context "contains floor formula string with underscore and sin function" do
-      let(:exp) { "floor_(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for floor function" do
-        expect(formula).to eql("floor_(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-597-1"
 
-    context "contains g formula string with power" do
-      let(:exp) { "g^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for g function" do
-        expect(formula).to eql("g^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-605-1"
 
-    context "contains g formula string with underscore" do
-      let(:exp) { "g _(theta)(i)" }
-
-      it "converts formula back to Asciimath string for g function" do
-        expect(formula).to eql("g_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-613-1"
 
-    context "contains gcd formula string with power" do
-      let(:exp) { "gcd^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for gcd function" do
-        expect(formula).to eql("gcd^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-621-1"
 
-    context "contains gcd formula string with underscore" do
-      let(:exp) { "gcd_(theta)(i)" }
-
-      it "converts formula back to Asciimath string for gcd function" do
-        expect(formula).to eql("gcd_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-629-1"
 
-    context "contains glb formula string with power" do
-      let(:exp) { "glb^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for glb function" do
-        expect(formula).to eql("glb^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-637-1"
 
-    context "contains glb formula string with underscore" do
-      let(:exp) { "glb_(theta)(i)" }
-
-      it "converts formula back to Asciimath string for glb function" do
-        expect(formula).to eql("glb_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-645-1"
 
-    context "contains hat formula string with power" do
-      let(:exp) { "hat^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for hat function" do
-        expect(formula).to eql("hat^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-653-1"
 
-    context "contains hat formula string with underscore" do
-      let(:exp) { "hat_(theta) (i)" }
-
-      it "converts formula back to Asciimath string for hat function" do
-        expect(formula).to eql("hat_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-661-1"
 
-    context "contains lcm formula string with power" do
-      let(:exp) { "lcm^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for lcm function" do
-        expect(formula).to eql("lcm^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-669-1"
 
-    context "contains lcm formula string with underscore" do
-      let(:exp) { "lcm_(theta)(i)" }
-
-      it "converts formula back to Asciimath string for lcm function" do
-        expect(formula).to eql("lcm_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-677-1"
 
-    context "contains ln formula string with power" do
-      let(:exp) { "ln^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for ln function" do
-        expect(formula).to eql("ln^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-685-1"
 
-    context "contains ln formula string with underscore" do
-      let(:exp) { "ln_(theta)(i)" }
-
-      it "converts formula back to Asciimath string for ln function" do
-        expect(formula).to eql("ln_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-693-1"
 
-    context "contains lub formula string with power" do
-      let(:exp) { "lub^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for lub function" do
-        expect(formula).to eql("lub^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-701-1"
 
-    context "contains lub formula string with underscore" do
-      let(:exp) { "lub_(theta)(i)" }
-
-      it "converts formula back to Asciimath string for lub function" do
-        expect(formula).to eql("lub_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-709-1"
 
-    context "contains mathbb formula string" do
-      let(:exp) { "mathbb(theta)(i)" }
-
-      it "converts formula back to Asciimath string for mathbb function" do
-        expect(formula).to eql("mathbb(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-717-1"
 
-    context "contains mathbf formula string" do
-      let(:exp) { "mathbf(theta)(i)" }
-
-      it "converts formula back to Asciimath string for mathbf function" do
-        expect(formula).to eql("mathbf(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-725-1"
 
-    context "contains mathcal formula string" do
-      let(:exp) { "mathcal(theta)(i)" }
-
-      it "converts formula back to Asciimath string for mathcal function" do
-        expect(formula).to eql("mathcal(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-733-1"
 
-    context "contains mathfrak formula string" do
-      let(:exp) { "mathfrak(theta)(i)" }
-
-      it "converts formula back to Asciimath string for mathfrak function" do
-        expect(formula).to eql("mathfrak(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-741-1"
 
-    context "contains mathsf formula string" do
-      let(:exp) { "mathsf(theta)(i)" }
-
-      it "converts formula back to Asciimath string for mathsf function" do
-        expect(formula).to eql("mathsf(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-749-1"
 
-    context "contains mathtt formula string" do
-      let(:exp) { "mathtt(theta)(i)" }
-
-      it "converts formula back to Asciimath string for mathtt function" do
-        expect(formula).to eql("mathtt(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-757-1"
 
-    context "contains max formula string with underscore" do
-      let(:exp) { "max_(theta)(i)" }
-
-      it "converts formula back to Asciimath string for max function" do
-        expect(formula).to eql("max_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-765-1"
 
-    context "contains max formula string with power" do
-      let(:exp) { "max^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for max function" do
-        expect(formula).to eql("max^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-773-1"
 
-    context "contains min formula string with power" do
-      let(:exp) { "min^(theta)(i)" }
-
-      it "converts formula back to Asciimath string for min function" do
-        expect(formula).to eql("min^(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-781-1"
 
-    context "contains min formula string with underscore" do
-      let(:exp) { "min_(theta)(i)" }
-
-      it "converts formula back to Asciimath string for min function" do
-        expect(formula).to eql("min_(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-789-1"
 
-    context "contains norm formula string with sin function" do
-      let(:exp) { "norm(sin(theta))(i)" }
-
-      it "converts formula back to Asciimath string for norm function" do
-        expect(formula).to eql("norm(sin(theta)) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-797-1"
 
-    context "contains norm formula string" do
-      let(:exp) { "norm(theta) (i)" }
-
-      it "converts formula back to Asciimath string for norm function" do
-        expect(formula).to eql("norm(theta) (i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-805-1"
 
-    context "contains prod formula string" do
-      let(:exp) { "prod_(theta)^(i)" }
-
-      it "converts formula back to Asciimath string for prod function" do
-        expect(formula).to eql("prod_(theta)^(i)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-813-1"
 
-    context "contains prod formula string with underscore only" do
-      let(:exp) { "prod_(theta) (i)" }
-
-      it "converts formula back to Asciimath string for prod function" do
-        expect(formula).to eql("prod_(theta) (i)")
-      end
-    end
-
-    context "contains sec formula string" do
-      let(:exp) { "sec(theta)(i)" }
-
-      it "converts formula back to Asciimath string for sec function" do
-        expect(formula).to eql("sec(theta) (i)")
-      end
-    end
-
-    context "contains sech formula string" do
-      let(:exp) { "sech(theta) (i)" }
-
-      it "converts formula back to Asciimath string for sech function" do
-        expect(formula).to eql("sech(theta) (i)")
-      end
-    end
-
-    context "contains sinh formula string" do
-      let(:exp) { "sinh(theta)(i)" }
-
-      it "converts formula back to Asciimath string for sinh function" do
-        expect(formula).to eql("sinh(theta) (i)")
-      end
-    end
-
-    context "contains sqrt formula string" do
-      let(:exp) { "sqrt(3) (i)" }
-
-      it "converts formula back to Asciimath string for sqrt function" do
-        expect(formula).to eql("sqrt(3) (i)")
-      end
-    end
-
-    context "contains tan formula string" do
-      let(:exp) { "tan(theta)(i)" }
-
-      it "converts formula back to Asciimath string for tan function" do
-        expect(formula).to eql("tan(theta) (i)")
-      end
-    end
-
-    context "contains tanh formula string" do
-      let(:exp) { "tanh(theta)(i)" }
-
-      it "converts formula back to Asciimath string for tanh function" do
-        expect(formula).to eql("tanh(theta) (i)")
-      end
-    end
-
-    context "contains tilde formula string" do
-      let(:exp) { "tilde(theta)(i)" }
-
-      it "converts formula back to Asciimath string for tilde function" do
-        expect(formula).to eql("tilde(theta) (i)")
-      end
-    end
-
-    context "contains ubrace formula string" do
-      let(:exp) { "ubrace(theta) (i)" }
-
-      it "converts formula back to Asciimath string for ubrace function" do
-        expect(formula).to eql("ubrace(theta) (i)")
-      end
-    end
-
-    context "contains ul formula string" do
-      let(:exp) { "ul(theta)(i)" }
-
-      it "converts formula back to Asciimath string for ul function" do
-        expect(formula).to eql("underline(theta) (i)")
-      end
-    end
-
-    context "contains vec formula string" do
-      let(:exp) { "vec(theta) (i)" }
-
-      it "converts formula back to Asciimath string for vec function" do
-        expect(formula).to eql("vec(theta) (i)")
-      end
-    end
-
-    context "contains table formula string" do
-      let(:exp) { "([1,3], [1,3], [1,3])" }
-
-      it "converts formula back to Asciimath string for vec function" do
-        expect(formula).to eql("([1, 3], [1, 3], [1, 3])")
-      end
-    end
-
-    context "contains left right with table string" do
-      let(:exp) { "left([1,3], [1,3], [1,3]right)" }
-
-      it "converts formula back to Asciimath string for vec function" do
-        expect(formula).to eql("([1, 3], [1, 3], [1, 3])")
-      end
-    end
-
-    context "contains Plurimath Formula #1" do
-      let(:exp) do
-        described_class.new([
-                              described_class.new([
-                                                    Plurimath::Math::Symbols::Symbol.new("Δ"),
-                                                    described_class.new([
-                                                                          Plurimath::Math::Symbols::Symbol.new("ν"),
-                                                                        ]),
-                                                  ]),
-                            ])
-      end
-
-      it "converts from formula to asciimath string" do
-        expected_value = "Δ ν"
-        expect(exp.to_asciimath).to eq(expected_value)
-      end
-    end
-
-    context "contains Plurimath Formula #2" do
-      let(:exp) do
-        described_class.new([
-                              described_class.new([
-                                                    Plurimath::Math::Symbols::Slash.new,
-                                                    described_class.new([
-                                                                          Plurimath::Math::Symbols::Nu.new,
-                                                                        ]),
-                                                  ]),
-                            ])
-      end
-
-      it "converts from formula to asciimath string" do
-        expected_value = "// nu"
-        expect(exp.to_asciimath).to eq(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-821-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-829-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-837-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-845-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-853-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-861-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-869-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-877-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-885-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-893-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-901-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-909-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-917-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-925-1"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-943-1"
   end
 
   describe ".to_mathml" do
@@ -964,83 +300,7 @@ RSpec.describe Plurimath::Math::Formula do
       described_class.new(exp).to_mathml(unary_function_spacing: false)
     end
 
-    context "contains left right with table string" do
-      let(:exp) do
-        described_class.new([
-                              Plurimath::Math::Function::Left.new("("),
-                              Plurimath::Math::Function::Table.new(
-                                [
-                                  Plurimath::Math::Function::Tr.new([
-                                                                      Plurimath::Math::Function::Td.new([
-                                                                                                          Plurimath::Math::Number.new("1"),
-                                                                                                        ]),
-                                                                      Plurimath::Math::Function::Td.new([
-                                                                                                          Plurimath::Math::Number.new("3"),
-                                                                                                        ]),
-                                                                    ]),
-                                  Plurimath::Math::Function::Tr.new([
-                                                                      Plurimath::Math::Function::Td.new([
-                                                                                                          Plurimath::Math::Number.new("1"),
-                                                                                                        ]),
-                                                                      Plurimath::Math::Function::Td.new([
-                                                                                                          Plurimath::Math::Number.new("3"),
-                                                                                                        ]),
-                                                                    ]),
-                                  Plurimath::Math::Function::Tr.new([
-                                                                      Plurimath::Math::Function::Td.new([
-                                                                                                          Plurimath::Math::Number.new("1"),
-                                                                                                        ]),
-                                                                      Plurimath::Math::Function::Td.new([
-                                                                                                          Plurimath::Math::Number.new("3"),
-                                                                                                        ]),
-                                                                    ]),
-                                ],
-                                "",
-                                "",
-                              ),
-                              Plurimath::Math::Function::Right.new(")"),
-                            ])
-      end
-
-      it "converts formula back to Asciimath string for vec function" do
-        expected_value =
-          <<~MATHML
-            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-              <mstyle displaystyle="true">
-                <mo>(</mo>
-                <mtable>
-                  <mtr>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>3</mn>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>3</mn>
-                    </mtd>
-                  </mtr>
-                  <mtr>
-                    <mtd>
-                      <mn>1</mn>
-                    </mtd>
-                    <mtd>
-                      <mn>3</mn>
-                    </mtd>
-                  </mtr>
-                </mtable>
-                <mo>)</mo>
-              </mstyle>
-            </math>
-          MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-967-1"
   end
 
   describe ".validate_function_formula" do
@@ -1087,21 +347,7 @@ RSpec.describe Plurimath::Math::Formula do
           ]
         end
 
-        context "with default formatter" do
-          let(:formatter) { Plurimath::Formatter::Standard.new }
-
-          it "returns mathml string with formatted numbers using default formatter" do
-            expected_value = <<~MATHML
-              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-                <mstyle displaystyle="true">
-                  <mn>331.467'7</mn>
-                  <mn>123.456'7</mn>
-                </mstyle>
-              </math>
-            MATHML
-            expect(formula).to be_xml_equivalent_to(expected_value)
-          end
-        end
+        it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-1090-1"
 
         context "with compact formatter" do
           let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
@@ -1134,25 +380,7 @@ RSpec.describe Plurimath::Math::Formula do
           ]
         end
 
-        context "with default formatter" do
-          let(:formatter) { Plurimath::Formatter::Standard.new }
-
-          it "returns mathml string with formatted numbers using default formatter" do
-            expected_value = <<~OMML
-              <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-                <m:oMath>
-                  <m:r>
-                    <m:t>331.467'7</m:t>
-                  </m:r>
-                  <m:r>
-                    <m:t>123.456'7</m:t>
-                  </m:r>
-                </m:oMath>
-              </m:oMathPara>
-            OMML
-            expect(formula).to be_xml_equivalent_to(expected_value)
-          end
-        end
+        it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-1137-1"
 
         context "with compact formatter" do
           let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
@@ -1189,14 +417,7 @@ RSpec.describe Plurimath::Math::Formula do
           ]
         end
 
-        context "with default formatter" do
-          let(:formatter) { Plurimath::Formatter::Standard.new }
-
-          it "returns html string with formatted numbers using default formatter" do
-            expected_value = "331.467'7 123.456'7"
-            expect(formula).to be_xml_equivalent_to(expected_value)
-          end
-        end
+        it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-1192-1"
 
         context "with compact formatter" do
           let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
@@ -1222,14 +443,7 @@ RSpec.describe Plurimath::Math::Formula do
           ]
         end
 
-        context "with default formatter" do
-          let(:formatter) { Plurimath::Formatter::Standard.new }
-
-          it "returns unicodemath string with formatted numbers using default formatter" do
-            expected_value = "331.467'7 123.456'7"
-            expect(formula).to be_xml_equivalent_to(expected_value)
-          end
-        end
+        it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-1225-1"
 
         context "with compact formatter" do
           let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
@@ -1255,14 +469,7 @@ RSpec.describe Plurimath::Math::Formula do
           ]
         end
 
-        context "with default formatter" do
-          let(:formatter) { Plurimath::Formatter::Standard.new }
-
-          it "returns latex string with formatted numbers using default formatter" do
-            expected_value = "331.467'7 123.456'7"
-            expect(formula).to be_xml_equivalent_to(expected_value)
-          end
-        end
+        it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-1258-1"
 
         context "with compact formatter" do
           let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
@@ -1288,14 +495,7 @@ RSpec.describe Plurimath::Math::Formula do
           ]
         end
 
-        context "with default formatter" do
-          let(:formatter) { Plurimath::Formatter::Standard.new }
-
-          it "returns asciimath string with formatted numbers using default formatter" do
-            expected_value = "331.467'7 123.456'7"
-            expect(formula).to be_xml_equivalent_to(expected_value)
-          end
-        end
+        it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-1291-1"
 
         context "with compact formatter" do
           let(:formatter) { FormulaSpecFormatters::CustomFormatter.new }
@@ -1330,39 +530,8 @@ RSpec.describe Plurimath::Math::Formula do
           },
         )
       end
-      let(:format_number_spy_class) do
-        Class.new(Plurimath::Formatter::Standard) do
-          def initialize(on_format_number: nil)
-            super()
-            @on_format_number = on_format_number
-          end
-
-          def format_number(formula, number)
-            @on_format_number&.call(formula, number)
-            localized_number(number.value.to_s)
-          end
-        end
-      end
-      let(:format_number_spy) do
-        format_number_spy_class.new(
-          on_format_number: proc { |formula, number|
-            received_formula << formula
-            received_numbers << number
-          },
-        )
-      end
 
       it "passes the root formula and number nodes to format_number" do
-        formula_obj.to_latex(formatter: format_number_spy)
-
-        expect(received_formula.first).to be_a(described_class)
-        expect(received_formula.first).to eq(formula_obj)
-        expect(received_numbers.first).to be_a(Plurimath::Math::Number)
-        expect(received_numbers.first.value).to eq("2024")
-        expect(received_numbers[1].value).to eq("1000000")
-      end
-
-      it "passes the root formula and number nodes to format" do
         formula_obj.to_latex(formatter: spy)
 
         expect(received_formula.first).to be_a(described_class)
@@ -1433,13 +602,7 @@ RSpec.describe Plurimath::Math::Formula do
       end
     end
 
-    describe "default formatter backward compatibility" do
-      it "formats numbers using localized_number when format is not defined" do
-        formatter = Plurimath::Formatter::Standard.new
-        result = formula_obj.to_latex(formatter: formatter)
-        expect(result).to eq("2,024 + 1,000,000")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-formula-formula-1405-1"
   end
 end
 
@@ -1455,12 +618,12 @@ module FormulaSpecFormatters
   end
 
   class YearFormatter < Plurimath::Formatter::Standard
-    def format(_formula, number)
+    def format_number(_formula, number, format: {})
       int_value = Integer(number.value, exception: false)
       if int_value && int_value > 1800 && int_value < 2200
         number.value.to_s
       else
-        localized_number(number.value.to_s)
+        localized_number(number.value.to_s, format: format)
       end
     end
   end
@@ -1471,9 +634,9 @@ module FormulaSpecFormatters
       @on_format = on_format
     end
 
-    def format(formula, number)
+    def format_number(formula, number, format: {})
       @on_format&.call(formula, number)
-      localized_number(number.value.to_s)
+      localized_number(number.value.to_s, format: format)
     end
   end
 end

@@ -46,11 +46,16 @@ module Plurimath
           if value&.include?("&#x2147;")
             attributes[:intent] = Utility.html_entity_to_unicode(value)
           end
-          attributes[:rspace] = @options[:rspace] if @options&.key?(:rspace)
-          mi_tag = ox_element("mi", attributes: attributes)
-          return mi_tag if ["{:", ":}"].include?(value)
+          # `rspace` is an operator attribute: MathML 4 allows it on `mo` (and
+          # `mpadded`), never on `mi`. A generic token that carries one must
+          # therefore serialize as `mo`, whatever produced it.
+          rspace = @options&.[](:rspace)
+          attributes[:rspace] = rspace unless rspace.nil?
+          tag_name = rspace.nil? ? "mi" : "mo"
+          token_tag = ox_element(tag_name, attributes: attributes)
+          return token_tag if ["{:", ":}"].include?(value)
 
-          value ? mi_tag << value : mi_tag
+          value ? token_tag << value : token_tag
         end
 
         def to_latex(**)
@@ -83,7 +88,7 @@ module Plurimath
           # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
           return if value == "&#x2062;"
 
-          [Utility.ox_element("r", namespace: "m") << t_tag(options: options)]
+          [XmlHelper.ox_element("r", namespace: "m") << t_tag(options: options)]
         end
 
         def tag_name
@@ -106,6 +111,51 @@ module Plurimath
 
         def validate_function_formula
           false
+        end
+
+        # Some parser paths emit basic operators as generic symbols instead
+        # of their semantic classes, and a hand-built Formula may hold any of
+        # them, so the generic symbol answers for every operator from its own
+        # value (parsed `+`/`^` arrive as Plus/Hat, so these are inert there).
+        def plus_operator?
+          value == "+"
+        end
+
+        def minus_operator?
+          value == "-"
+        end
+
+        def multiply_operator?
+          value == "*"
+        end
+
+        def divide_operator?
+          value == "/"
+        end
+
+        def power_operator?
+          value == "^"
+        end
+
+        # A plain symbol names a variable through its `value`. Symbol
+        # subclasses (Pi, Plus, ...) carry no `value`, so they return nil here
+        # and are never treated as variables.
+        def variable_name
+          return if reserved_constant || value.nil? || value.empty? || operator?
+
+          value
+        end
+
+        # Symbol classes that represent constants (e.g. Pi) override
+        # #reserved_constant; everything else resolves through bindings.
+        def evaluate(evaluator)
+          constant = reserved_constant
+          return constant if constant
+
+          name = variable_name
+          evaluator.unsupported(self) unless name
+
+          evaluator.value_for(name)
         end
 
         def omml_nodes(_, options:)
@@ -189,7 +239,7 @@ options:)
         end
 
         def t_element
-          Utility.ox_element("t", namespace: "m")
+          XmlHelper.ox_element("t", namespace: "m")
         end
 
         def explicit_checks(unicode)

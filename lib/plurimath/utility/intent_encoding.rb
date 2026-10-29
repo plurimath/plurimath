@@ -189,12 +189,12 @@ module Plurimath
 
         def insert_f_arg(node, nodes)
           if !nodes.empty? && !%w[msup msubsup].include?(node.name)
-            mrow = ox_element("mrow", attributes: { arg: "$f" })
+            mrow = XmlHelper.ox_element("mrow", attributes: { arg: "$f" })
             Plurimath.xml_engine.replace_nodes(
               node,
               [
                 node.nodes.first,
-                update_nodes(mrow, nodes),
+                XmlHelper.update_nodes(mrow, nodes),
               ],
             )
           end
@@ -225,8 +225,8 @@ module Plurimath
           nodes = node&.nodes&.[](1..)
           return if nodes&.empty?
 
-          mrow = ox_element("mrow", attributes: { arg: "n" })
-          update_nodes(mrow, nodes)
+          mrow = XmlHelper.ox_element("mrow", attributes: { arg: "n" })
+          XmlHelper.update_nodes(mrow, nodes)
           replace_nodes = [node.nodes.first.xml_nodes, mrow.xml_nodes.nodes]
           Plurimath.xml_engine.replace_nodes(node, replace_nodes.flatten)
           node

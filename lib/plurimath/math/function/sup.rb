@@ -11,7 +11,7 @@ module Plurimath
             first_value = mathml_value(intent, options: options)&.insert(0,
                                                                          mo_tag)
           end
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("mrow"),
             first_value,
           )

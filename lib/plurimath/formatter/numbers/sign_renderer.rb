@@ -20,7 +20,8 @@ module Plurimath
         def prefix(number)
           return "-" if number.negative?
 
-          "+" if positive_sign&.to_sym == :plus
+          # FormatOptions delivers a normalized Symbol (or nil) here.
+          "+" if positive_sign == :plus
         end
       end
     end

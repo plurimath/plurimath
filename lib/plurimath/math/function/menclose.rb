@@ -47,7 +47,7 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           borderbox = ox_element("borderBox", namespace: "m")
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             borderbox,
             [
               borderboxpr,
@@ -63,7 +63,7 @@ module Plurimath
             "#{unicode_symbol}#{unicodemath_parens(parameter_two,
                                                    options: options)}"
           elsif masked_class?
-            first_value = Utility.notations_to_mask(parameter_one) if parameter_one
+            first_value = ModelHelper.notations_to_mask(parameter_one) if parameter_one
             second_value = parameter_two&.to_unicodemath(options: options) if parameter_two
             "▭(#{first_value}&#{second_value})"
           end

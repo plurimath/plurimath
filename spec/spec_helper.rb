@@ -32,9 +32,12 @@ RSpec.configure do |config|
     Plurimath.xml_engine = Plurimath::XmlEngine::OxEngine
     Mml::V4::Configuration.adapter = :ox
     example.run
-    Plurimath.xml_engine = Plurimath::XmlEngine::Oga
-    Mml::V4::Configuration.adapter = :oga
-    example.run
+    # Shared golden bytes record Ox; native specs still cover both engines.
+    unless example.metadata[:shared_corpus]
+      Plurimath.xml_engine = Plurimath::XmlEngine::Oga
+      Mml::V4::Configuration.adapter = :oga
+      example.run
+    end
   end
 
   config.expect_with :rspec do |c|

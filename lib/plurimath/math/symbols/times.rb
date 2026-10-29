@@ -13,6 +13,10 @@ module Plurimath
           html: ["&#xd7;", "&times;"],
         }.freeze
 
+        def multiply_operator?
+          true
+        end
+
         # output methods
         def to_latex(**)
           "\\times"

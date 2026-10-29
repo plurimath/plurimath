@@ -2,7 +2,8 @@
 
 module Plurimath
   class UnicodeMath
-    class Transform < Parsanol::Transform
+    class Transform < Parslet::Transform
+      include Plurimath::BaseNumberPrefix::Transform
 
       rule(td: simple(:td)) { Math::Function::Td.new([td]) }
       rule(tr: simple(:tr)) { Math::Function::Tr.new([tr]) }
@@ -115,7 +116,11 @@ module Plurimath
       end
 
       rule(prefixed_prime: simple(:prime)) do
-        Utility.updated_primes(prime)
+        # Normalize the slash-prefixed name (\prime, \pprime, ...) to its entity
+        # so the enclosing prime_accent_symbols handling resolves it like the
+        # direct entity forms. Resolving to a node here instead would be dropped
+        # by the outer updated_primes re-scan (which only matches entities).
+        Constants::PREFIXED_PRIMES[prime.to_s.to_sym] || prime
       end
 
       rule(unary_functions: simple(:unary)) do
@@ -226,6 +231,13 @@ module Plurimath
           symbol.to_sym,
         )
         Utility.symbols_class((unicode || symbol), lang: :unicodemath)
+      end
+
+      # \mup"g" is how a font over text is written (e.g. a unit read from
+      # OMML, plurimath#493).
+      rule(font_class: simple(:fonts),
+           text: simple(:text)) do
+        Utility::FONT_STYLES[fonts.to_sym].new(Math::Function::Text.new(text))
       end
 
       rule(font_class: simple(:fonts),
@@ -523,6 +535,18 @@ module Plurimath
            exp: simple(:exp)) do
         symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym]
         [Utility.symbols_class(symbol, lang: :unicodemath), exp]
+      end
+
+      rule(combined_symbols: simple(:combined_symbols),
+           expr: simple(:expr)) do
+        symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols
+        [Utility.symbols_class(symbol, lang: :unicodemath), expr]
+      end
+
+      rule(combined_symbols: simple(:combined_symbols),
+           expr: sequence(:expr)) do
+        symbol = Constants::COMBINING_SYMBOLS[combined_symbols.to_sym] || combined_symbols
+        [Utility.symbols_class(symbol, lang: :unicodemath)] + expr
       end
 
       rule(operator: simple(:operator),
@@ -955,7 +979,7 @@ module Plurimath
       rule(intent: simple(:intent),
            intent_expr: simple(:expr)) do
         intent_string = expr.parameter_two.shift
-        Math::Function::Intent.new(
+        Utility.intent_or_uncertainty(
           Utility.filter_values(expr.parameter_two),
           intent_string,
         )
@@ -2015,9 +2039,9 @@ module Plurimath
       rule(open_paren: simple(:open_paren),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren
         )
      end
 
@@ -2213,10 +2237,28 @@ module Plurimath
         )
       end
 
+      # Any other ⓐ shape has no Arg reading; fail here rather than leave
+      # the raw parse tree inside the Formula. Parslet tries later rules
+      # first, so these catch-alls must stay above the Arg rules below.
+      rule(arg: simple(:arg)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg), arg_arguments: simple(:args)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg), first_value: subtree(:first_value)) { Utility.unsupported_arg! }
+      rule(arg: simple(:arg),
+           arg_arguments: simple(:args),
+           first_value: subtree(:first_value)) { Utility.unsupported_arg! }
+
       rule(arg: simple(:arg),
            arg_arguments: simple(:args),
            first_value: simple(:first_value)) do
         Math::Function::Arg.new(first_value, args)
+      end
+
+      # ⓐ(unit \mupkg) reads its content as several nodes; keep them together
+      # so the argument (e.g. an uncertainty unit, plurimath#493) is not lost.
+      rule(arg: simple(:arg),
+           arg_arguments: simple(:args),
+           first_value: sequence(:first_value)) do
+        Math::Function::Arg.new(Math::Formula.new(first_value), args)
       end
 
       rule(whole: simple(:whole),
@@ -2433,9 +2475,9 @@ module Plurimath
            closer: simple(:closer)) do
         Utility.unfenced_value(operand, paren_specific: true) if [opener, closer].include?("|")
         Math::Function::Fenced.new(
-          opener.is_a?(Parsanol::Slice) ? Utility.symbols_class(opener, lang: :unicodemath) : opener,
+          opener.is_a?(Slice) ? Utility.symbols_class(opener, lang: :unicodemath) : opener,
           [operand],
-          closer.is_a?(Parsanol::Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
+          closer.is_a?(Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
         )
       end
 
@@ -2443,9 +2485,9 @@ module Plurimath
            operand: sequence(:operand),
            closer: simple(:closer)) do
         Math::Function::Fenced.new(
-          opener.is_a?(Parsanol::Slice) ? Utility.symbols_class(opener, lang: :unicodemath) : opener,
+          opener.is_a?(Slice) ? Utility.symbols_class(opener, lang: :unicodemath) : opener,
           operand,
-          closer.is_a?(Parsanol::Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
+          closer.is_a?(Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
         )
       end
 
@@ -2462,7 +2504,7 @@ module Plurimath
         Math::Function::Fenced.new(
           Utility.symbols_class(opener.last, lang: :unicodemath),
           [operand],
-          closer.is_a?(Parsanol::Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
+          closer.is_a?(Slice) ? Utility.symbols_class(closer, lang: :unicodemath) : closer,
           options,
         )
       end
@@ -2471,9 +2513,9 @@ module Plurimath
            frac: simple(:frac),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [frac],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2481,9 +2523,9 @@ module Plurimath
            slashed_value: sequence(:values),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           Utility.sequence_slashed_values(values, lang: :unicodemath),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2491,9 +2533,9 @@ module Plurimath
            phantom: simple(:phantom),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [phantom],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2501,9 +2543,9 @@ module Plurimath
            unary_function: simple(:unary_function),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [unary_function],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2511,9 +2553,9 @@ module Plurimath
            rect: simple(:rect),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [rect],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2521,7 +2563,7 @@ module Plurimath
            factor: simple(:factor),
            paren_close_prefix: simple(:close_prefix)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [factor],
           Utility.symbols_class(close_prefix, lang: :unicodemath),
           { close_prefixed: true }
@@ -2534,7 +2576,7 @@ module Plurimath
         Math::Function::Fenced.new(
           Utility.symbols_class(open_paren, lang: :unicodemath),
           [factor],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
           { open_prefixed: true }
         )
       end
@@ -2543,9 +2585,9 @@ module Plurimath
            nary: simple(:nary),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [nary],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2553,9 +2595,9 @@ module Plurimath
            sub_exp: simple(:sub_exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [sub_exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2563,9 +2605,9 @@ module Plurimath
            subsup_exp: simple(:subsup_exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [subsup_exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2573,9 +2615,9 @@ module Plurimath
            unary_subsup: simple(:subsup),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [subsup],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2583,9 +2625,9 @@ module Plurimath
            mini_sup: simple(:mini_sup),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [mini_sup],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2605,9 +2647,9 @@ module Plurimath
            text: simple(:text),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Math::Function::Text.new(text)],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2616,9 +2658,9 @@ module Plurimath
            close_paren: simple(:close_paren)) do
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [new_factor],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2626,9 +2668,9 @@ module Plurimath
            sup_exp: simple(:sup_exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [sup_exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2636,9 +2678,9 @@ module Plurimath
            accents: subtree(:accents),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Utility.unicode_accents(accents)],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2655,7 +2697,7 @@ module Plurimath
         Math::Function::Fenced.new(
           Utility.symbols_class(open_paren.last, lang: :unicodemath),
           [new_factor],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
           options
         )
       end
@@ -2709,7 +2751,7 @@ module Plurimath
           options[:close_paren] = { minsize: mask, maxsize: mask } unless close_paren.first.value == ""
         end
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [frac],
           Utility.symbols_class(close_paren.last, lang: :unicodemath),
           options
@@ -2742,14 +2784,14 @@ module Plurimath
            negated_operator: simple(:operator),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [
             Math::Formula.new([
               Utility.symbols_class(operator, lang: :unicodemath),
               Math::Symbols::Symbol.new("&#x338;"),
             ])
           ],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -2979,9 +3021,9 @@ module Plurimath
            pre_script: simple(:pre_script),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [pre_script],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3105,9 +3147,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([unary] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3117,9 +3159,9 @@ module Plurimath
            naryand_recursion: sequence(:naryand_recursion)) do
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [new_factor],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         [fenced] + naryand_recursion
       end
@@ -3129,9 +3171,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [unary_subsup, exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3141,9 +3183,9 @@ module Plurimath
            naryand_recursion: simple(:naryand_recursion)) do
         new_factor = [open_paren, close_paren].include?("|") ? Utility.unfenced_value(factor, paren_specific: true) : factor
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [new_factor],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         [fenced, naryand_recursion]
       end
@@ -3153,9 +3195,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sub] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3164,9 +3206,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sub] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3175,9 +3217,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sub_sup] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3186,9 +3228,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sup] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3197,9 +3239,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([mini_sup] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3208,9 +3250,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([intermediate_exp] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3219,9 +3261,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [factor, expr],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3230,9 +3272,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [factor, exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3241,9 +3283,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.unicode_accents(accent)] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3252,9 +3294,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.unicode_accents(accent)] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3263,9 +3305,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.unicode_fractions(fraction)] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3274,9 +3316,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.unicode_fractions(fraction)] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3285,9 +3327,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.symbols_class(symbol, lang: :unicodemath)] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3296,9 +3338,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Utility.symbols_class(symbol, lang: :unicodemath), exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3308,9 +3350,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Utility.symbols_class(symbol, lang: :unicodemath), exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(fenced, sup)
       end
@@ -3320,9 +3362,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Utility.symbols_class(operator, lang: :unicodemath), expr],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3331,9 +3373,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3342,9 +3384,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3353,9 +3395,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp, expr]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3364,9 +3406,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp, exp]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3375,9 +3417,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sup_exp, expr]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3386,9 +3428,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sup_exp, exp]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3397,9 +3439,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([monospace] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3408,9 +3450,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([frac, exp]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3419,9 +3461,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([frac] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3430,9 +3472,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sup_exp] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3441,9 +3483,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([subsup_exp] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3452,9 +3494,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([subsup_exp] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3463,9 +3505,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3474,9 +3516,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3485,9 +3527,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           (factor + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3496,9 +3538,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.symbols_class(symbol, lang: :unicodemath)] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3507,9 +3549,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           (factor + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3517,9 +3559,9 @@ module Plurimath
            factor: sequence(:factor),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           factor,
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3528,9 +3570,9 @@ module Plurimath
            operand: simple(:operand),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3539,9 +3581,9 @@ module Plurimath
            operand: sequence(:operand),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + operand),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3550,9 +3592,9 @@ module Plurimath
            operand: sequence(:operand),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           (factor + operand),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3562,9 +3604,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Math::Function::Text.new(text), operand, exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3574,9 +3616,33 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Math::Function::Text.new(text), operand] + exp,
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           text: simple(:text),
+           operand: sequence(:operand),
+           exp: simple(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Math::Function::Text.new(text)] + operand + [exp],
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+        )
+      end
+
+      rule(open_paren: simple(:open_paren),
+           text: simple(:text),
+           operand: sequence(:operand),
+           exp: sequence(:exp),
+           close_paren: simple(:close_paren)) do
+        Math::Function::Fenced.new(
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          [Math::Function::Text.new(text)] + operand + exp,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3615,9 +3681,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.symbols_class(operator, lang: :unicodemath)] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3626,9 +3692,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [fonts, expr],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3637,9 +3703,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [fonts, exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3648,9 +3714,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.symbols_class(operator, lang: :unicodemath)] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3673,9 +3739,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([Utility.symbols_class(operator, lang: :unicodemath), exp]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3696,9 +3762,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Utility.symbols_class(operator, lang: :unicodemath), expr],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(fenced, sup)
       end
@@ -3709,9 +3775,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, sup_exp] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3721,9 +3787,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp, exp]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(
           fenced,
@@ -3737,9 +3803,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([sub_exp] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(
           fenced,
@@ -3753,9 +3819,9 @@ module Plurimath
            close_paren: simple(:close_paren),
            sup: simple(:sup)) do
         fenced = Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           [Utility.symbols_class(operator, lang: :unicodemath), exp],
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
         Math::Function::Power.new(fenced, sup)
       end
@@ -3778,9 +3844,9 @@ module Plurimath
            expr: sequence(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand] + expr),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3790,9 +3856,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3802,9 +3868,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + operand + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3814,9 +3880,9 @@ module Plurimath
            expr: simple(:expr),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor, operand, expr]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3826,9 +3892,9 @@ module Plurimath
            exp: simple(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([factor] + sub_exp + [exp]),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3839,9 +3905,9 @@ module Plurimath
            exp: sequence(:exp),
            close_paren: simple(:close_paren)) do
         Math::Function::Fenced.new(
-          open_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+          open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
           ([monospace, Utility.symbols_class(symbol, lang: :unicodemath), expr] + exp),
-          close_paren.is_a?(Parsanol::Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
         )
       end
 
@@ -3866,7 +3932,7 @@ module Plurimath
            intent_arguments: simple(:args),
            first_value: simple(:value),
            close_paren: simple(:close_paren)) do
-        Math::Function::Intent.new(value, args)
+        Utility.intent_or_uncertainty(value, args)
       end
 
       rule(intent: simple(:intent),
@@ -3874,7 +3940,7 @@ module Plurimath
            intent_arguments: simple(:args),
            first_value: sequence(:value),
            close_paren: simple(:close_paren)) do
-        Math::Function::Intent.new(Utility.filter_values(value), args)
+        Utility.intent_or_uncertainty(Utility.filter_values(value), args)
       end
 
       rule(paren_open_prefix: simple(:open_paren),

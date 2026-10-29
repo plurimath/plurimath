@@ -35,6 +35,12 @@ module Plurimath
       end
 
       def set_default_options(options)
+        unless options.nil? || options.is_a?(Hash)
+          raise Plurimath::ConfigurationError.new(
+            :invalid_formatter_option, option: :options, value: options, supported: "a Hash"
+          )
+        end
+
         options = options ? options.dup : {}
         apply_default_symbols(options)
         options

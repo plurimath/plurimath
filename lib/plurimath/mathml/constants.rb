@@ -29,7 +29,7 @@ module Plurimath
         "&#x3C0;": "pi",
         "&#x3a0;": "Pi",
         "&#x3c1;": "rho",
-        "&#x3c2;": "beta",
+        "&#x3c2;": "varsigma",
         "&#x3c3;": "sigma",
         "&#x3a3;": "Sigma",
         "&#x3c4;": "tau",
@@ -41,7 +41,7 @@ module Plurimath
         "&#x3c8;": "psi",
         "&#x3a8;": "Psi",
         "&#x3c9;": "omega",
-        "&#x3a9;": "omega",
+        "&#x3a9;": "Omega",
         "&#x22c5;": "cdot",
         "&#x2219;": "*",
         "&#x2e;": ".",
@@ -155,6 +155,16 @@ module Plurimath
         "¯": "bar",
         _: "ul",
       }.freeze
+
+      # Accent characters promoted to their function class ONLY in an accent
+      # position (MathML <mover>, OMML <m:acc>). Kept separate from
+      # UNICODE_SYMBOLS because Text#value= consumes that map as a global
+      # substitution table, so an entry there would also rewrite the character
+      # inside ordinary text runs and bare tokens.
+      CONTEXTUAL_ACCENT_FUNCTIONS = {
+        "&#x303;": "tilde",
+      }.freeze
+
       SYMBOLS = {
         "|": "|",
         "/": "//",
@@ -174,6 +184,27 @@ module Plurimath
         "+": "+",
         "-": "-",
       }.freeze
+      # Named operators that have no dedicated MathML/OMML representation — no
+      # unicode character and no structural element — so a bare <mi>/<mo>/<m:t>
+      # word (e.g. <mi>sin</mi>, <m:t>min</m:t>) is their only written form and
+      # resolves to the function class. Every other CLASSES entry has a proper
+      # form — a diacritic character (bar/hat/vec via <mover>), a unicode symbol
+      # (sum/prod/int via &#x2211; etc.), or a structural element (frac via
+      # <mfrac>/<m:f>, sqrt via <msqrt>) — so its bare word is a literal
+      # identifier, not the function. See PR #450 (which introduced this for accents).
+      NAMED_FUNCTION_WORDS = %w[
+        arccos arcsin arctan sin cos tan sec csc cot sinh cosh tanh coth sech
+        csch log ln exp det dim gcd lcm glb lub max min mod
+      ].freeze
+
+      # True when +string+ is a bare word naming an operator that has no other
+      # MathML/OMML representation, so it legitimately resolves to its function
+      # class. Words for constructs that DO have a character/structural form
+      # (accents, sum/prod/int, frac/sqrt/...) return false and stay literal.
+      def self.named_function_word?(string)
+        NAMED_FUNCTION_WORDS.include?(string&.strip)
+      end
+
       CLASSES = %w[
         mathfrak
         underset
@@ -236,145 +267,6 @@ module Plurimath
         log
         ul
         ln
-      ].freeze
-      OPERATORS = [
-        "&#x00a0;&#x00a0;&#x00a0;&#x00a0;",
-        "&#x00a0;&#x00a0;",
-        "&#x002a;",
-        "&#x003c;",
-        "&#x003e;",
-        "&#x00a0;",
-        "&#x00ac;",
-        "&#x00b1;",
-        "&#x00d7;",
-        "&#x00f7;",
-        "&#x0393;",
-        "&#x0394;",
-        "&#x0398;",
-        "&#x039b;",
-        "&#x039e;",
-        "&#x03a0;",
-        "&#x03a3;",
-        "&#x03a9;",
-        "&#x2026;",
-        "&#x2032;",
-        "&#x2102;",
-        "&#x2115;",
-        "&#x211a;",
-        "&#x211d;",
-        "&#x2124;",
-        "&#x2135;",
-        "&#x2190;",
-        "&#x2191;",
-        "&#x2192;",
-        "&#x2192;",
-        "&#x2193;",
-        "&#x2194;",
-        "&#x21a0;",
-        "&#x21a3;",
-        "&#x21a6;",
-        "&#x21d0;",
-        "&#x21d2;",
-        "&#x21d2;",
-        "&#x21d4;",
-        "&#x21d4;",
-        "&#x2200;",
-        "&#x2202;",
-        "&#x2203;",
-        "&#x2205;",
-        "&#x2207;",
-        "&#x2208;",
-        "&#x2209;",
-        "&#x220f;",
-        "&#x2211;",
-        "&#x2212;",
-        "&#x2213;",
-        "&#x221d;",
-        "&#x221e;",
-        "&#x2220;",
-        "&#x2227;",
-        "&#x2228;",
-        "&#x2229;",
-        "&#x222a;",
-        "&#x222b;",
-        "&#x222e;",
-        "&#x2234;",
-        "&#x2235;",
-        "&#x223c;",
-        "&#x2245;",
-        "&#x2248;",
-        "&#x2254;",
-        "&#x2260;",
-        "&#x2261;",
-        "&#x2264;",
-        "&#x2265;",
-        "&#x226a;",
-        "&#x226b;",
-        "&#x227a;",
-        "&#x227b;",
-        "&#x2282;",
-        "&#x2283;",
-        "&#x2286;",
-        "&#x2287;",
-        "&#x2295;",
-        "&#x2297;",
-        "&#x2299;",
-        "&#x22a2;",
-        "&#x22a4;",
-        "&#x22a5;",
-        "&#x22a8;",
-        "&#x22c0;",
-        "&#x22c1;",
-        "&#x22c2;",
-        "&#x22c3;",
-        "&#x22c4;",
-        "&#x22c5;",
-        "&#x22c6;",
-        "&#x22c8;",
-        "&#x22c9;",
-        "&#x22ca;",
-        "&#x22ee;",
-        "&#x22ef;",
-        "&#x22f1;",
-        "&#x2308;",
-        "&#x2309;",
-        "&#x230a;",
-        "&#x230b;",
-        "&#x2322;",
-        "&#x25a1;",
-        "&#x25b3;",
-        "&#x26ac;",
-        "&#x2916;",
-        "&#x2aaf;",
-        "&#x2ab0;",
-        "&#x2b;",
-        "&#x3d;",
-        "&#x3a;",
-        "&#x3c;",
-        "&#xd7;",
-        "&#xb1;",
-        "&#x26;",
-        "&#x3b;",
-        "&#x3e;",
-        "&#x7c;",
-        "lim",
-        "max",
-        "min",
-        "\\",
-        "//",
-        "/",
-        "if",
-        "^",
-        "_",
-        "+",
-        "/",
-        "=",
-        ":",
-        ",",
-        ")",
-        "(",
-        "[",
-        "]",
       ].freeze
       SUPPORTED_FONT_STYLES = {
         "sans-serif-bold-italic": Math::Function::FontStyle::SansSerifBoldItalic,

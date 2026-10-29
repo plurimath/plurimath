@@ -22,12 +22,12 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          mo_tag = (Utility.ox_element("mo") << "^")
+          mo_tag = (XmlHelper.ox_element("mo") << "^")
           return mo_tag unless parameter_one
 
-          mover_tag = Utility.ox_element("mover")
+          mover_tag = XmlHelper.ox_element("mover")
           mover_tag.set_attr(attributes) if attributes && !attributes.empty?
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             mover_tag,
             [
               parameter_one&.to_mathml_without_math_tag(intent,
@@ -52,7 +52,7 @@ module Plurimath
             accent_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("&#x302;") unless hide_function_name
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(
+            Overset.new(symbol, parameter_one).to_omml_without_math_tag(
               display_style, options: options
             )
           end
@@ -66,7 +66,7 @@ module Plurimath
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              Overset.new(Utility.filter_values(obj.value), nil),
+              Overset.new(nil, Utility.filter_values(obj.value)),
             )
           end
         end
@@ -75,11 +75,11 @@ module Plurimath
 
         def accent_tag(display_style, options:)
           symbol  = "̂" unless hide_function_name
-          acc_tag = Utility.ox_element("acc", namespace: "m")
-          acc_pr_tag = Utility.ox_element("accPr", namespace: "m")
-          acc_pr_tag << Utility.ox_element("chr", namespace: "m",
-                                                  attributes: { "m:val": symbol })
-          Utility.update_nodes(
+          acc_tag = XmlHelper.ox_element("acc", namespace: "m")
+          acc_pr_tag = XmlHelper.ox_element("accPr", namespace: "m")
+          acc_pr_tag << XmlHelper.ox_element("chr", namespace: "m",
+                                                    attributes: { "m:val": symbol })
+          XmlHelper.update_nodes(
             acc_tag,
             [
               acc_pr_tag,

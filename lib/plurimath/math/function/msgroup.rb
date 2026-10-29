@@ -15,8 +15,8 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          Utility.update_nodes(
-            Utility.ox_element("msgroup"),
+          XmlHelper.update_nodes(
+            XmlHelper.ox_element("msgroup"),
             parameter_one.map do |object|
               object&.to_mathml_without_math_tag(intent, options: options)
             end,

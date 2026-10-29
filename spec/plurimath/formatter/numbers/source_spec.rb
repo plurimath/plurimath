@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../../../support/shared_formatter_examples"
 
 RSpec.describe Plurimath::Formatter::Numbers::Source do
   describe "#to_parts" do
@@ -18,7 +19,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Source do
       expect(parts.integer_digits).to eq("123")
       expect(parts.fraction_digits).to eq("0")
       expect(parts).to be_fractional
-      expect(parts.to_s).to eq("123.0")
+      expect_shared_formatter_output("source-021", parts.to_s)
     end
 
     it "preserves negative signs separately from digits" do
@@ -27,7 +28,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Source do
       expect(parts.sign).to eq(-1)
       expect(parts.integer_digits).to eq("0")
       expect(parts.fraction_digits).to eq("10")
-      expect(parts.to_s).to eq("-0.10")
+      expect_shared_formatter_output("source-030", parts.to_s)
     end
 
     it "pads fractional digits for negative exponents" do
@@ -81,8 +82,8 @@ RSpec.describe Plurimath::Formatter::Numbers::Source do
       expect(described_class.new("1.23e4").notation_precision).to eq(2)
     end
 
-    it "preserves existing negative coefficient padding" do
-      expect(described_class.new("-14000").notation_precision).to eq(5)
+    it "ignores the sign when counting coefficient digits" do
+      expect(described_class.new("-14000").notation_precision).to eq(4)
     end
 
     it "preserves zero scale for notation rendering" do

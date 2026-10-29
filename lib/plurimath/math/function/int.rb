@@ -44,11 +44,11 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          base_element = (Utility.ox_element("mo") << invert_unicode_symbols.to_s)
+          base_element = (XmlHelper.ox_element("mo") << invert_unicode_symbols.to_s)
           return base_element unless any_value_exist?
 
-          msubsup_tag = Utility.ox_element("msubsup")
-          Utility.update_nodes(
+          msubsup_tag = XmlHelper.ox_element("msubsup")
+          XmlHelper.update_nodes(
             msubsup_tag,
             [
               base_element,
@@ -60,7 +60,7 @@ module Plurimath
           return msubsup_tag if parameter_three.nil?
 
           mrow = ox_element("mrow")
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             mrow,
             [
               msubsup_tag,
@@ -76,13 +76,13 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           if any_value_exist?
-            nary = Utility.ox_element("nary", namespace: "m")
-            Utility.update_nodes(nary,
+            nary = XmlHelper.ox_element("nary", namespace: "m")
+            XmlHelper.update_nodes(nary,
                                  nary_array(display_style, options: options))
             [nary]
           else
-            r_tag = Utility.ox_element("r", namespace: "m")
-            t_tag = Utility.ox_element("t", namespace: "m")
+            r_tag = XmlHelper.ox_element("r", namespace: "m")
+            t_tag = XmlHelper.ox_element("t", namespace: "m")
             r_tag << (t_tag << "&#x222b;")
             [r_tag]
           end

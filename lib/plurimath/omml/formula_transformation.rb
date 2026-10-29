@@ -62,7 +62,7 @@ module Plurimath
         return Math::Function::Text.new("", lang: :omml) if value == ""
         return nil if value == "\u200B"
 
-        Utility.mathml_unary_classes([value], omml: true, lang: :omml)
+        Utility.resolve_text_token(value)
       end
 
       def omml_argument_value(node)
@@ -102,7 +102,15 @@ module Plurimath
       end
 
       def linebreak_child?(node, child)
+        return true if ct_br_child?(child)
+
         child == "" && node.respond_to?(:br) && node.br == ""
+      end
+
+      def ct_br_child?(child)
+        return false unless child.is_a?(Object)
+
+        Lutaml::Model::Utils.base_class_name(child.class.name) == "CTBr"
       end
 
       def styled_run?(children)
@@ -110,11 +118,18 @@ module Plurimath
       end
 
       def styled_run_value(children)
-        font = children.first
+        fonts, content = children.partition do |child|
+          font_style_class?(child)
+        end
+        font = fonts.first
         font.new(
-          Utility.filter_values(children.drop(1)),
+          Utility.filter_values(content),
           Utility::FONT_STYLES.key(font).to_s,
         )
+      end
+
+      def font_style_class?(value)
+        value.is_a?(Class) && value <= Math::Function::FontStyle
       end
 
       def script_function_value(script_class, node)
@@ -167,7 +182,7 @@ module Plurimath
       end
 
       def nary_operator(character)
-        character && Utility.mathml_unary_classes([character], lang: :omml)
+        character && Utility.resolve_symbol_token(character)
       end
 
       def nary_type(properties)
@@ -213,12 +228,13 @@ module Plurimath
         delimiter_symbol(character.val)
       end
 
-      def accent_value(value)
-        accent = value.first
+      def accent_value(accent, argument)
         unless accent.is_a?(Math::Function::UnaryFunction)
-          return Math::Function::Overset.new(accent, value.last, { accent: true })
+          return Math::Function::Overset.new(accent, argument,
+                                             { accent: true })
         end
 
+        accent.parameter_one ||= argument
         accent.attributes = { accent: true }
         accent
       end

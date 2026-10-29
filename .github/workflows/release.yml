@@ -10,8 +10,8 @@ on:
           Next release version. Possible values: x.y.z, major, minor, patch or pre|rc|etc
         required: true
         default: 'skip'
-  push:
-    tags: [ v* ]
+  repository_dispatch:
+    types: [ do-release ]
 
 jobs:
   release:
@@ -23,3 +23,4 @@ jobs:
       next_version: ${{ github.event.inputs.next_version }}
     secrets:
       rubygems-api-key: ${{ secrets.PLURIMATH_CI_RUBYGEMS_API_KEY }}
+      pat_token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}

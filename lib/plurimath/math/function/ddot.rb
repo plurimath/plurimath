@@ -12,9 +12,9 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          second_value = Utility.ox_element("mo") << ".."
-          Utility.update_nodes(
-            Utility.ox_element("mover", attributes: { accent: "true" }),
+          second_value = XmlHelper.ox_element("mo") << ".."
+          XmlHelper.update_nodes(
+            XmlHelper.ox_element("mover", attributes: { accent: "true" }),
             mathml_value(intent, options: options) << second_value,
           )
         end
@@ -23,7 +23,7 @@ module Plurimath
           return r_element("..", rpr_tag: false) unless parameter_one
 
           symbol = Symbols::Symbol.new("..")
-          Overset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+          Overset.new(symbol, parameter_one).to_omml_without_math_tag(true,
                                                                       options: options)
         end
 

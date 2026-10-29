@@ -24,7 +24,7 @@ module Plurimath
           end
 
           def to_mathml_without_math_tag(intent, options:)
-            table_tag = Utility.update_nodes(
+            table_tag = XmlHelper.update_nodes(
               ox_element("mtable", attributes: table_attribute),
               value&.map do |object|
                 object&.to_mathml_without_math_tag(intent, options: options)
@@ -32,7 +32,7 @@ module Plurimath
             )
             return table_tag if table_tag_only?
 
-            Utility.update_nodes(
+            XmlHelper.update_nodes(
               ox_element("mrow"),
               [mo_tag(open_paren), table_tag, mo_tag(close_paren)],
             )

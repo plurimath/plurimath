@@ -6,19 +6,31 @@ module Plurimath
       module AbsenceRules
         include Helper
 
-        rule(:frac_binary_absent) { frac_binary_absent_symbols? >> binary_symbols }
+        rule(:frac_binary_absent) do
+          frac_binary_absent_symbols? >> binary_symbols
+        end
 
-        rule(:non_matrixs_absence?) { (str("eqarray") | str("&#x2588;") | str("cases") | str("&#x24b8;")).absent? }
+        rule(:non_matrixs_absence?) do
+          (str("eqarray") | str("&#x2588;") | str("cases") | str("&#x24b8;")).absent?
+        end
 
-        rule(:sub_sup_binary_absent) { ((slash >> str("times")) | str("&#xd7;")).absent? >> binary_symbols }
+        rule(:sub_sup_binary_absent) do
+          ((slash >> str("times")) | str("&#xd7;")).absent? >> binary_symbols
+        end
 
         rule(:absent_negated_unicodes) { sqrt_symbols | root_symbols }
 
-        rule(:frac_binary_absent_symbols?) { ((slash >> (str("times") | str("neq") | str("ne"))) | (str("&#xd7;") | str("&#x2260"))).absent? }
+        rule(:frac_binary_absent_symbols?) do
+          ((slash >> (str("times") | str("neq") | str("ne"))) | (str("&#xd7;") | str("&#x2260"))).absent?
+        end
 
-        rule(:binary_negated_absent_symbols?) { ((slash >> str("dd")) | str("&#x2146;")).absent? }
+        rule(:binary_negated_absent_symbols?) do
+          ((slash >> str("dd")) | str("&#x2146;")).absent?
+        end
 
-        rule(:mini_fraction_exp_script_absent?) { (operator >> mini_fraction).absent? }
+        rule(:mini_fraction_exp_script_absent?) do
+          (operator >> mini_fraction).absent?
+        end
 
         rule(:absent_chars) do
           (
@@ -86,28 +98,28 @@ module Plurimath
             op_prefixed_ordinary_symbols |
             op_binary_symbols_prefixed |
             op_prefixed_unary_symbols |
-            slash >> str("backcolor") |
-            slash >> str("naryand") |
-            slash >> str("sdivide") |
-            slash >> str("oslash") |
-            slash >> str("color") |
+            (slash >> str("backcolor")) |
+            (slash >> str("naryand")) |
+            (slash >> str("sdivide")) |
+            (slash >> str("oslash")) |
+            (slash >> str("color")) |
             op_relational_symbols |
             op_h_bracket_prefixed |
             op_alphanumeric_fonts |
             skip_symbols_prefixed |
-            slash >> str("sfrac") |
-            slash >> str("rect") |
-            slash >> str("sqrt") |
-            slash >> str("qdrt") |
-            slash >> str("cbrt") |
-            slash >> str("root") |
-            slash >> str("sdiv") |
-            slash >> str("ndiv") |
-            slash >> str("ldiv") |
+            (slash >> str("sfrac")) |
+            (slash >> str("rect")) |
+            (slash >> str("sqrt")) |
+            (slash >> str("qdrt")) |
+            (slash >> str("cbrt")) |
+            (slash >> str("root")) |
+            (slash >> str("sdiv")) |
+            (slash >> str("ndiv")) |
+            (slash >> str("ldiv")) |
             op_prefixed_matrixs |
             op_binary_symbols_prefixed |
             op_prefixed_negated |
-            slash >> str("mid") |
+            (slash >> str("mid")) |
             op_accent_prefixed |
             prefixed_primes |
             op_nary_text |

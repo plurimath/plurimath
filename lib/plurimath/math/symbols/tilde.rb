@@ -3,7 +3,7 @@ module Plurimath
     module Symbols
       class Tilde < Symbol
         INPUT = {
-          unicodemath: [["~"]],
+          unicodemath: [["&#x303;", "~"]],
           asciimath: [["~"]],
           mathml: ["~"],
           latex: [["~"]],

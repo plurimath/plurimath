@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../../../support/shared_formatter_examples"
 
 RSpec.describe Plurimath::Formatter::Numbers::Integer do
   let(:formatter) { described_class.new(options) }
@@ -67,27 +68,27 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "returns formatted decimal number" do
         result = formatter.apply("1000")
-        expect(result).to eq("1,000")
+        expect_shared_formatter_output("integer-070", result)
       end
 
       it "formats large numbers" do
         result = formatter.apply("1000000")
-        expect(result).to eq("1,000,000")
+        expect_shared_formatter_output("integer-075", result)
       end
 
       it "handles zero" do
         result = formatter.apply("0")
-        expect(result).to eq("0")
+        expect_shared_formatter_output("integer-080", result)
       end
 
       it "handles single digit" do
         result = formatter.apply("5")
-        expect(result).to eq("5")
+        expect_shared_formatter_output("integer-085", result)
       end
 
       it "handles numbers smaller than group size" do
         result = formatter.apply("99")
-        expect(result).to eq("99")
+        expect_shared_formatter_output("integer-090", result)
       end
     end
 
@@ -96,17 +97,17 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "converts decimal to hex and formats" do
         result = formatter.apply("255")
-        expect(result).to eq("ff")
+        expect_shared_formatter_output("integer-099", result)
       end
 
       it "converts and lowercases by default" do
         result = formatter.apply("4095")
-        expect(result).to eq("fff")
+        expect_shared_formatter_output("integer-104", result)
       end
 
       it "converts and groups hex" do
         result = formatter.apply("16777215")
-        expect(result).to eq("fff,fff")
+        expect_shared_formatter_output("integer-109", result)
       end
     end
 
@@ -115,12 +116,12 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "converts to lowercase hex letters by default" do
         result = formatter.apply("255")
-        expect(result).to eq("ff")
+        expect_shared_formatter_output("integer-118", result)
       end
 
       it "converts large hex to lowercase by default" do
         result = formatter.apply("4095")
-        expect(result).to eq("fff")
+        expect_shared_formatter_output("integer-123", result)
       end
     end
 
@@ -129,12 +130,12 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "converts to binary and formats" do
         result = formatter.apply("8")
-        expect(result).to eq("1,000")
+        expect_shared_formatter_output("integer-132", result)
       end
 
       it "converts larger binary with grouping" do
         result = formatter.apply("255")
-        expect(result).to eq("11,111,111")
+        expect_shared_formatter_output("integer-137", result)
       end
     end
 
@@ -143,12 +144,12 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "converts to octal and formats" do
         result = formatter.apply("64")
-        expect(result).to eq("100")
+        expect_shared_formatter_output("integer-146", result)
       end
 
       it "converts and groups octal" do
         result = formatter.apply("4096")
-        expect(result).to eq("10,000")
+        expect_shared_formatter_output("integer-151", result)
       end
     end
 
@@ -157,7 +158,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "groups by custom size" do
         result = formatter.apply("123456")
-        expect(result).to eq("12,34,56")
+        expect_shared_formatter_output("integer-160", result)
       end
     end
 
@@ -166,7 +167,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "uses custom separator" do
         result = formatter.apply("1000000")
-        expect(result).to eq("1.000.000")
+        expect_shared_formatter_output("integer-169", result)
       end
     end
 
@@ -175,16 +176,18 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "applies both base conversion and custom formatting" do
         result = formatter.apply("4095")
-        expect(result).to eq("fff")
+        expect_shared_formatter_output("integer-178", result)
       end
     end
 
     context "with numbers-only hex capitalization" do
-      let(:symbols) { { base: 16, group_digits: 2, group: "e", hex_capital: :numbers_only } }
+      let(:symbols) do
+        { base: 16, group_digits: 2, group: "e", hex_capital: :numbers_only }
+      end
 
       it "capitalizes generated hex digits without changing separators" do
         result = formatter.apply("48879")
-        expect(result).to eq("BEeEF")
+        expect_shared_formatter_output("integer-189", result)
       end
     end
   end
@@ -195,22 +198,22 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "groups string of 6 digits" do
         result = formatter.format_groups("123456")
-        expect(result).to eq("123,456")
+        expect_shared_formatter_output("integer-200", result)
       end
 
       it "groups string of 9 digits" do
         result = formatter.format_groups("123456789")
-        expect(result).to eq("123,456,789")
+        expect_shared_formatter_output("integer-205", result)
       end
 
       it "groups string less than group size" do
         result = formatter.format_groups("99")
-        expect(result).to eq("99")
+        expect_shared_formatter_output("integer-210", result)
       end
 
       it "groups string exactly group size" do
         result = formatter.format_groups("123")
-        expect(result).to eq("123")
+        expect_shared_formatter_output("integer-215", result)
       end
     end
 
@@ -219,7 +222,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "groups by 2" do
         result = formatter.format_groups("123456")
-        expect(result).to eq("12-34-56")
+        expect_shared_formatter_output("integer-224", result)
       end
     end
 
@@ -228,7 +231,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "returns same character" do
         result = formatter.format_groups("5")
-        expect(result).to eq("5")
+        expect_shared_formatter_output("integer-233", result)
       end
     end
 
@@ -237,7 +240,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "returns empty string" do
         result = formatter.format_groups("")
-        expect(result).to eq("")
+        expect_shared_formatter_output("integer-242", result)
       end
     end
 
@@ -247,7 +250,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "pads before applying integer grouping" do
         result = formatter.format_groups("32")
 
-        expect(result).to eq("000 032")
+        expect_shared_formatter_output("integer-252", result)
       end
     end
 
@@ -257,7 +260,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "uses the configured padding character" do
         result = formatter.format_groups("32")
 
-        expect(result).to eq("    32")
+        expect_shared_formatter_output("integer-262", result)
       end
     end
 
@@ -267,13 +270,13 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "pads to the next configured multiple" do
         result = formatter.format_groups("32123")
 
-        expect(result).to eq("00032123")
+        expect_shared_formatter_output("integer-272", result)
       end
 
       it "keeps strings that already match the configured multiple" do
         result = formatter.format_groups("1234")
 
-        expect(result).to eq("1234")
+        expect_shared_formatter_output("integer-278", result)
       end
     end
 
@@ -283,7 +286,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "keeps wider integer strings unchanged" do
         result = formatter.format_groups("12345")
 
-        expect(result).to eq("12345")
+        expect_shared_formatter_output("integer-288", result)
       end
     end
 
@@ -293,7 +296,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "pads zero to the configured multiple" do
         result = formatter.format_groups("0")
 
-        expect(result).to eq("0000")
+        expect_shared_formatter_output("integer-298", result)
       end
     end
 
@@ -311,7 +314,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
       it "does not uppercase the custom padding character" do
         result = formatter.format_groups("beef")
 
-        expect(result).to eq("fBEEF")
+        expect_shared_formatter_output("integer-316", result)
       end
     end
   end
@@ -322,17 +325,17 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "chops last 3 digits from string" do
         result = formatter.chop_group("123456", 3)
-        expect(result).to eq("456")
+        expect_shared_formatter_output("integer-327", result)
       end
 
       it "chops from string longer than group size" do
         result = formatter.chop_group("12345678", 3)
-        expect(result).to eq("678")
+        expect_shared_formatter_output("integer-332", result)
       end
 
       it "returns entire string if smaller than group size" do
         result = formatter.chop_group("12", 3)
-        expect(result).to eq("12")
+        expect_shared_formatter_output("integer-337", result)
       end
     end
 
@@ -341,12 +344,12 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "chops last n characters" do
         result = formatter.chop_group("123456789", 2)
-        expect(result).to eq("89")
+        expect_shared_formatter_output("integer-346", result)
       end
 
       it "chops single character" do
         result = formatter.chop_group("12345", 1)
-        expect(result).to eq("5")
+        expect_shared_formatter_output("integer-351", result)
       end
     end
 
@@ -355,12 +358,12 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "handles empty string" do
         result = formatter.chop_group("", 3)
-        expect(result).to eq("")
+        expect_shared_formatter_output("integer-360", result)
       end
 
       it "handles single character" do
         result = formatter.chop_group("5", 3)
-        expect(result).to eq("5")
+        expect_shared_formatter_output("integer-365", result)
       end
     end
   end
@@ -371,7 +374,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "returns number as string unchanged" do
         result = formatter.number_to_base("12345")
-        expect(result).to eq("12345")
+        expect_shared_formatter_output("integer-376", result)
       end
     end
 
@@ -380,17 +383,17 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "converts to hexadecimal" do
         result = formatter.number_to_base("255")
-        expect(result).to eq("ff")
+        expect_shared_formatter_output("integer-385", result)
       end
 
       it "converts larger numbers to hex" do
         result = formatter.number_to_base("4095")
-        expect(result).to eq("fff")
+        expect_shared_formatter_output("integer-390", result)
       end
 
       it "converts zero to hex" do
         result = formatter.number_to_base("0")
-        expect(result).to eq("0")
+        expect_shared_formatter_output("integer-395", result)
       end
     end
 
@@ -399,12 +402,12 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "converts to binary" do
         result = formatter.number_to_base("8")
-        expect(result).to eq("1000")
+        expect_shared_formatter_output("integer-404", result)
       end
 
       it "converts decimal to binary" do
         result = formatter.number_to_base("255")
-        expect(result).to eq("11111111")
+        expect_shared_formatter_output("integer-409", result)
       end
     end
 
@@ -413,12 +416,12 @@ RSpec.describe Plurimath::Formatter::Numbers::Integer do
 
       it "converts to octal" do
         result = formatter.number_to_base("64")
-        expect(result).to eq("100")
+        expect_shared_formatter_output("integer-418", result)
       end
 
       it "converts larger numbers to octal" do
         result = formatter.number_to_base("512")
-        expect(result).to eq("1000")
+        expect_shared_formatter_output("integer-423", result)
       end
     end
   end

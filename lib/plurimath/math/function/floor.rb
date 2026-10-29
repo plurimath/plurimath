@@ -19,7 +19,7 @@ module Plurimath
                                ox_element("mo") << "&#x230a;")
           end
           value_array << (ox_element("mo") << "&#x230b;") unless close_paren
-          Utility.update_nodes(ox_element("mrow"), value_array)
+          XmlHelper.update_nodes(ox_element("mrow"), value_array)
         end
 
         def to_omml_without_math_tag(display_style, options:)
@@ -34,6 +34,10 @@ module Plurimath
           first_value = "&#x230a;" unless open_paren
           second_value = "&#x230b;" unless close_paren
           "#{first_value}#{parameter_one&.to_unicodemath(options: options)}#{second_value}"
+        end
+
+        def evaluate(evaluator)
+          evaluator.evaluate_node(parameter_one).floor
         end
 
         def line_breaking(obj)

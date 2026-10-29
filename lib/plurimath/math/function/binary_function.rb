@@ -9,7 +9,7 @@ module Plurimath
         def initialize(parameter_one = nil, parameter_two = nil)
           @parameter_one = parameter_one
           @parameter_two = parameter_two
-          Utility.validate_left_right(variables.map { |var| get(var) })
+          ModelHelper.validate_left_right(variables.map { |var| get(var) })
         end
 
         def to_asciimath(options:)
@@ -25,8 +25,8 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          mrow_tag = Utility.ox_element("mrow")
-          mo_tag = Utility.ox_element("mo") << invert_unicode_symbols.to_s
+          mrow_tag = XmlHelper.ox_element("mrow")
+          mo_tag = XmlHelper.ox_element("mo") << invert_unicode_symbols.to_s
           if parameter_one
             first_value = parameter_one&.to_mathml_without_math_tag(intent,
                                                                     options: options)
@@ -35,7 +35,7 @@ module Plurimath
             second_value = parameter_two&.to_mathml_without_math_tag(intent,
                                                                      options: options)
           end
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             mrow_tag,
             [
               first_value,
@@ -64,14 +64,14 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          r_tag = Utility.ox_element("r", namespace: "m")
+          r_tag = XmlHelper.ox_element("r", namespace: "m")
           if parameter_one
-            Utility.update_nodes(r_tag,
+            XmlHelper.update_nodes(r_tag,
                                  [parameter_one.insert_t_tag(display_style,
                                                              options: options)])
           end
           if parameter_two
-            Utility.update_nodes(r_tag,
+            XmlHelper.update_nodes(r_tag,
                                  [parameter_two.insert_t_tag(display_style,
                                                              options: options)])
           end
@@ -182,15 +182,14 @@ options:)
                                                        options: options)
           end
 
-          # Build Overset from source argument positions, not OMML child names,
-          # so shared under/over functions keep the same format-neutral model.
-          overset = Overset.new(first_value, parameter_two)
+          # Overset and Underset take script before base; OMML stores base in m:e.
+          overset = Overset.new(parameter_two, first_value)
           unless parameter_one
             return Array(overset.to_omml_without_math_tag(display_style,
                                                           options: options))
           end
 
-          underset = Underset.new(overset, parameter_one)
+          underset = Underset.new(parameter_one, overset)
           Array(underset.to_omml_without_math_tag(display_style,
                                                   options: options))
         end

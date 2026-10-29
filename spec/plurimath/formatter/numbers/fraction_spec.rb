@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../../../support/shared_formatter_examples"
 
 RSpec.describe Plurimath::Formatter::Numbers::Fraction do
   let(:formatter) { described_class.new(options) }
@@ -120,12 +121,12 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "pads with zeros" do
         result = formatter.format("5", 3)
-        expect(result).to eq("500")
+        expect_shared_formatter_output("fraction-123", result)
       end
 
       it "pads single digit" do
         result = formatter.format("1", 3)
-        expect(result).to eq("100")
+        expect_shared_formatter_output("fraction-128", result)
       end
     end
 
@@ -134,7 +135,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "returns number unchanged" do
         result = formatter.format("123", 2)
-        expect(result).to eq("123")
+        expect_shared_formatter_output("fraction-137", result)
       end
     end
 
@@ -143,7 +144,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "returns number unchanged" do
         result = formatter.format("123", 3)
-        expect(result).to eq("123")
+        expect_shared_formatter_output("fraction-146", result)
       end
     end
 
@@ -152,7 +153,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "returns number unchanged" do
         result = formatter.format("5", 0)
-        expect(result).to eq("5")
+        expect_shared_formatter_output("fraction-155", result)
       end
     end
   end
@@ -163,13 +164,13 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "groups by specified size" do
         result = formatter.format_groups("123456")
-        expect(result).to eq("12-34-56")
+        expect_shared_formatter_output("fraction-166", result)
       end
 
       it "groups with custom separator" do
         symbols[:fraction_group] = "_"
         result = formatter.format_groups("123456")
-        expect(result).to eq("12_34_56")
+        expect_shared_formatter_output("fraction-172", result)
       end
     end
 
@@ -178,7 +179,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "returns string unchanged" do
         result = formatter.format_groups("123456")
-        expect(result).to eq("123456")
+        expect_shared_formatter_output("fraction-181", result)
       end
     end
 
@@ -187,16 +188,19 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "returns string unchanged" do
         result = formatter.format_groups("12")
-        expect(result).to eq("12")
+        expect_shared_formatter_output("fraction-190", result)
       end
     end
 
     context "with numbers-only hex capitalization" do
-      let(:symbols) { { base: 16, fraction_group_digits: 1, fraction_group: "f", hex_capital: :numbers_only } }
+      let(:symbols) do
+        { base: 16, fraction_group_digits: 1, fraction_group: "f",
+          hex_capital: :numbers_only }
+      end
 
       it "capitalizes generated hex digits without changing separators" do
         result = formatter.format_groups("af0")
-        expect(result).to eq("AfFf0")
+        expect_shared_formatter_output("fraction-202", result)
       end
     end
   end
@@ -207,8 +211,8 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "converts fractional part to binary" do
         result = formatter.send(:change_base, "5")
-        expect(result).to be_a(String)
-        expect(result.chars.all? { |c| ["0", "1"].include?(c) }).to be(true)
+        expect_shared_formatter_output("fraction-213", result)
+        expect_shared_formatter_output("fraction-214", result)
       end
     end
 
@@ -217,8 +221,8 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "converts to hex digits" do
         result = formatter.send(:change_base, "10")
-        expect(result).to be_a(String)
-        expect(result.length).to be <= 3
+        expect_shared_formatter_output("fraction-223", result)
+        expect_shared_formatter_output("fraction-224", result)
       end
     end
 
@@ -227,8 +231,8 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "converts to octal digits" do
         result = formatter.send(:change_base, "5")
-        expect(result).to be_a(String)
-        expect(result.chars.all? { |c| ("0".."7").cover?(c) }).to be(true)
+        expect_shared_formatter_output("fraction-233", result)
+        expect_shared_formatter_output("fraction-234", result)
       end
     end
 
@@ -237,7 +241,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "returns uppercase hex digits" do
         result = formatter.send(:change_base, "15")
-        expect(result).to be_a(String)
+        expect_shared_formatter_output("fraction-243", result)
       end
     end
 
@@ -246,7 +250,7 @@ RSpec.describe Plurimath::Formatter::Numbers::Fraction do
 
       it "handles zero" do
         result = formatter.send(:change_base, "0")
-        expect(result).to be_a(String)
+        expect_shared_formatter_output("fraction-252", result)
       end
     end
   end

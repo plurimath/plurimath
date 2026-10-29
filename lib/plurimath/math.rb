@@ -3,12 +3,18 @@
 module Plurimath
   module Math
     autoload :Core, "#{__dir__}/math/core"
+    autoload :Evaluation, "#{__dir__}/math/evaluation"
+    autoload :SemanticTree, "#{__dir__}/math/semantic_tree"
     autoload :Formula, "#{__dir__}/math/formula"
+    autoload :ModelHelper, "#{__dir__}/math/model_helper"
     autoload :Function, "#{__dir__}/math/function"
     autoload :InvalidTypeError, "#{__dir__}/errors/invalid_type_error"
+    autoload :MissingDependencyError,
+             "#{__dir__}/errors/missing_dependency_error"
     autoload :Number, "#{__dir__}/math/number"
     autoload :ParseOptionError, "#{__dir__}/errors/parse_option_error"
     autoload :ParseError, "#{__dir__}/errors/parse_error"
+    autoload :AmbiguousDecimalError, "#{__dir__}/errors/ambiguous_decimal_error"
     autoload :Symbols, "#{__dir__}/math/symbols"
 
     VALID_TYPES = {
@@ -32,7 +38,10 @@ module Plurimath
       unknown_options = options.keys - SUPPORTED_PARSE_OPTIONS
       raise_unknown_parse_options!(unknown_options) unless unknown_options.empty?
 
-      raise_unsupported_parse_option!(type, :locale) if options.key?(:locale) && !localized_parse_type?(type)
+      if options.key?(:locale) && !localized_parse_type?(type)
+        raise_unsupported_parse_option!(type,
+                                        :locale)
+      end
       options = normalize_parse_options(options)
 
       begin

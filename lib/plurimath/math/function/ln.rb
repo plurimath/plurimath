@@ -8,6 +8,10 @@ module Plurimath
           false
         end
 
+        def evaluate(evaluator)
+          ::Math.log(evaluator.evaluate_node(parameter_one))
+        end
+
         def to_omml_without_math_tag(display_style, options:)
           array = []
           array = r_element("ln", rpr_tag: false) unless hide_function_name

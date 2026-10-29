@@ -1,5 +1,5 @@
 require "mml"
-require "parsanol"
+require "parslet"
 require "htmlentities"
 
 # Select an XML engine
@@ -7,12 +7,14 @@ require "plurimath/xml_engine"
 
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
+  autoload :BaseNumberPrefix, "plurimath/base_number_prefix"
   autoload :Cli, "plurimath/cli" unless RUBY_ENGINE == "opal"
   autoload :Configuration, "plurimath/configuration"
   autoload :Deprecation, "plurimath/deprecation"
   autoload :Error, "plurimath/errors/error"
   autoload :ConfigurationError, "plurimath/errors/configuration_error"
   autoload :DeprecationError, "plurimath/errors/deprecation_error"
+  autoload :Errors, "plurimath/errors"
   autoload :Formatter, "plurimath/formatter"
   autoload :Html, "plurimath/html"
   autoload :Latex, "plurimath/latex"
@@ -26,6 +28,7 @@ module Plurimath
   autoload :Unitsml, "plurimath/unitsml"
   autoload :Utility, "plurimath/utility"
   autoload :XmlEngine, "plurimath/xml_engine"
+  autoload :XmlHelper, "plurimath/xml_helper"
   autoload :Version, "plurimath/version"
 
   def mml_adapter(adapter)

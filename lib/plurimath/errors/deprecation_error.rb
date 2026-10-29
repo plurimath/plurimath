@@ -6,7 +6,8 @@ module Plurimath
 
     attr_reader :feature, :replacement, :since, :remove_in
 
-    def initialize(feature:, message: nil, replacement: nil, since: nil, remove_in: nil)
+    def initialize(feature:, message: nil, replacement: nil, since: nil,
+remove_in: nil)
       @feature = feature
       @replacement = replacement
       @since = since

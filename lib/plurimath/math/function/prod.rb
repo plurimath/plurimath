@@ -12,6 +12,16 @@ module Plurimath
           second_value: "supscript",
         }.freeze
 
+        def evaluate(evaluator)
+          if parameter_one.nil? || parameter_two.nil? || parameter_three.nil?
+            evaluator.unsupported(self)
+          end
+
+          Evaluation::Iteration
+            .new(evaluator, parameter_one, parameter_two, parameter_three)
+            .accumulate(1, :*)
+        end
+
         def initialize(parameter_one = nil,
                        parameter_two = nil,
                        parameter_three = nil,
@@ -47,7 +57,7 @@ module Plurimath
           first_value << invert_unicode_symbols.to_s unless hide_function_name
           return first_value unless any_value_exist?
 
-          munderover_tag = Utility.update_nodes(
+          munderover_tag = XmlHelper.update_nodes(
             prod_tag_name,
             [
               first_value,
@@ -63,7 +73,7 @@ module Plurimath
           end
 
           mrow = ox_element("mrow")
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             mrow,
             [
               munderover_tag,
@@ -85,8 +95,8 @@ module Plurimath
         def to_omml_without_math_tag(display_style, options:)
           return r_element("&#x220f;", rpr_tag: false) unless any_value_exist?
 
-          nary = Utility.ox_element("nary", namespace: "m")
-          Utility.update_nodes(nary,
+          nary = XmlHelper.ox_element("nary", namespace: "m")
+          XmlHelper.update_nodes(nary,
                                nary_values(display_style, options: options))
           [nary]
         end

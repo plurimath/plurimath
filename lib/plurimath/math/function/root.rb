@@ -15,8 +15,8 @@ module Plurimath
                                                                   options: options)
           second_value = parameter_two&.to_mathml_without_math_tag(intent,
                                                                    options: options)
-          Utility.update_nodes(
-            Utility.ox_element("mroot"),
+          XmlHelper.update_nodes(
+            XmlHelper.ox_element("mroot"),
             [second_value, first_value],
           )
         end
@@ -29,11 +29,11 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           attribute = { "m:val": "off" }
-          rad_element = Utility.ox_element("rad", namespace: "m")
-          pr_element  = Utility.ox_element("radPr", namespace: "m")
-          pr_element << Utility.ox_element("degHide", namespace: "m",
-                                                      attributes: attribute)
-          Utility.update_nodes(
+          rad_element = XmlHelper.ox_element("rad", namespace: "m")
+          pr_element  = XmlHelper.ox_element("radPr", namespace: "m")
+          pr_element << XmlHelper.ox_element("degHide", namespace: "m",
+                                                        attributes: attribute)
+          XmlHelper.update_nodes(
             rad_element,
             [
               pr_element,
@@ -50,6 +50,13 @@ module Plurimath
           first_value = parameter_one.to_unicodemath(options: options) if parameter_one
           second_value = parameter_two.to_unicodemath(options: options) if parameter_two
           "√(#{first_value}&#{second_value})"
+        end
+
+        def evaluate(evaluator)
+          evaluator.power(
+            evaluator.evaluate_node(parameter_two),
+            evaluator.divide(1.0, evaluator.evaluate_node(parameter_one)),
+          )
         end
       end
     end

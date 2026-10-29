@@ -6,7 +6,8 @@ module Plurimath
     DEFAULT_BEHAVIOR = :collect
 
     class << self
-      def warn(feature:, message: nil, replacement: nil, since: nil, remove_in: nil)
+      def warn(feature:, message: nil, replacement: nil, since: nil,
+remove_in: nil)
         feature = validate_feature(feature)
         return if behavior == :collect && emitted_features[feature]
 

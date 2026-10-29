@@ -32,11 +32,16 @@ module Plurimath
         end
 
         def base
-          symbols[:base] || Base::DEFAULT_BASE
+          value = symbols[:base]
+          return Base::DEFAULT_BASE if value.nil?
+
+          # Numeric String/Symbol forms are normalized; anything else is left
+          # raw so BaseNotation reports it through UnsupportedBase.
+          coerce_integer(value) { return value }
         end
 
         def base_prefix
-          symbols[:base_prefix].to_s
+          separator_option(:base_prefix).to_s
         end
 
         def base_prefix?
@@ -44,7 +49,7 @@ module Plurimath
         end
 
         def base_postfix
-          symbols[:base_postfix]
+          separator_option(:base_postfix)
         end
 
         def base_postfix?
@@ -52,56 +57,84 @@ module Plurimath
         end
 
         def decimal
-          symbols.fetch(:decimal, DEFAULT_DECIMAL)
+          # An explicitly passed nil renders without a separator; output
+          # correctness is then the caller's responsibility.
+          separator_option(:decimal, default: DEFAULT_DECIMAL)
         end
 
         def digit_count
-          symbols[:digit_count].to_i
+          integer_option(:digit_count, default: 0)
         end
 
         def fraction_group
-          symbols[:fraction_group].to_s
+          separator_option(:fraction_group).to_s
         end
 
         def fraction_group_digits
-          symbols[:fraction_group_digits]
+          integer_option(:fraction_group_digits)
         end
 
         def group
-          symbols[:group] || DEFAULT_GROUP
+          # Unlike decimal, an explicit nil group falls back to the default
+          # separator; use "" to disable grouping.
+          (separator_option(:group,
+                            default: DEFAULT_GROUP) || DEFAULT_GROUP).to_s
         end
 
         def group_digits
-          symbols[:group_digits] || DEFAULT_GROUP_DIGITS
+          integer_option(:group_digits, default: DEFAULT_GROUP_DIGITS)
         end
 
         def hex_capital
-          symbols[:hex_capital]
+          value = symbols[:hex_capital]
+          # nil is handled first: under Opal `when nil` spuriously matches
+          # non-nil values (nil === 1.5 is true there), so it must not appear
+          # in the type whitelist below.
+          return if value.nil?
+
+          # Accept only Boolean/String/Symbol and reject any other type.
+          # Attribute-parsing callers deliver String/Symbol (:true,
+          # "numbers_only"), so the accepted forms normalize through to_s.
+          case value
+          when true, false, String, Symbol
+            case value.to_s
+            when "true" then true
+            when "numbers_only" then :numbers_only
+            end
+          else
+            invalid_option!(:hex_capital, value)
+          end
         end
 
         def number_sign
-          symbols[:number_sign]
+          symbol_option(:number_sign)
         end
 
         def padding
-          value = symbols.fetch(:padding, DEFAULT_PADDING).to_s
+          value = separator_option(:padding, default: DEFAULT_PADDING).to_s
           value.empty? ? DEFAULT_PADDING : value[0]
         end
 
         def padding_digits
-          symbols[:padding_digits].to_i
+          integer_option(:padding_digits, default: 0)
         end
 
         def padding_group_digits
-          symbols[:padding_group_digits].to_i
+          integer_option(:padding_group_digits, default: 0)
         end
 
         def notation_supported?
           NotationRenderer.supported?(notation)
         end
 
+        # Whether precision came from the caller (kwarg or symbols) rather
+        # than being inferred from the source by the resolver.
+        def explicit_precision?
+          @explicit_precision
+        end
+
         def significant
-          symbols[:significant].to_i
+          integer_option(:significant, default: 0)
         end
 
         def to_h
@@ -111,7 +144,19 @@ module Plurimath
         private
 
         def resolve_precision(source, precision, precision_resolver)
-          effective_precision = precision || symbols[:precision]
+          # A nil check (not ||) so that explicit false reaches validation.
+          effective_precision = precision.nil? ? symbols[:precision] : precision
+          unless effective_precision.nil?
+            value = effective_precision
+            effective_precision = coerce_integer(value) do
+              invalid_option!(:precision, value)
+            end
+            if effective_precision.negative?
+              invalid_option!(:precision, value,
+                              expected: "a non-negative integer")
+            end
+          end
+          @explicit_precision = !effective_precision.nil?
           return effective_precision unless precision_resolver
 
           precision_resolver.resolve(
@@ -119,12 +164,73 @@ module Plurimath
             precision: effective_precision,
             base: base,
             significant: significant,
+            digit_count: digit_count,
             notation_supported: notation_supported?,
           )
         end
 
+        # Counts must be non-negative Integers; numeric String/Symbol forms are
+        # normalized because attribute-parsing callers deliver those.
+        def integer_option(key, default: nil)
+          value = symbols[key]
+          return default if value.nil?
+
+          integer = coerce_integer(value) { invalid_option!(key, value) }
+          if integer.negative?
+            invalid_option!(key, value,
+                            expected: "a non-negative integer")
+          end
+
+          integer
+        end
+
+        def coerce_integer(value)
+          # Note on Opal: JS has a single number type, so a whole-valued Float
+          # (4.0) is indistinguishable from the Integer 4 (same value, same
+          # to_s "4") — under Opal it is treated as that integer. MRI rejects
+          # Floats here; non-whole Floats (1.5) are rejected in both runtimes.
+          case value
+          when ::Integer then value
+          when true, false, Float then yield
+          else
+            begin
+              Integer(value.to_s, 10)
+            rescue ArgumentError, TypeError
+              yield
+            end
+          end
+        end
+
+        # Separators are free-form strings; explicit nil disables the
+        # separator, and Booleans are always a caller bug.
+        def separator_option(key, default: nil)
+          value = symbols.fetch(key, default)
+          invalid_option!(key, value) if [true, false].include?(value)
+
+          value
+        end
+
         def symbol_option(key)
-          symbols[key]&.to_sym
+          value = symbols[key]
+          return if value.nil?
+
+          # Enumerated/symbol options accept only String or Symbol; reject
+          # other types (and booleans) instead of coercing arbitrary input.
+          unless value.is_a?(String) || value.is_a?(Symbol)
+            invalid_option!(key,
+                            value)
+          end
+
+          value.to_sym
+        end
+
+        def invalid_option!(key, value, expected: nil)
+          raise Plurimath::ConfigurationError.new(
+            :invalid_formatter_option,
+            option: key,
+            value: value,
+            supported: expected,
+          )
         end
 
         def validate_padding_options!

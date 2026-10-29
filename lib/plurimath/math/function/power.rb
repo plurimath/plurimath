@@ -29,7 +29,7 @@ module Plurimath
             validate_mathml_fields(parameter_one, intent, options: options),
             validate_mathml_fields(parameter_two, intent, options: options),
           ]
-          Utility.update_nodes(ox_element("m#{tag_name}"), value_array)
+          XmlHelper.update_nodes(ox_element("m#{tag_name}"), value_array)
         end
 
         def to_latex(options:)
@@ -45,10 +45,10 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          ssup_element  = Utility.ox_element("sSup", namespace: "m")
-          suppr_element = Utility.ox_element("sSupPr", namespace: "m")
-          suppr_element << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
+          ssup_element  = XmlHelper.ox_element("sSup", namespace: "m")
+          suppr_element = XmlHelper.ox_element("sSupPr", namespace: "m")
+          suppr_element << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(
             ssup_element,
             [
               suppr_element,
@@ -78,6 +78,16 @@ module Plurimath
                            end
             "#{first_value}#{second_value}"
           end
+        end
+
+        # Nested Power trees evaluate literally: `Power(Power(2, 3), 2)` is
+        # `(2^3)^2`, whether it came from explicit MathML nesting or a
+        # left-nested source chain.
+        def evaluate(evaluator)
+          evaluator.power(
+            evaluator.evaluate_node(parameter_one),
+            evaluator.evaluate_node(parameter_two),
+          )
         end
 
         def line_breaking(obj)

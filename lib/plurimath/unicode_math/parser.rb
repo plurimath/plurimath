@@ -13,8 +13,11 @@ module Plurimath
         @text = @text.gsub("&#x26;", "&")
         @text = @text.gsub("&#x22;", "\"")
         @text = @text.gsub(/&#x2af7;.*&#x2af8;/, "")
-        @text = @text.gsub(/\\\\/, "\\")
-        @text = @text.gsub(/\\u([\da-fA-F]{1,5})\w{0,5}/) { "&#x#{$1};" } # Converting \u#{xxxx} encoding to &#x#{xxxx};
+        @text = @text.gsub("\\\\", "\\")
+        @text = # Converting \u#{xxxx} encoding to &#x#{xxxx};
+          @text.gsub(/\\u([\da-fA-F]{1,5})\w{0,5}/) do
+            "&#x#{$1};"
+          end
         @text = @text.strip
       end
 
@@ -33,7 +36,7 @@ module Plurimath
       def post_processing(tree)
         {
           labeled_tr_value: tree,
-          labeled_tr_id: @splitted
+          labeled_tr_id: @splitted,
         }
       end
 
@@ -41,7 +44,7 @@ module Plurimath
         text unless text.include?("#") && !text.match?(LABELED_TR_REGEX)
 
         text = text.gsub(/✎\(.*(\#).*\)/) do |str|
-          str = str.gsub("#", "\"replacement\"")
+          str.gsub("#", "\"replacement\"")
         end
         splitted = text.split("#")
         splitted[0] = splitted.first.gsub("\"replacement\"", "#")

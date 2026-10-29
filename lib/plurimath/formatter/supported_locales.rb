@@ -118,7 +118,7 @@ module Plurimath
           locale_key = key_for(locale)
           return locale_key if locale.nil? || locale_key
 
-          raise UnsupportedLocale.new(locale, LOCALES.keys)
+          raise Plurimath::Errors::UnsupportedLocale.new(locale, LOCALES.keys)
         end
 
         def key_for(locale)
