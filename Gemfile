@@ -17,8 +17,8 @@ end
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 # Parsanol::Slice for the amath SliceAdapter specs.
-# 1.3.110 retains space nodes that the current transform cannot consume.
-gem "parsanol", "= 1.3.109"
+# 1.3.112 restores the v1 edition default (1.3.110 and 1.3.111 are yanked).
+gem "parsanol", "~> 1.3", ">= 1.3.112"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"
