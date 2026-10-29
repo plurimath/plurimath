@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../../../support/shared_formatter_examples"
 
 RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
   def options(symbols)
@@ -32,7 +33,7 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
       result = renderer.render(source("14000"), :e)
 
       expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNotation)
-      expect(result.to_s).to eq("1@4E4")
+      expect_shared_formatter_output("notation-renderer-035", result.to_s)
       expect(result.notation_style).to eq(:e)
       expect(result.exponent).to eq(4)
     end
@@ -53,7 +54,7 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
       result = renderer.render(source("14000"), :scientific)
 
       expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNotation)
-      expect(result.to_s).to eq("1.400 0 × 10^+4")
+      expect_shared_formatter_output("notation-renderer-056", result.to_s)
       expect(result.notation_style).to eq(:scientific)
       expect(result.exponent).to eq(4)
     end
@@ -71,7 +72,7 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
       result = renderer.render(source("14000"), :engineering)
 
       expect(result).to be_a(Plurimath::Formatter::Numbers::FormattedNotation)
-      expect(result.to_s).to eq("14,00 x 10^3")
+      expect_shared_formatter_output("notation-renderer-074", result.to_s)
       expect(result.notation_style).to eq(:engineering)
       expect(result.exponent).to eq(3)
     end
@@ -87,10 +88,10 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
       )
 
       result1 = renderer.render(source("-14000"), :engineering)
-      expect(result1.to_s).to eq("-14.000 x 10^3")
+      expect_shared_formatter_output("notation-renderer-090", result1.to_s)
 
       result2 = renderer.render(source("1.23e4"), :engineering)
-      expect(result2.to_s).to eq("12.3 x 10^3")
+      expect_shared_formatter_output("notation-renderer-093", result2.to_s)
     end
 
     it "preserves zero precision in scientific notation" do
@@ -103,7 +104,7 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
       )
 
       result = renderer.render(source("0.00"), :scientific)
-      expect(result.to_s).to eq("0.00 × 10^0")
+      expect_shared_formatter_output("notation-renderer-106", result.to_s)
     end
 
     it "carries the coefficient as a FormattedNumber" do
@@ -117,7 +118,7 @@ RSpec.describe Plurimath::Formatter::Numbers::NotationRenderer do
 
       result = renderer.render(source("14000"), :scientific)
       expect(result.coefficient).to be_a(Plurimath::Formatter::Numbers::FormattedNumber)
-      expect(result.coefficient.to_s).to eq("1.40")
+      expect_shared_formatter_output("notation-renderer-120", result.coefficient.to_s)
     end
   end
 end

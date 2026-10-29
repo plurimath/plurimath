@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Tr do
   describe ".initialize" do
@@ -20,17 +21,8 @@ RSpec.describe Plurimath::Math::Function::Tr do
   describe ".to_asciimath" do
     subject(:tr) { described_class.new([first]).to_asciimath(options: {}) }
 
-    context "returns instance of Tr" do
-      let(:first) { Plurimath::Math::Symbols::Symbol.new("theta") }
-
-      it "matches epxected value of Tr" do
-        expect(tr).to eq("[theta]")
-      end
-
-      it "doesn't match epxected value of Tr" do
-        expect(tr).not_to eq("[Theta]")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-23-1"
+    it_behaves_like "shared renderer fixture", "function-tr-23-2"
   end
 
   describe ".to_asciimath" do
@@ -38,36 +30,11 @@ RSpec.describe Plurimath::Math::Function::Tr do
       described_class.new([first_value]).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-tr-41-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("[n]")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-49-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("[70]")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("[sum_(&)^(\"so\")]")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-57-1"
   end
 
   describe ".to_mathml" do
@@ -79,73 +46,11 @@ RSpec.describe Plurimath::Math::Function::Tr do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Td.new([
-                                            Plurimath::Math::Symbols::Symbol.new("n"),
-                                          ])
-      end
+    it_behaves_like "shared renderer fixture", "function-tr-82-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtr>
-            <mtd>
-              <mi>n</mi>
-            </mtd>
-          </mtr>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-101-1"
 
-    context "contains Number as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Td.new([
-                                            Plurimath::Math::Number.new("70"),
-                                          ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtr>
-            <mtd>
-              <mn>70</mn>
-            </mtd>
-          </mtr>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Td.new([
-                                            Plurimath::Math::Formula.new([
-                                                                           Plurimath::Math::Function::Sum.new(
-                                                                             Plurimath::Math::Symbols::Ampersand.new,
-                                                                             Plurimath::Math::Function::Text.new("so"),
-                                                                           ),
-                                                                         ]),
-                                          ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtr>
-            <mtd>
-              <mrow>
-                <munderover>
-                  <mo>&#x2211;</mo>
-                  <mo>&</mo>
-                  <mtext>so</mtext>
-                </munderover>
-              </mrow>
-            </mtd>
-          </mtr>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-120-1"
   end
 
   describe ".to_latex" do
@@ -153,47 +58,11 @@ RSpec.describe Plurimath::Math::Function::Tr do
       described_class.new([first_value]).to_latex(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Td.new([
-                                            Plurimath::Math::Symbols::Symbol.new("n"),
-                                          ])
-      end
+    it_behaves_like "shared renderer fixture", "function-tr-156-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("n")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-168-1"
 
-    context "contains Number as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Td.new([
-                                            Plurimath::Math::Number.new("70"),
-                                            Plurimath::Math::Symbols::Symbol.new("n"),
-                                          ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("70 n")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Td.new([
-                                            Plurimath::Math::Formula.new([
-                                                                           Plurimath::Math::Function::Sum.new(
-                                                                             Plurimath::Math::Symbols::Ampersand.new,
-                                                                             Plurimath::Math::Function::Text.new("so"),
-                                                                           ),
-                                                                         ]),
-                                          ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\sum_{\\&}^{\\text{so}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-181-1"
   end
 
   describe ".to_html" do
@@ -201,35 +70,10 @@ RSpec.describe Plurimath::Math::Function::Tr do
       described_class.new([first_value]).to_html(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-tr-204-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<tr>n</tr>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-212-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns html string" do
-        expect(formula).to eql("<tr>70</tr>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expect(formula).to eql("<tr><i>&sum;</i><sub>&</sub><sup>so</sup></tr>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-tr-220-1"
   end
 end

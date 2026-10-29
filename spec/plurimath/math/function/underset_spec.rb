@@ -1,6 +1,11 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Underset do
+  it_behaves_like "shared renderer fixture", "function-underset-display"
+  it_behaves_like "shared renderer fixture", "function-underset-inline"
+  it_behaves_like "shared renderer fixture", "function-underset-omml-roundtrip"
+
   describe ".initialize" do
     it "returns instance of Underset" do
       underset = described_class.new("70", "=")
@@ -19,39 +24,11 @@ RSpec.describe Plurimath::Math::Function::Underset do
       described_class.new(first_value, second_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
+    it_behaves_like "shared renderer fixture", "function-underset-47-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("underset(n)(70)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-underset-56-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("underset(70)(n)")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("underset(sum_(&)^(\"so\"))(70)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-underset-65-1"
   end
 
   describe ".to_mathml" do
@@ -63,64 +40,11 @@ RSpec.describe Plurimath::Math::Function::Underset do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
+    it_behaves_like "shared renderer fixture", "function-underset-91-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
+    it_behaves_like "shared renderer fixture", "function-underset-107-1"
 
-          <munder>
-            <mn>70</mn>
-            <mi>n</mi>
-          </munder>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <munder>
-            <mi>n</mi>
-            <mn>70</mn>
-          </munder>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <munder>
-            <mn>70</mn>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </munder>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-underset-122-1"
   end
 
   describe ".to_latex" do
@@ -128,39 +52,11 @@ RSpec.describe Plurimath::Math::Function::Underset do
       described_class.new(first_value, second_value).to_latex(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
+    it_behaves_like "shared renderer fixture", "function-underset-156-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\underset{n}{70}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-underset-165-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\underset{70}{n}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\underset{ \\left ( \\sum_{\\&}^{\\text{so}} \\right ) }{70}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-underset-174-1"
   end
 
   describe ".to_html" do
@@ -168,38 +64,10 @@ RSpec.describe Plurimath::Math::Function::Underset do
       described_class.new(first_value, second_value).to_html(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
+    it_behaves_like "shared renderer fixture", "function-underset-196-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<i>n</i><i>70</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-underset-205-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i>70</i><i>n</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i><i>70</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-underset-214-1"
   end
 end

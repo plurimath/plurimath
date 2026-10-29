@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::UnaryFunction do
   describe ".initialize" do
@@ -16,13 +17,7 @@ RSpec.describe Plurimath::Math::Function::UnaryFunction do
   describe ".to_asciimath" do
     subject(:formula) { described_class.new(first_value) }
 
-    context "contains sum fuction" do
-      let(:first_value) { Plurimath::Math::Function::Sum.new }
-
-      it "returns asciimath string" do
-        expect(formula.to_asciimath(options: {})).to eq("unaryfunction(sum)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-unary_function-19-1"
   end
 
   describe ".==" do

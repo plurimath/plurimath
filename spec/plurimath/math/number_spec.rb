@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Number do
   around do |example|
@@ -43,36 +44,13 @@ RSpec.describe Plurimath::Math::Number do
   describe ".to_asciimath" do
     subject(:number) { described_class.new(value) }
 
-    context "contains a number string" do
-      let(:value) { "1" }
-
-      it "returns string" do
-        expect(number.to_asciimath(options: {})).to eq(value)
-      end
-
-      it "returns string when formatter is nil" do
-        expect(number.to_asciimath(options: { formatter: nil })).to eq(value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-46-1"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-46-2"
   end
 
-  describe "nil formatter handling" do
-    subject(:number) { described_class.new("42") }
-
-    let(:nil_options) { { formatter: nil } }
-
-    it "returns value from to_latex" do
-      expect(number.to_latex(options: nil_options)).to eq("42")
-    end
-
-    it "returns value from to_html" do
-      expect(number.to_html(options: nil_options)).to eq("42")
-    end
-
-    it "returns value from to_unicodemath" do
-      expect(number.to_unicodemath(options: nil_options)).to eq("42")
-    end
-  end
+  it_behaves_like "shared renderer fixture", "renderer-math-number-number-59-1"
+  it_behaves_like "shared renderer fixture", "renderer-math-number-number-59-2"
+  it_behaves_like "shared renderer fixture", "renderer-math-number-number-59-3"
 
   describe ".==" do
     subject(:number) { described_class.new(value) }
@@ -114,21 +92,9 @@ RSpec.describe Plurimath::Math::Number do
       described_class.new(first_value).to_asciimath(options: {})
     end
 
-    context "contains Single Number as value" do
-      let(:first_value) { "1" }
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-117-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("1")
-      end
-    end
-
-    context "contains Decimal Number as value" do
-      let(:first_value) { "70.8" }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("70.8")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-125-1"
   end
 
   describe ".to_mathml" do
@@ -140,42 +106,20 @@ RSpec.describe Plurimath::Math::Number do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mn>70</mn>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-143-1"
   end
 
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-155-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("n")
-      end
-    end
-
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns mathml string" do
-        expect(formula).to eql("70")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-163-1"
 
     context "with configured number formatter" do
       let(:first_value) { "1234" }
 
-      it "formats the number" do
-        Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
-
-        expect(formula).to eql("1,234")
-      end
+      it_behaves_like "shared renderer fixture", "renderer-math-number-number-174-1"
 
       it "keeps explicit formatter precedence" do
         configured_formatter = Class.new(Plurimath::NumberFormatter) do
@@ -194,33 +138,9 @@ RSpec.describe Plurimath::Math::Number do
         expect(result).to eql("1,234")
       end
 
-      it "forwards options[:format] to the formatter's per-call format override" do
-        formatter = Plurimath::Formatter::Standard.new
-        result = described_class.new("23456").to_asciimath(
-          options: {
-            formatter: formatter,
-            format: {
-              base: 16,
-              base_prefix: "U+",
-              group: "",
-              padding_group_digits: 4,
-              hex_capital: true,
-              significant: 4,
-            },
-          },
-        )
+      it_behaves_like "shared renderer fixture", "renderer-math-number-number-197-1"
 
-        expect(result).to eql("U+5BA0")
-      end
-
-      it "does not forward an empty options[:format] hash" do
-        formatter = Plurimath::Formatter::Standard.new
-        result = described_class.new("1234").to_asciimath(
-          options: { formatter: formatter, format: {} },
-        )
-
-        expect(result).to eql("1,234")
-      end
+      it_behaves_like "shared renderer fixture", "renderer-math-number-number-216-1"
 
       it "does not break custom formatters when options[:format] is absent" do
         custom = Class.new(Plurimath::NumberFormatter) do
@@ -236,13 +156,7 @@ RSpec.describe Plurimath::Math::Number do
       end
     end
 
-    context "with nil formatter" do
-      let(:first_value) { "42" }
-
-      it "returns raw value" do
-        expect(formula).to eql("42")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-239-1"
   end
 
   describe ".to_omml" do
@@ -254,33 +168,15 @@ RSpec.describe Plurimath::Math::Number do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<m:t>70</m:t>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-257-1"
   end
 
   describe ".to_html" do
     subject(:formula) { described_class.new(first_value).to_html(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-269-1"
 
-      it "returns html string" do
-        expect(formula).to be_xml_equivalent_to("n")
-      end
-    end
-
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns html string" do
-        expect(formula).to be_xml_equivalent_to("70")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-277-1"
   end
 
   describe ".validate_function_formula" do
@@ -327,283 +223,44 @@ RSpec.describe Plurimath::Math::Number do
       Plurimath.configuration.number_formatter = previous_formatter
     end
 
-    describe "to_mathml_without_math_tag" do
-      it "produces msub for base 16" do
-        Plurimath.configuration.number_formatter = hex_formatter
-        xml = Plurimath.xml_engine.dump(
-          described_class.new("255").to_mathml_without_math_tag(false,
-                                                                options: {}),
-          indent: 2,
-        )
-
-        expect(xml).to be_xml_equivalent_to("<msub><mn>ff</mn><mn>16</mn></msub>")
-      end
-
-      it "produces msub for base 2" do
-        Plurimath.configuration.number_formatter = bin_formatter
-        xml = Plurimath.xml_engine.dump(
-          described_class.new("10").to_mathml_without_math_tag(false,
-                                                               options: {}),
-          indent: 2,
-        )
-
-        expect(xml).to be_xml_equivalent_to("<msub><mn>1,010</mn><mn>2</mn></msub>")
-      end
-
-      it "produces msub for base 8" do
-        Plurimath.configuration.number_formatter = oct_formatter
-        xml = Plurimath.xml_engine.dump(
-          described_class.new("15").to_mathml_without_math_tag(false,
-                                                               options: {}),
-          indent: 2,
-        )
-
-        expect(xml).to be_xml_equivalent_to("<msub><mn>17</mn><mn>8</mn></msub>")
-      end
-
-      it "wraps negative numbers in mrow with mo sign" do
-        Plurimath.configuration.number_formatter = hex_formatter
-        xml = Plurimath.xml_engine.dump(
-          described_class.new("-255").to_mathml_without_math_tag(false,
-                                                                 options: {}),
-          indent: 2,
-        )
-
-        expect(xml).to be_xml_equivalent_to(
-          "<mrow><mo>-</mo><msub><mn>ff</mn><mn>16</mn></msub></mrow>",
-        )
-      end
-
-      it "wraps explicit plus in mrow with mo sign" do
-        Plurimath.configuration.number_formatter = plus_hex_formatter
-        xml = Plurimath.xml_engine.dump(
-          described_class.new("255").to_mathml_without_math_tag(false,
-                                                                options: {}),
-          indent: 2,
-        )
-
-        expect(xml).to be_xml_equivalent_to(
-          "<mrow><mo>+</mo><msub><mn>ff</mn><mn>16</mn></msub></mrow>",
-        )
-      end
-
-      it "includes decimal point in digit mn element" do
-        Plurimath.configuration.number_formatter = hex_formatter
-        xml = Plurimath.xml_engine.dump(
-          described_class.new("15.5").to_mathml_without_math_tag(false,
-                                                                 options: {}),
-          indent: 2,
-        )
-
-        expect(xml).to be_xml_equivalent_to("<msub><mn>f.8</mn><mn>16</mn></msub>")
-      end
-
-      it "falls back to mn for base 10" do
-        Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
-        xml = Plurimath.xml_engine.dump(
-          described_class.new("42").to_mathml_without_math_tag(false,
-                                                               options: {}),
-          indent: 2,
-        )
-
-        expect(xml).to be_xml_equivalent_to("<mn>42</mn>")
-      end
-
-      it "falls back to mn without formatter" do
-        Plurimath.configuration.number_formatter = nil
-        xml = Plurimath.xml_engine.dump(
-          described_class.new("255").to_mathml_without_math_tag(false,
-                                                                options: {}),
-          indent: 2,
-        )
-
-        expect(xml).to be_xml_equivalent_to("<mn>255</mn>")
-      end
-    end
-
-    describe "to_latex" do
-      it "produces subscript for base 16" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("255").to_latex(options: {})).to eq("\\mathrm{ff}_{16}")
-      end
-
-      it "produces subscript for base 2" do
-        Plurimath.configuration.number_formatter = bin_formatter
-
-        expect(described_class.new("10").to_latex(options: {})).to eq("\\mathrm{1,010}_{2}")
-      end
-
-      it "prepends minus sign for negative numbers" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("-255").to_latex(options: {})).to eq("-\\mathrm{ff}_{16}")
-      end
-
-      it "prepends plus sign when number_sign is :plus" do
-        Plurimath.configuration.number_formatter = plus_hex_formatter
-
-        expect(described_class.new("255").to_latex(options: {})).to eq("+\\mathrm{ff}_{16}")
-      end
-
-      it "includes decimal point in digits" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("15.5").to_latex(options: {})).to eq("\\mathrm{f.8}_{16}")
-      end
-
-      it "returns plain string for base 10" do
-        Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
-
-        expect(described_class.new("42").to_latex(options: {})).to eq("42")
-      end
-    end
-
-    describe "to_asciimath" do
-      it "produces subscript for base 16" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("255").to_asciimath(options: {})).to eq("ff_(16)")
-      end
-
-      it "produces subscript for base 2" do
-        Plurimath.configuration.number_formatter = bin_formatter
-
-        expect(described_class.new("10").to_asciimath(options: {})).to eq("1,010_(2)")
-      end
-
-      it "prepends minus sign for negative numbers" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("-255").to_asciimath(options: {})).to eq("-ff_(16)")
-      end
-
-      it "prepends plus sign when number_sign is :plus" do
-        Plurimath.configuration.number_formatter = plus_hex_formatter
-
-        expect(described_class.new("255").to_asciimath(options: {})).to eq("+ff_(16)")
-      end
-
-      it "returns plain string for base 10" do
-        Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
-
-        expect(described_class.new("42").to_asciimath(options: {})).to eq("42")
-      end
-    end
-
-    describe "to_html" do
-      it "produces sub tag for base 16" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("255").to_html(options: {})).to eq("ff<sub>16</sub>")
-      end
-
-      it "produces sub tag for base 2" do
-        Plurimath.configuration.number_formatter = bin_formatter
-
-        expect(described_class.new("10").to_html(options: {})).to eq("1,010<sub>2</sub>")
-      end
-
-      it "prepends minus sign for negative numbers" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("-255").to_html(options: {})).to eq("-ff<sub>16</sub>")
-      end
-
-      it "prepends plus sign when number_sign is :plus" do
-        Plurimath.configuration.number_formatter = plus_hex_formatter
-
-        expect(described_class.new("255").to_html(options: {})).to eq("+ff<sub>16</sub>")
-      end
-
-      it "returns plain string for base 10" do
-        Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
-
-        expect(described_class.new("42").to_html(options: {})).to eq("42")
-      end
-    end
-
-    describe "to_unicodemath" do
-      it "produces subscript for base 16" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("255").to_unicodemath(options: {})).to eq("ff_(16)")
-      end
-
-      it "produces subscript for base 2" do
-        Plurimath.configuration.number_formatter = bin_formatter
-
-        expect(described_class.new("10").to_unicodemath(options: {})).to eq("1,010_(2)")
-      end
-
-      it "prepends minus sign for negative numbers" do
-        Plurimath.configuration.number_formatter = hex_formatter
-
-        expect(described_class.new("-255").to_unicodemath(options: {})).to eq("-ff_(16)")
-      end
-
-      it "prepends plus sign when number_sign is :plus" do
-        Plurimath.configuration.number_formatter = plus_hex_formatter
-
-        expect(described_class.new("255").to_unicodemath(options: {})).to eq("+ff_(16)")
-      end
-
-      it "returns plain string for base 10" do
-        Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
-
-        expect(described_class.new("42").to_unicodemath(options: {})).to eq("42")
-      end
-    end
-
-    describe "to_omml_without_math_tag" do
-      it "produces sSub structure for base 16" do
-        Plurimath.configuration.number_formatter = hex_formatter
-        result = described_class.new("255").to_omml_without_math_tag(true,
-                                                                     options: {})
-        xml = Plurimath.xml_engine.dump(result.first, indent: 2)
-
-        expect(xml).to be_xml_equivalent_to(
-          "<m:sSub><m:sSubPr><m:ctrlPr><w:rPr><w:rFonts w:ascii=\"Cambria Math\" w:hAnsi=\"Cambria Math\"/><w:i/></w:rPr></m:ctrlPr></m:sSubPr>" \
-          "<m:e><m:r><m:t>ff</m:t></m:r></m:e>" \
-          "<m:sub><m:r><m:t>16</m:t></m:r></m:sub></m:sSub>",
-        )
-      end
-
-      it "includes sign inside e element for negative numbers" do
-        Plurimath.configuration.number_formatter = hex_formatter
-        result = described_class.new("-255").to_omml_without_math_tag(true,
-                                                                      options: {})
-        xml = Plurimath.xml_engine.dump(result.first, indent: 2)
-
-        expect(xml).to be_xml_equivalent_to(
-          "<m:sSub><m:sSubPr><m:ctrlPr><w:rPr><w:rFonts w:ascii=\"Cambria Math\" w:hAnsi=\"Cambria Math\"/><w:i/></w:rPr></m:ctrlPr></m:sSubPr>" \
-          "<m:e><m:r><m:t>-ff</m:t></m:r></m:e>" \
-          "<m:sub><m:r><m:t>16</m:t></m:r></m:sub></m:sSub>",
-        )
-      end
-
-      it "includes plus sign inside e element for number_sign :plus" do
-        Plurimath.configuration.number_formatter = plus_hex_formatter
-        result = described_class.new("255").to_omml_without_math_tag(true,
-                                                                     options: {})
-        xml = Plurimath.xml_engine.dump(result.first, indent: 2)
-
-        expect(xml).to be_xml_equivalent_to(
-          "<m:sSub><m:sSubPr><m:ctrlPr><w:rPr><w:rFonts w:ascii=\"Cambria Math\" w:hAnsi=\"Cambria Math\"/><w:i/></w:rPr></m:ctrlPr></m:sSubPr>" \
-          "<m:e><m:r><m:t>+ff</m:t></m:r></m:e>" \
-          "<m:sub><m:r><m:t>16</m:t></m:r></m:sub></m:sSub>",
-        )
-      end
-
-      it "falls back to m:t for base 10" do
-        Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
-        result = described_class.new("42").to_omml_without_math_tag(true,
-                                                                    options: {})
-        xml = Plurimath.xml_engine.dump(result.first, indent: 2)
-
-        expect(xml).to be_xml_equivalent_to("<m:t>42</m:t>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-330-1"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-330-2"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-330-3"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-330-4"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-330-5"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-330-6"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-330-7"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-330-8"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-424-1"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-424-2"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-424-3"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-424-4"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-424-5"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-424-6"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-462-1"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-462-2"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-462-3"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-462-4"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-462-5"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-494-1"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-494-2"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-494-3"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-494-4"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-494-5"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-526-1"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-526-2"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-526-3"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-526-4"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-526-5"
+
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-558-1"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-558-2"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-558-3"
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-558-4"
   end
 
   describe "stored base attribute" do
@@ -614,19 +271,9 @@ RSpec.describe Plurimath::Math::Number do
       Plurimath.configuration.number_formatter = previous_formatter
     end
 
-    it "uses stored base for formatting when no explicit base option provided" do
-      Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new
-      number = described_class.new("255", base: 16)
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-617-1"
 
-      expect(number.to_asciimath(options: {})).to eq("ff_(16)")
-    end
-
-    it "stored base takes precedence over formatter built-in base" do
-      Plurimath.configuration.number_formatter = Plurimath::Formatter::Standard.new(options: { base: 8 })
-      number = described_class.new("255", base: 16)
-
-      # stored base (16) is the semantic truth about the number
-      expect(number.to_asciimath(options: {})).to eq("ff_(16)")
-    end
+    # stored base (16) is the semantic truth about the number
+    it_behaves_like "shared renderer fixture", "renderer-math-number-number-624-1"
   end
 end
