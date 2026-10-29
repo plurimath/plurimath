@@ -2,7 +2,7 @@
 
 module Plurimath
   class UnicodeMath
-    class Parse < Parslet::Parser
+    class Parse < Parsanol::Parser
       include Plurimath::BaseNumberPrefix::Parser
       include ParsingRules::Masked
       include ParsingRules::SubSup
@@ -288,7 +288,7 @@ module Plurimath
       root :expression
 
       def decimal_marker
-        # UnicodeMath::Parser entity-encodes input before Parslet sees it, so
+        # UnicodeMath::Parser entity-encodes input before the grammar sees it, so
         # non-ASCII locale markers must match that encoded parser input.
         str(Utility.string_to_html_entity(Plurimath.configuration.decimal))
       end

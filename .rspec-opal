@@ -4,6 +4,7 @@
 -q ll/setup_opal
 --opal-opt=-g,htmlentities
 --opal-opt=-g,parslet
+--opal-opt=-g,parsanol
 --opal-opt=-g,canon
 --opal-opt=-g,oga
 --format documentation

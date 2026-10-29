@@ -2,7 +2,7 @@
 
 module Plurimath
   class Latex
-    class Parse < Parslet::Parser
+    class Parse < Parsanol::Parser
       include Plurimath::BaseNumberPrefix::Parser
 
       rule(:base)          { str("_") }
