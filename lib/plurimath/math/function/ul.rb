@@ -50,7 +50,7 @@ module Plurimath
             groupchr_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("&#x332;")
-            Underset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+            Underset.new(symbol, parameter_one).to_omml_without_math_tag(true,
                                                                          options: options)
           end
         end

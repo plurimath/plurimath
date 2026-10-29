@@ -58,7 +58,7 @@ module Plurimath
             accent_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("&#x302;") unless hide_function_name
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(
+            Overset.new(symbol, parameter_one).to_omml_without_math_tag(
               display_style, options: options
             )
           end
@@ -72,7 +72,7 @@ module Plurimath
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              Overset.new(Utility.filter_values(obj.value), nil),
+              Overset.new(nil, Utility.filter_values(obj.value)),
             )
           end
         end

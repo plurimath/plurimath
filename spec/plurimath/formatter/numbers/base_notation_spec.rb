@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../../../support/shared_formatter_examples"
 
 RSpec.describe Plurimath::Formatter::Numbers::BaseNotation do
   def options(symbols)
@@ -125,13 +126,13 @@ RSpec.describe Plurimath::Formatter::Numbers::BaseNotation do
     it "prepends prefix and appends postfix around digits" do
       notation = described_class.new(base: 16, prefix: "0x", postfix: "h")
 
-      expect(notation.wrap("ff")).to eq("0xffh")
+      expect_shared_formatter_output("base-notation-128", notation.wrap("ff"))
     end
 
     it "returns bare digits with empty prefix and postfix" do
       notation = described_class.new(base: 16)
 
-      expect(notation.wrap("ff")).to eq("ff")
+      expect_shared_formatter_output("base-notation-134", notation.wrap("ff"))
     end
   end
 

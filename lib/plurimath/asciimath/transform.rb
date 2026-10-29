@@ -15,6 +15,14 @@ module Plurimath
       rule(rparen: simple(:rparen)) { Utility.asciimath_symbol_object(rparen) }
       rule(number: simple(:number)) { Math::Number.new(number) }
 
+      rule(negative_mod_operand: simple(:operand)) do
+        if operand.is_a?(Math::Number)
+          Math::Number.new("-#{operand.value}")
+        else
+          Math::Formula.new([Math::Symbols::Minus.new, operand])
+        end
+      end
+
       rule(ternary: simple(:ternary))       { ternary }
       rule(sequence: simple(:sequence))     { sequence }
       rule(table_row: simple(:table_row))   { table_row }
@@ -1163,6 +1171,224 @@ module Plurimath
           Utility.asciimath_symbol_object(left),
           Utility.asciimath_symbol_object(right),
         )
+      end
+
+      # ustd(...), uexp(...) and ucov(...) (plurimath#493); the tree shape
+      # is docs/uncertainty-asciimath-tree.md.
+      rule(uncertainty: subtree(:uncertainty)) do
+        UncertaintyTree.node(uncertainty)
+      end
+
+      # `sqrt ustd(1,2)`, `sin ustd(1,2)`: the unary rule splices its
+      # unnamed operand next to `unary_class`, so the uncertainty tree is a
+      # sibling key. Built like `sqrt x` (`unary_class` + `symbol`).
+      rule(unary_class: simple(:function),
+           uncertainty: subtree(:uncertainty)) do
+        Utility.get_class(function).new(UncertaintyTree.node(uncertainty))
+      end
+
+      # Parslet::Transform#apply, without recursion: it transforms every
+      # child left to right, then the node itself, exactly as Parslet does,
+      # but keeps its own stack. A long AsciiMath sum is a tree about two
+      # levels deep per term, which overflows a small (1 MiB, as on Windows)
+      # stack when each level is a Ruby call.
+      def apply(obj, context = nil)
+        return transform_elt(obj, context) unless obj.is_a?(Hash) || obj.is_a?(Array)
+
+        stack = [apply_frame(obj)]
+        loop do
+          frame = stack.last
+          if frame[:index] < frame[:items].size
+            key, value = frame[:items][frame[:index]]
+            frame[:index] += 1
+            next stack.push(apply_frame(value, key)) if value.is_a?(Hash) || value.is_a?(Array)
+
+            store_applied(frame[:out], key, transform_elt(value, context))
+          else
+            stack.pop
+            result = transform_elt(frame[:out], context)
+            return result if stack.empty?
+
+            store_applied(stack.last[:out], frame[:key], result)
+          end
+        end
+      end
+
+      def apply_frame(node, key = nil)
+        items = node.is_a?(Hash) ? node.to_a : node.each_with_index.map { |v, i| [i, v] }
+        { items: items, out: node.is_a?(Hash) ? {} : [], index: 0, key: key }
+      end
+
+      def store_applied(out, key, value)
+        out.is_a?(Hash) ? out[key] = value : out << value
+      end
+
+      private :apply_frame, :store_applied
+
+      # A hash that comes back from Parslet::Transform#transform_elt matched no
+      # rule. One that still holds an uncertainty tree or node would reach
+      # the Formula as a raw Hash and fail only on output, so it is
+      # rejected here instead. This hook runs after child traversal, once per
+      # node, as #apply calls it.
+      def transform_elt(obj, context)
+        result = super
+        UncertaintyTree.stranded!(result) if result.is_a?(Hash)
+        result
+      end
+
+      # Builds Math::Function::Uncertainty from the fields of an
+      # `uncertainty:` tree. Every leaf is the text exactly as written; the
+      # node's constructor does all validation of numbers and categories.
+      module UncertaintyTree
+        CATEGORIES = {
+          "ustd" => :standard,
+          "uexp" => :expanded,
+          "ucov" => :coverage_interval,
+        }.freeze
+
+        FIELDS = {
+          standard: %i[value magnitude concise_digits unit],
+          expanded: %i[value magnitude coverage_factor coverage_probability
+                       unit],
+          coverage_interval: %i[value lower upper coverage_probability
+                                interval_kind unit],
+        }.freeze
+
+        NUMBER_FIELDS = %i[magnitude coverage_factor coverage_probability
+                           lower upper].freeze
+        SCALED_FIELDS = %i[magnitude lower upper].freeze
+        MAX_SCALED_DECIMAL_LENGTH = 1_000_000
+
+        # `probabilistically-symmetric` would read as a subtraction in
+        # AsciiMath, so it is spelled `symmetric` there.
+        INTERVAL_KINDS = {
+          "shortest" => :shortest,
+          "symmetric" => :probabilistically_symmetric,
+        }.freeze
+
+        module_function
+
+        def node(tree)
+          fields = leaves(tree)
+          category = CATEGORIES[fields.delete(:uncertainty_class)]
+          invalid!("unknown uncertainty class in #{tree.inspect}") unless category
+          exponent = fields.delete(:shared_exponent)
+          unknown = fields.keys - FIELDS[category]
+          invalid!("unexpected #{unknown.join(', ')} in #{tree.inspect}") unless unknown.empty?
+
+          # Concise digits describe the unscaled value's last decimal place.
+          # Derive their magnitude before moving either decimal point.
+          attributes = options(fields)
+          value = number(fields[:value])
+          if exponent
+            invalid!("invalid shared exponent #{exponent.inspect}") unless exponent.match?(/\A[+-]?[0-9]+\z/)
+            power = Integer(exponent, 10)
+            value = scale_number(value, power)
+            SCALED_FIELDS.each do |field|
+              attributes[field] = scale_number(attributes[field], power)
+            end
+          end
+          Math::Function::Uncertainty.new(
+            value,
+            category: category,
+            **attributes,
+          )
+        end
+
+        # Keep the model's plain-decimal contract. A shared exponent changes
+        # text positions only; coverage factors/probabilities never pass here.
+        def scale_number(node, power)
+          return node if node.nil? || power.zero?
+
+          match = node.value.match(/\A(-?)([0-9]+)(?:\.([0-9]+))?\z/)
+          invalid!("invalid scaled decimal #{node.value.inspect}") unless match
+          sign, whole, fraction = match.captures
+          digits = whole + fraction.to_s
+          point = whole.length + power
+          length = if point <= 0
+                     2 - point + digits.length
+                   elsif point >= digits.length
+                     point
+                   else
+                     digits.length + 1
+                   end
+          if length + sign.length > MAX_SCALED_DECIMAL_LENGTH
+            invalid!("shared exponent expands beyond #{MAX_SCALED_DECIMAL_LENGTH} decimal characters")
+          end
+          text = if point <= 0
+                   "0.#{'0' * -point}#{digits}"
+                 elsif point >= digits.length
+                   digits + "0" * (point - digits.length)
+                 else
+                   "#{digits[0...point]}.#{digits[point..]}"
+                 end
+          number(sign + text.sub(/\A0+(?=[0-9])/, ""))
+        end
+
+        def leaves(tree)
+          valid = tree.is_a?(Hash) &&
+            tree.values.all? { |leaf| leaf.is_a?(Parslet::Slice) || leaf.is_a?(String) }
+          invalid!("expected a hash of text fields, got #{tree.inspect}") unless valid
+
+          tree.transform_values(&:to_s)
+        end
+
+        def options(fields)
+          options = NUMBER_FIELDS.to_h { |field| [field, number(fields[field])] }
+          options[:interval_kind] = interval_kind(fields[:interval_kind])
+          options[:unit] = fields[:unit] && Math::Function::Unitsml.new(fields[:unit])
+          concise!(options, fields) if fields.key?(:concise_digits)
+          options
+        end
+
+        def interval_kind(name)
+          return if name.nil?
+
+          INTERVAL_KINDS.fetch(name) { invalid!("unknown interval kind #{name.inspect}") }
+        end
+
+        # ustd(1.230(4)): the digits count in units of the value's last
+        # decimal place, so 4 after 1.230 is 0.004.
+        def concise!(options, fields)
+          invalid!("ustd takes a magnitude or concise digits, not both") if fields.key?(:magnitude)
+          digits = fields[:concise_digits]
+          invalid!("concise digits #{digits.inspect} must be digits only") unless digits.match?(/\A[0-9]+\z/)
+
+          options[:magnitude] = number(concise_magnitude(fields[:value].to_s, digits))
+          options[:notation] = :concise
+        end
+
+        def concise_magnitude(value, digits)
+          places = value.include?(".") ? value.split(".", 2).last.length : 0
+          padded = digits.rjust(places + 1, "0")
+          whole = padded[0, padded.length - places].sub(/\A0+(?=[0-9])/, "")
+          places.zero? ? whole : "#{whole}.#{padded[-places..]}"
+        end
+
+        def number(text)
+          text && Math::Number.new(text)
+        end
+
+        def stranded!(hash)
+          return unless holds_uncertainty?(hash)
+
+          invalid!("no AsciiMath rule takes an uncertainty in #{hash.inspect}")
+        end
+
+        def holds_uncertainty?(tree)
+          case tree
+          when Hash
+            tree.key?(:uncertainty) || tree.each_value.any? { |v| holds_uncertainty?(v) }
+          when Array
+            tree.any? { |v| holds_uncertainty?(v) }
+          else
+            tree.is_a?(Math::Function::Uncertainty)
+          end
+        end
+
+        def invalid!(detail)
+          raise Errors::InvalidUncertainty.new(detail)
+        end
       end
     end
   end
