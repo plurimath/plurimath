@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Fenced do
   describe ".initialize" do
@@ -27,44 +28,11 @@ RSpec.describe Plurimath::Math::Function::Fenced do
                           third_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Paren::Lround.new }
-      let(:second_value) { [Plurimath::Math::Symbols::Symbol.new("n")] }
-      let(:third_value) { Plurimath::Math::Symbols::Paren::Rround.new }
+    it_behaves_like "shared renderer fixture", "function-fenced-30-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("(n)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-fenced-40-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("{") }
-      let(:second_value) { [Plurimath::Math::Number.new("70")] }
-      let(:third_value) { Plurimath::Math::Number.new("}") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("{70}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("[") }
-      let(:second_value) do
-        [
-          Plurimath::Math::Formula.new([
-                                         Plurimath::Math::Function::Sum.new(
-                                           Plurimath::Math::Symbols::Ampersand.new,
-                                           Plurimath::Math::Function::Text.new("so"),
-                                         ),
-                                       ]),
-        ]
-      end
-      let(:third_value) { Plurimath::Math::Symbols::Symbol.new("]") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("[sum_(&)^(\"so\")]")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-fenced-50-1"
   end
 
   describe ".to_mathml" do
@@ -76,71 +44,11 @@ RSpec.describe Plurimath::Math::Function::Fenced do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Paren::Lround.new }
-      let(:second_value) { [Plurimath::Math::Symbols::Symbol.new("n")] }
-      let(:third_value) { Plurimath::Math::Symbols::Paren::Rround.new }
+    it_behaves_like "shared renderer fixture", "function-fenced-79-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mo>(</mo>
-            <mi>n</mi>
-            <mo>)</mo>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-fenced-96-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Paren::Lround.new }
-      let(:second_value) { [Plurimath::Math::Number.new("70")] }
-      let(:third_value) { Plurimath::Math::Symbols::Paren::Rround.new }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mo>(</mo>
-            <mn>70</mn>
-            <mo>)</mo>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Paren::Lround.new }
-      let(:second_value) do
-        [
-          Plurimath::Math::Formula.new([
-                                         Plurimath::Math::Function::Sum.new(
-                                           Plurimath::Math::Symbols::Ampersand.new,
-                                           Plurimath::Math::Function::Text.new("so"),
-                                         ),
-                                       ]),
-        ]
-      end
-      let(:third_value) { Plurimath::Math::Symbols::Paren::Rround.new }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mo>(</mo>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-            <mo>)</mo>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-fenced-113-1"
   end
 
   describe ".to_latex" do
@@ -149,44 +57,11 @@ RSpec.describe Plurimath::Math::Function::Fenced do
                           third_value).to_latex(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Paren::Lround.new }
-      let(:second_value) { [Plurimath::Math::Symbols::Symbol.new("n")] }
-      let(:third_value) { Plurimath::Math::Symbols::Paren::Rround.new }
+    it_behaves_like "shared renderer fixture", "function-fenced-152-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("( n )")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-fenced-162-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Paren::Lcurly.new }
-      let(:second_value) { [Plurimath::Math::Number.new("70")] }
-      let(:third_value) { Plurimath::Math::Symbols::Paren::Rcurly.new }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\{ 70 \\}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Paren::Lsquare.new }
-      let(:second_value) do
-        [
-          Plurimath::Math::Formula.new([
-                                         Plurimath::Math::Function::Sum.new(
-                                           Plurimath::Math::Symbols::Ampersand.new,
-                                           Plurimath::Math::Function::Text.new("so"),
-                                         ),
-                                       ]),
-        ]
-      end
-      let(:third_value) { Plurimath::Math::Symbols::Paren::Rsquare.new }
-
-      it "returns mathml string" do
-        expect(formula).to eql("[ \\sum_{\\&}^{\\text{so}} ]")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-fenced-172-1"
   end
 
   describe ".to_html" do
@@ -195,44 +70,11 @@ RSpec.describe Plurimath::Math::Function::Fenced do
                           third_value).to_html(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Paren::Lround.new }
-      let(:second_value) { [Plurimath::Math::Symbols::Symbol.new("n")] }
-      let(:third_value) { Plurimath::Math::Symbols::Paren::Rround.new }
+    it_behaves_like "shared renderer fixture", "function-fenced-198-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<i>(</i>n<i>)</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-fenced-208-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("[") }
-      let(:second_value) { [Plurimath::Math::Number.new("70")] }
-      let(:third_value) { Plurimath::Math::Symbols::Symbol.new("]") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i>[</i>70<i>]</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("{") }
-      let(:second_value) do
-        [
-          Plurimath::Math::Formula.new([
-                                         Plurimath::Math::Function::Sum.new(
-                                           Plurimath::Math::Symbols::Ampersand.new,
-                                           Plurimath::Math::Function::Text.new("so"),
-                                         ),
-                                       ]),
-        ]
-      end
-      let(:third_value) { Plurimath::Math::Symbols::Symbol.new("}") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i>{</i><i>&sum;</i><sub>&</sub><sup>so</sup><i>}</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-fenced-218-1"
   end
 
   describe ".==" do

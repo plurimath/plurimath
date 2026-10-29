@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../mathml/uncertainty_marker"
+
 module Plurimath
   class UnicodeMath
     # UnicodeMath-specific helpers extracted from Plurimath::Utility (code-quality
@@ -7,6 +9,42 @@ module Plurimath
     # UnicodeMath files keep resolving here and inherit the generic helpers.
     class Utility < Plurimath::Utility
       class << self
+        # ⓘ("marker" content) is a measurement uncertainty (plurimath#493)
+        # when the marker uses one of its concept names; any other intent
+        # stays a Function::Intent. The marker is authoritative, so only the
+        # ⓐ(unit ...) argument of the content is read.
+        def intent_or_uncertainty(content, intent)
+          marker = intent.is_a?(Math::Function::Text) ? intent.parameter_one : intent.to_s
+          unless Mathml::UncertaintyMarker.marker?(marker)
+            return Math::Function::Intent.new(content, intent)
+          end
+
+          Mathml::UncertaintyMarker.build(marker) do
+            uncertainty_unit(content, marker)
+          end
+        end
+
+        def uncertainty_unit(content, marker)
+          values = content.is_a?(Math::Formula) ? content.value : Array(content)
+          units = values.select do |value|
+            value.is_a?(Math::Function::Arg) &&
+              value.parameter_two.is_a?(Math::Symbols::Symbol) &&
+              value.parameter_two.value == "unit"
+          end
+          if units.length > 1
+            raise Errors::InvalidUncertainty.new(
+              "marker #{marker.inspect}: more than one ⓐ(unit ...) argument",
+            )
+          end
+
+          unit = units.first&.parameter_one
+          unit.nil? || unit.is_a?(Math::Formula) ? unit : Math::Formula.new([unit])
+        end
+
+        def unsupported_arg!
+          raise ArgumentError, "ⓐ needs a name and content, as in ⓐ(name content)"
+        end
+
         def unicode_accents(accents, lang: :unicodemath)
           if accents.is_a?(Math::Function::BinaryFunction)
             accents

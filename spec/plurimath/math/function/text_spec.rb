@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Text do
   describe ".initialize" do
@@ -16,29 +17,11 @@ RSpec.describe Plurimath::Math::Function::Text do
   describe ".to_asciimath" do
     subject(:formula) { described_class.new(first_value).to_asciimath }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "function-text-19-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("\"n\"")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-text-27-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("\"70\"")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "sum_(&)^(so)" }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("\"sum_(&)^(so)\"")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-text-35-1"
   end
 
   describe ".to_mathml" do
@@ -50,85 +33,31 @@ RSpec.describe Plurimath::Math::Function::Text do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { "unicode[:kappa]" }
+    it_behaves_like "shared renderer fixture", "function-text-53-1"
 
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mtext>&#x3ba;</mtext>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-text-61-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "unitsml(kL)" }
-
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mtext>unitsml(kL)</mtext>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "sum_&^so" }
-
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mtext>sum_&^so</mtext>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-text-69-1"
   end
 
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "function-text-81-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\text{n}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-text-89-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\text{70}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "unicode[:kappa]" }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\text{kappa}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-text-97-1"
   end
 
   describe ".to_html" do
     subject(:formula) { described_class.new(first_value).to_html }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "n" }
+    it_behaves_like "shared renderer fixture", "function-text-109-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("n")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-text-117-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "70" }
-
-      it "returns mathml string" do
-        expect(formula).to eql("70")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "unicode[:kappa]" }
-
-      it "returns mathml string" do
-        expect(formula).to eql("&#x3ba;")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-text-125-1"
   end
 
   describe ".validate_function_formula" do

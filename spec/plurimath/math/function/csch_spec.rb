@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Csch do
   describe ".initialize" do
@@ -18,58 +19,11 @@ RSpec.describe Plurimath::Math::Function::Csch do
       described_class.new(first_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Symbol.new("("),
-          [
-            Plurimath::Math::Symbols::Symbol.new("n"),
-          ],
-          Plurimath::Math::Symbols::Symbol.new(")"),
-        )
-      end
+    it_behaves_like "shared renderer fixture", "function-csch-21-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("csch(n)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-csch-37-1"
 
-    context "contains Number as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Symbol.new("("),
-          [
-            Plurimath::Math::Number.new("70"),
-          ],
-          Plurimath::Math::Symbols::Symbol.new(")"),
-        )
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("csch(70)")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Function::Fenced.new(
-          Plurimath::Math::Symbols::Symbol.new("("),
-          [
-            Plurimath::Math::Formula.new([
-                                           Plurimath::Math::Function::Sum.new(
-                                             Plurimath::Math::Symbols::Ampersand.new,
-                                             Plurimath::Math::Function::Text.new("so"),
-                                           ),
-                                         ]),
-          ],
-          Plurimath::Math::Symbols::Symbol.new(")"),
-        )
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("csch(sum_(&)^(\"so\"))")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-csch-53-1"
   end
 
   describe ".to_mathml" do
@@ -81,131 +35,31 @@ RSpec.describe Plurimath::Math::Function::Csch do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-csch-84-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
+    it_behaves_like "shared renderer fixture", "function-csch-99-1"
 
-          <mrow>
-            <mi>csch</mi>
-            <mi>n</mi>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mi>csch</mi>
-            <mn>70</mn>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mi>csch</mi>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-csch-113-1"
   end
 
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-csch-144-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\csch{n}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-csch-152-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\csch{70}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\csch{\\sum_{\\&}^{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-csch-160-1"
   end
 
   describe ".to_html" do
     subject(:formula) { described_class.new(first_value).to_html(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-csch-179-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<i>csch</i><i>n</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-csch-187-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i>csch</i><i>70</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expect(formula).to eql("<i>csch</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-csch-195-1"
   end
 
   describe ".validate_function_formula" do

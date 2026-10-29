@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Cancel do
   describe ".initialize" do
@@ -18,36 +19,11 @@ RSpec.describe Plurimath::Math::Function::Cancel do
       described_class.new(first_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-cancel-21-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("cancel(n)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-cancel-29-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("cancel(70)")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("cancel(sum_(&)^(\"so\"))")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-cancel-37-1"
   end
 
   describe ".to_mathml" do
@@ -59,126 +35,122 @@ RSpec.describe Plurimath::Math::Function::Cancel do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
+    it_behaves_like "shared renderer fixture", "function-cancel-62-1"
+
+    it_behaves_like "shared renderer fixture", "function-cancel-75-1"
+
+    it_behaves_like "shared renderer fixture", "function-cancel-88-1"
+  end
+
+  describe ".to_omml_without_math_tag" do
+    let(:namespace) do
+      { "m" => "http://schemas.openxmlformats.org/officeDocument/2006/math" }
+    end
+    let(:cancel) { described_class.new(first_value) }
+    let(:document) do
+      nodes = cancel.to_omml_without_math_tag(true, options: {})
+      Oga.parse_xml("<root xmlns:m='#{namespace['m']}'>#{dump_ox_nodes(nodes)}</root>")
+    end
+
+    shared_examples "a diagonal cancellation" do
+      it "preserves its argument identity after rendering" do
+        document
+        expect(cancel.parameter_one).to equal(first_value)
+      end
+    end
+
+    context "with a symbol" do
       let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+      let(:expected_text) { ["n"] }
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <menclose notation="updiagonalstrike">
-            <mi>n</mi>
-          </menclose>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
+      it_behaves_like "a diagonal cancellation"
+      it_behaves_like "shared renderer fixture", "function-cancel-1"
     end
 
-    context "contains Number as value" do
+    context "with a number" do
       let(:first_value) { Plurimath::Math::Number.new("70") }
+      let(:expected_text) { ["70"] }
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <menclose notation="updiagonalstrike">
-            <mn>70</mn>
-          </menclose>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
+      it_behaves_like "a diagonal cancellation"
+      it_behaves_like "shared renderer fixture", "function-cancel-2"
     end
 
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
+    context "with a formula" do
+      let(:first_value) { Plurimath::Math::Formula.new([Plurimath::Math::Number.new("70")]) }
+      let(:expected_text) { ["70"] }
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <menclose notation="updiagonalstrike">
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </menclose>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
+      it_behaves_like "a diagonal cancellation"
+      it_behaves_like "shared renderer fixture", "function-cancel-3"
+    end
+
+    context "with an array containing an empty entry" do
+      let(:first_value) do
+        [Plurimath::Math::Symbols::Symbol.new("n"), nil, Plurimath::Math::Number.new("70")]
       end
+      let(:expected_text) { ["n", "70"] }
+
+      it_behaves_like "a diagonal cancellation"
+      it_behaves_like "shared renderer fixture", "function-cancel-4"
+    end
+
+    context "with no argument" do
+      let(:first_value) { nil }
+
+      it_behaves_like "shared renderer fixture", "function-cancel-empty-5"
+    end
+
+    context "with an empty array" do
+      let(:first_value) { [] }
+
+      it_behaves_like "shared renderer fixture", "function-cancel-empty-6"
+    end
+
+    context "with another cancellation" do
+      let(:first_value) { described_class.new(Plurimath::Math::Symbols::Symbol.new("n")) }
+      let(:expected_text) { ["n"] }
+
+      it_behaves_like "a diagonal cancellation"
+      it_behaves_like "shared renderer fixture", "function-cancel-7"
+
+      it_behaves_like "shared renderer fixture", "function-cancel-nested"
+    end
+
+    context "with an empty formula" do
+      let(:first_value) { Plurimath::Math::Formula.new([]) }
+
+      it_behaves_like "shared renderer fixture", "function-cancel-empty-8"
+    end
+
+    context "with an array containing an empty formula" do
+      let(:first_value) { [Plurimath::Math::Formula.new([])] }
+
+      it_behaves_like "shared renderer fixture", "function-cancel-empty-9"
+    end
+
+    context "with an empty nested cancellation" do
+      let(:first_value) { described_class.new }
+
+      it_behaves_like "shared renderer fixture", "function-cancel-empty-10"
     end
   end
 
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-cancel-226-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\cancel{n}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-cancel-234-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\cancel{70}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\cancel{\\sum_{\\&}^{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-cancel-242-1"
   end
 
   describe ".to_html" do
     subject(:formula) { described_class.new(first_value).to_html(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-cancel-261-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<i>cancel</i><i>n</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-cancel-269-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i>cancel</i><i>70</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expect(formula).to eql("<i>cancel</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-cancel-277-1"
   end
 end
