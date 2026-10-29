@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Td do
   describe ".initialize" do
@@ -23,36 +24,11 @@ RSpec.describe Plurimath::Math::Function::Td do
       described_class.new([first_value]).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-td-26-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("n")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-td-34-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("70")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("sum_(&)^(\"so\")")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-td-42-1"
   end
 
   describe ".to_mathml" do
@@ -64,57 +40,11 @@ RSpec.describe Plurimath::Math::Function::Td do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-td-67-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtd>
-            <mi>n</mi>
-          </mtd>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-td-80-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtd>
-            <mn>70</mn>
-          </mtd>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mtd>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </mtd>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-td-93-1"
   end
 
   describe ".to_latex" do
@@ -122,36 +52,16 @@ RSpec.describe Plurimath::Math::Function::Td do
       described_class.new([first_value]).to_latex(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-td-125-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("n")
-      end
-    end
+    # Regression: a leading Symbol whose value merely CONTAINS a pipe is not the
+    # "|" column separator, so the cell renders its content instead of collapsing
+    # to an empty string.
+    it_behaves_like "shared renderer fixture", "function-td-136-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
+    it_behaves_like "shared renderer fixture", "function-td-144-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("70")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\sum_{\\&}^{\\text{so}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-td-152-1"
   end
 
   describe ".to_html" do
@@ -159,35 +69,10 @@ RSpec.describe Plurimath::Math::Function::Td do
       described_class.new([first_value]).to_html(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-td-173-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<td>n</td>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-td-181-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns html string" do
-        expect(formula).to eql("<td>70</td>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expect(formula).to eql("<td><i>&sum;</i><sub>&</sub><sup>so</sup></td>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-td-189-1"
   end
 end

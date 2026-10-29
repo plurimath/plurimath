@@ -7,6 +7,7 @@ module Plurimath
     autoload :Parser, "#{__dir__}/unicode_math/parser"
     autoload :ParsingRules, "#{__dir__}/unicode_math/parsing_rules"
     autoload :Transform, "#{__dir__}/unicode_math/transform"
+    autoload :Utility, "#{__dir__}/unicode_math/utility"
 
     attr_accessor :text
 

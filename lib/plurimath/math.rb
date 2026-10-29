@@ -4,13 +4,18 @@ module Plurimath
   module Math
     autoload :Core, "#{__dir__}/math/core"
     autoload :Evaluation, "#{__dir__}/math/evaluation"
+    autoload :SemanticTree, "#{__dir__}/math/semantic_tree"
     autoload :Formula, "#{__dir__}/math/formula"
+    autoload :ModelHelper, "#{__dir__}/math/model_helper"
     autoload :Function, "#{__dir__}/math/function"
     autoload :InvalidTypeError, "#{__dir__}/errors/invalid_type_error"
+    autoload :MissingDependencyError,
+             "#{__dir__}/errors/missing_dependency_error"
     autoload :Number, "#{__dir__}/math/number"
     autoload :ParseOptionError, "#{__dir__}/errors/parse_option_error"
     autoload :ParseError, "#{__dir__}/errors/parse_error"
     autoload :Renderer, "#{__dir__}/math/renderer"
+    autoload :AmbiguousDecimalError, "#{__dir__}/errors/ambiguous_decimal_error"
     autoload :Symbols, "#{__dir__}/math/symbols"
 
     VALID_TYPES = {

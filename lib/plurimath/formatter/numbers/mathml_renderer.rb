@@ -23,32 +23,32 @@ module Plurimath
           return plain_element(notation) if notation.notation_style == :e
 
           coeff = plain_element(notation.coefficient)
-          times = Utility.ox_element("mo") << notation.times_symbol.to_s
-          base_el = Utility.ox_element("mn") << "10"
-          exp_el = Utility.ox_element("mn") << notation.formatted_exponent
-          sup = Utility.ox_element("msup")
-          Utility.update_nodes(sup, [base_el, exp_el])
-          row = Utility.ox_element("mrow")
-          Utility.update_nodes(row, [coeff, times, sup])
+          times = XmlHelper.ox_element("mo") << notation.times_symbol.to_s
+          base_el = XmlHelper.ox_element("mn") << "10"
+          exp_el = XmlHelper.ox_element("mn") << notation.formatted_exponent
+          sup = XmlHelper.ox_element("msup")
+          XmlHelper.update_nodes(sup, [base_el, exp_el])
+          row = XmlHelper.ox_element("mrow")
+          XmlHelper.update_nodes(row, [coeff, times, sup])
           row
         end
 
         def render_semantic_base(formatted)
-          digits = Utility.ox_element("mn") << formatted.digits_string
-          base_el = Utility.ox_element("mn") << formatted.base_notation.base.to_s
-          sub = Utility.ox_element("msub")
-          Utility.update_nodes(sub, [digits, base_el])
+          digits = XmlHelper.ox_element("mn") << formatted.digits_string
+          base_el = XmlHelper.ox_element("mn") << formatted.base_notation.base.to_s
+          sub = XmlHelper.ox_element("msub")
+          XmlHelper.update_nodes(sub, [digits, base_el])
 
           return sub unless formatted.sign_text
 
-          sign_el = Utility.ox_element("mo") << formatted.sign_text
-          row = Utility.ox_element("mrow")
-          Utility.update_nodes(row, [sign_el, sub])
+          sign_el = XmlHelper.ox_element("mo") << formatted.sign_text
+          row = XmlHelper.ox_element("mrow")
+          XmlHelper.update_nodes(row, [sign_el, sub])
           row
         end
 
         def plain_element(result)
-          Utility.ox_element("mn") << result.to_s
+          XmlHelper.ox_element("mn") << result.to_s
         end
       end
     end

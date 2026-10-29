@@ -62,10 +62,10 @@ module Plurimath
         def to_omml_without_math_tag(display_style, options:)
           return r_element("log", rpr_tag: false) unless any_value_exist?
 
-          ssubsup   = Utility.ox_element("sSubSup", namespace: "m")
-          ssubsuppr = Utility.ox_element("sSubSupPr", namespace: "m")
-          ssubsuppr << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
+          ssubsup   = XmlHelper.ox_element("sSubSup", namespace: "m")
+          ssubsuppr = XmlHelper.ox_element("sSubSupPr", namespace: "m")
+          ssubsuppr << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(
             ssubsup,
             [
               ssubsuppr,
@@ -94,7 +94,7 @@ module Plurimath
             validate_mathml_fields(parameter_one, intent, options: options),
             validate_mathml_fields(parameter_two, intent, options: options),
           ]
-          Utility.update_nodes(ox_element("m#{tag_name}"), new_arr)
+          XmlHelper.update_nodes(ox_element("m#{tag_name}"), new_arr)
         end
 
         def to_unicodemath(options:)
@@ -117,18 +117,18 @@ module Plurimath
         protected
 
         def e_parameter
-          e_tag = Utility.ox_element("e", namespace: "m")
+          e_tag = XmlHelper.ox_element("e", namespace: "m")
           return e_tag if hide_function_name
 
           e_tag << rpr_tag
         end
 
         def rpr_tag
-          rpr_tag = (Utility.ox_element("rPr",
+          rpr_tag = (XmlHelper.ox_element("rPr",
                                         namespace: "m") << msty_tag_with_attrs)
-          r_tag = Utility.ox_element("r", namespace: "m")
-          t_tag = (Utility.ox_element("t", namespace: "m") << "log")
-          Utility.update_nodes(r_tag, [rpr_tag, t_tag])
+          r_tag = XmlHelper.ox_element("r", namespace: "m")
+          t_tag = (XmlHelper.ox_element("t", namespace: "m") << "log")
+          XmlHelper.update_nodes(r_tag, [rpr_tag, t_tag])
         end
 
         def sup_value(options:)

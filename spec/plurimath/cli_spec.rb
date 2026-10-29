@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../support/shared_cli_examples"
 require "plurimath/cli"
 require "tmpdir"
 require "fileutils"
@@ -15,66 +16,11 @@ RSpec.describe Plurimath::Cli do
       end
     end
 
-    context "contains input argument only" do
-      let(:mathml) do
-        <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mo>&#x2211;</mo>
-            </mstyle>
-          </math>
-        MATHML
-      end
+    it_behaves_like "shared CLI conversion", "cli-convert-1"
 
-      it "matches mathml output string" do
-        expect do
-          described_class.start(["convert", "-i", "sum"])
-        end.to output(mathml).to_stdout
-      end
-    end
+    it_behaves_like "shared CLI conversion", "cli-convert-2"
 
-    context "contains input, input language, and output language arguments" do
-      let(:mathml) do
-        <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mo>&#x2211;</mo>
-            </mstyle>
-          </math>
-        MATHML
-      end
-
-      it "matches mathml output string" do
-        expect do
-          described_class.start(["convert", "-i", mathml, "-f", "mathml", "-t",
-                                 "latex"])
-        end.to output("\\sum\n").to_stdout
-      end
-    end
-
-    context "contains file input, input language, and output language arguments" do
-      let(:mathml) do
-        <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <msub>
-                <mfrac>
-                  <mi>s</mi>
-                  <mi>c</mi>
-                </mfrac>
-                <mi>d</mi>
-              </msub>
-            </mstyle>
-          </math>
-        MATHML
-      end
-
-      it "matches mathml output string" do
-        file_path = "spec/plurimath/fixtures/executables/power_base.tex"
-        options = ["convert", "-p", file_path, "-f", "latex", "-t", "mathml"]
-        expect { described_class.start(options) }.to output(mathml).to_stdout
-      end
-    end
+    it_behaves_like "shared CLI conversion", "cli-convert-3"
   end
 
   describe ".render" do

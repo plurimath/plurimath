@@ -7,6 +7,7 @@ module Plurimath
     autoload :Parser, "#{__dir__}/html/parser"
     autoload :Transform, "#{__dir__}/html/transform"
     autoload :TransformUtility, "#{__dir__}/html/transform_utility"
+    autoload :Utility, "#{__dir__}/html/utility"
 
     attr_accessor :text
 

@@ -17,7 +17,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          first_value = Utility.ox_element("mo") << class_name
+          first_value = XmlHelper.ox_element("mo") << class_name
           return first_value unless any_value_exist?
 
           tag_name = if parameter_two && parameter_one
@@ -26,7 +26,7 @@ module Plurimath
                        parameter_one ? "under" : "over"
                      end
           inf_tag = ox_element("m#{tag_name}")
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             inf_tag,
             [
               first_value,

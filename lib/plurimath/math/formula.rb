@@ -5,6 +5,7 @@ module Plurimath
     class Formula < Core
       autoload :Mrow, "#{__dir__}/formula/mrow"
       autoload :Mstyle, "#{__dir__}/formula/mstyle"
+      autoload :ClassTree, "#{__dir__}/formula/class_tree"
 
       include Mathml::FormulaTransformation
 
@@ -13,7 +14,7 @@ module Plurimath
 
       POWER_BASE_CLASSES = %w[powerbase power base].freeze
       DERIVATIVE_CONSTS  = ["&#x1d451;", "&#x2145;", "&#x2146;", "d"].freeze
-      MATH_ZONE_TYPES    = %i[omml latex mathml asciimath unicodemath].freeze
+      MATH_ZONE_TYPES    = %i[omml latex mathml asciimath unicodemath formula].freeze
       OMML_NAMESPACES    = {
         "xmlns:m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
         "xmlns:mc": "http://schemas.openxmlformats.org/markup-compatibility/2006",
@@ -100,8 +101,8 @@ module Plurimath
           style_attrs = { displaystyle: boolean_display_style(display_style) }
           math  = ox_element("math", attributes: math_attrs)
           style = ox_element("mstyle", attributes: style_attrs)
-          Utility.update_nodes(style, mathml_content(intent, options: options))
-          Utility.update_nodes(math, [style])
+          XmlHelper.update_nodes(style, mathml_content(intent, options: options))
+          XmlHelper.update_nodes(math, [style])
           unitsml_post_processing(math, style)
           dump_nodes(math, indent: 2)
         end
@@ -127,7 +128,7 @@ module Plurimath
         mathml_value = mathml_content(intent, options: options)
         attributes = intent_attribute(mathml_value) if intent
         mrow = ox_element("mrow", attributes: attributes)
-        Utility.update_nodes(mrow, mathml_value)
+        XmlHelper.update_nodes(mrow, mathml_value)
       end
 
       def mathml_content(intent, options:)
@@ -160,11 +161,11 @@ formatter: nil, unitsml: {})
           objects = split_on_linebreak ? new_line_support : [self]
           options = { formatter: formatter, unitsml: unitsml }.compact
           options[:formula] ||= self
-          para_element = Utility.ox_element("oMathPara",
+          para_element = XmlHelper.ox_element("oMathPara",
                                             attributes: OMML_NAMESPACES, namespace: "m")
           objects.each.with_index(1) do |object, index|
-            para_element << Utility.update_nodes(
-              Utility.ox_element("oMath", namespace: "m"),
+            para_element << XmlHelper.update_nodes(
+              XmlHelper.ox_element("oMath", namespace: "m"),
               object.omml_content(boolean_display_style(display_style),
                                   options: options),
             )
@@ -195,13 +196,23 @@ formatter: nil, unitsml: {})
       end
 
       def to_display(type = nil, formatter: nil, unitsml: {},
-unary_function_spacing: true)
+unary_function_spacing: true, tree: :display)
+        unless %i[display semantic].include?(tree)
+          raise ArgumentError, "Unknown display tree: #{tree.inspect}"
+        end
+        if tree == :display && type.downcase.to_sym == :formula
+          return ClassTree.new.render(self)
+        end
+
         options = {
           formatter: formatter,
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing,
         }
         options[:formula] ||= self
+        if tree == :semantic
+          return SemanticTree.new(type.downcase.to_sym, options).render(self)
+        end
         return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type
@@ -535,7 +546,7 @@ options:)
       end
 
       def intent_post_processing(nodes, _intent)
-        mrow = Utility.update_nodes(ox_element("mrow"), nodes)
+        mrow = XmlHelper.update_nodes(ox_element("mrow"), nodes)
         upcase_dd_derivative(nodes) if validate_upcase_dd_derivatives?(nodes)
         subsup_dd_derivative(nodes) if validate_subsup_dd_derivatives?(nodes)
         partial_derivative(nodes) if valid_partial_derivative?(nodes)
@@ -654,7 +665,7 @@ options:)
                  node["arg"] = "f"
                  node
                else
-                 Utility.update_nodes(
+                 XmlHelper.update_nodes(
                    ox_element("mrow", attributes: { arg: "f" }),
                    nodes,
                  )
@@ -701,7 +712,7 @@ options:)
         end
         intent_name = "#{intent_names[:derivative]}(1,#{second_arg},#{third_arg})"
         mrow = ox_element("mrow", attributes: { intent: intent_name })
-        nodes.insert(0, Utility.update_nodes(mrow, mrow_nodes))
+        nodes.insert(0, XmlHelper.update_nodes(mrow, mrow_nodes))
       end
 
       def subsup_dd_derivative(nodes)
@@ -796,7 +807,7 @@ options:)
           next if node.name == "mi"
           break if node.name == "mrow"
         end
-        Utility.update_nodes(mrow, row_nodes)
+        XmlHelper.update_nodes(mrow, row_nodes)
       end
 
       def numeric_encoding(node)

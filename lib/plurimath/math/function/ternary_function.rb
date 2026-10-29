@@ -13,7 +13,7 @@ module Plurimath
           @parameter_one = parameter_one
           @parameter_two = parameter_two
           @parameter_three = parameter_three
-          Utility.validate_left_right(variables.map { |var| get(var) })
+          ModelHelper.validate_left_right(variables.map { |var| get(var) })
         end
 
         def ==(object)
@@ -46,7 +46,7 @@ module Plurimath
             validate_mathml_fields(parameter_three, intent, options: options),
           ]
           class_tag = ox_element("m#{class_name}")
-          Utility.update_nodes(class_tag, value_arr)
+          XmlHelper.update_nodes(class_tag, value_arr)
         end
 
         def to_latex(options:)
@@ -214,16 +214,16 @@ options:)
           limloc_arg  = { "m:val": function_type }
           subhide_arg = { "m:val": parameter_one ? "0" : "1" }
           suphide_arg = { "m:val": parameter_two ? "0" : "1" }
-          chr_tag     = Utility.ox_element("chr", attributes: chr_arg,
-                                                  namespace: "m")
-          limloc_tag  = Utility.ox_element("limLoc", attributes: limloc_arg,
-                                                     namespace: "m")
-          subhide_tag = Utility.ox_element("subHide", attributes: subhide_arg,
-                                                      namespace: "m")
-          suphide_tag = Utility.ox_element("supHide", attributes: suphide_arg,
-                                                      namespace: "m")
-          nary_pr_tag = Utility.ox_element("naryPr", namespace: "m")
-          Utility.update_nodes(
+          chr_tag     = XmlHelper.ox_element("chr", attributes: chr_arg,
+                                                    namespace: "m")
+          limloc_tag  = XmlHelper.ox_element("limLoc", attributes: limloc_arg,
+                                                       namespace: "m")
+          subhide_tag = XmlHelper.ox_element("subHide", attributes: subhide_arg,
+                                                        namespace: "m")
+          suphide_tag = XmlHelper.ox_element("supHide", attributes: suphide_arg,
+                                                        namespace: "m")
+          nary_pr_tag = XmlHelper.ox_element("naryPr", namespace: "m")
+          XmlHelper.update_nodes(
             nary_pr_tag,
             [
               chr_tag,
@@ -235,21 +235,20 @@ options:)
         end
 
         def validate_mathml_tag(parameter, intent, options:)
-          return Array(Utility.ox_element("mrow")) unless parameter
+          return Array(XmlHelper.ox_element("mrow")) unless parameter
 
           Array(parameter.to_mathml_without_math_tag(intent, options: options))
         end
 
         def underover(display_style, options:)
-          # Build Overset from source argument positions, not OMML child names,
-          # so shared under/over functions keep the same format-neutral model.
-          overset = Overset.new(parameter_one, parameter_three)
+          # Overset and Underset take script before base; OMML stores base in m:e.
+          overset = Overset.new(parameter_three, parameter_one)
           unless parameter_two
             return overset.to_omml_without_math_tag(display_style,
                                                     options: options)
           end
 
-          Underset.new(overset, parameter_two)&.to_omml_without_math_tag(
+          Underset.new(parameter_two, overset)&.to_omml_without_math_tag(
             display_style, options: options
           )
         end

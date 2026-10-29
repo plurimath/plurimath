@@ -5,7 +5,7 @@ module Plurimath
     module Function
       class Ms < UnaryFunction
         def to_mathml_without_math_tag(_intent, **)
-          Utility.ox_element("ms") << parameter_one
+          XmlHelper.ox_element("ms") << parameter_one
         end
 
         def to_asciimath(**)
@@ -18,7 +18,7 @@ module Plurimath
 
         def to_omml_without_math_tag(_display_style, **)
           [
-            Utility.ox_element("t", namespace: "m") << "“#{parameter_one}”",
+            XmlHelper.ox_element("t", namespace: "m") << "“#{parameter_one}”",
           ]
         end
 

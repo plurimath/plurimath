@@ -8,8 +8,8 @@ module Plurimath
     # This is NOT part of the public API: reach rendering via Plurimath::Math.render
     # or Plurimath::Math::Formula#render. Renderer is the single place `lasem`
     # (native, Opal-incompatible) is required, so the rest of the library stays
-    # decoupled from it. The file is autoloaded and only referenced as a constant,
-    # so it is never pulled into the Opal/plurimath-js bundle.
+    # decoupled from it. Opal excludes the guarded native require when compiling
+    # this autoloaded bridge, and available? is always false under Opal.
     #
     # Not thread-safe: the underlying Lasem native render keeps static parser
     # state and the +@load_error+ diagnostic is shared module state, so callers
@@ -84,9 +84,7 @@ module Plurimath
       # Lazily require the optional gem. Only ever reached on the non-Opal path.
       # Returns true on success, false on LoadError (recorded for diagnostics).
       def load_lasem
-        return true if defined?(Lasem)
-
-        require "lasem"
+        require "lasem" unless RUBY_ENGINE == "opal"
         true
       rescue LoadError => e
         @load_error = e

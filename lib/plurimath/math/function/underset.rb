@@ -26,13 +26,13 @@ module Plurimath
             validate_mathml_fields(parameter_two, intent, options: options),
             validate_mathml_fields(parameter_one, intent, options: options),
           ]
-          Utility.update_nodes(ox_element("munder", attributes: self.options),
+          XmlHelper.update_nodes(ox_element("munder", attributes: self.options),
                                value_array)
         end
 
         def to_omml_without_math_tag(display_style, options:)
           if !display_style
-            base = Base.new(parameter_one, parameter_two)
+            base = Base.new(parameter_two, parameter_one)
             return base.to_omml_without_math_tag(display_style,
                                                  options: options)
           end
@@ -41,16 +41,16 @@ module Plurimath
             return group_chr(display_style, options: options)
           end
 
-          limlow   = Utility.ox_element("limLow", namespace: "m")
-          limlowpr = Utility.ox_element("limLowPr", namespace: "m")
-          limlowpr << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
+          limlow   = XmlHelper.ox_element("limLow", namespace: "m")
+          limlowpr = XmlHelper.ox_element("limLowPr", namespace: "m")
+          limlowpr << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(
             limlow,
             [
               limlowpr,
-              omml_parameter(parameter_one, display_style, tag_name: "e",
+              omml_parameter(parameter_two, display_style, tag_name: "e",
                                                            options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "lim",
+              omml_parameter(parameter_one, display_style, tag_name: "lim",
                                                            options: options),
             ],
           )
@@ -58,15 +58,15 @@ module Plurimath
         end
 
         def group_chr(display_style, options:)
-          groupchr = Utility.ox_element("groupChr", namespace: "m")
-          groupchrpr = Utility.ox_element("groupChrPR", namespace: "m")
-          chr = Utility.ox_element("chr", namespace: "m",
-                                          attributes: { "m:val" => "_" })
-          pos = Utility.ox_element("pos", namespace: "m",
-                                          attributes: { "m:val" => "bot" })
+          groupchr = XmlHelper.ox_element("groupChr", namespace: "m")
+          groupchrpr = XmlHelper.ox_element("groupChrPR", namespace: "m")
+          chr = XmlHelper.ox_element("chr", namespace: "m",
+                                            attributes: { "m:val" => "_" })
+          pos = XmlHelper.ox_element("pos", namespace: "m",
+                                            attributes: { "m:val" => "bot" })
           groupchrpr << chr
           groupchrpr << pos
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             groupchr,
             [
               groupchrpr,

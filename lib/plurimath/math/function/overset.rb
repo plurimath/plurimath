@@ -8,8 +8,8 @@ module Plurimath
 
         FUNCTION = {
           name: "overset",
-          first_value: "base",
-          second_value: "supscript",
+          first_value: "supscript",
+          second_value: "base",
         }.freeze
 
         def initialize(
@@ -26,7 +26,7 @@ module Plurimath
             validate_mathml_fields(parameter_two, intent, options: options),
             validate_mathml_fields(parameter_one, intent, options: options),
           ]
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("mover", attributes: self.options),
             value_array,
           )
@@ -34,24 +34,21 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           if !display_style
-            power = Power.new(parameter_one, parameter_two)
+            power = Power.new(parameter_two, parameter_one)
             return power.to_omml_without_math_tag(display_style,
                                                   options: options)
           end
 
-          limupp   = Utility.ox_element("limUpp", namespace: "m")
-          limupppr = Utility.ox_element("limUppPr", namespace: "m")
-          limupppr << Utility.pr_element("ctrl", true, namespace: "m")
-          Utility.update_nodes(
+          limupp   = XmlHelper.ox_element("limUpp", namespace: "m")
+          limupppr = XmlHelper.ox_element("limUppPr", namespace: "m")
+          limupppr << XmlHelper.pr_element("ctrl", true, namespace: "m")
+          XmlHelper.update_nodes(
             limupp,
             [
               limupppr,
-              # Overset preserves Plurimath's source argument order across
-              # formats; OMML uses this mapping to avoid remapping fields during
-              # MathML/UnicodeMath/OMML round-trips.
-              omml_parameter(parameter_one, display_style, tag_name: "e",
+              omml_parameter(parameter_two, display_style, tag_name: "e",
                                                            options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "lim",
+              omml_parameter(parameter_one, display_style, tag_name: "lim",
                                                            options: options),
             ],
           )

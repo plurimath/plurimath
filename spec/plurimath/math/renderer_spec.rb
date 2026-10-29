@@ -1,4 +1,5 @@
 require "spec_helper"
+require "open3" unless RUBY_ENGINE == "opal"
 
 RSpec.describe Plurimath::Math::Renderer do
   describe ".normalize_format" do
@@ -75,6 +76,36 @@ RSpec.describe Plurimath::Math::Renderer do
   end
 
   describe ".available?" do
+    unless RUBY_ENGINE == "opal"
+      it "loads the backend when its version file has already defined Lasem" do
+        script = <<~RUBY
+          require "lasem/version"
+          require "plurimath"
+          Plurimath::Math.render_available?
+          abort "Lasem backend was not loaded" unless Lasem.singleton_methods(false).include?(:native_available?)
+        RUBY
+        _stdout, stderr, status = Open3.capture3(RbConfig.ruby, "-Ilib", "-e", script)
+
+        expect(status).to be_success, stderr
+      end
+
+      it "compiles and runs the Opal bridge without a native backend dependency" do
+        script = <<~RUBY
+          module Plurimath; module Math; end; end
+          require "plurimath/math/renderer"
+          abort "native backend available under Opal" if Plurimath::Math::Renderer.available?
+          puts "native rendering unavailable"
+        RUBY
+        compiled, stderr, status = Open3.capture3(RbConfig.ruby, "-S", "opal", "-Ilib", "-c", "-e", script)
+        expect(status).to be_success, stderr
+
+        output, stderr, status = Open3.capture3("node", stdin_data: compiled)
+        expect(status).to be_success, stderr
+        expect(output).to eq("native rendering unavailable\n")
+      end
+
+    end
+
     it "is false under Opal regardless of lasem" do
       stub_const("RUBY_ENGINE", "opal")
       expect(described_class.available?).to be(false)

@@ -9,15 +9,15 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_intent, **)
-          mo = Utility.ox_element("mo")
+          mo = XmlHelper.ox_element("mo")
           mo << left_paren if parameter_one
           mo
         end
 
         def to_omml_without_math_tag(_, **)
-          mr = Utility.ox_element("m:r")
+          mr = XmlHelper.ox_element("m:r")
           if parameter_one
-            mt = Utility.ox_element("m:t")
+            mt = XmlHelper.ox_element("m:t")
             mr << (mt << parameter_one)
           end
           [mr]
@@ -48,12 +48,12 @@ module Plurimath
         end
 
         def to_mathml_math_zone(spacing = "", _, _, **)
-          mo_tag = (Utility.ox_element("mo") << left_paren)
+          mo_tag = (XmlHelper.ox_element("mo") << left_paren)
           "#{spacing}\"#{dump_ox_nodes(mo_tag).gsub(/\s+/, '')}\" left\n"
         end
 
         def to_omml_math_zone(spacing = "", _, _, display_style:, **)
-          t_tag = (Utility.ox_element("t", namespace: "m") << left_paren)
+          t_tag = (XmlHelper.ox_element("t", namespace: "m") << left_paren)
           "#{spacing}\"#{dump_ox_nodes(t_tag).gsub(/\s+/, '')}\" left\n"
         end
 

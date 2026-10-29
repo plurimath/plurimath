@@ -58,7 +58,7 @@ module Plurimath
           first_value << invert_unicode_symbols.to_s unless hide_function_name
           return first_value unless any_value_exist?
 
-          munderover_tag = Utility.update_nodes(
+          munderover_tag = XmlHelper.update_nodes(
             sum_tag,
             [
               first_value,
@@ -71,7 +71,7 @@ module Plurimath
           return munderover_tag if parameter_three.nil?
 
           mrow = ox_element("mrow")
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             mrow,
             [
               munderover_tag,
@@ -108,8 +108,8 @@ module Plurimath
         def to_omml_without_math_tag(display_style, options:)
           return r_element("&#x2211;", rpr_tag: false) unless any_value_exist?
 
-          nary = Utility.ox_element("nary", namespace: "m")
-          Utility.update_nodes(
+          nary = XmlHelper.ox_element("nary", namespace: "m")
+          XmlHelper.update_nodes(
             nary,
             [
               narypr(hide_function_name ? "" : "∑"),

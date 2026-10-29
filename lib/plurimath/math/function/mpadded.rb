@@ -31,7 +31,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(intent, options:)
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element(class_name, attributes: self.options),
             Array(mathml_value(intent, options: options)),
           )
@@ -40,7 +40,7 @@ module Plurimath
         def to_omml_without_math_tag(display_style, options:)
           phant   = ox_element("phant", namespace: "m")
           phantpr = ox_element("phantPr", namespace: "m")
-          Utility.update_nodes(phantpr, phant_pr)
+          XmlHelper.update_nodes(phantpr, phant_pr)
           phant << phantpr unless phantpr.nodes.empty?
 
           phant << omml_parameter(parameter_one, display_style, tag_name: "e",

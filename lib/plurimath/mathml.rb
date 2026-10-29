@@ -6,6 +6,7 @@ module Plurimath
     autoload :FormulaTransformation, "#{__dir__}/mathml/formula_transformation"
     autoload :Parser, "#{__dir__}/mathml/parser"
     autoload :Translator, "#{__dir__}/mathml/translator"
+    autoload :Utility, "#{__dir__}/mathml/utility"
 
     attr_accessor :text
 

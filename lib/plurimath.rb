@@ -28,6 +28,7 @@ module Plurimath
   autoload :Unitsml, "plurimath/unitsml"
   autoload :Utility, "plurimath/utility"
   autoload :XmlEngine, "plurimath/xml_engine"
+  autoload :XmlHelper, "plurimath/xml_helper"
   autoload :Version, "plurimath/version"
 
   def mml_adapter(adapter)

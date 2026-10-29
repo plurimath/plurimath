@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "mml"
+require_relative "uncertainty_marker"
 
 module Plurimath
   class Mathml
@@ -91,6 +92,8 @@ module Plurimath
 
       # MathML element: <mrow>
       def mrow_to_mrow(mrow)
+        return mrow_to_uncertainty(mrow) if uncertainty_mrow?(mrow)
+
         children = ordered_children(mrow)
         formula_values = children.filter_map do |child|
           mml_to_plurimath(child)
@@ -115,6 +118,35 @@ module Plurimath
         Plurimath::Math::Formula.new(mrow_obj.value)
       end
 
+      # An mrow whose intent is an uncertainty marker (plurimath#493). The
+      # marker is authoritative; the visible children are regenerated on
+      # output, so only the child marked arg="unit" is read.
+      def uncertainty_mrow?(mrow)
+        mrow.respond_to?(:intent) && UncertaintyMarker.marker?(mrow.intent)
+      end
+
+      def mrow_to_uncertainty(mrow)
+        UncertaintyMarker.build(mrow.intent) { uncertainty_unit(mrow) }
+      end
+
+      def uncertainty_unit(mrow)
+        units = ordered_children(mrow).select do |child|
+          child.respond_to?(:arg) && child.arg == "unit"
+        end
+        return if units.empty?
+
+        if units.length > 1
+          raise Plurimath::Errors::InvalidUncertainty.new(
+            "intent #{mrow.intent.inspect}: more than one arg=\"unit\" child",
+          )
+        end
+
+        unit = mml_to_plurimath(units.first)
+        return if unit.nil?
+
+        unit.is_a?(Plurimath::Math::Formula) ? unit : Plurimath::Math::Formula.new([unit])
+      end
+
       # MathML element: <mover> base overscript
       # Note: Overset convention is parameter_one=overscript, parameter_two=base
       # (reversed from MathML document order) to match rendering methods
@@ -122,6 +154,12 @@ module Plurimath
         children = content_children(mover)
         base = filter_child(mml_to_plurimath(children[0]))
         overscript = filter_child(mml_to_plurimath(children[1]))
+        # An accent character that has no function mapping arrives as a plain
+        # symbol; promote it here, where it is unambiguously an accent.
+        if overscript.instance_of?(Plurimath::Math::Symbols::Symbol)
+          overscript =
+            Utility.contextual_accent_from_token(overscript.value) || overscript
+        end
         options = {}
         options[:accent] = true if truthy_mathml_bool?(mover.accent)
 

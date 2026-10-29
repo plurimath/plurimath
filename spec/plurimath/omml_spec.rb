@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Omml do
   describe ".initialize" do
@@ -22,564 +23,63 @@ RSpec.describe Plurimath::Omml do
   describe ".to_latex, to_mathml, to_asciimath" do
     subject(:formula) { described_class.new(string).to_formula }
 
-    context "contains example #01" do
-      let(:string) do
-        <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:nary>
-                <m:naryPr>
-                  <m:limLoc m:val="subSup"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:naryPr>
-                <m:sub>
-                  <m:r>
-                    <m:t>2</m:t>
-                  </m:r>
-                </m:sub>
-                <m:sup>
-                  <m:r>
-                    <m:t>1</m:t>
-                  </m:r>
-                </m:sup>
-                <m:e>
-                  <m:r>
-                    <m:t>3</m:t>
-                  </m:r>
-                </m:e>
-              </m:nary>
-            </m:oMath>
-          </m:oMathPara>
-        OMML
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-26-1"
 
-      it "returns parsed Asciimath to Formula" do
-        latex = '\int_{2}^{1} 3'
-        asciimath = "int_(2)^(1) 3"
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow>
-                <msubsup>
-                  <mo>&#x222b;</mo>
-                  <mn>2</mn>
-                  <mn>1</mn>
-                </msubsup>
-                <mrow>
-                  <mn>3</mn>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
-        expect(formula.to_asciimath).to eq(asciimath)
-      end
-    end
+    # Built here rather than through the memoized subject: the suite reruns
+    # each example for Ox and Oga on the same instance, so a memoized formula
+    # would be parsed once and an engine-specific regression would slip by.
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-41-1"
 
-    context "converts characters to unicode example #02" do
-      let(:input) do
-        <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true">
-            <mtext>α</mtext>
-            <mtext>&#x3b1;</mtext>
-            <mtext>&alpha;</mtext>
-          </math>
-        MATHML
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-65-1"
 
-      let(:expected_output) do
-        <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:r>
-                <m:rPr>
-                  <m:sty m:val="p"/>
-                </m:rPr>
-                <m:t>&#x3b1;</m:t>
-              </m:r>
-              <m:r>
-                <m:rPr>
-                  <m:sty m:val="p"/>
-                </m:rPr>
-                <m:t>&#x3b1;</m:t>
-              </m:r>
-              <m:r>
-                <m:rPr>
-                  <m:sty m:val="p"/>
-                </m:rPr>
-                <m:t>&#x3b1;</m:t>
-              </m:r>
-            </m:oMath>
-          </m:oMathPara>
-        OMML
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-83-1"
 
-      it "converts `alpha`, `α` to `&#x3b1;`" do
-        formula = Plurimath::Math.parse(input, :mathml)
-        expect(formula.to_omml).to eq(expected_output)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-144-1"
 
-    context "contains nary munder example #03" do
-      let(:string) do
-        <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:nary>
-                <m:naryPr>
-                  <m:limLoc m:val="undOvr"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:naryPr>
-                <m:sub>
-                  <m:r>
-                    <m:t>2</m:t>
-                  </m:r>
-                </m:sub>
-                <m:sup/>
-                <m:e>
-                  <m:r>
-                    <m:t>3</m:t>
-                  </m:r>
-                </m:e>
-              </m:nary>
-            </m:oMath>
-          </m:oMathPara>
-        OMML
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-188-1"
 
-      it "converts and matches OMML to MathML" do
-        latex = '\int_{2} 3'
-        asciimath = "int_(2) 3"
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow>
-                <munder>
-                  <mo>&#x222b;</mo>
-                  <mn>2</mn>
-                </munder>
-                <mrow>
-                  <mn>3</mn>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
-        expect(formula.to_asciimath).to eq(asciimath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-244-1"
 
-    context "contains nary msub example #04" do
-      let(:string) do
-        <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:nary>
-                <m:naryPr>
-                  <m:limLoc m:val="subSup"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:naryPr>
-                <m:sub>
-                  <m:r>
-                    <m:t>2</m:t>
-                  </m:r>
-                </m:sub>
-                <m:sup/>
-                <m:e>
-                  <m:r>
-                    <m:t>3</m:t>
-                  </m:r>
-                </m:e>
-              </m:nary>
-            </m:oMath>
-          </m:oMathPara>
-        OMML
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-300-1"
 
-      it "returns parsed Asciimath to Formula" do
-        latex = '\int_{2} 3'
-        asciimath = "int_(2) 3"
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow>
-                <msub>
-                  <mo>&#x222b;</mo>
-                  <mn>2</mn>
-                </msub>
-                <mrow>
-                  <mn>3</mn>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
-        expect(formula.to_asciimath).to eq(asciimath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-356-1"
 
-    context "contains nary mover example #05" do
-      let(:string) do
-        <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:nary>
-                <m:naryPr>
-                  <m:limLoc m:val="undOvr"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:naryPr>
-                <m:sub/>
-                <m:sup>
-                  <m:r>
-                    <m:t>1</m:t>
-                  </m:r>
-                </m:sup>
-                <m:e>
-                  <m:r>
-                    <m:t>3</m:t>
-                  </m:r>
-                </m:e>
-              </m:nary>
-            </m:oMath>
-          </m:oMathPara>
-        OMML
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-412-1"
 
-      it "returns parsed Asciimath to Formula" do
-        latex = '\int^{1} 3'
-        asciimath = "int^(1) 3"
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow>
-                <mover>
-                  <mo>&#x222b;</mo>
-                  <mn>1</mn>
-                </mover>
-                <mrow>
-                  <mn>3</mn>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
-        expect(formula.to_asciimath).to eq(asciimath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-449-1"
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-449-2"
 
-    context "contains nary msup example #06" do
-      let(:string) do
-        <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:nary>
-                <m:naryPr>
-                  <m:limLoc m:val="subSup"/>
-                  <m:ctrlPr>
-                    <w:rPr>
-                      <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
-                      <w:i/>
-                    </w:rPr>
-                  </m:ctrlPr>
-                </m:naryPr>
-                <m:sub/>
-                <m:sup>
-                  <m:r>
-                    <m:t>1</m:t>
-                  </m:r>
-                </m:sup>
-                <m:e>
-                  <m:r>
-                    <m:t>3</m:t>
-                  </m:r>
-                </m:e>
-              </m:nary>
-            </m:oMath>
-          </m:oMathPara>
-        OMML
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-474-1"
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-474-2"
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-474-3"
 
-      it "returns parsed Asciimath to Formula" do
-        latex = '\int^{1} 3'
-        asciimath = "int^(1) 3"
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow>
-                <msup>
-                  <mo>&#x222b;</mo>
-                  <mn>1</mn>
-                </msup>
-                <mrow>
-                  <mn>3</mn>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
-        expect(formula.to_asciimath).to eq(asciimath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-501-1"
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-501-2"
 
-    context "contains comment and overline example #07 from plurimath/plurimath#324" do
-      let(:string) do
-        <<~OMML
-          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
-            <m:acc>
-              <m:accPr>
-                <m:chr m:val="‾"/> <!-- Overline character -->
-              </m:accPr>
-              <m:e>
-                <m:r>
-                  <m:t>AB</m:t>
-                </m:r>
-              </m:e>
-            </m:acc>
-          </m:oMath>
-        OMML
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-518-1"
 
-      it "returns parsed Asciimath to Formula" do
-        latex = '\overline{\text{AB}}'
-        asciimath = 'bar("AB")'
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mover accent="true">
-                <mtext>AB</mtext>
-                <mo>&#xaf;</mo>
-              </mover>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula.to_latex).to eq(latex)
-        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
-        expect(formula.to_asciimath).to eq(asciimath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-541-1"
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-541-2"
 
-    context "contains m:acc with combining overline (U+0305) from plurimath/plurimath#engageny" do
-      let(:string) do
-        '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' \
-          '<m:acc><m:accPr><m:chr m:val="&#x305;"/><m:ctrlPr><w:rPr>' \
-          '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/><w:i/>' \
-          "</w:rPr></m:ctrlPr></m:accPr><m:e><m:r><w:rPr>" \
-          '<w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>' \
-          "</w:rPr><m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>"
-      end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-570-1"
 
-      it "converts overbar accent to LaTeX \\overline" do
-        expect(formula.to_latex).to include("\\overline")
-        expect(formula.to_latex).to include("AB")
-      end
-
-      it "converts overbar accent to MathML mover" do
-        mathml = formula.to_mathml
-        expect(mathml).to include("<mover")
-        expect(mathml).to include("accent=\"true\"")
-      end
-
-      it "converts overbar accent to AsciiMath bar" do
-        expect(formula.to_asciimath).to include("bar")
-        expect(formula.to_asciimath).to include("AB")
-      end
-    end
-
-    context "contains m:acc with combining left right arrow above (U+20E1) val attribute" do
-      let(:string) do
-        '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' \
-          '<m:acc><m:accPr><m:chr m:val="&#x20e1;"/></m:accPr><m:e><m:r>' \
-          "<m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>"
-      end
-
-      it "parses U+20E1 accent without error" do
-        expect { formula }.not_to raise_error
-      end
-
-      it "converts to a recognizable output format" do
-        expect(formula.to_asciimath).to be_a(String)
-        expect(formula.to_asciimath).to include("AB")
-      end
-    end
-
-    context "contains m:acc with a symbol accent value" do
-      let(:string) do
-        '<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">' \
-          '<m:acc><m:accPr><m:chr m:val="&#x20d1;"/></m:accPr><m:e><m:r>' \
-          "<m:t>AB</m:t></m:r></m:e></m:acc></m:oMath>"
-      end
-
-      it "serializes the accent as an overscript in MathML" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mover accent="true">
-                <mtext>AB</mtext>
-                <mi>&#x20d1;</mi>
-              </mover>
-            </mstyle>
-          </math>
-        MATHML
-
-        expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
-      end
-    end
-
-    context "contains m:d with implicit default parentheses from plurimath/plurimath#394" do
-      let(:string) do
-        <<~OMML
-          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
-            <m:d>
-              <m:dPr>
-                <m:ctrlPr/>
-              </m:dPr>
-              <m:e>
-                <m:r>
-                  <m:t>7</m:t>
-                </m:r>
-              </m:e>
-            </m:d>
-          </m:oMath>
-        OMML
-      end
-
-      it "defaults to parentheses when begChr and endChr are absent" do
-        expect(formula.to_latex).to include("(")
-        expect(formula.to_latex).to include(")")
-        expect(formula.to_latex).to include("7")
-      end
-
-      it "produces correct AsciiMath with default parentheses" do
-        expect(formula.to_asciimath).to eq("(7)")
-      end
-    end
-
-    context "contains m:d with explicitly empty parentheses from plurimath/plurimath#394" do
-      let(:string) do
-        <<~OMML
-          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
-            <m:d>
-              <m:dPr>
-                <m:begChr m:val="" />
-                <m:endChr m:val="" />
-              </m:dPr>
-              <m:e>
-                <m:r>
-                  <m:t>7</m:t>
-                </m:r>
-              </m:e>
-            </m:d>
-          </m:oMath>
-        OMML
-      end
-
-      it "omits parentheses when begChr and endChr are explicitly empty" do
-        latex = formula.to_latex.strip
-        expect(latex).not_to start_with("(")
-        expect(latex).not_to end_with(")")
-        expect(latex).to include("7")
-      end
-    end
-
-    context "contains m:d with explicit bracket characters" do
-      let(:string) do
-        <<~OMML
-          <m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
-            <m:d>
-              <m:dPr>
-                <m:begChr m:val="[" />
-                <m:endChr m:val="]" />
-              </m:dPr>
-              <m:e>
-                <m:r>
-                  <m:t>7</m:t>
-                </m:r>
-              </m:e>
-            </m:d>
-          </m:oMath>
-        OMML
-      end
-
-      it "uses specified bracket characters" do
-        expect(formula.to_latex).to include("[")
-        expect(formula.to_latex).to include("]")
-        expect(formula.to_asciimath).to eq("[7]")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-597-1"
   end
 
   describe ".to_omml" do
-    context "converts characters to unicode example #02" do
-      let(:input) do
-        <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true">
-            <mtext>α</mtext>
-            <mtext>&#x3b1;</mtext>
-            <mtext>&alpha;</mtext>
-          </math>
-        MATHML
-      end
-      let(:expected_output) do
-        <<~OMML
-          <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main" xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-            <m:oMath>
-              <m:r>
-                <m:rPr>
-                  <m:sty m:val="p"/>
-                </m:rPr>
-                <m:t>&#x3b1;</m:t>
-              </m:r>
-              <m:r>
-                <m:rPr>
-                  <m:sty m:val="p"/>
-                </m:rPr>
-                <m:t>&#x3b1;</m:t>
-              </m:r>
-              <m:r>
-                <m:rPr>
-                  <m:sty m:val="p"/>
-                </m:rPr>
-                <m:t>&#x3b1;</m:t>
-              </m:r>
-            </m:oMath>
-          </m:oMathPara>
-        OMML
-      end
-
-      it "converts `alpha`, `α` to `&#x3b1;`" do
-        formula = Plurimath::Math.parse(input, :mathml)
-        expect(formula.to_omml).to eq(expected_output)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-omml-omml-625-1"
   end
+
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-ubrace"
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-obrace"
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-vec"
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-ddot"
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-overleftrightarrow"
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-tilde"
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-dot"
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-ul"
+  it_behaves_like "shared renderer fixture", "renderer-omml-operand-hat"
+  it_behaves_like "shared renderer fixture", "renderer-omml-compound-1"
+  it_behaves_like "shared renderer fixture", "renderer-omml-compound-2"
+  it_behaves_like "shared renderer fixture", "renderer-omml-compound-3"
 end

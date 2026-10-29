@@ -22,13 +22,13 @@ module Plurimath
               table_tag["intent"] =
                 ":matrix(#{value.length},#{td_count})"
             end
-            Utility.update_nodes(
+            XmlHelper.update_nodes(
               table_tag,
               value&.map do |object|
                 object&.to_mathml_without_math_tag(intent, options: options)
               end,
             )
-            Utility.update_nodes(
+            XmlHelper.update_nodes(
               ox_element("mrow", attributes: intent_attr(intent)),
               [
                 mo_element(mathml_parenthesis(open_paren, intent,

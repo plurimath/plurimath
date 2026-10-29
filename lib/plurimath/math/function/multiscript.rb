@@ -43,7 +43,7 @@ module Plurimath
 
         def to_mathml_without_math_tag(intent, options:)
           mprescript = ox_element("mprescripts") if parameter_two || parameter_three
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("mmultiscripts"),
             [
               parameter_one&.mmultiscript(intent, options: options),
@@ -54,7 +54,7 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(display_style, options:)
-          Utility.update_nodes(
+          XmlHelper.update_nodes(
             ox_element("sPre", namespace: "m"),
             [
               omml_parameter(parameter_one, display_style, tag_name: "e",

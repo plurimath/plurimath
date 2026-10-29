@@ -1,54 +1,18 @@
 require "spec_helper"
-require "plurimath/fixtures/formula_modules/unicode_math_transform_values"
+require_relative "../../support/shared_parser_examples"
 
 RSpec.describe Plurimath::UnicodeMath::Parser do
   describe ".parse" do
     subject(:formula) { described_class.new(string).parse }
 
     context "when parsing decimal markers" do
-      context "when contains decimal full stop" do
-        let(:string) { "1.2" }
+      it_behaves_like "shared parser constructor expectation", "unicode-math-parser-9"
 
-        it "matches formula structure of UnicodeMath" do
-          expected_value = Plurimath::Math::Formula.new([
-                                                          Plurimath::Math::Number.new("1.2"),
-                                                        ])
-          expect(formula).to eq(expected_value)
-        end
-      end
+      it_behaves_like "shared parser constructor expectation", "unicode-math-parser-20"
 
-      context "when contains decimal comma" do
-        let(:string) { "1,2" }
+      it_behaves_like "shared parser constructor expectation", "unicode-math-parser-31"
 
-        it "matches formula structure of UnicodeMath" do
-          expected_value = Plurimath::Math::Formula.new([
-                                                          Plurimath::Math::Number.new("1,2"),
-                                                        ])
-          expect(formula).to eq(expected_value)
-        end
-      end
-
-      context "when contains leading decimal comma" do
-        let(:string) { ",2" }
-
-        it "matches formula structure of UnicodeMath" do
-          expected_value = Plurimath::Math::Formula.new([
-                                                          Plurimath::Math::Number.new(",2"),
-                                                        ])
-          expect(formula).to eq(expected_value)
-        end
-      end
-
-      context "when contains leading decimal full stop" do
-        let(:string) { ".2" }
-
-        it "matches formula structure of UnicodeMath" do
-          expected_value = Plurimath::Math::Formula.new([
-                                                          Plurimath::Math::Number.new(".2"),
-                                                        ])
-          expect(formula).to eq(expected_value)
-        end
-      end
+      it_behaves_like "shared parser constructor expectation", "unicode-math-parser-42"
 
       context "when locale uses comma as the decimal separator" do
         around do |example|
@@ -58,16 +22,7 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
           end
         end
 
-        context "when contains decimal full stop" do
-          let(:string) { "1.2" }
-
-          it "matches formula structure of UnicodeMath" do
-            expected_value = Plurimath::Math::Formula.new([
-                                                            Plurimath::Math::Number.new("1.2"),
-                                                          ])
-            expect(formula).to eq(expected_value)
-          end
-        end
+        it_behaves_like "shared parser constructor expectation", "unicode-math-parser-61"
       end
 
       context "when locale uses Arabic decimal separator" do
@@ -78,51 +33,44 @@ RSpec.describe Plurimath::UnicodeMath::Parser do
           end
         end
 
-        context "when contains localized decimal marker" do
-          let(:string) { "1٫2" }
-
-          it "matches formula structure of UnicodeMath" do
-            expected_value = Plurimath::Math::Formula.new([
-                                                            Plurimath::Math::Number.new("1٫2"),
-                                                          ])
-            expect(formula).to eq(expected_value)
-          end
-        end
+        it_behaves_like "shared parser constructor expectation", "unicode-math-parser-81"
       end
     end
 
-    context "contains n-ary function with mask value #1 #EXAMPLE_676" do
-      let(:string) { "\\amalg13_d\\of d" }
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-94"
 
-      it "matches formula structure of UnicodeMath" do
-        expect(formula).to eq(UnicodeMathTransformValues::EXAMPLE_676)
-      end
-    end
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-102"
 
-    context "contains n-ary function with mask value #2 #EXAMPLE_677" do
-      let(:string) { "\\amalg13_dd\\of d" }
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-110"
 
-      it "matches formula structure of UnicodeMath" do
-        expect(formula).to eq(UnicodeMathTransformValues::EXAMPLE_677)
-      end
-    end
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-118"
 
-    context "contains n-ary function with mask value #3 #EXAMPLE_678" do
-      let(:string) { "\\amalg13_dd^d\\of d" }
+    # Regression: "a" + combining circumflex + prime (U+0061 U+0302 U+2032)
+    # reaches unicode_accents' prime branch. Before the fix the raw entity
+    # string landed in the Power exponent and to_latex raised; now the prime
+    # resolves to a Prime symbol and the conversion succeeds.
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-132-example-1"
 
-      it "matches formula structure of UnicodeMath" do
-        expect(formula).to eq(UnicodeMathTransformValues::EXAMPLE_678)
-      end
-    end
+    # Multi-prime: updated_primes maps each entity, so the exponent is a
+    # Formula of Prime symbols rather than a raw string — guards the
+    # Formula-exponent branch the fix introduces.
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-143-example-1"
 
-    context "contains n-ary function with compatibility wrapper values #EXAMPLE_679" do
-      let(:string) do
-        '\sum_"P{updownharpoonleftleft}"^"P{updownharpoonleftleft}" d'
-      end
+    # Regression: "a" + combining tilde (U+0061 U+0303). The combining tilde
+    # had no symbols_class mapping and leaked the raw "&#x303;" entity into the
+    # accent slot; it now resolves to the Tilde symbol.
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-154-example-1"
 
-      it "matches formula structure of UnicodeMath" do
-        expect(formula).to eq(UnicodeMathTransformValues::EXAMPLE_679)
-      end
-    end
+    # Regression: a slash-prefixed prime (\prime, \pprime, ...) reaches the
+    # prime handling as its bare name. Before the fix it resolved to nil,
+    # leaving an empty exponent ("a^{}"); it now maps to the matching prime
+    # symbol like the direct entity form does.
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-166-example-1"
+
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-174-example-1"
+
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-182-example-1"
+
+    it_behaves_like "shared parser constructor expectation", "unicode-math-parser-190-example-1"
   end
 end

@@ -13,7 +13,8 @@ remains consistent and accurate regardless of the format it is presented in.
 Supported math representational languages:
 
 * https://www.w3.org/TR/MathML3/[MathML 3] (and https://www.w3.org/TR/mathml4/[MathML 4])
-* https://www.asciimath.org[AsciiMath]
+* https://www.asciimath.org[AsciiMath] (parsed by the
+https://github.com/plurimath/amath[amath] gem)
 * http://unicodemath.org[UnicodeMath] (https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.2.pdf[UnicodeMath v3.2])
 * LaTeX math
 * Microsoft Office Math Markup Language (OMML) https://devblogs.microsoft.com/math-in-office/officemath/["OfficeMath"]
@@ -533,7 +534,7 @@ Until `lasem` is published to RubyGems, pin it via Git in your `Gemfile`:
 
 [source,ruby]
 ----
-gem "lasem", github: "plurimath/lasem-ruby", branch: "feat/bootstrap-lasem-wrapper"
+gem "lasem", github: "plurimath/lasem-ruby", branch: "main", submodules: true
 ----
 
 Then verify the native toolchain (cairo, pango, and the Lasem C library):
@@ -2224,8 +2225,29 @@ of the parsed mathematical expression.
 ----
 formula = Plurimath::Math.parse("sin(1)", :asciimath)
 formula.to_display(:formula)
-# ...
+# Plurimath::Math::Formula
+#   value[0]: Plurimath::Math::Function::Sin
+#     parameter_one: Plurimath::Math::Function::Fenced
+#       parameter_one: Plurimath::Math::Symbols::Paren::Lround
+#         value: nil
+#       parameter_two[0]: Plurimath::Math::Number
+#         value: "1"
+#       parameter_three: Plurimath::Math::Symbols::Paren::Rround
+#         value: nil
 ----
+
+This tree shows the stored Ruby objects, with their full class names and ordered
+content fields. Array entries have indexes; empty arrays are shown as `[]` and
+absent values as `nil`. Some symbol classes, such as `Lround`, represent their
+symbol through the class itself and store no literal value. String literals are
+escaped, so quotes, backslashes and newlines stay on one tree line.
+
+The tree preserves `Formula` and `Fenced` wrappers and does not group operators:
+the stored siblings in `a+b` remain siblings. It includes `value`, function
+parameters, table delimiters, UnitsML text and the declared uncertainty fields.
+Formatting flags and options, original input text, XML internals and rendering
+caches are omitted. Repeated references appear at each position; a reference to
+an ancestor is marked `<cycle: ClassName>`.
 
 === Displaying in the math language of expression
 
@@ -2255,6 +2277,107 @@ formula.to_display(:mathml)
 #         |_ "<mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow>" argument
 #            |_ "<mtext>1</mtext>" text
 ----
+
+=== Displaying a semantic operator tree
+
+Use `tree: :semantic` to see which operands each operator owns. The default
+`tree: :display` keeps the display tree shown above. Both views support
+`:asciimath`, `:latex`, `:mathml`, `:omml`, and `:unicodemath`; semantic expression,
+operand-role and leaf labels use the existing writer for the selected language.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("a+b*c", :asciimath)
+puts formula.to_display(:unicodemath, tree: :semantic)
+# |_ Semantic tree
+#    |_ expression "a + b × c"
+#       |_ add "+"
+#          |_ symbol "a"
+#          |_ multiply
+#             |_ symbol "b"
+#             |_ symbol "c"
+----
+
+The semantic view shares numeric evaluation's precedence parser, but does not
+evaluate numbers or require variable bindings. It distinguishes explicit and
+implicit multiplication, retains explicit round groups, and preserves the
+parser's left nesting for chained subtraction, powers, and relations. Fractions,
+radicals, scripts, function arguments, and integral limits remain attached to
+their owning nodes. Fractions expose numerator and denominator roles; functions
+expose their name and argument; powers expose base and script. A square root
+exposes the implicit-degree placeholder `⬚` and its radicand. Unbounded and
+partly bounded integrals, sums and products also retain their body, and a powered
+function such as `sin^2 x` binds `x` as the function argument inside the power.
+
+For example, the original integral expression produces this UnicodeMath view:
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse(
+  '1/(2pi) int_0^(2pi) (bbb"d" theta) / (a + b sin⁡ theta) = 1/sqrt(a^2−b^2)',
+  :asciimath,
+)
+puts formula.to_display(:unicodemath, tree: :semantic)
+# |_ Semantic tree
+#    |_ expression "(1)/(2 π) ∫_(0)^(2 π)▒〖(\\Bbb\"d\" θ)/(a + b sin⁡θ)〗 = (1)/(√(a^(2) − b^(2)))"
+#       |_ relation "="
+#          |_ implicit multiply
+#             |_ fraction "(1)/(2 π)"
+#                |_ numerator "1"
+#                   |_ number "1"
+#                |_ denominator "2 π"
+#                   |_ implicit multiply
+#                      |_ number "2"
+#                      |_ symbol "π"
+#             |_ integral "∫_(0)^(2 π)▒〖(\\Bbb\"d\" θ)/(a + b sin⁡θ)〗"
+#                |_ lower limit "0"
+#                   |_ number "0"
+#                |_ upper limit "2 π"
+#                   |_ implicit multiply
+#                      |_ number "2"
+#                      |_ symbol "π"
+#                |_ integrand "(\\Bbb\"d\" θ)/(a + b sin⁡θ)"
+#                   |_ fraction "(\\Bbb\"d\" θ)/(a + b sin⁡θ)"
+#                      |_ numerator "\\Bbb\"d\" θ"
+#                         |_ implicit multiply
+#                            |_ symbol "\\Bbb\"d\""
+#                            |_ symbol "θ"
+#                      |_ denominator "a + b sin⁡θ"
+#                         |_ add "+"
+#                            |_ symbol "a"
+#                            |_ implicit multiply
+#                               |_ symbol "b"
+#                               |_ apply "sin⁡θ"
+#                                  |_ function name "sin"
+#                                  |_ argument "θ"
+#                                     |_ symbol "θ"
+#          |_ fraction "(1)/(√(a^(2) − b^(2)))"
+#             |_ numerator "1"
+#                |_ number "1"
+#             |_ denominator "√(a^(2) − b^(2))"
+#                |_ square root "√(a^(2) − b^(2))"
+#                   |_ degree "⬚"
+#                   |_ radicand "a^(2) − b^(2)"
+#                      |_ subtract "−"
+#                         |_ power "a^(2)"
+#                            |_ base "a"
+#                               |_ symbol "a"
+#                            |_ script "2"
+#                               |_ number "2"
+#                         |_ power "b^(2)"
+#                            |_ base "b"
+#                               |_ symbol "b"
+#                            |_ script "2"
+#                               |_ number "2"
+----
+
+The double-struck `d` remains a styled symbol multiplied by `theta`; the view
+does not infer a differential. It builds a temporary rendering view and leaves
+the stored Formula model unchanged. This is not a general symbolic algebra
+engine: unsupported or ambiguous constructs, including tables, text runs,
+non-round fences, missing operands, and adjacent number literals, raise
+`Plurimath::Errors::UnsupportedSemanticTreeError` naming the construct. Unknown
+`tree:` values raise `ArgumentError`.
 
 // == Integration
 
@@ -2499,6 +2622,45 @@ NOTE: To regenerate these files, delete them and run:
 * link:UnicodeMath-Supported-Data.adoc[UnicodeMath Supported Data]
 * link:OMML-Supported-Data.adoc[OMML Supported Data]
 * link:UnitsML-Supported-Data.adoc[UnitsML Supported Data]
+
+== Shared conformance fixtures
+
+The language-independent YAML expectations used by the TypeScript port are
+pinned at `submodules/plurimath-testsuite`. Initialize the test data before
+running specs:
+
+[source,sh]
+----
+git submodule update --init --recursive
+bundle exec rspec spec/conformance
+----
+
+The conformance specs validate the dataset and compare preprocessing, parser
+trees, formula models, rendering outcomes, rejection positions and recorded
+formatter/UnitsML calls. Cases are read directly from the pinned repository;
+the test run never regenerates expectations. Missing, empty or unsupported
+corpora fail the run. The golden bytes were recorded with Ox, so these specs
+run once with Ox. Existing native specs still run with Ox and Oga. The native
+filesystem/YAML adapter is excluded from Opal test discovery.
+
+Portable parser and renderer expectations also live in the pinned repository's
+`fixtures/` directory. Native specs select shared case IDs instead of embedding
+expected trees, constructor graphs or output strings. The authored datasets
+retain each assertion's source revision and location. They are extracted from
+the original expectations, independently of production parser or renderer output.
+
+The adapters preserve the original entry points, argument types, configuration,
+operation order and comparisons. Typed constructor recipes distinguish symbols,
+string keys, positional arguments and keyword arguments. Memo references preserve
+sharing within one example, while each example receives fresh mutable values.
+Raw grammar fixtures preserve their preprocessing and tree projection steps.
+External UnicodeMath fixtures retain the original inputs, expected raw trees,
+models and refusal patterns.
+
+These examples continue to run through the native Ox/Oga hooks. Node/Opal uses
+the same YAML files from the checkout. Ruby API, configuration, identity and
+extension-hook tests remain native. Missing cases, unsupported schemas and
+unknown recipe operations fail rather than silently skipping coverage.
 
 == Copyright and license
 
