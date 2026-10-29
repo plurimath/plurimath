@@ -15,6 +15,7 @@ module Plurimath
 
       def parse
         nodes = Parse.new.parse(normalized_text)
+        nodes = JSON.parse(normalized_nodes(nodes).to_json, symbolize_names: true)
         transformed_tree = Transform.new.apply(nodes)
         return transformed_tree if transformed_tree.is_a?(Math::Formula)
 
@@ -22,6 +23,19 @@ module Plurimath
       end
 
       private
+
+      def normalized_nodes(node, depth = 0)
+        if depth >= 100 && (node.is_a?(Hash) || node.is_a?(Array))
+          raise JSON::NestingError, "nesting of #{depth + 1} is too deep"
+        end
+
+        case node
+        when Parsanol::Slice then node.to_s
+        when Hash then node.transform_values { |child| normalized_nodes(child, depth + 1) }
+        when Array then node.map { |child| normalized_nodes(child, depth + 1) }
+        else node
+        end
+      end
 
       def normalized_text
         text.gsub(HTML_ENTITY) do |entity|

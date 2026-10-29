@@ -47,6 +47,12 @@ RSpec.describe Plurimath::Html::Parser do
   end
 
   describe "Plurimath::Math.parse(text, :html)" do
+    it "retains the existing JSON nesting refusal" do
+      expect do
+        Plurimath::Math.parse("x" * 101, :html)
+      end.to raise_error(Plurimath::Math::ParseError)
+    end
+
     it "keeps Number values as Strings" do
       formula = Plurimath::Math.parse(html_of(Plurimath::Math::Number.new("2")), :html)
       values = collect(formula, Plurimath::Math::Number).map(&:value)

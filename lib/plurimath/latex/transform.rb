@@ -25,6 +25,8 @@ module Plurimath
       end
       rule(limits: simple(:limits))   { limits }
       rule("\\\\" => simple(:slash))  { Math::Function::Linebreak.new }
+      # Native named captures use symbol keys; Ruby retains the declared string.
+      rule("\\\\": simple(:slash)) { Math::Function::Linebreak.new }
       rule(expression: simple(:expr)) { expr }
       rule(environment: simple(:env)) { env }
       rule(ternary: simple(:ternary)) { Utility.get_class(ternary).new }
