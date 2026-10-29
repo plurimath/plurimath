@@ -15,4 +15,11 @@ jobs:
     with:
       command: npm run build
       matrix_os: '["ubuntu-latest"]'
+      # Remove the source bootstrap after released-amath installation is validated.
+      after-setup-ruby: |
+        set -euo pipefail
+        git init ../amath
+        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git b67f924477ce129e85926eda5973d771c007dfec
+        git -C ../amath checkout --detach FETCH_HEAD
+        printf '\ngem "amath", path: "../amath"\ngem "parsanol", "= 1.3.109"\n' >> Gemfile
       repos-json-file: .github/workflows/dependent-repos-js.json
