@@ -6,6 +6,8 @@ gemspec
 gem "canon"
 # gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "oga"
+# spec_helper selects the Nokogiri adapter directly.
+gem "nokogiri"
 # gem "omml", github: "plurimath/omml", branch: "main"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
