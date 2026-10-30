@@ -24,5 +24,9 @@ jobs:
         echo "---" >> .bundle/config
         echo 'BUNDLE_BUILD__RUBY___LL: "--with-cflags=-std=gnu17"' >> .bundle/config
         cat .bundle/config
+      after-setup-ruby: |
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
+          bundle exec ruby .github/scripts/native-windows-probe.rb
+        fi
     secrets:
       pat_token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
