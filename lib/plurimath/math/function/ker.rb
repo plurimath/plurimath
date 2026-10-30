@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Ker < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The kernel of a homomorphism or linear map."
+        REFERENCE = "https://en.wikipedia.org/wiki/Kernel_(algebra)"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def to_omml_without_math_tag(display_style, options:)
           array = []
           array << r_element("ker", rpr_tag: false) unless hide_function_name

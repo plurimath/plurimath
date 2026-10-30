@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Hat < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A hat (circumflex) accent over an expression."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mover"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         attr_accessor :attributes
 
         def initialize(parameter_one = nil, attributes = {})

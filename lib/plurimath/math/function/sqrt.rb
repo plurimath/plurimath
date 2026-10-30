@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Sqrt < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The square root of a radicand."
+        REFERENCE = "https://en.wikipedia.org/wiki/Square_root"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         attr_accessor :options
 
         def to_mathml_without_math_tag(intent, options:)
