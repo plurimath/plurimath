@@ -24,9 +24,7 @@ end
 # gem "omml", github: "plurimath/omml", branch: "main"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
-# Parsanol::Slice for the amath SliceAdapter specs.
-# 1.3.112 restores the v1 edition default (1.3.110 and 1.3.111 are yanked).
-gem "parsanol", "~> 1.3", ">= 1.3.112"
+gem "parsanol"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"

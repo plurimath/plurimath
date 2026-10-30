@@ -2,7 +2,7 @@
 
 module Plurimath
   class Html
-    class Parse < Parslet::Parser
+    class Parse < Parsanol::Parser
       include Plurimath::BaseNumberPrefix::Parser
 
       rule(:space)   { match["\s"].repeat(1) }

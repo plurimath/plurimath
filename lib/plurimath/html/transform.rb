@@ -2,7 +2,7 @@
 
 module Plurimath
   class Html
-    class Transform < Parslet::Transform
+    class Transform < Parsanol::Transform
       include Plurimath::BaseNumberPrefix::Transform
 
       rule(text: simple(:text))      { Math::Function::Text.new(text) }

@@ -25,7 +25,7 @@ RSpec.shared_examples "shared Unicode external expectations" do |boundary|
 
           expect(formula).to eq(SharedUnicodeFixtures.expectation(row, boundary))
         when "parse_error"
-          expect { formula }.to raise_error(Parslet::ParseFailed, SharedUnicodeFixtures.refusal_pattern(outcome))
+          expect { formula }.to raise_error(Parsanol::ParseFailed, SharedUnicodeFixtures.refusal_pattern(outcome))
         else
           raise SharedUnicodeFixtures::Error, "unsupported Unicode outcome"
         end

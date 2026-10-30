@@ -54,7 +54,8 @@ RSpec.shared_examples "shared parser constructor expectation" do |id, family = "
                 raise SharedParserFixtures::Error, "unsupported native parser refusal"
               end
 
-              expect { actual.call }.to raise_error(Parslet::ParseFailed)
+              error_class = described_class.name.start_with?("Plurimath::Asciimath") ? Parslet::ParseFailed : Parsanol::ParseFailed
+              expect { actual.call }.to raise_error(error_class)
             else
               raise SharedParserFixtures::Error, "unknown parser observation"
             end

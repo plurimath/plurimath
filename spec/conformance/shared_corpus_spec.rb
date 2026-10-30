@@ -38,7 +38,7 @@ RSpec.describe "shared corpus conformance", :shared_corpus do # rubocop:disable 
           expect(preprocessed).to eq(kase.fetch("preprocessed"))
         end
         aggregate_failures("parse tree") do
-          expect(CorpusGenerator.serialize_tree(tree, label)).to eq(kase.fetch("parse_tree"))
+          expect(SharedCorpus.serialize_tree(tree, label)).to eq(kase.fetch("parse_tree"))
         end
         row.fetch(:targets).each do |target|
           aggregate_failures("#{label} / target=#{target}") do

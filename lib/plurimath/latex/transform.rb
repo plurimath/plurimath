@@ -2,7 +2,7 @@
 
 module Plurimath
   class Latex
-    class Transform < Parslet::Transform
+    class Transform < Parsanol::Transform
       include Plurimath::BaseNumberPrefix::Transform
 
       rule(base: simple(:base))       { base }
@@ -25,6 +25,8 @@ module Plurimath
       end
       rule(limits: simple(:limits))   { limits }
       rule("\\\\" => simple(:slash))  { Math::Function::Linebreak.new }
+      # Native named captures use symbol keys; Ruby retains the declared string.
+      rule("\\\\": simple(:slash)) { Math::Function::Linebreak.new }
       rule(expression: simple(:expr)) { expr }
       rule(environment: simple(:env)) { env }
       rule(ternary: simple(:ternary)) { Utility.get_class(ternary).new }
@@ -52,7 +54,7 @@ module Plurimath
       end
 
       rule(binary: simple(:binary)) do
-        binary.is_a?(Parslet::Slice) ? Utility.get_class(binary).new : binary
+        binary.is_a?(Parsanol::Slice) ? Utility.get_class(binary).new : binary
       end
 
       rule(symbols: simple(:sym)) do
@@ -330,7 +332,7 @@ module Plurimath
 
       rule(unary_functions: simple(:unary),
            subscript: simple(:subscript)) do
-        unary_function = if unary.is_a?(Parslet::Slice)
+        unary_function = if unary.is_a?(Parsanol::Slice)
                            Utility.get_class(unary).new
                          else
                            unary
@@ -356,7 +358,7 @@ module Plurimath
 
       rule(unary_functions: simple(:unary),
            supscript: simple(:supscript)) do
-        unary_function = if unary.is_a?(Parslet::Slice)
+        unary_function = if unary.is_a?(Parsanol::Slice)
                            Utility.get_class(unary).new
                          else
                            unary
@@ -389,7 +391,7 @@ module Plurimath
       rule(unary_functions: simple(:unary),
            subscript: simple(:subscript),
            supscript: simple(:supscript)) do
-        unary_function = if unary.is_a?(Parslet::Slice)
+        unary_function = if unary.is_a?(Parsanol::Slice)
                            Utility.get_class(unary).new
                          else
                            unary
@@ -756,7 +758,7 @@ module Plurimath
       rule(binary: simple(:binary),
            subscript: simple(:subscript),
            supscript: simple(:supscript)) do
-        if binary.is_a?(Parslet::Slice)
+        if binary.is_a?(Parsanol::Slice)
           Utility.get_class(binary).new(
             subscript,
             supscript,
@@ -772,7 +774,7 @@ module Plurimath
 
       rule(binary: simple(:binary),
            subscript: simple(:subscript)) do
-        if binary.is_a?(Parslet::Slice)
+        if binary.is_a?(Parsanol::Slice)
           Utility.get_class(binary).new(subscript)
         else
           Math::Function::Base.new(

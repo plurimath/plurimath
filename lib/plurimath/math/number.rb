@@ -7,7 +7,7 @@ module Plurimath
 
       def initialize(value = nil, mini_sub_sized: false, mini_sup_sized: false,
                      base: nil)
-        @value = value.is_a?(::Parslet::Slice) ? value.to_s : value
+        @value = Utility.parser_slice?(value) ? value.to_s : value
         @mini_sub_sized = mini_sub_sized
         @mini_sup_sized = mini_sup_sized
         @base = base

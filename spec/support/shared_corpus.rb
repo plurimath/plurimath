@@ -112,14 +112,36 @@ module SharedCorpus
   end
 
   def rejection_error(format, input)
-    # Public parsing intentionally discards the Parslet cause. Check the public
+    # Public parsing intentionally discards the parser cause. Check the public
     # refusal separately in the spec and recover the optional index here.
     error = { "category" => "parse_error" }
     begin
       format.parse_tree.call(CorpusGenerator.preprocessed_text(format, input))
-    rescue Parslet::ParseFailed => e
-      error["index"] = CorpusGenerator.failure_position(e.parse_failure_cause)
+    rescue Parslet::ParseFailed, Parsanol::ParseFailed => e
+      error["index"] = failure_position(e.parse_failure_cause)
     end
     error
+  end
+
+  def serialize_tree(tree, path)
+    CorpusGenerator.serialize_tree(normalize_slices(tree), path)
+  end
+
+  def failure_position(cause)
+    return CorpusGenerator.failure_position(cause) unless cause.is_a?(Parsanol::Cause)
+
+    children = cause.children || []
+    return children.map { |child| failure_position(child) }.max unless children.empty?
+
+    cause.source.input.byteslice(0, cause.position).length
+  end
+
+  def normalize_slices(value)
+    case value
+    when Parsanol::Slice then value.to_s
+    when Hash then value.transform_values { |child| normalize_slices(child) }
+    when Array then value.map { |child| normalize_slices(child) }
+    else value
+    end
   end
 end
