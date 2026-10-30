@@ -12,6 +12,10 @@ module Plurimath
       module_function
 
       def validate_all!(entries)
+        unless entries.is_a?(Array)
+          raise InvalidEntryError, "Catalog entries must be an Array"
+        end
+
         seen = {}
         entries.each do |entry|
           validate!(entry)
@@ -73,7 +77,7 @@ module Plurimath
           raise InvalidEntryError, "#{entry['name']}: function type and reference arity must agree"
         end
         unless present_string?(entry["description"]) &&
-            entry["reference"].is_a?(String) && entry["reference"].match?(/\Ahttps?:\/\/\S+\z/)
+            entry["reference"].is_a?(String) && entry["reference"].match?(%r{\Ahttps?://[^\s/?#]+(?:[/?#]\S*)?\z})
           raise InvalidEntryError, "#{entry['name']}: function requires a description and HTTP(S) reference"
         end
       end

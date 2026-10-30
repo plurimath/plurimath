@@ -12,6 +12,7 @@ RSpec.describe Plurimath::Catalog::Validation do
       entry.merge("arity" => "binary"),
       entry.merge("description" => 12),
       entry.merge("reference" => "javascript:bad"),
+      entry.merge("reference" => "https:///missing-host"),
       entry.except("latexmath"),
       entry.merge(unknown: true),
       entry.merge("mathml" => nil),
@@ -21,6 +22,13 @@ RSpec.describe Plurimath::Catalog::Validation do
     ]
     invalid.each do |candidate|
       expect { described_class.validate!(candidate) }.to raise_error(Plurimath::Catalog::InvalidEntryError)
+    end
+  end
+
+  it "rejects invalid collection shapes with a contract error" do
+    [nil, {}, "entries"].each do |value|
+      expect { described_class.validate_all!(value) }
+        .to raise_error(Plurimath::Catalog::InvalidEntryError, /must be an Array/)
     end
   end
 

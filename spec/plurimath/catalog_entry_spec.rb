@@ -96,4 +96,15 @@ RSpec.describe Plurimath::Catalog::Entry do
       .to raise_error(Plurimath::Catalog::InvalidEntryError)
     expect(formula).not_to have_received(:to_asciimath)
   end
+
+  it "marks real rule placeholders unavailable while retaining their output" do
+    entry = Plurimath::Math::Function::Rule.catalog_entry
+    expect(entry.dig("formats", "latexmath", "status")).to eq("available")
+    %w[asciimath mathml omml].each do |format|
+      expect(entry.dig("formats", format, "status")).to eq("unavailable")
+      expect(entry.dig("formats", format, "notes")).not_to be_empty
+    end
+    expect(entry["mathml"]).not_to be_empty
+    expect(entry["omml"]).not_to be_empty
+  end
 end
