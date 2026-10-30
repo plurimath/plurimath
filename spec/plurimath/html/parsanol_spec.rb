@@ -120,6 +120,22 @@ RSpec.describe Plurimath::Html::Parser do
   end
 
   describe "parser backends" do
+    it "preserves recursive 100/101-letter trees through actual native dispatch" do
+      skip "Parsanol native backend unavailable" unless Parsanol::Native.available?
+      expect(parser.native_expressible?).to be(true)
+      allow(Parsanol::Native).to receive(:parse).and_call_original
+      allow(parser.root).to receive(:run_with_context).and_call_original
+
+      [100, 101].each do |length|
+        input = "x" * length
+        ruby = Plurimath::Html::Parse.new.parse(input, mode: :ruby)
+
+        expect(tree_for(input, :native)).to eq(ruby)
+      end
+      expect(parser.root).not_to have_received(:run_with_context)
+      expect(Parsanol::Native).to have_received(:parse).exactly(2).times
+    end
+
     it "parses with the Ruby backend without native dispatch" do
       allow(Parsanol::Native).to receive(:parse).and_call_original
       inputs.each do |input|

@@ -30,3 +30,4 @@ gemfile.write_text("\n".join(lines) + "\n")
 PY
 
 npm run build
+npx --no-install jest --runInBand
