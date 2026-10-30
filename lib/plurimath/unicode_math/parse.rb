@@ -10,6 +10,11 @@ module Plurimath
       include ParsingRules::ConstantsRules
       include ParsingRules::AbsenceRules
 
+      # Preserve the historical UnicodeMath memo decisions in both engines.
+      def parse(input, options = {}, **kwargs)
+        super(input, options, **kwargs, compatibility: :parslet)
+      end
+
       rule(:an)  { an_math | an_other }
       rule(:box) { str("□") >> operand }
 

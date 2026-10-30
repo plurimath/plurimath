@@ -16,9 +16,8 @@ end
 # gem "omml", github: "plurimath/omml", branch: "main"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
-# Released parser backend for LaTeX, HTML, and UnicodeMath.
-# 1.3.112 restores the v1 edition default (1.3.110 and 1.3.111 are yanked).
-gem "parsanol", "~> 1.3", ">= 1.3.112"
+# Exact compatibility candidate for GHA; replace with its release before merging.
+gem "parsanol", github: "parsanol/parsanol-ruby", ref: "0eb9b9c1ff04d02be80959487b052d4128988eba"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"
