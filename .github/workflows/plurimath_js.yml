@@ -14,5 +14,20 @@ jobs:
     uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
     with:
       command: bash ../.github/scripts/test-js-consumer.sh
+      # Supply the unpublished candidate before shared CI resolves Plurimath.
+      # Remove this bootstrap once Parsanol 1.3.116 is published.
+      after-setup-ruby: |
+        python3 - <<'PY'
+        from pathlib import Path
+        import re
+        declaration = re.compile(r'''^\s*gem\s+["']parsanol["']''')
+        backend = next(line for line in Path("../Gemfile").read_text().splitlines()
+                       if declaration.match(line))
+        gemfile = Path("Gemfile")
+        lines = [line for line in gemfile.read_text().splitlines()
+                 if not declaration.match(line)]
+        lines += ['ENV["PARSANOL_PURE_RUBY"] = "1"', backend]
+        gemfile.write_text("\n".join(lines) + "\n")
+        PY
       matrix_os: '["ubuntu-latest"]'
       repos-json-file: .github/workflows/dependent-repos-js.json
