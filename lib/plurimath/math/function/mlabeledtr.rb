@@ -11,6 +11,20 @@ module Plurimath
         DESCRIPTION = "A table row carrying a label, such as an equation number."
         REFERENCE = "https://www.w3.org/TR/MathML3/chapter3.html#presm.mlabeledtr"
         EXAMPLE = -> { new(sym("x"), Text.new("1")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :limited,
+            notes: ["A generic function expression is emitted instead of a labeled table row."],
+          },
+          latexmath: {
+            status: :limited,
+            notes: ["A generic mlabeledtr macro is emitted instead of equation-label notation."],
+          },
+          omml: {
+            status: :limited,
+            notes: ["The row content and label are flattened; labeled table-row structure is omitted."],
+          },
+        }.freeze
         # --- end catalog documentation ---
 
         def to_mathml_without_math_tag(intent, options:)

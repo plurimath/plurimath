@@ -97,6 +97,25 @@ RSpec.describe Plurimath::Catalog::Entry do
     expect(formula).not_to have_received(:to_asciimath)
   end
 
+  it "discloses flattened elementary layouts and generic labeled-row output" do
+    limited_formats = %w[asciimath latexmath omml]
+    [Plurimath::Math::Function::Scarries, Plurimath::Math::Function::Msgroup].each do |klass|
+      entry = klass.catalog_entry
+      limited_formats.each do |format|
+        expect(entry.dig("formats", format, "status")).to eq("limited")
+        expect(entry.dig("formats", format, "notes")).not_to be_empty
+      end
+      expect(entry.values_at("asciimath", "latexmath")).to eq(%w[x x])
+      expect(entry.dig("formats", "mathml", "status")).to eq("available")
+    end
+    row = Plurimath::Math::Function::Mlabeledtr.catalog_entry
+    expect(row["latexmath"]).to eq('\\mlabeledtr{x}{\\text{1}}')
+    expect(row.dig("formats", "latexmath", "status")).to eq("limited")
+    expect(row.dig("formats", "asciimath", "status")).to eq("limited")
+    expect(row.dig("formats", "omml", "status")).to eq("limited")
+    expect(row.dig("formats", "mathml", "status")).to eq("available")
+  end
+
   it "marks real rule placeholders unavailable while retaining their output" do
     entry = Plurimath::Math::Function::Rule.catalog_entry
     expect(entry.dig("formats", "latexmath", "status")).to eq("available")
