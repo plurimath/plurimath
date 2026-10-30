@@ -129,17 +129,22 @@ if crashed_probe
     Tempfile.create(["native-probe", ".json"]) do |payload|
       payload.write(JSON.generate(crashed_probe))
       payload.flush
-      args = [debugger, "--batch", "--quiet", "-ex", "set pagination off",
-              "-ex", "set debuginfod enabled off", "-ex", "set print frame-arguments none",
-              "-ex", "run", "-ex", "thread apply all bt 40", "--args",
-              RbConfig.ruby, __FILE__, "--child-file", payload.path]
-      pid = Process.spawn(*args)
-      begin
-        Timeout.timeout(90) { Process.wait(pid) }
-      rescue Timeout::Error
-        Process.kill("KILL", pid)
-        Process.wait(pid)
-        event("debugger_timeout")
+      # A command file avoids Windows argument splitting of multiword -ex values.
+      Tempfile.create(["native-probe-gdb", ".txt"]) do |commands|
+        commands.write("set pagination off\nset debuginfod enabled off\n" \
+                       "set print frame-arguments none\nrun\n" \
+                       "info registers rsp rbp\nthread apply all bt 80\n")
+        commands.flush
+        args = [debugger, "--batch", "--quiet", "--command", commands.path, "--args",
+                RbConfig.ruby, __FILE__, "--child-file", payload.path]
+        pid = Process.spawn(*args)
+        begin
+          Timeout.timeout(90) { Process.wait(pid) }
+        rescue Timeout::Error
+          Process.kill("KILL", pid)
+          Process.wait(pid)
+          event("debugger_timeout")
+        end
       end
     end
   end
