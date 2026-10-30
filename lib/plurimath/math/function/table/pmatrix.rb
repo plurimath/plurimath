@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class Table
         class Pmatrix < Table
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "A matrix enclosed in parentheses."
+          REFERENCE = "https://en.wikipedia.org/wiki/Matrix_(mathematics)"
+          EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+          # --- end catalog documentation ---
+
           def initialize(value,
                          open_paren = "(",
                          close_paren = ")",

@@ -2,15 +2,16 @@ require "spec_helper"
 
 RSpec.describe Plurimath::Catalog do
   it "enumerates exactly the documented classes, sorted by catalog name" do
-    ternary = %w[
-      fenced int limits multiscript oint powerbase prod rule sum underover
-    ]
     # Grouped by declaring arity base (class hierarchy), not by catalog type:
     # Menclose subclasses BinaryFunction but renders as unary (its catalog type
-    # is asserted below); the FontStyle subtree is listed separately.
+    # is asserted below); the FontStyle subtree and the two page-less extras are
+    # listed separately.
+    ternary = %w[
+      fenced int limits oint powerbase prod rule sum underover
+    ]
     binary = %w[
-      arg base color frac inf intent lim log menclose mod over overset power
-      root semantics stackrel underset
+      arg base color frac inf intent lim log menclose mlabeledtr mod over
+      overset power root semantics stackrel underset
     ]
     font_styles = %w[
       bold boldfraktur bolditalic boldsansserif boldscript doublestruck fraktur
@@ -20,11 +21,37 @@ RSpec.describe Plurimath::Catalog do
     unary = %w[
       abs arccos arcsin arctan bar cancel ceil cos cosh cot coth csc csch ddot
       deg det dim dot exp floor gcd glb hat hom ker lcm lg liminf limsup ln
-      longdiv lub max mbox merror min norm obrace overleftrightarrow phantom sec
-      sech sin sinh sqrt sup tan tanh text tilde ubrace ul vec
+      longdiv lub max mbox merror min msgroup norm obrace phantom scarries sec
+      sech sin sinh sqrt substack sup tan tanh text tilde ubrace ul vec
     ]
+    # Table and Nary subclass Core directly (not an arity base), so each is
+    # enumerated as its own documentable base. The Table base itself is the
+    # `table` page; its ten matrix subclasses share the inherited :unary type.
+    table = %w[
+      align array bmatrix cases eqarray matrix multline pmatrix split table
+      vmatrix
+    ]
+    nary = %w[n-ary]
+    # Documented for completeness but with no standalone
+    # plurimath.org/functions page; pulled out of their arity groups so this
+    # allowlist is explicit. Every other catalogued name maps to a site page.
+    extras = %w[multiscript overleftrightarrow]
     names = described_class.classes.map(&:catalog_name)
-    expect(names).to eq((ternary + binary + font_styles + unary).sort)
+    expected = ternary + binary + font_styles + unary + table + nary + extras
+    expect(names).to eq(expected.sort)
+  end
+
+  it "catalogues the Table and Nary bases in their own right, not only their descendants" do
+    names = described_class.classes.map(&:catalog_name)
+    expect(names).to include("table", "n-ary")
+
+    nary = Plurimath::Math::Function::Nary
+    # Nary derives to "nary", so it overrides the slug to match the site page.
+    expect(nary.catalog_name).to eq("n-ary")
+    expect(nary.catalog_type).to eq(:binary)
+
+    expect(Plurimath::Math::Function::Table.catalog_name).to eq("table")
+    expect(Plurimath::Math::Function::Table.catalog_type).to eq(:unary)
   end
 
   it "overrides catalog_type to the site's semantic arity for font styles and menclose" do

@@ -4,6 +4,29 @@ module Plurimath
   module Math
     module Function
       class Mlabeledtr < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        # parameter_one is the row content, parameter_two the label (e.g. an
+        # equation number). Only MathML and UnicodeMath are overridden; the
+        # other formats fall back to the generic binary rendering.
+        DESCRIPTION = "A table row carrying a label, such as an equation number."
+        REFERENCE = "https://www.w3.org/TR/MathML3/chapter3.html#presm.mlabeledtr"
+        EXAMPLE = -> { new(sym("x"), Text.new("1")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :limited,
+            notes: ["A generic function expression is emitted instead of a labeled table row."],
+          },
+          latexmath: {
+            status: :limited,
+            notes: ["A generic mlabeledtr macro is emitted instead of equation-label notation."],
+          },
+          omml: {
+            status: :limited,
+            notes: ["The row content and label are flattened; labeled table-row structure is omitted."],
+          },
+        }.freeze
+        # --- end catalog documentation ---
+
         def to_mathml_without_math_tag(intent, options:)
           table = ox_element("mtable")
           mlabeledtr = ox_element(class_name)

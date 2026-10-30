@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class Table
         class Cases < Table
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "Selects among alternative expressions by condition, as in a piecewise definition."
+          REFERENCE = "https://en.wikipedia.org/wiki/Piecewise_function"
+          EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
+          # --- end catalog documentation ---
+
           def initialize(value = [],
                          open_paren = "{",
                          close_paren = ":}",
