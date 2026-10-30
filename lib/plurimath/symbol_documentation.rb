@@ -23,12 +23,13 @@ module Plurimath
       Math::Formula.new([new])
     end
 
+    # Anonymous subclasses have no stable catalog name and are excluded.
     # Catalogued when the symbol is a concrete glyph — i.e. not one of the
     # abstract bases (Symbol, Paren), which exist only to be subclassed. Checked
     # by identity rather than by rendering: cheaper across the ~1,459 symbols and
     # independent of which formats a given glyph happens to serialize to.
     def documented?
-      ![Math::Symbols::Symbol, Math::Symbols::Paren].include?(self)
+      !name.nil? && ![Math::Symbols::Symbol, Math::Symbols::Paren].include?(self)
     end
 
     # The YAML-ready entry: the glyph's name, type, and rendering in each format.
