@@ -12,8 +12,9 @@ def event(name, **fields)
   puts JSON.generate(event: name, **fields)
 end
 
-if ARGV.first == "--child"
-  probe = JSON.parse(ARGV.fetch(1))
+if %w[--child --child-file].include?(ARGV.first)
+  payload = ARGV.first == "--child-file" ? File.read(ARGV.fetch(1)) : ARGV.fetch(1)
+  probe = JSON.parse(payload)
   native_calls = 0
   begin
     event("before_require", probe: probe)
@@ -85,6 +86,7 @@ cases = [
   ["unicode-shared-script", "unicode", "M_1 M_2", false, false],
 ]
 failed = false
+crashed_probe = nil
 cases.each do |id, format, input, raw_refusal, public_refusal|
   { "raw" => raw_refusal, "public" => public_refusal }.each do |operation, refusal|
     probe = { id: id, format: format, input: input, operation: operation, refusal: refusal }
@@ -112,6 +114,32 @@ cases.each do |id, format, input, raw_refusal, public_refusal|
                                 termsig: status.termsig, raw_status: status.to_i,
                                 status: status.inspect, timed_out: timed_out)
         failed ||= timed_out || !status.success?
+        crashed_probe ||= probe if status.termsig == 11
+      end
+    end
+  end
+end
+
+if crashed_probe
+  candidates = ENV.fetch("PATH", "").split(File::PATH_SEPARATOR)
+    .map { |directory| File.join(directory, "gdb.exe") }
+  debugger = (candidates + ["C:/mingw64/bin/gdb.exe"]).find { |path| File.file?(path) }
+  event("debugger", executable: debugger, probe: crashed_probe)
+  if debugger
+    Tempfile.create(["native-probe", ".json"]) do |payload|
+      payload.write(JSON.generate(crashed_probe))
+      payload.flush
+      args = [debugger, "--batch", "--quiet", "-ex", "set pagination off",
+              "-ex", "set debuginfod enabled off", "-ex", "set print frame-arguments none",
+              "-ex", "run", "-ex", "thread apply all bt 40", "--args",
+              RbConfig.ruby, __FILE__, "--child-file", payload.path]
+      pid = Process.spawn(*args)
+      begin
+        Timeout.timeout(90) { Process.wait(pid) }
+      rescue Timeout::Error
+        Process.kill("KILL", pid)
+        Process.wait(pid)
+        event("debugger_timeout")
       end
     end
   end
