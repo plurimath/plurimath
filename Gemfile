@@ -16,8 +16,7 @@ end
 # gem "omml", github: "plurimath/omml", branch: "main"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
-# Exact compatibility candidate for GHA; replace with its release before merging.
-gem "parsanol", github: "parsanol/parsanol-ruby", ref: "b844167ef489fdafb07f2f9c316641b255e0a0af"
+gem "parsanol"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"

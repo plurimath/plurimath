@@ -17,13 +17,8 @@ jobs:
       # Remove the source bootstrap once the amath runtime dependency in #512 is available.
       after-setup-ruby: |
         set -euo pipefail
-        if [[ "$RUNNER_OS" == "Windows" ]]; then
-          rustup toolchain install stable-x86_64-pc-windows-gnu --profile minimal
-          echo 'RUSTUP_TOOLCHAIN=stable-x86_64-pc-windows-gnu' >> "$GITHUB_ENV"
-        fi
         git init ../amath
         git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git b67f924477ce129e85926eda5973d771c007dfec
         git -C ../amath checkout --detach FETCH_HEAD
-        # Validate the same compatibility candidate as the parent PR.
-        printf '\ngem "amath", path: "../amath"\ngem "parsanol", github: "parsanol/parsanol-ruby", ref: "b844167ef489fdafb07f2f9c316641b255e0a0af"\n' >> Gemfile
+        printf '\ngem "amath", path: "../amath"\n' >> Gemfile
       repos-json-file: .github/workflows/dependent-repos-ruby.json
