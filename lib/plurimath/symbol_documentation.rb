@@ -43,8 +43,11 @@ module Plurimath
     # The YAML-ready entry: the glyph's name, type, and rendering in each format.
     # Leaner than a function entry — a symbol carries no description or reference.
     def catalog_entry
-      limitations = const_defined?(:CATALOG_FORMAT_LIMITATIONS, false) ?
-        const_get(:CATALOG_FORMAT_LIMITATIONS, false) : {}
+      limitations = if const_defined?(:CATALOG_FORMAT_LIMITATIONS, false)
+                      const_get(:CATALOG_FORMAT_LIMITATIONS, false)
+                    else
+                      {}
+                    end
       Catalog::Entry.build(
         name: catalog_name, type: catalog_type, kind: catalog_kind,
         arity: catalog_arity, formula: example_formula, limitations: limitations
