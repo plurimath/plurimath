@@ -87,6 +87,17 @@ RSpec.describe Plurimath::Documentation do
   end
 
   describe ".documented?" do
+    it "excludes anonymous classes even when their metadata is complete" do
+      anonymous = Class.new do
+        extend Plurimath::Documentation
+      end
+      anonymous.const_set(:CATALOG_TYPE, :unary)
+      anonymous.const_set(:DESCRIPTION, "An unnamed example.")
+      anonymous.const_set(:REFERENCE, "https://example.com/sample")
+      anonymous.const_set(:EXAMPLE, -> { Plurimath::Math::Number.new("1") })
+      expect(anonymous.documented?).to be(false)
+    end
+
     it "requires a description, a reference and an example" do
       expect(sample.documented?).to be(true)
       expect(bare.documented?).to be(false)
@@ -112,11 +123,13 @@ RSpec.describe Plurimath::Documentation do
       entry = sample.catalog_entry
 
       expect(entry.keys).to contain_exactly(
-        "name", "type", "description", "reference",
+        "name", "type", "kind", "arity", "formats", "description", "reference",
         "asciimath", "latexmath", "mathml", "omml"
       )
       expect(entry["name"]).to eq("docsample")
       expect(entry["type"]).to eq("ternary")
+      expect(entry["kind"]).to eq("function")
+      expect(entry["arity"]).to eq("ternary")
       expect(entry["description"]).to eq("A sample.")
       expect(entry["reference"]).to eq("https://example.com/sample")
       expect(entry["asciimath"]).to eq("1")
