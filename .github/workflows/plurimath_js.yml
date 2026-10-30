@@ -13,6 +13,6 @@ jobs:
   rake:
     uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
     with:
-      command: bash ../.github/scripts/test-js-consumer.sh
+      command: npm run build
       matrix_os: '["ubuntu-latest"]'
       repos-json-file: .github/workflows/dependent-repos-js.json
