@@ -17,7 +17,7 @@ end
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 # Exact compatibility candidate for GHA; replace with its release before merging.
-gem "parsanol", github: "parsanol/parsanol-ruby", ref: "99428b48345faaf2c23ad4938dadbd8f600d2c93"
+gem "parsanol", github: "parsanol/parsanol-ruby", ref: "b844167ef489fdafb07f2f9c316641b255e0a0af"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"

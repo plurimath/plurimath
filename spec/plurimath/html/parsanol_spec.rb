@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "timeout"
 
 RSpec.describe Plurimath::Html::Parser do
   let(:parser) { Plurimath::Html::Parse.new }
@@ -128,7 +129,9 @@ RSpec.describe Plurimath::Html::Parser do
 
       [100, 101].each do |length|
         input = "x" * length
-        ruby = Plurimath::Html::Parse.new.parse(input, mode: :ruby)
+        ruby = Timeout.timeout(10) do
+          Plurimath::Html::Parse.new.parse(input, mode: :ruby)
+        end
 
         expect(tree_for(input, :native)).to eq(ruby)
       end

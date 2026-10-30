@@ -24,10 +24,12 @@ backend = next(line for line in Path("../Gemfile").read_text().splitlines()
                if re.match(r'''^gem\s+["']parsanol["']''', line))
 asciimath = next(line.strip() for line in Path("../Gemfile").read_text().splitlines()
                  if re.match(r'''^\s*gem\s+["']amath["']''', line) and "github:" in line)
+# Use Opal's sequential scheduler for this isolated integration build.
 lines += ['ENV["PARSANOL_PURE_RUBY"] = "1"',
+          'ENV["OPAL_PREFORK_DISABLE"] = "1"',
           'gem "plurimath", path: "vendor/plurimath"', backend, asciimath]
 gemfile.write_text("\n".join(lines) + "\n")
 PY
 
-npm run build
-npx --no-install jest --runInBand
+timeout --kill-after=15s 15m npm run build
+timeout --kill-after=15s 5m npx --no-install jest --runInBand

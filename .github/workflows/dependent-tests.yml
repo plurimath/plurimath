@@ -25,5 +25,5 @@ jobs:
         git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git b67f924477ce129e85926eda5973d771c007dfec
         git -C ../amath checkout --detach FETCH_HEAD
         # Validate the same compatibility candidate as the parent PR.
-        printf '\ngem "amath", path: "../amath"\ngem "parsanol", github: "parsanol/parsanol-ruby", ref: "99428b48345faaf2c23ad4938dadbd8f600d2c93"\n' >> Gemfile
+        printf '\ngem "amath", path: "../amath"\ngem "parsanol", github: "parsanol/parsanol-ruby", ref: "b844167ef489fdafb07f2f9c316641b255e0a0af"\n' >> Gemfile
       repos-json-file: .github/workflows/dependent-repos-ruby.json
