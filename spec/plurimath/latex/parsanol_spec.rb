@@ -39,6 +39,22 @@ RSpec.describe Plurimath::Latex::Parser do
       end
     end
 
+    it "preserves String row-break keys through native matrix parsing" do
+      input = '\\begin{matrix}a_{1}&b_{2}\\\\\\end{matrix}'
+      parser = Plurimath::Latex::Parse.new
+      allow(Parsanol::Native).to receive(:parse).and_call_original
+      allow(parser.root).to receive(:run_with_context).and_call_original
+
+      native = parser.parse(input, mode: :native)
+      ruby = Plurimath::Latex::Parse.new.parse(input, mode: :ruby)
+
+      expect(native).to eq(ruby)
+      expect(native.dig(:environment, :table_data, :expression, :expression, :expression, "\\\\").to_s)
+        .to eq("\\\\")
+      expect(Parsanol::Native).to have_received(:parse).once
+      expect(parser.root).not_to have_received(:run_with_context)
+    end
+
     it "preserves Ruby model and rendered output for scalar and based numbers", :ruby_fallback do
       ["x", "12", "0xFF"].each do |input|
         native = described_class.new(input).parse

@@ -5,6 +5,10 @@ module Plurimath
     class Parse < Parsanol::Parser
       include Plurimath::BaseNumberPrefix::Parser
 
+      def parse(input, options = {}, **kwargs)
+        restore_row_break_keys(super)
+      end
+
       rule(:base)          { str("_") }
       rule(:power)         { str("^") }
       rule(:slash)         { str("\\") }
@@ -275,6 +279,21 @@ module Plurimath
       def color_rules
         (str("{") >> slash >> str("color").as(:binary) >> color.as(:first_value) >> (sequence >> iteration.maybe).as(:second_value).maybe >> str("}")) |
           (slash >> str("color").as(:binary) >> color.as(:first_value) >> expression.as(:second_value).maybe)
+      end
+
+      private
+
+      # Native captures use Symbol names; this grammar historically names its
+      # row-break capture with a String. Preserve that public raw-tree shape.
+      def restore_row_break_keys(tree)
+        case tree
+        when Hash
+          tree.to_h do |key, value|
+            [key == :"\\\\" ? "\\\\" : key, restore_row_break_keys(value)]
+          end
+        when Array then tree.map { |value| restore_row_break_keys(value) }
+        else tree
+        end
       end
     end
   end
