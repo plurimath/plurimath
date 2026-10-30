@@ -8,6 +8,20 @@ module Plurimath
         DESCRIPTION = "An expression given an `arg` name for reference from an ancestor MathML `intent` annotation."
         REFERENCE = "https://www.w3.org/TR/mathml4/#mixing_intent"
         EXAMPLE = -> { new(sym("x"), sym("x")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :limited,
+            notes: ["The argument name is emitted as visible content instead of an arg annotation."],
+          },
+          latexmath: {
+            status: :limited,
+            notes: ["The argument name is emitted as visible content instead of an arg annotation."],
+          },
+          omml: {
+            status: :limited,
+            notes: ["The argument name is emitted as visible content instead of an arg annotation."],
+          },
+        }.freeze
         # --- end catalog documentation ---
 
         def to_mathml_without_math_tag(intent, options:)

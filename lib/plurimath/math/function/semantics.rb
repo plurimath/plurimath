@@ -8,6 +8,20 @@ module Plurimath
         DESCRIPTION = "A presentation expression paired with its semantic annotations."
         REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/semantics"
         EXAMPLE = -> { new(sym("x"), [{ "annotation-xml": [sym("x")] }]) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :limited,
+            notes: ["Semantic annotations are omitted; only the presentation expression is emitted."],
+          },
+          latexmath: {
+            status: :limited,
+            notes: ["Semantic annotations are omitted; only the presentation expression is emitted."],
+          },
+          omml: {
+            status: :limited,
+            notes: ["Semantic annotations are omitted; only the presentation expression is emitted."],
+          },
+        }.freeze
         # --- end catalog documentation ---
 
         FUNCTION = {

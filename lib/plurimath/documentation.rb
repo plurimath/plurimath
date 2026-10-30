@@ -23,6 +23,15 @@ module Plurimath
       declared_constant(:CATALOG_TYPE, inherit: true)
     end
 
+    def catalog_kind
+      :function
+    end
+
+    # The reference-page grouping, not the Ruby constructor's parameter count.
+    def catalog_arity
+      catalog_type
+    end
+
     def description
       declared_constant(:DESCRIPTION)
     end
@@ -50,23 +59,19 @@ module Plurimath
     # description, reference and example — so partially-documented classes never
     # leak into the output.
     def documented?
-      !description.nil? && !reference.nil? && !declared_constant(:EXAMPLE).nil?
+      !name.nil? && !description.nil? && !reference.nil? &&
+        !declared_constant(:EXAMPLE).nil?
     end
 
     # The YAML-ready entry the docs consume: metadata plus the example rendered
     # to every target format.
     def catalog_entry
-      formula = example_formula
-      {
-        "name" => catalog_name,
-        "type" => catalog_type&.to_s,
-        "description" => description,
-        "reference" => reference,
-        "asciimath" => formula&.to_asciimath,
-        "latexmath" => formula&.to_latex,
-        "mathml" => formula&.to_mathml,
-        "omml" => formula&.to_omml,
-      }
+      Catalog::Entry.build(
+        name: catalog_name, type: catalog_type, kind: catalog_kind,
+        arity: catalog_arity, description: description, reference: reference,
+        formula: example_formula,
+        limitations: declared_constant(:CATALOG_FORMAT_LIMITATIONS) || {}
+      )
     end
 
     private

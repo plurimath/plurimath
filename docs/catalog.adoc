@@ -1,0 +1,73 @@
+= Ruby reference catalog
+
+`Plurimath::Catalog.entries` returns plain Ruby hashes suitable for YAML or JSON
+export. The catalog describes the Ruby implementation. TypeScript conformance
+is separate work and does not gate the Ruby catalog.
+
+== Entry identity and compatibility
+
+Each entry has a safe lowercase `name` and a `kind`: `function` or `symbol`.
+Use the pair `[kind, name]` as its identity. A function and symbol may share a
+name, such as `bar`; write them to separate directories.
+The catalog rejects duplicate identities instead of allowing exports to overwrite
+one another.
+
+`arity` is the reference-page category (`unary`, `binary`, or `ternary`) for a
+function, and `nil` for a symbol. It describes the reference classification,
+not the number of arguments accepted by a Ruby constructor.
+
+The legacy `type` field remains unchanged: it holds the function's reference
+category, or `symbol`. Function entries retain `description` and `reference`;
+symbol entries omit them. Existing `asciimath`, `latexmath`, `mathml`, and `omml`
+fields retain the serializers' exact output, including empty strings and
+placeholders. The additional metadata does not repair or rewrite serializer output.
+
+== Format availability
+
+`formats` contains an entry for each of the four serialization formats:
+
+[source,ruby]
+----
+entry = Plurimath::Math::Function::Sum.catalog_entry
+entry["kind"]                         # => "function"
+entry["arity"]                        # => "ternary"
+entry["formats"]["mathml"]["status"]   # => "available"
+entry["formats"]["mathml"]["notes"]    # => []
+----
+
+* `available`: the serializer returns nonempty output and no limitation is
+  declared. This is not proof of semantic parity or round-trip correctness.
+* `limited`: a known loss or limitation is described in `notes`.
+* `unavailable`: output is empty or the declaration identifies an unsupported
+  representation, including nonempty placeholders. `notes` explains why.
+
+Consumers should read this metadata before presenting an example as supported.
+Unexpected serializer exceptions still propagate; the catalog does not convert
+programming failures into a successful availability record.
+
+A class can declare its own limitations without affecting sibling classes:
+
+[source,ruby]
+----
+CATALOG_FORMAT_LIMITATIONS = {
+  mathml: { status: :limited, notes: ["The current serializer omits a modifier."] },
+}.freeze
+----
+
+Declarations use canonical keys `asciimath`, `latexmath`, `mathml`, and `omml`.
+Keys and statuses accept strings or symbols. A declaration must use `limited`
+or `unavailable` and include a nonempty array of explanatory strings.
+Empty serializer output always becomes `unavailable`, with a reason.
+
+== Validation and extension classes
+
+The shared entry builder validates required fields, safe slugs, type/kind/arity
+agreement, format records, and limitation declarations. Invalid data raises
+`Plurimath::Catalog::InvalidEntryError`, a subclass of `ArgumentError`.
+`Plurimath::Catalog::Validation.validate_all!(entries)` also checks identity
+uniqueness when validating an exported array.
+
+Function classes need their own description, reference, and deferred example
+to be documentable. Anonymous classes are excluded because they have no stable
+Ruby name. Examples and format notes are built afresh; modifying returned notes
+does not modify the class's declarations.

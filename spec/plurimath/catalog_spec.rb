@@ -57,12 +57,14 @@ RSpec.describe Plurimath::Catalog do
   end
 
   it "exposes every metadata and rendering key in each catalog entry" do
-    keys = %w[name type description reference asciimath latexmath mathml omml]
+    keys = %w[name type kind arity formats description reference asciimath latexmath mathml omml]
     described_class.entries.each do |entry|
       aggregate_failures(entry["name"]) do
         expect(entry.keys).to match_array(keys)
         keys.each { |key| expect(entry[key]).not_to be_nil }
         expect(entry["type"]).not_to be_empty
+        expect(entry["kind"]).to eq("function")
+        expect(entry["arity"]).to eq(entry["type"])
         expect(entry["reference"]).to start_with("http")
       end
     end
