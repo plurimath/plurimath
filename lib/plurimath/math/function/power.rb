@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Power < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A base raised to an exponent."
+        REFERENCE = "https://en.wikipedia.org/wiki/Exponentiation"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "superscript",
           first_value: "base",

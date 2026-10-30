@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Base < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A base carrying a subscript."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/msub"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         attr_accessor :options
 
         FUNCTION = {

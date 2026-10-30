@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Log < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The logarithm operator, carrying a subscript and superscript."
+        REFERENCE = "https://en.wikipedia.org/wiki/Logarithm"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "function apply",
           first_value: "subscript",

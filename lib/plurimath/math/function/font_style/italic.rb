@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class FontStyle
         class Italic < FontStyle
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "Renders its argument in an italic font."
+          REFERENCE = "https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols"
+          EXAMPLE = -> { new(sym("x")) }
+          # --- end catalog documentation ---
+
           def initialize(parameter_one,
                          parameter_two = "italic")
             super

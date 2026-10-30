@@ -4,8 +4,9 @@ module Plurimath
   # Per-class documentation metadata for the symbol/function catalog
   # (see Plurimath::Catalog, which powers the plurimath.org "Functions" and
   # "Symbols" pages). A documentable base class extends this module — so far
-  # TernaryFunction, with the other arities and Symbols::Symbol to follow — and
-  # every descendant then inherits the shared, derivable machinery (name, type,
+  # TernaryFunction and BinaryFunction, with the remaining arities and
+  # Symbols::Symbol to follow — and every descendant then inherits the shared,
+  # derivable machinery (name, type,
   # the four renderings) while each concrete class "explains itself" with three
   # declarations: DESCRIPTION, REFERENCE, and an EXAMPLE lambda.
   module Documentation

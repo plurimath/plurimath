@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Underset < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An expression set as an underscript below a base."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/munder"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         attr_accessor :options
 
         FUNCTION = {

@@ -20,6 +20,10 @@ module Plurimath
         autoload :SansSerifItalic, "#{__dir__}/font_style/sans-serif-italic"
         autoload :Script, "#{__dir__}/font_style/script"
 
+        # Font styles wrap a single visible argument, so the catalog lists them
+        # as unary (overriding BinaryFunction's :binary) to match the site.
+        CATALOG_TYPE = :unary
+
         def to_asciimath(options:)
           parameter_one&.to_asciimath(options: options)
         end

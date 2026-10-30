@@ -4,6 +4,18 @@ module Plurimath
   module Math
     module Function
       class Color < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An expression rendered in a specified color."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mstyle"
+        EXAMPLE = -> { new(sym("red"), sym("x")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          omml: {
+            status: :limited,
+            notes: ["Color styling is omitted; only the expression is emitted."],
+          },
+        }.freeze
+        # --- end catalog documentation ---
+
         attr_accessor :options
 
         FUNCTION = {
