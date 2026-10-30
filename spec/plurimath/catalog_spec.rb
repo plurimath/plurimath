@@ -115,15 +115,18 @@ RSpec.describe Plurimath::Catalog do
   end
 
   it "exposes the right keys for each entry type" do
-    symbol_keys = %w[name type asciimath latexmath mathml omml]
+    symbol_keys = %w[name type kind arity formats asciimath latexmath mathml omml]
     function_keys = symbol_keys + %w[description reference]
     described_class.entries.each do |entry|
       aggregate_failures(entry["name"]) do
-        symbol_keys.each { |key| expect(entry[key]).not_to be_nil }
-        if entry["type"] == "symbol"
+        (symbol_keys - ["arity"]).each { |key| expect(entry[key]).not_to be_nil }
+        if entry["kind"] == "symbol"
           expect(entry.keys).to match_array(symbol_keys)
+          expect(entry["arity"]).to be_nil
         else
           expect(entry.keys).to match_array(function_keys)
+          expect(entry["kind"]).to eq("function")
+          expect(entry["arity"]).to eq(entry["type"])
           expect(entry["description"]).not_to be_nil
           expect(entry["reference"]).to start_with("http")
         end

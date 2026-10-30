@@ -22,10 +22,13 @@ RSpec.describe Plurimath::SymbolDocumentation do
     it "builds a lean entry — no description or reference" do
       entry = klass.catalog_entry
       expect(entry.keys).to contain_exactly(
-        "name", "type", "asciimath", "latexmath", "mathml", "omml"
+        "name", "type", "kind", "arity", "formats", "asciimath", "latexmath", "mathml", "omml"
       )
       expect(entry["name"]).to eq("alpha")
       expect(entry["type"]).to eq("symbol")
+      expect(entry["kind"]).to eq("symbol")
+      expect(entry["arity"]).to be_nil
+      expect(entry.dig("formats", "mathml", "status")).to eq("available")
       expect(entry["asciimath"]).to eq("alpha")
       expect(entry["latexmath"]).to eq("\\alpha")
     end

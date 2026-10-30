@@ -18,6 +18,14 @@ module Plurimath
       :symbol
     end
 
+    def catalog_kind
+      :symbol
+    end
+
+    def catalog_arity
+      nil
+    end
+
     # The glyph itself, wrapped in a Formula for rendering.
     def example_formula
       Math::Formula.new([new])
@@ -35,15 +43,12 @@ module Plurimath
     # The YAML-ready entry: the glyph's name, type, and rendering in each format.
     # Leaner than a function entry — a symbol carries no description or reference.
     def catalog_entry
-      formula = example_formula
-      {
-        "name" => catalog_name,
-        "type" => catalog_type.to_s,
-        "asciimath" => formula.to_asciimath,
-        "latexmath" => formula.to_latex,
-        "mathml" => formula.to_mathml,
-        "omml" => formula.to_omml,
-      }
+      limitations = const_defined?(:CATALOG_FORMAT_LIMITATIONS, false) ?
+        const_get(:CATALOG_FORMAT_LIMITATIONS, false) : {}
+      Catalog::Entry.build(
+        name: catalog_name, type: catalog_type, kind: catalog_kind,
+        arity: catalog_arity, formula: example_formula, limitations: limitations
+      )
     end
   end
 end

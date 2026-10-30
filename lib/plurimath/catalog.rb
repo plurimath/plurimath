@@ -12,6 +12,11 @@ module Plurimath
   #     File.write("_data/#{dir}/#{e['name']}.yaml", e.to_yaml)
   #   end
   module Catalog
+    autoload :Entry, "plurimath/catalog/entry"
+    autoload :Validation, "plurimath/catalog/validation"
+
+    class InvalidEntryError < ArgumentError; end
+
     module_function
 
     # Every documented class, sorted by catalog name — with catalog type as a
@@ -38,7 +43,9 @@ module Plurimath
 
     # YAML-ready hashes, one per documented class.
     def entries
-      classes.map(&:catalog_entry)
+      result = classes.map(&:catalog_entry)
+      Validation.validate_all!(result)
+      result
     end
 
     # Base classes whose documented descendants (and the bases themselves) are
