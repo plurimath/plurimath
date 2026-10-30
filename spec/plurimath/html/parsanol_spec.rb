@@ -84,6 +84,41 @@ RSpec.describe Plurimath::Html::Parser do
     end
   end
 
+  describe "matching closing-tag diagnostics" do
+    let(:rejections) do
+      ["<i>a</b>", "<i><b>a</i></b>", "&#x3b1;<i>a</b>", "α<i>a</b>"]
+    end
+
+    def rejection_position(input, mode)
+      parser.parse(input, mode: mode)
+      raise "expected mismatched closing tag to fail"
+    rescue Parsanol::ParseFailed => e
+      pending = [e.parse_failure_cause]
+      positions = []
+      until pending.empty?
+        cause = pending.pop
+        if cause.children.empty?
+          positions << cause.position
+        else
+          pending.concat(cause.children)
+        end
+      end
+      positions.max
+    end
+
+    it "preserves closing-tag failure positions with the Ruby backend" do
+      expect(rejections.map { |input| rejection_position(input, :ruby) }).to eq([6, 9, 13, 8])
+    end
+
+    it "preserves closing-tag failure positions through actual native dispatch" do
+      skip "Parsanol native backend unavailable" unless Parsanol::Native.available?
+      allow(parser.root).to receive(:run_with_context).and_call_original
+
+      expect(rejections.map { |input| rejection_position(input, :native) }).to eq([6, 9, 13, 8])
+      expect(parser.root).not_to have_received(:run_with_context)
+    end
+  end
+
   describe "parser backends" do
     it "parses with the Ruby backend without native dispatch" do
       allow(Parsanol::Native).to receive(:parse).and_call_original
