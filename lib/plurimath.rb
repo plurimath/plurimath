@@ -13,6 +13,7 @@ module Plurimath
   autoload :Configuration, "plurimath/configuration"
   autoload :Deprecation, "plurimath/deprecation"
   autoload :Documentation, "plurimath/documentation"
+  autoload :SymbolDocumentation, "plurimath/symbol_documentation"
   autoload :Error, "plurimath/errors/error"
   autoload :ConfigurationError, "plurimath/errors/configuration_error"
   autoload :DeprecationError, "plurimath/errors/deprecation_error"

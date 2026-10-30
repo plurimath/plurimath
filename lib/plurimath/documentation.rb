@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 module Plurimath
-  # Per-class documentation metadata for the symbol/function catalog
+  # Per-class documentation metadata for the function side of the catalog
   # (see Plurimath::Catalog, which powers the plurimath.org "Functions" and
-  # "Symbols" pages). A documentable base class extends this module — so far
-  # TernaryFunction, BinaryFunction, UnaryFunction, Table, and Nary, with
-  # Symbols::Symbol to follow — and every descendant then inherits the shared,
-  # derivable machinery (name, type, the four renderings) while each concrete
-  # class "explains itself" with three declarations: DESCRIPTION, REFERENCE,
-  # and an EXAMPLE lambda. Table and Nary are themselves documented (the
-  # /functions/table and /functions/n-ary pages), not just bases for their
-  # descendants.
+  # "Symbols" pages). A documentable base class extends this module —
+  # TernaryFunction, BinaryFunction, UnaryFunction, Table, and Nary — and every
+  # descendant then inherits the shared, derivable machinery (name, type, the
+  # four renderings) while each concrete class "explains itself" with three
+  # declarations: DESCRIPTION, REFERENCE, and an EXAMPLE lambda. Table and Nary
+  # are themselves documented (the /functions/table and /functions/n-ary pages),
+  # not just bases. Symbols are documented separately by
+  # Plurimath::SymbolDocumentation, which derives everything.
   module Documentation
     # Slug for the /functions/<name>/ page and YAML filename, matching the
     # lowercased, separator-free convention the site already uses:
@@ -21,8 +21,8 @@ module Plurimath
       declared_constant(:CATALOG_NAME) || name.split("::").last.downcase
     end
 
-    # :unary / :binary / :ternary / :symbol — declared once per base and
-    # inherited by every descendant.
+    # :unary / :binary / :ternary — declared once per base and inherited by
+    # every descendant.
     def catalog_type
       declared_constant(:CATALOG_TYPE, inherit: true)
     end
