@@ -39,6 +39,13 @@ Accessibility:: Convert mathematical content into formats that are more
 accessible for screen readers and other assistive technologies.
 
 
+== Reference catalog
+
+`Plurimath::Catalog.entries` generates reference data for documented functions,
+including each serializer's output and separate availability notes. See
+link:docs/catalog.adoc[the Ruby catalog contract] for the entry schema and export rules.
+
+
 == Installation
 
 Add this line to your application's Gemfile:

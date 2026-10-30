@@ -4,13 +4,19 @@ module Plurimath
   module Math
     module Function
       class Prod < TernaryFunction
-        attr_accessor :options
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The product of a sequence of terms over an index range."
+        REFERENCE = "https://en.wikipedia.org/wiki/Product_(mathematics)"
+        EXAMPLE = -> { new(sym("x"), sym("y"), sym("z")) }
+        # --- end catalog documentation ---
 
         FUNCTION = {
           name: "prod",
           first_value: "subscript",
           second_value: "supscript",
         }.freeze
+
+        attr_accessor :options
 
         def evaluate(evaluator)
           if parameter_one.nil? || parameter_two.nil? || parameter_three.nil?

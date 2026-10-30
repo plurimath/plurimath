@@ -12,6 +12,8 @@ gem "canon"
 gem "lasem", github: "plurimath/lasem-ruby", branch: "main", submodules: true
 # gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "oga"
+# spec_helper selects the Nokogiri adapter directly.
+gem "nokogiri"
 # AsciiMath parser; tracks amath main until a release is published.
 # AMATH_PATH points at a local amath checkout instead.
 if ENV["AMATH_PATH"]

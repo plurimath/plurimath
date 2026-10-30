@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Underover < TernaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A base with expressions attached directly below and above it."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/munderover"
+        EXAMPLE = -> { new(sym("x"), sym("y"), sym("z")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "UnderOver",
           first_value: "base",
