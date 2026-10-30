@@ -8,6 +8,20 @@ module Plurimath
         DESCRIPTION = "An expression carrying an `intent` annotation for MathML accessibility semantics."
         REFERENCE = "https://www.w3.org/TR/mathml4/#mixing_intent"
         EXAMPLE = -> { new(expr(sym("x")), Text.new("variable")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :limited,
+            notes: ["The intent string is emitted as a visible function argument instead of metadata."],
+          },
+          latexmath: {
+            status: :limited,
+            notes: ["The intent string is emitted as a visible function argument instead of metadata."],
+          },
+          omml: {
+            status: :limited,
+            notes: ["The MathML intent annotation is omitted; only the expression is emitted."],
+          },
+        }.freeze
         # --- end catalog documentation ---
 
         def to_mathml_without_math_tag(intent, options:)

@@ -11,6 +11,16 @@ module Plurimath
         DESCRIPTION = "An expression wrapped in an enclosing notation, such as a box, circle, or strike."
         REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/menclose"
         EXAMPLE = -> { new("box", sym("x")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :limited,
+            notes: ["The enclosure notation is omitted; only the enclosed expression is emitted."],
+          },
+          latexmath: {
+            status: :limited,
+            notes: ["The enclosure notation is omitted; only the enclosed expression is emitted."],
+          },
+        }.freeze
         # --- end catalog documentation ---
 
         FUNCTION = {

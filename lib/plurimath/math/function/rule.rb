@@ -8,6 +8,20 @@ module Plurimath
         DESCRIPTION = "A typographic rule — a filled rectangle used for spacing or lines, as in LaTeX's rule."
         REFERENCE = "https://latexref.xyz/_005crule.html"
         EXAMPLE = -> { new(sym("5pt"), sym("5pt"), sym("5pt")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :unavailable,
+            notes: ["No AsciiMath representation is emitted."],
+          },
+          mathml: {
+            status: :unavailable,
+            notes: ["Only an empty MathML placeholder is emitted; the rule geometry is omitted."],
+          },
+          omml: {
+            status: :unavailable,
+            notes: ["Only an empty OMML placeholder is emitted; the rule geometry is omitted."],
+          },
+        }.freeze
         # --- end catalog documentation ---
 
         FUNCTION = {
