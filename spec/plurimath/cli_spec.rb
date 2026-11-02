@@ -21,6 +21,30 @@ RSpec.describe Plurimath::Cli do
     it_behaves_like "shared CLI conversion", "cli-convert-2"
 
     it_behaves_like "shared CLI conversion", "cli-convert-3"
+
+    context "with html output format" do
+      it "emits the html rendering" do
+        expect do
+          described_class.start(["convert", "-i", "x^2", "-f", "asciimath", "-t", "html"])
+        end.to output(/<sup>2<\/sup>/).to_stdout
+      end
+    end
+
+    context "with unitsml output format" do
+      it "emits mathml with embedded UnitsML markup" do
+        expect do
+          described_class.start(["convert", "-i", '"unitsml(m/s)"', "-f", "asciimath", "-t", "unitsml"])
+        end.to output(/Dimension xmlns=/).to_stdout
+      end
+    end
+
+    context "with an invalid output format" do
+      it "exits with the invalid-format message" do
+        expect do
+          described_class.start(["convert", "-i", "x^2", "-t", "json"])
+        end.to raise_error(SystemExit) { |error| expect(error.status).to eq(1) }
+      end
+    end
   end
 
   describe ".render" do
