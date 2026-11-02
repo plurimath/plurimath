@@ -499,7 +499,7 @@ options:)
       def all_unitsml_nodes?(style)
         return false unless style.nodes.one?
 
-        style.nodes.first.attributes["unitsml"] == "true"
+        style.nodes.first["unitsml"] == "true"
       end
 
       def unitsml_processing(nodes, prev_node)

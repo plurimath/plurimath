@@ -63,6 +63,10 @@ module Plurimath
         end
 
         def remove_attr(attribute)
+          # leptris keeps attributes in two stores: the construction-time hash
+          # view ([] and []= read/write it) and the attached attribute list the
+          # serializer renders from. Both must be cleared.
+          @node.attributes.delete(attribute.to_s)
           @node.remove_attribute(attribute.to_s)
         end
 

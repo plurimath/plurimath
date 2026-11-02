@@ -20,7 +20,7 @@ module Plurimath
     option :input_format,
            aliases: "-f",
            default: "asciimath",
-           desc: "Input format should be in quoted string => \"asciimath\""
+           desc: "Input format: #{Plurimath::Math::VALID_TYPES.keys.sort.join(', ')} (default: asciimath)"
 
     option :file_path,
            aliases: "-p",
@@ -30,7 +30,7 @@ module Plurimath
     option :output_format,
            aliases: "-t",
            default: "mathml",
-           desc: "Convert to language type, Output format should be in quoted string"
+           desc: "Output format: #{Plurimath::Math::VALID_TYPES.keys.sort.join(', ')} (default: mathml)"
 
     option :math_rendering,
            aliases: "-m",
@@ -66,7 +66,7 @@ module Plurimath
     option :input_format,
            aliases: "-f",
            default: "asciimath",
-           desc: "Input format should be in quoted string => \"asciimath\""
+           desc: "Input format: #{Plurimath::Math::VALID_TYPES.keys.sort.join(', ')} (default: asciimath)"
 
     option :file_path,
            aliases: "-p",
