@@ -14,13 +14,6 @@ gem "lasem", github: "plurimath/lasem-ruby", branch: "main", submodules: true
 gem "oga"
 # spec_helper selects the Nokogiri adapter directly.
 gem "nokogiri"
-# AsciiMath parser; tracks amath main until a release is published.
-# AMATH_PATH points at a local amath checkout instead.
-if ENV["AMATH_PATH"]
-  gem "amath", path: ENV["AMATH_PATH"]
-else
-  gem "amath", github: "plurimath/amath", ref: "b67f924477ce129e85926eda5973d771c007dfec"
-end
 # gem "omml", github: "plurimath/omml", branch: "main"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
