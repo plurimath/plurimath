@@ -19,7 +19,8 @@ RSpec.shared_examples "shared grammar expectations" do |ids|
           parser.parse(SharedGrammarFixtures.input(data))
         end
         if data.fetch("observations").first.fetch("comparison") == "parse_failure"
-          expect { parse.call }.to raise_error(Parslet::ParseFailed)
+          error_class = described_class < Parsanol::Parser ? Parsanol::ParseFailed : Parslet::ParseFailed
+          expect { parse.call }.to raise_error(error_class)
         else
           tree = parse.call
           data.fetch("observations").each do |check|

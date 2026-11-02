@@ -1,5 +1,6 @@
 require "mml"
 require "parslet"
+require "parsanol"
 require "htmlentities"
 
 # Select an XML engine

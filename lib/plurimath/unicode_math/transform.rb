@@ -2,7 +2,7 @@
 
 module Plurimath
   class UnicodeMath
-    class Transform < Parslet::Transform
+    class Transform < Parsanol::Transform
       include Plurimath::BaseNumberPrefix::Transform
 
       rule(td: simple(:td)) { Math::Function::Td.new([td]) }
