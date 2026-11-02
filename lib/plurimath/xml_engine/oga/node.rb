@@ -116,7 +116,11 @@ module Plurimath
         end
 
         def remove_attr(attr_key)
-          @wrapped.unset(attr_key)
+          # Oga keeps attributes in an array and its `unset` does not remove
+          # them reliably; reject directly, matching the reader's name logic.
+          @wrapped.attributes.reject! do |attribute|
+            [attribute.name, attribute.name.split(":").last].include?(attr_key.to_s)
+          end
         end
 
         private
