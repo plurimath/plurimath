@@ -12,7 +12,10 @@ module Plurimath
         end
 
         def dump(data, **options)
-          ::Ox.dump(data.xml_nodes, **options)
+          # XML 1.0 cannot represent C0 controls other than tab, newline and
+          # carriage return. Drop them rather than emit a document a conforming
+          # parser rejects; last wins, so a caller cannot reinstate them.
+          ::Ox.dump(data.xml_nodes, **options, invalid_replace: "")
         end
 
         def load(data)

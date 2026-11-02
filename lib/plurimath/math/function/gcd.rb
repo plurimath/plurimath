@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Gcd < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The greatest common divisor."
+        REFERENCE = "https://en.wikipedia.org/wiki/Greatest_common_divisor"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

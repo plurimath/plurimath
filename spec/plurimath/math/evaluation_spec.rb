@@ -26,6 +26,33 @@ RSpec.describe Plurimath::Math::Formula do
   end
 
   describe "#evaluate" do
+    context "with signed numeric operands" do
+      it "evaluates an unparenthesized negative exponent" do
+        expect(evaluate("a^-2", :asciimath, a: 2)).to eq(Rational(1, 4))
+      end
+
+      it "evaluates an unparenthesized negative modulo divisor" do
+        expect(evaluate("7 mod -3")).to eq(-2)
+      end
+
+      it "keeps powers inside a negative modulo divisor" do
+        expect(evaluate("7 mod -3^2")).to eq(evaluate("7 mod (-3^2)"))
+      end
+
+      it "keeps chained modulo inside a negative modulo divisor" do
+        expect(evaluate("7 mod -3 mod 2")).to eq(evaluate("7 mod (-3 mod 2)"))
+      end
+
+      it "keeps fractions inside a negative modulo divisor" do
+        expect(evaluate("7 mod -3/2")).to eq(evaluate("7 mod (-3/2)"))
+      end
+
+      it "preserves infix subtraction" do
+        expect(evaluate("3-2")).to eq(1)
+        expect(evaluate("a-b", :asciimath, a: 3, b: 2)).to eq(1)
+      end
+    end
+
     context "with arithmetic across input syntaxes" do
       it "evaluates AsciiMath arithmetic" do
         expect(evaluate("a+b-c*d", :asciimath, a: 10, b: 5, c: 2, d: 3)).to eq(9)
@@ -683,10 +710,6 @@ RSpec.describe Plurimath::Math::Formula do
         "max 2,3" => [
           Plurimath::Errors::Evaluation::UnsupportedExpressionError,
           "unsupported expression: malformed token",
-        ],
-        "7 mod -3" => [
-          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
-          "unsupported expression: Symbols::Minus",
         ],
       }.each do |source, (error, message)|
         it "raises #{error.name.split('::').last} for #{source.inspect}" do

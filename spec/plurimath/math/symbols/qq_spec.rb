@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../../../support/shared_symbol_examples"
 
 RSpec.describe Plurimath::Math::Symbols::Qq do
   describe ".initialize" do
@@ -8,34 +9,5 @@ RSpec.describe Plurimath::Math::Symbols::Qq do
     end
   end
 
-  describe "All language conversion specs" do
-    subject(:klass) { described_class.new }
-
-    context "Matches all conversion for the Symbol Plurimath::Math::Symbols::Qq" do
-      it "matches AsciiMath string" do
-        expect(klass.to_asciimath).to eq("\"P{QQ}\"")
-      end
-
-      it "matches LaTeX string" do
-        expect(klass.to_latex).to eq("\\QQ")
-      end
-
-      it "matches UnicodeMath string" do
-        expect(klass.to_unicodemath).to eq("ℚ")
-      end
-
-      it "matches OMML string" do
-        expect(klass.to_omml_without_math_tag(true)).to eq("&#x211a;")
-      end
-
-      it "matches MathML string" do
-        string = dump_ox_nodes(klass.to_mathml_without_math_tag(false)).strip
-        expect(string).to eq("<mi>&#x211a;</mi>")
-      end
-
-      it "matches HTML string" do
-        expect(klass.to_html).to eq("&#x211a;")
-      end
-    end
-  end
+  it_behaves_like "shared symbol renderings", "qq"
 end

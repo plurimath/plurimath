@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Lub < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The least upper bound (supremum) of a set."
+        REFERENCE = "https://en.wikipedia.org/wiki/Infimum_and_supremum"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

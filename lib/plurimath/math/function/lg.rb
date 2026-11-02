@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Lg < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The base-10 (common) logarithm."
+        REFERENCE = "https://en.wikipedia.org/wiki/Common_logarithm"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

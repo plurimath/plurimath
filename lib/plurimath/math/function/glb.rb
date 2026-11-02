@@ -4,6 +4,18 @@ module Plurimath
   module Math
     module Function
       class Glb < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The greatest lower bound (infimum) operator."
+        REFERENCE = "https://en.wikipedia.org/wiki/Infimum_and_supremum"
+        EXAMPLE = -> { new(sym("x")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          latexmath: {
+            status: :limited,
+            notes: ["The operator name is emitted as plain math letters, not an operator command."],
+          },
+        }.freeze
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

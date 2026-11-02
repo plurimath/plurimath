@@ -4,6 +4,26 @@ module Plurimath
   module Math
     module Function
       class Msgroup < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Groups elementary-math rows so their positions shift together."
+        REFERENCE = "https://www.w3.org/TR/mathml4/#presm_msgroup"
+        EXAMPLE = -> { new([sym("x")]) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :limited,
+            notes: ["Elementary-math grouping is omitted; only the group contents are emitted."],
+          },
+          latexmath: {
+            status: :limited,
+            notes: ["Elementary-math grouping is omitted; only the group contents are emitted."],
+          },
+          omml: {
+            status: :limited,
+            notes: ["Elementary-math grouping is omitted; only the group contents are emitted."],
+          },
+        }.freeze
+        # --- end catalog documentation ---
+
         def to_asciimath(options:)
           parameter_one.map do |param|
             param.to_asciimath(options: options)

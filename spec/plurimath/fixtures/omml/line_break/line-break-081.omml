@@ -11,12 +11,12 @@
       </m:limLowPr>
       <m:e>
         <m:r>
-          <m:t>&#x2211;</m:t>
+          <m:t>&#8203;</m:t>
         </m:r>
       </m:e>
       <m:lim>
         <m:r>
-          <m:t>&#8203;</m:t>
+          <m:t>&#x2211;</m:t>
         </m:r>
       </m:lim>
     </m:limLow>
@@ -35,14 +35,14 @@
         </m:ctrlPr>
       </m:limLowPr>
       <m:e>
-        <m:r>
-          <m:t>&#x220f;</m:t>
-        </m:r>
-      </m:e>
-      <m:lim>
         <m:r>
           <m:t>&#x2222;</m:t>
         </m:r>
+      </m:e>
+      <m:lim>
+        <m:r>
+          <m:t>&#x220f;</m:t>
+        </m:r>
       </m:lim>
     </m:limLow>
   </m:oMath>
@@ -61,12 +61,12 @@
       </m:limLowPr>
       <m:e>
         <m:r>
-          <m:t>&#8203;</m:t>
+          <m:t>&#x6f;</m:t>
         </m:r>
       </m:e>
       <m:lim>
         <m:r>
-          <m:t>&#x6f;</m:t>
+          <m:t>&#8203;</m:t>
         </m:r>
       </m:lim>
     </m:limLow>

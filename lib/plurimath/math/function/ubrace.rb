@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Ubrace < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An underbrace spanning an expression."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/munder"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         attr_accessor :attributes
 
         def initialize(parameter_one = nil, attributes = {})
@@ -53,7 +59,7 @@ module Plurimath
           return r_element("⏟", rpr_tag: false) unless parameter_one
 
           symbol = Symbols::Symbol.new("⏟")
-          Underset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+          Underset.new(symbol, parameter_one).to_omml_without_math_tag(true,
                                                                        options: options)
         end
 

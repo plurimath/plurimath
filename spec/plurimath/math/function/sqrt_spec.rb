@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Sqrt do
   describe ".initialize" do
@@ -18,36 +19,11 @@ RSpec.describe Plurimath::Math::Function::Sqrt do
       described_class.new(first_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-sqrt-21-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("sqrt(n)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-sqrt-29-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("sqrt(70)")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("sqrt(sum_(&)^(\"so\"))")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-sqrt-37-1"
   end
 
   describe ".to_mathml" do
@@ -59,127 +35,30 @@ RSpec.describe Plurimath::Math::Function::Sqrt do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-sqrt-62-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
+    it_behaves_like "shared renderer fixture", "function-sqrt-76-1"
 
-          <msqrt>
-            <mi>n</mi>
-          </msqrt>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <msqrt>
-            <mn>70</mn>
-          </msqrt>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <msqrt>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </msqrt>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-sqrt-89-1"
   end
 
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-sqrt-119-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\sqrt{n}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-sqrt-127-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\sqrt{70}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\sqrt{\\sum_{\\&}^{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-sqrt-135-1"
   end
 
   describe ".to_html" do
     subject(:formula) { described_class.new(first_value).to_html(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-sqrt-154-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<i>sqrt</i><i>n</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-sqrt-162-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i>sqrt</i><i>70</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expect(formula).to eql("<i>sqrt</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-sqrt-170-1"
   end
 end

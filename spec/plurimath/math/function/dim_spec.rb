@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Dim do
   describe ".initialize" do
@@ -18,36 +19,11 @@ RSpec.describe Plurimath::Math::Function::Dim do
       described_class.new(first_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-dim-21-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("dimn")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-dim-29-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("dim70")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("dimsum_(&)^(\"so\")")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-dim-37-1"
   end
 
   describe ".to_mathml" do
@@ -59,131 +35,31 @@ RSpec.describe Plurimath::Math::Function::Dim do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-dim-62-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
+    it_behaves_like "shared renderer fixture", "function-dim-77-1"
 
-          <mrow>
-            <mi>dim</mi>
-            <mi>n</mi>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mi>dim</mi>
-            <mn>70</mn>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mi>dim</mi>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-dim-91-1"
   end
 
   describe ".to_latex" do
     subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-dim-122-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("\\dim{n}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-dim-130-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\dim{70}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("\\dim{\\sum_{\\&}^{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-dim-138-1"
   end
 
   describe ".to_html" do
     subject(:formula) { described_class.new(first_value).to_html(options: {}) }
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
+    it_behaves_like "shared renderer fixture", "function-dim-157-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<i>dim</i><i>n</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-dim-165-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i>dim</i><i>70</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expect(formula).to eql("<i>dim</i><i><i>&sum;</i><sub>&</sub><sup>so</sup></i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-dim-173-1"
   end
 
   describe ".validate_function_formula" do

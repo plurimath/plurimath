@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Abs < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The absolute value of an expression."
+        REFERENCE = "https://en.wikipedia.org/wiki/Absolute_value"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         attr_accessor :open_paren, :close_paren
 
         def to_mathml_without_math_tag(intent, options:)

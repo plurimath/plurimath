@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../../../support/shared_formatter_examples"
 
 RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
   let(:base_notation) { Plurimath::Formatter::Numbers::BaseNotation.new(base: 10) }
@@ -13,7 +14,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: base_notation
       )
 
-      expect(result.to_s).to eq("1,000")
+      expect_shared_formatter_output("formatted-number-016", result.to_s)
     end
 
     it "renders a decimal number" do
@@ -22,7 +23,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: base_notation
       )
 
-      expect(result.to_s).to eq("1.234")
+      expect_shared_formatter_output("formatted-number-025", result.to_s)
     end
 
     it "renders a negative number" do
@@ -31,7 +32,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: base_notation
       )
 
-      expect(result.to_s).to eq("-42")
+      expect_shared_formatter_output("formatted-number-034", result.to_s)
     end
 
     it "renders a positive number with explicit plus sign" do
@@ -41,7 +42,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         number_sign: :plus
       )
 
-      expect(result.to_s).to eq("+42")
+      expect_shared_formatter_output("formatted-number-044", result.to_s)
     end
 
     it "wraps digits with base prefix and postfix" do
@@ -50,7 +51,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: hex_notation
       )
 
-      expect(result.to_s).to eq("0xff")
+      expect_shared_formatter_output("formatted-number-053", result.to_s)
     end
 
     it "applies sign before base notation for negative numbers" do
@@ -59,7 +60,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: hex_notation
       )
 
-      expect(result.to_s).to eq("-0xff")
+      expect_shared_formatter_output("formatted-number-062", result.to_s)
     end
 
     it "uppercases hex digits when hex_capital is true" do
@@ -71,7 +72,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: upcase_notation
       )
 
-      expect(result.to_s).to eq("0xA.D'F")
+      expect_shared_formatter_output("formatted-number-074", result.to_s)
     end
 
     it "combines prefix, postfix, decimal, and sign" do
@@ -83,7 +84,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: combined
       )
 
-      expect(result.to_s).to eq("-16#BE,EF_16")
+      expect_shared_formatter_output("formatted-number-086", result.to_s)
     end
   end
 
@@ -154,7 +155,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: base_notation
       )
 
-      expect(result.sign_text).to eq("-")
+      expect_shared_formatter_output("formatted-number-157", result.sign_text)
     end
 
     it "returns plus when number_sign is :plus" do
@@ -164,7 +165,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         number_sign: :plus
       )
 
-      expect(result.sign_text).to eq("+")
+      expect_shared_formatter_output("formatted-number-167", result.sign_text)
     end
 
     it "returns nil for positive numbers without explicit sign" do
@@ -173,7 +174,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: base_notation
       )
 
-      expect(result.sign_text).to be_nil
+      expect_shared_formatter_output("formatted-number-176", result.sign_text)
     end
 
     it "prefers minus over plus when negative with number_sign :plus" do
@@ -183,7 +184,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         number_sign: :plus
       )
 
-      expect(result.sign_text).to eq("-")
+      expect_shared_formatter_output("formatted-number-186", result.sign_text)
     end
   end
 
@@ -197,7 +198,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: combined
       )
 
-      expect(result.digits_string).to eq("BE,EF")
+      expect_shared_formatter_output("formatted-number-200", result.digits_string)
     end
 
     it "includes the decimal separator and fraction when present" do
@@ -206,7 +207,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: base_notation
       )
 
-      expect(result.digits_string).to eq("1.5")
+      expect_shared_formatter_output("formatted-number-209", result.digits_string)
     end
 
     it "uppercases hex digits when hex_capital is true" do
@@ -218,7 +219,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
         decimal_separator: ".", base_notation: upcase_notation
       )
 
-      expect(result.digits_string).to eq("BE.EF")
+      expect_shared_formatter_output("formatted-number-221", result.digits_string)
     end
   end
 
@@ -230,7 +231,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
       )
 
       expect(result.base_notation.base).to eq(16)
-      expect(result.digits_string).to eq("ff")
+      expect_shared_formatter_output("formatted-number-233", result.digits_string)
     end
 
     it "exposes sign for output format rendering" do
@@ -242,7 +243,7 @@ RSpec.describe Plurimath::Formatter::Numbers::FormattedNumber do
 
       expect(result).to be_negative
       expect(result.base_notation.base).to eq(2)
-      expect(result.digits_string).to eq("1010")
+      expect_shared_formatter_output("formatted-number-245", result.digits_string)
     end
   end
 end

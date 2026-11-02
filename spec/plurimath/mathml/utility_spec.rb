@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Mathml::Utility do
   def parse_mathml(body)
@@ -52,24 +53,7 @@ RSpec.describe Plurimath::Mathml::Utility do
     end
   end
 
-  describe "parser integration" do
-    it "resolves bare named function words through Mathml::Utility" do
-      expect(parse_mathml("<mi>sin</mi>"))
-        .to eq(Plurimath::Math::Formula.new([Plurimath::Math::Function::Sin.new]))
-    end
-
-    it "keeps structurally represented words literal" do
-      expected = Plurimath::Math::Formula.new(
-        [Plurimath::Math::Symbols::Symbol.new("frac")],
-      )
-
-      expect(parse_mathml("<mi>frac</mi>"))
-        .to eq(expected)
-    end
-
-    it "resolves unicode function characters through Mathml::Utility" do
-      expect(parse_mathml("<mo>&#x2211;</mo>"))
-        .to eq(Plurimath::Math::Formula.new([Plurimath::Math::Function::Sum.new]))
-    end
-  end
+  it_behaves_like "shared renderer fixture", "renderer-mathml-utility-utility-55-1"
+  it_behaves_like "shared renderer fixture", "renderer-mathml-utility-utility-55-2"
+  it_behaves_like "shared renderer fixture", "renderer-mathml-utility-utility-55-3"
 end

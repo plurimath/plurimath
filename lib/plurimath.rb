@@ -1,5 +1,6 @@
 require "mml"
 require "parslet"
+require "parsanol"
 require "htmlentities"
 
 # Select an XML engine
@@ -8,9 +9,12 @@ require "plurimath/xml_engine"
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
   autoload :BaseNumberPrefix, "plurimath/base_number_prefix"
+  autoload :Catalog, "plurimath/catalog"
   autoload :Cli, "plurimath/cli" unless RUBY_ENGINE == "opal"
   autoload :Configuration, "plurimath/configuration"
   autoload :Deprecation, "plurimath/deprecation"
+  autoload :Documentation, "plurimath/documentation"
+  autoload :SymbolDocumentation, "plurimath/symbol_documentation"
   autoload :Error, "plurimath/errors/error"
   autoload :ConfigurationError, "plurimath/errors/configuration_error"
   autoload :DeprecationError, "plurimath/errors/deprecation_error"

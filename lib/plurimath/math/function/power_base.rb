@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class PowerBase < TernaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A base bearing both a subscript and a superscript."
+        REFERENCE = "https://en.wikipedia.org/wiki/Subscript_and_superscript"
+        EXAMPLE = -> { new(sym("x"), sym("y"), sym("z")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "subsup",
           first_value: "base",

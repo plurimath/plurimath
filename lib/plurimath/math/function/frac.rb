@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Frac < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A fraction with a numerator over a denominator."
+        REFERENCE = "https://en.wikipedia.org/wiki/Fraction"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         attr_accessor :options
 
         FUNCTION = {

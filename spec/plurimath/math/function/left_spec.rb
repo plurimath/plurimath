@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Left do
   describe ".initialize" do
@@ -20,33 +21,15 @@ RSpec.describe Plurimath::Math::Function::Left do
   describe ".to_asciimath" do
     subject(:left) { described_class.new(string).to_asciimath }
 
-    context "contains opening bracket" do
-      let(:string) { "(" }
-
-      it "returns instance of Left" do
-        expect(left).to eq("left(")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-left-23-1"
   end
 
   describe ".to_latex" do
     subject(:left) { described_class.new(string).to_latex }
 
-    context "contains opening bracket" do
-      let(:string) { "(" }
+    it_behaves_like "shared renderer fixture", "function-left-35-1"
 
-      it "returns instance of Left" do
-        expect(left).to eq("\\left (")
-      end
-    end
-
-    context "contains curly opening bracket" do
-      let(:string) { "{" }
-
-      it "returns instance of Left" do
-        expect(left).to eq("\\left \\{")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-left-43-1"
   end
 
   describe ".to_mathml" do
@@ -58,57 +41,21 @@ RSpec.describe Plurimath::Math::Function::Left do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { "(" }
+    it_behaves_like "shared renderer fixture", "function-left-61-1"
 
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mo>(</mo>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-left-69-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "{" }
-
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mo>{</mo>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "[" }
-
-      it "returns mathml string" do
-        expect(formula).to be_xml_equivalent_to("<mo>[</mo>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-left-77-1"
   end
 
   describe ".to_html" do
     subject(:formula) { described_class.new(first_value).to_html }
 
-    context "contains Symbol as value" do
-      let(:first_value) { "(" }
+    it_behaves_like "shared renderer fixture", "function-left-89-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("<i>(</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-left-97-1"
 
-    context "contains Number as value" do
-      let(:first_value) { "{" }
-
-      it "returns mathml string" do
-        expect(formula).to eql("<i>{</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) { "[" }
-
-      it "returns mathml string" do
-        expect(formula).to eql("<i>[</i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-left-105-1"
   end
 
   describe ".validate_function_formula" do

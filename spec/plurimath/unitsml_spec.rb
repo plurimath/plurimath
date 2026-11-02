@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../support/shared_facade_examples"
 
 RSpec.describe Plurimath::Unitsml do
   describe ".initialize" do
@@ -60,53 +61,72 @@ RSpec.describe Plurimath::Unitsml do
         expect(unitsml.text).to eql("mm^3")
       end
 
-      it "expects to not raise an error" do
-        expect { unitsml }.not_to raise_error
-      end
+      it_behaves_like "shared facade expectation", "facade-unitsml-63"
     end
 
     context "contains positive exponent variable invalid equation" do
       let(:input_text) { "mm^(b)" }
 
-      it "expects error message indicating invalid exponent value" do
-        message = "The use of a variable as an exponent is not valid."
-        expect { unitsml }.to raise_error(
-          Plurimath::Math::ParseError, Regexp.compile(message)
-        )
-      end
+      it_behaves_like "shared facade expectation", "facade-unitsml-71"
     end
 
     context "contains negative exponent variable invalid equation" do
       let(:input_text) { "mm^(-b)" }
 
-      it "expects error message indicating invalid exponent value" do
-        message = "The use of a variable as an exponent is not valid."
-        expect { unitsml }.to raise_error(
-          Plurimath::Math::ParseError, Regexp.compile(message)
-        )
-      end
+      it_behaves_like "shared facade expectation", "facade-unitsml-82"
     end
 
     context "contains negative exponent alphanumeric variable invalid equation" do
       let(:input_text) { "mm^(-2b)" }
 
-      it "expects error message indicating invalid exponent value" do
-        message = "The use of a variable as an exponent is not valid."
-        expect { unitsml }.to raise_error(
-          Plurimath::Math::ParseError, Regexp.compile(message)
-        )
-      end
+      it_behaves_like "shared facade expectation", "facade-unitsml-93"
     end
 
-    unitsml_strings.each.with_index(1) do |string, index|
-      context "contains multiple valid equations from source plurimath/issues#236 ##{index}" do
-        let(:input_text) { string }
-
-        it "expects no error message indicating valid value##{index}" do
-          expect { unitsml }.not_to raise_error
-        end
-      end
-    end
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-1"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-2"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-3"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-4"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-5"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-6"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-7"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-8"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-9"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-10"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-11"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-12"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-13"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-14"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-15"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-16"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-17"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-18"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-19"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-20"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-21"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-22"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-23"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-24"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-25"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-26"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-27"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-28"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-29"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-30"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-31"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-32"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-33"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-34"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-35"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-36"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-37"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-38"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-39"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-40"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-41"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-42"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-43"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-44"
+    it_behaves_like "shared facade expectation", "facade-unitsml-105-iteration-45"
   end
 
   # Regression for unitsml/unitsdb#123. An accent name ("bar") rendered by
@@ -114,23 +134,6 @@ RSpec.describe Plurimath::Unitsml do
   # the overline accent. (Named-function unit names like "min"/"sec" are a
   # separate, ambiguous case and are intentionally not addressed by this rule.)
   describe "an accent-named unit (unitsml/unitsdb#123)" do
-    it "renders 'bar' as an upright unit identifier, not an overline accent" do
-      formula = Plurimath::Math.parse('1 "unitsml(bar)"', :asciimath)
-      mathml = <<~MATHML
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mn>1</mn>
-            <mo rspace="thickmathspace">&#x2062;</mo>
-            <mrow>
-              <mstyle mathvariant="normal">
-                <mi>bar</mi>
-              </mstyle>
-            </mrow>
-          </mstyle>
-        </math>
-      MATHML
-      expect(formula.to_mathml).to be_xml_equivalent_to(mathml)
-      expect(formula.to_latex).to eq('1 \mathrm{bar}')
-    end
+    it_behaves_like "shared facade expectation", "facade-unitsml-117"
   end
 end

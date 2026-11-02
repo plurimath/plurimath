@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Stackrel < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An expression stacked above another, typically over a relation."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mover"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "stackrel",
           first_value: "above",

@@ -5,6 +5,12 @@ module Plurimath
     module Function
       class FontStyle
         class Bold < FontStyle
+          # --- Catalog documentation (see Plurimath::Documentation) ---
+          DESCRIPTION = "Renders its argument in a bold font."
+          REFERENCE = "https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols"
+          EXAMPLE = -> { new(sym("x")) }
+          # --- end catalog documentation ---
+
           def initialize(parameter_one,
                          parameter_two = "bold")
             super

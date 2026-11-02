@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require_relative "../support/shared_facade_examples"
 
 RSpec.describe Plurimath::BaseNumberPrefix do
   describe "Parser module" do
@@ -16,39 +17,19 @@ RSpec.describe Plurimath::BaseNumberPrefix do
       end
     end
 
-    it "parses hex literals" do
-      tree = parser_class.new.parse("0xFF")
-      expect(tree[:hex_number].to_s).to eq("FF")
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-19"
 
-    it "parses uppercase hex prefix" do
-      tree = parser_class.new.parse("0XAB")
-      expect(tree[:hex_number].to_s).to eq("AB")
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-24"
 
-    it "parses binary literals" do
-      tree = parser_class.new.parse("0b1010")
-      expect(tree[:binary_number].to_s).to eq("1010")
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-29"
 
-    it "parses uppercase binary prefix" do
-      tree = parser_class.new.parse("0B111")
-      expect(tree[:binary_number].to_s).to eq("111")
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-34"
 
-    it "parses octal literals" do
-      tree = parser_class.new.parse("0o17")
-      expect(tree[:octal_number].to_s).to eq("17")
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-39"
 
-    it "parses uppercase octal prefix" do
-      tree = parser_class.new.parse("0O77")
-      expect(tree[:octal_number].to_s).to eq("77")
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-44"
 
-    it "requires at least one digit after prefix" do
-      expect { parser_class.new.parse("0x") }.to raise_error(Parslet::ParseFailed)
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-49"
   end
 
   describe "Transform module" do
@@ -58,42 +39,17 @@ RSpec.describe Plurimath::BaseNumberPrefix do
       end
     end
 
-    it "builds Number with base 16 from hex" do
-      result = transform_class.new.apply(hex_number: "FF")
-      expect(result).to be_a(Plurimath::Math::Number)
-      expect(result.value).to eq("FF")
-      expect(result.base).to eq(16)
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-61"
 
-    it "builds Number with base 2 from binary, storing decimal value" do
-      result = transform_class.new.apply(binary_number: "1010")
-      expect(result).to be_a(Plurimath::Math::Number)
-      expect(result.value).to eq("10")
-      expect(result.base).to eq(2)
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-68"
 
-    it "builds Number with base 8 from octal, storing decimal value" do
-      result = transform_class.new.apply(octal_number: "17")
-      expect(result).to be_a(Plurimath::Math::Number)
-      expect(result.value).to eq("15")
-      expect(result.base).to eq(8)
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-75"
   end
 
   describe "integration with real parsers" do
-    [
-      %i[asciimath asciimath],
-      %i[latex latex],
-      %i[unicode unicodemath],
-      %i[html html],
-    ].each do |type, name|
-      context "via #{name} parser" do
-        it "parses 0xFF with base 16" do
-          number = Plurimath::Math.parse("0xFF", type).value.first
-          expect(number).to be_a(Plurimath::Math::Number)
-          expect(number.base).to eq(16)
-        end
-      end
-    end
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-91-iteration-1"
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-91-iteration-2"
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-91-iteration-3"
+    it_behaves_like "shared facade expectation", "facade-base-number-prefix-91-iteration-4"
   end
 end

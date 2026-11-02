@@ -41,6 +41,7 @@ module Plurimath
         ORD_GT = ">".ord
         ORD_APOS = "'".ord
         ORD_QUOT = '"'.ord
+        ORD_TAB = "\t".ord
         ORD_NEWLINE = "\n".ord
         ORD_CARRIAGERETURN = "\r".ord
 
@@ -56,8 +57,14 @@ module Plurimath
               "&quot;"
             elsif [ORD_NEWLINE, ORD_CARRIAGERETURN].include?(i)
               i.chr("utf-8")
-            elsif i < 0x20
+            elsif i == ORD_TAB
+              # Referenced rather than literal: a conforming parser normalises
+              # a literal tab in an attribute value to a space.
               "&#x#{i.to_s(16).rjust(4, '0')};"
+            elsif i < 0x20
+              # XML 1.0 admits no other C0 control anywhere in a document, not
+              # even as a character reference, so there is nothing to emit.
+              ""
             else
               i.chr("utf-8")
             end

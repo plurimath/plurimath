@@ -4,13 +4,18 @@ module Plurimath
   module Math
     autoload :Core, "#{__dir__}/math/core"
     autoload :Evaluation, "#{__dir__}/math/evaluation"
+    autoload :SemanticTree, "#{__dir__}/math/semantic_tree"
     autoload :Formula, "#{__dir__}/math/formula"
     autoload :ModelHelper, "#{__dir__}/math/model_helper"
     autoload :Function, "#{__dir__}/math/function"
     autoload :InvalidTypeError, "#{__dir__}/errors/invalid_type_error"
+    autoload :MissingDependencyError,
+             "#{__dir__}/errors/missing_dependency_error"
     autoload :Number, "#{__dir__}/math/number"
     autoload :ParseOptionError, "#{__dir__}/errors/parse_option_error"
     autoload :ParseError, "#{__dir__}/errors/parse_error"
+    autoload :Renderer, "#{__dir__}/math/renderer"
+    autoload :AmbiguousDecimalError, "#{__dir__}/errors/ambiguous_decimal_error"
     autoload :Symbols, "#{__dir__}/math/symbols"
 
     VALID_TYPES = {
@@ -48,6 +53,27 @@ module Plurimath
       rescue StandardError
         raise ParseError.new(text, type), cause: nil
       end
+    end
+
+    # Parse +text+ of +type+ and render the resulting formula to a binary image
+    # (one of :svg, :png, :pdf, :ps) via the optional `lasem` gem. Parse options
+    # (e.g. :locale) are routed to .parse; the rest go to Formula#render. Raises a
+    # Plurimath::Errors rendering error (RenderingUnavailable, UnsupportedRenderFormat,
+    # or RenderingFailed) when lasem/its native extension is unavailable, the format
+    # is unsupported, or rendering fails, and Plurimath::Math::ParseError when +text+
+    # cannot be parsed (raised during parsing, before rendering).
+    def render(text, type, format: :svg, **options)
+      parse_options = options.slice(*SUPPORTED_PARSE_OPTIONS)
+      render_options = options.except(*SUPPORTED_PARSE_OPTIONS)
+      parse(text, type, **parse_options).render(format: format, **render_options)
+    end
+
+    # True when image rendering is available (the `lasem` gem and its native
+    # extension are present; always false under Opal). Never raises.
+    def render_available?
+      return false if RUBY_ENGINE == "opal"
+
+      Renderer.available?
     end
 
     def parse_with_configuration(text, type, options)

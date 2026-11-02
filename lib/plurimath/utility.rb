@@ -132,6 +132,10 @@ module Plurimath
     }.freeze
 
     class << self
+      def parser_slice?(value)
+        value.is_a?(::Parslet::Slice) || value.is_a?(::Parsanol::Slice)
+      end
+
       def get_table_class(text)
         Object.const_get("Plurimath::Math::Function::Table::#{capitalize(text)}")
       end
@@ -210,7 +214,7 @@ module Plurimath
       end
 
       def symbols_class(string, lang:, table: false)
-        return string unless string.is_a?(String) || string.is_a?(Parslet::Slice)
+        return string unless string.is_a?(String) || parser_slice?(string)
         return latex_table_curly_paren(string) if table && lang == :latex
 
         all_symbols_classes(lang)[string.to_s.strip]&.new ||

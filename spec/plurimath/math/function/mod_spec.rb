@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::Mod do
   describe ".initialize" do
@@ -19,53 +20,11 @@ RSpec.describe Plurimath::Math::Function::Mod do
       described_class.new(first_value, second_value).to_asciimath(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
+    it_behaves_like "shared renderer fixture", "function-mod-22-1"
 
-      it "returns asciimath string" do
-        expect(formula).to eq("n mod prod_(&)^(\"so\")")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-mod-38-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-
-      it "returns asciimath string" do
-        expect(formula).to eq("70 mod n")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns asciimath string" do
-        expect(formula).to eq("sum_(&)^(\"so\") mod prod_(&)^(\"so\")")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-mod-47-1"
   end
 
   describe ".to_mathml" do
@@ -77,92 +36,11 @@ RSpec.describe Plurimath::Math::Function::Mod do
       ).gsub("&amp;", "&")
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) { Plurimath::Math::Number.new("70") }
+    it_behaves_like "shared renderer fixture", "function-mod-80-1"
 
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mi>n</mi>
-            <mi>mod</mi>
-            <mn>70</mn>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-mod-96-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mn>70</mn>
-            <mi>mod</mi>
-            <mrow>
-              <munderover>
-                <mo>&#x220f;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expected_value = <<~MATHML
-          <mrow>
-            <mrow>
-              <munderover>
-                <mo>&#x2211;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-            <mi>mod</mi>
-            <mrow>
-              <munderover>
-                <mo>&#x220f;</mo>
-                <mo>&</mo>
-                <mtext>so</mtext>
-              </munderover>
-            </mrow>
-          </mrow>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(expected_value)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-mod-125-1"
   end
 
   describe ".to_latex" do
@@ -170,53 +48,11 @@ RSpec.describe Plurimath::Math::Function::Mod do
       described_class.new(first_value, second_value).to_latex(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
+    it_behaves_like "shared renderer fixture", "function-mod-173-1"
 
-      it "returns mathml string" do
-        expect(formula).to eql("{n} \\mod {\\prod_{\\&}^{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-mod-189-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-
-      it "returns mathml string" do
-        expect(formula).to eql("{70} \\mod {n}")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns mathml string" do
-        expect(formula).to eql("{\\sum_{\\&}^{\\text{so}}} \\mod {\\prod_{\\&}^{\\text{so}}}")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-mod-198-1"
   end
 
   describe ".to_html" do
@@ -224,52 +60,10 @@ RSpec.describe Plurimath::Math::Function::Mod do
       described_class.new(first_value, second_value).to_html(options: {})
     end
 
-    context "contains Symbol as value" do
-      let(:first_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
+    it_behaves_like "shared renderer fixture", "function-mod-227-1"
 
-      it "returns html string" do
-        expect(formula).to eql("<i>n</i><i>mod</i><i><i>&prod;</i><sub>&</sub><sup>so</sup></i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-mod-243-1"
 
-    context "contains Number as value" do
-      let(:first_value) { Plurimath::Math::Number.new("70") }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("n") }
-
-      it "returns html string" do
-        expect(formula).to eql("<i>70</i><i>mod</i><i>n</i>")
-      end
-    end
-
-    context "contains Formula as value" do
-      let(:first_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Sum.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-      let(:second_value) do
-        Plurimath::Math::Formula.new([
-                                       Plurimath::Math::Function::Prod.new(
-                                         Plurimath::Math::Symbols::Ampersand.new,
-                                         Plurimath::Math::Function::Text.new("so"),
-                                       ),
-                                     ])
-      end
-
-      it "returns html string" do
-        expect(formula).to eql("<i><i>&sum;</i><sub>&</sub><sup>so</sup></i><i>mod</i><i><i>&prod;</i><sub>&</sub><sup>so</sup></i>")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-mod-252-1"
   end
 end

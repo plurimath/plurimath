@@ -5,6 +5,7 @@ module Plurimath
     class Formula < Core
       autoload :Mrow, "#{__dir__}/formula/mrow"
       autoload :Mstyle, "#{__dir__}/formula/mstyle"
+      autoload :ClassTree, "#{__dir__}/formula/class_tree"
 
       include Mathml::FormulaTransformation
 
@@ -13,7 +14,7 @@ module Plurimath
 
       POWER_BASE_CLASSES = %w[powerbase power base].freeze
       DERIVATIVE_CONSTS  = ["&#x1d451;", "&#x2145;", "&#x2146;", "d"].freeze
-      MATH_ZONE_TYPES    = %i[omml latex mathml asciimath unicodemath].freeze
+      MATH_ZONE_TYPES    = %i[omml latex mathml asciimath unicodemath formula].freeze
       OMML_NAMESPACES    = {
         "xmlns:m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
         "xmlns:mc": "http://schemas.openxmlformats.org/markup-compatibility/2006",
@@ -195,13 +196,23 @@ formatter: nil, unitsml: {})
       end
 
       def to_display(type = nil, formatter: nil, unitsml: {},
-unary_function_spacing: true)
+unary_function_spacing: true, tree: :display)
+        unless %i[display semantic].include?(tree)
+          raise ArgumentError, "Unknown display tree: #{tree.inspect}"
+        end
+        if tree == :display && type.downcase.to_sym == :formula
+          return ClassTree.new.render(self)
+        end
+
         options = {
           formatter: formatter,
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing,
         }
         options[:formula] ||= self
+        if tree == :semantic
+          return SemanticTree.new(type.downcase.to_sym, options).render(self)
+        end
         return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
 
         math_zone = case type
@@ -400,6 +411,36 @@ options:)
               Function::Text.new(value),
             ),
           ],
+        )
+      end
+
+      # Render this formula to a binary image string via the optional `lasem`
+      # gem (https://github.com/plurimath/lasem-ruby).
+      #
+      # +format+ is the output image format, one of :svg, :png, :pdf, :ps.
+      #
+      # Remaining keyword options are split between the two stages:
+      #   * to_mathml options (forwarded to #to_mathml): :intent, :formatter,
+      #     :unitsml, :split_on_linebreak, :display_style,
+      #     :unary_function_spacing. When :display_style is omitted the
+      #     formula's own displaystyle is used.
+      #   * lasem geometry options (forwarded to the renderer): :ppi, :zoom,
+      #     :width, :height, :offset_x, :offset_y. Omit them for lasem defaults.
+      # Unrecognized keyword options are ignored.
+      #
+      # Raises a Plurimath::Errors rendering error (RenderingUnavailable,
+      # UnsupportedRenderFormat, or RenderingFailed) when lasem / its native
+      # extension is unavailable, the format is unsupported, or rendering fails.
+      # A malformed formula surfaces as Plurimath::Math::ParseError from
+      # #to_mathml, not as a rendering error. Note: :split_on_linebreak emits
+      # multiple <math> roots,
+      # which lasem cannot render as a single document.
+      def render(format: :svg, **opts)
+        mathml = to_mathml(**opts.slice(*Renderer::MATHML_OPTIONS).compact)
+        Renderer.render(
+          mathml,
+          format: format,
+          **opts.slice(*Renderer::LASEM_OPTIONS),
         )
       end
       # Attributes end

@@ -1,260 +1,267 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Formula do
-  describe "unicodemath examples" do
-    subject(:mathml) { formula.to_mathml(intent: true) }
-
-    let(:formula) { Plurimath::Math.parse(string, :unicode) }
-
-    SKIPABLE_INDEXES = [16].freeze
-    intent_examples = unicodemath_tests.find_all do |record|
-      record["mathml"].include?('intent="')
-    end
-    intent_examples.each.with_index(1) do |example_hash, index|
-      next if SKIPABLE_INDEXES.include?(index)
-
-      context "processing unicode example(#{index})" do
-        let(:string) { remove_prefix(example_hash["unicodemath"].to_s) }
-
-        it "matches example's MathML with Plurimath MathML(#{index})" do
-          expect(unicodemath_examples_intents(mathml)).to eql(unicodemath_examples_intents(example_hash["mathml"]))
-        end
-      end
-    end
-  end
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-1"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-2"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-3"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-4"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-5"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-6"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-7"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-8"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-9"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-10"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-11"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-12"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-13"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-14"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-15"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-17"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-18"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-19"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-20"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-21"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-22"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-23"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-24"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-25"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-26"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-27"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-28"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-29"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-30"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-31"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-32"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-33"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-34"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-35"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-36"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-37"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-38"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-39"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-40"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-41"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-42"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-43"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-44"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-45"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-46"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-47"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-48"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-49"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-50"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-51"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-52"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-53"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-54"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-55"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-56"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-57"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-58"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-59"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-60"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-61"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-62"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-63"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-64"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-65"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-66"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-67"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-68"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-69"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-70"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-71"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-72"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-73"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-74"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-75"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-76"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-77"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-78"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-79"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-80"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-81"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-82"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-83"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-84"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-85"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-86"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-87"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-88"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-89"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-90"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-91"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-92"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-93"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-94"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-95"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-96"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-97"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-98"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-99"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-100"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-101"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-102"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-103"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-104"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-105"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-106"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-107"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-108"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-109"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-110"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-111"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-112"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-113"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-114"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-115"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-116"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-117"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-118"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-119"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-120"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-121"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-122"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-123"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-124"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-125"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-126"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-127"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-128"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-129"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-130"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-131"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-132"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-133"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-134"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-135"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-136"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-137"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-138"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-139"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-140"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-141"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-142"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-143"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-144"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-145"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-146"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-147"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-148"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-149"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-150"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-151"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-152"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-153"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-154"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-155"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-156"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-157"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-158"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-159"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-160"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-161"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-162"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-163"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-164"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-165"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-166"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-167"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-168"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-169"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-170"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-171"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-172"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-173"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-174"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-175"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-176"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-177"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-178"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-179"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-180"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-181"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-182"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-183"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-184"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-185"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-186"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-187"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-188"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-189"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-190"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-191"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-192"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-193"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-194"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-195"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-196"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-197"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-198"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-199"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-200"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-201"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-202"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-203"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-204"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-205"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-206"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-207"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-208"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-209"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-210"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-211"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-212"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-213"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-214"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-215"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-216"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-217"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-218"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-219"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-220"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-221"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-222"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-223"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-224"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-225"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-226"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-227"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-228"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-229"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-230"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-231"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-232"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-233"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-234"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-235"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-236"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-237"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-238"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-239"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-240"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-241"
+  it_behaves_like "shared renderer fixture", "formula-intent-unicode-242"
 
   describe ".to_mathml(intent: true, unary_function_spacing: false)" do
     subject(:formula) { Plurimath::Math.parse(string, lang).to_mathml(intent: true, unary_function_spacing: false) }
 
-    context "contains prod AsciiMath string" do
-      let(:lang) { :asciimath }
-      let(:string) { "prod_(i=1)^n i^3" }
+    it_behaves_like "shared renderer fixture", "formula-intent_encoding-29-1"
 
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow intent=":product($l,n,$naryand)">
-                <munderover>
-                  <mo>&#x220f;</mo>
-                  <mrow arg="l">
-                    <mi>i</mi>
-                    <mo>=</mo>
-                    <mn>1</mn>
-                  </mrow>
-                  <mi>n</mi>
-                </munderover>
-                <mrow arg="naryand">
-                  <msup>
-                    <mi>i</mi>
-                    <mn>3</mn>
-                  </msup>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(mathml)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "formula-intent_encoding-61-1"
 
-    context "contains sum AsciiMath string" do
-      let(:lang) { :asciimath }
-      let(:string) { "sum_(i=1)^n i^3" }
+    it_behaves_like "shared renderer fixture", "formula-intent_encoding-93-1"
 
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow intent=":sum($l,n,$naryand)">
-                <munderover>
-                  <mo>&#x2211;</mo>
-                  <mrow arg="l">
-                    <mi>i</mi>
-                    <mo>=</mo>
-                    <mn>1</mn>
-                  </mrow>
-                  <mi>n</mi>
-                </munderover>
-                <mrow arg="naryand">
-                  <msup>
-                    <mi>i</mi>
-                    <mn>3</mn>
-                  </msup>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(mathml)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "formula-intent_encoding-123-1"
 
-    context "contains cos AsciiMath string" do
-      let(:lang) { :asciimath }
-      let(:string) { "cos(tan(1))" }
+    it_behaves_like "shared renderer fixture", "formula-intent_encoding-155-1"
 
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow intent=":function">
-                <mi>cos</mi>
-                <mrow intent=":fenced">
-                  <mo>(</mo>
-                  <mrow intent=":function">
-                    <mi>tan</mi>
-                    <mrow intent=":fenced">
-                      <mo>(</mo>
-                      <mn>1</mn>
-                      <mo>)</mo>
-                    </mrow>
-                  </mrow>
-                  <mo>)</mo>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(mathml)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "formula-intent_encoding-187-1"
 
-    context "contains oiiint LaTeX string" do
-      let(:lang) { :latex }
-      let(:string) { "\\oiiint_{i=1}^n 1^3" }
+    it_behaves_like "shared renderer fixture", "formula-intent_encoding-211-1"
 
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow intent=":volume integral($l,n,$naryand)">
-                <msubsup>
-                  <mo>&#x2230;</mo>
-                  <mrow arg="l">
-                    <mi>i</mi>
-                    <mo>=</mo>
-                    <mn>1</mn>
-                  </mrow>
-                  <mi>n</mi>
-                </msubsup>
-                <mrow arg="naryand">
-                  <msup>
-                    <mn>1</mn>
-                    <mn>3</mn>
-                  </msup>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(mathml)
-      end
-    end
-
-    context "contains oiint LaTeX string" do
-      let(:lang) { :latex }
-      let(:string) { "\\oiint_{i=1}^n 1^3" }
-
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <mrow intent=":surface integral($l,n,$naryand)">
-                <msubsup>
-                  <mo>&#x222f;</mo>
-                  <mrow arg="l">
-                    <mi>i</mi>
-                    <mo>=</mo>
-                    <mn>1</mn>
-                  </mrow>
-                  <mi>n</mi>
-                </msubsup>
-                <mrow arg="naryand">
-                  <msup>
-                    <mn>1</mn>
-                    <mn>3</mn>
-                  </msup>
-                </mrow>
-              </mrow>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(mathml)
-      end
-    end
-
-    context "contains inf LaTeX string" do
-      let(:lang) { :latex }
-      let(:string) { "\\inf_{i=1}^n" }
-
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <munderover intent=":function">
-                <mo>inf</mo>
-                <mrow>
-                  <mi>i</mi>
-                  <mo>=</mo>
-                  <mn>1</mn>
-                </mrow>
-                <mi>n</mi>
-              </munderover>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(mathml)
-      end
-    end
-
-    context "contains lim LaTeX string" do
-      let(:lang) { :latex }
-      let(:string) { "\\lim_{i=1}^n" }
-
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <munderover intent=":function">
-                <mo>lim</mo>
-                <mrow>
-                  <mi>i</mi>
-                  <mo>=</mo>
-                  <mn>1</mn>
-                </mrow>
-                <mi>n</mi>
-              </munderover>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(mathml)
-      end
-    end
-
-    context "contains log LaTeX string" do
-      let(:lang) { :latex }
-      let(:string) { "\\log_{i=1}^n" }
-
-      it "matches MathML string containing Intent attribute" do
-        mathml = <<~MATHML
-          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-            <mstyle displaystyle="true">
-              <msubsup>
-                <mi>log</mi>
-                <mrow>
-                  <mi>i</mi>
-                  <mo>=</mo>
-                  <mn>1</mn>
-                </mrow>
-                <mi>n</mi>
-              </msubsup>
-            </mstyle>
-          </math>
-        MATHML
-        expect(formula).to be_xml_equivalent_to(mathml)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "formula-intent_encoding-235-1"
   end
 end
 

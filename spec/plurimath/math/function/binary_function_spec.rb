@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::Math::Function::BinaryFunction do
   it "returns instance of BinaryFunction" do
@@ -17,14 +18,7 @@ RSpec.describe Plurimath::Math::Function::BinaryFunction do
   describe ".to_asciimath" do
     subject(:formula) { described_class.new(first_value, second_value) }
 
-    context "contains a symbol and sum fuction" do
-      let(:first_value) { Plurimath::Math::Function::Sum.new }
-      let(:second_value) { Plurimath::Math::Symbols::Symbol.new("theta") }
-
-      it "returns asciimath string" do
-        expect(formula.to_asciimath(options: {})).to eq("binaryfunction(sum)(theta)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "function-binary_function-20-1"
   end
 
   describe ".==" do

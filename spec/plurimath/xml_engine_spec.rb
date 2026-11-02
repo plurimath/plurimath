@@ -33,16 +33,7 @@ RSpec.describe Plurimath::XmlEngine do
   end
 
   let(:sample_document) do
-    root = engine.new_element("test")
-    root["a"] = "b"
-    el1 = engine.new_element("el")
-    el2 = engine.new_element("el")
-    el2["c"] = "d"
-    el2 << string_with_tricky_characters
-    el3 = engine.new_element("el")
-    el3["c"] = string_with_tricky_characters
-    el4 = engine.new_element("el")
-    root << el1 << el2 << el3 << "XXabcYY" << el4
+    build_sample_document(string_with_tricky_characters)
   end
 
   let(:sample_document_namespaced_xml) do
@@ -84,6 +75,81 @@ RSpec.describe Plurimath::XmlEngine do
     MATHML
   end
 
+  def build_sample_document(text)
+    root = engine.new_element("test")
+    root["a"] = "b"
+    el1 = engine.new_element("el")
+    el2 = engine.new_element("el")
+    el2["c"] = "d"
+    el2 << text
+    el3 = engine.new_element("el")
+    el3["c"] = text
+    el4 = engine.new_element("el")
+    root << el1 << el2 << el3 << "XXabcYY" << el4
+  end
+
+  # XML 1.0 admits no C0 control other than tab, newline and carriage return,
+  # not even as a character reference, so dumping drops them and no round trip
+  # can bring them back.
+  def without_illegal_c0_controls(text)
+    text.delete("\x00-\x08\x0b\x0c\x0e-\x1f")
+  end
+
+  def c0_controls_xml_admits
+    [0x09, 0x0a, 0x0d]
+  end
+
+  # Lexical, not semantic: what the engine wrote, not what a parser would
+  # recover from it — a literal tab in an attribute normalises to a space. The
+  # engines legitimately differ over which form they write. `x` must be
+  # lowercase, `&#X9;` being no character reference, but its digits may be
+  # either case.
+  def written_as_code_point?(emitted, ord)
+    emitted == ord.chr ||
+      emitted.match?(/\A&#(?:x0*#{hex_digits(ord)}|0*#{ord});\z/)
+  end
+
+  def hex_digits(ord)
+    ord.to_s(16).chars.map { |digit| "[#{digit}#{digit.upcase}]" }.join
+  end
+
+  # Replacing a control with some other character is neither writing it nor
+  # dropping it, and is what keeping the three apart exists to catch.
+  def c0_emission(emitted, ord)
+    return :written if written_as_code_point?(emitted, ord)
+    return :dropped if emitted.empty?
+
+    emitted
+  end
+
+  def expected_c0_emissions
+    (0x00..0x1f).to_h do |ord|
+      [ord, c0_controls_xml_admits.include?(ord) ? :written : :dropped]
+    end
+  end
+
+  def element_with_control_characters
+    engine.new_element("el") << "a\x01b\x13c\x19d\ne"
+  end
+
+  # Wrapped in markers so whatever the engine emitted for the character, if
+  # anything, can be read back out of a dump that also carries the engine's own
+  # line breaks and indentation. `[\s\S]` rather than `.` under `/m`, which
+  # captures nothing for a newline or a carriage return under the Opal this
+  # project locks, and whose handling has differed across Opal versions.
+  def dumped_text(control)
+    element = engine.new_element("el") << "a#{control}b"
+
+    engine.dump(element)[%r{<el>a([\s\S]*)b</el>}, 1]
+  end
+
+  def dumped_attribute(control)
+    element = engine.new_element("el")
+    element["c"] = "a#{control}b"
+
+    engine.dump(element)[/ c="a([\s\S]*)b"/, 1]
+  end
+
   shared_examples "all engines" do
     it ".new_element" do
       elem = engine.new_element("elem")
@@ -99,11 +165,45 @@ RSpec.describe Plurimath::XmlEngine do
       end
     end
 
+    describe "C0 controls in XML 1.0" do
+      it "writes only the three it admits, in text" do
+        emitted = (0x00..0x1f).to_h do |ord|
+          [ord, c0_emission(dumped_text(ord.chr), ord)]
+        end
+
+        expect(emitted).to eq expected_c0_emissions
+      end
+
+      it "writes only the three it admits, in attributes" do
+        emitted = (0x00..0x1f).to_h do |ord|
+          [ord, c0_emission(dumped_attribute(ord.chr), ord)]
+        end
+
+        expect(emitted).to eq expected_c0_emissions
+      end
+
+      it "drops the rest instead of emitting a character reference" do
+        dumped = engine.dump(element_with_control_characters)
+
+        expect(dumped.strip).to eq "<el>abcd\ne</el>"
+      end
+
+      it "dumps a document that can be read back" do
+        dumped = engine.dump(element_with_control_characters)
+
+        expect(engine.load(dumped).nodes.first).to eq "abcd\ne"
+      end
+    end
+
     describe ".load" do
       it "loads simple document" do
         loaded = engine.load(sample_document_xml.gsub(/(>|YY)\s+(<|XX)/,
                                                       '\1\2'))
-        expect(loaded).to eq sample_document
+
+        expect(loaded)
+          .to eq build_sample_document(
+            without_illegal_c0_controls(string_with_tricky_characters),
+          )
       end
 
       it "loads document with xmldecl and namespaces" do
@@ -257,6 +357,13 @@ RSpec.describe Plurimath::XmlEngine do
       let(:tested_engine) { Plurimath::XmlEngine::OxEngine }
 
       it_behaves_like "all engines"
+
+      it "does not let a caller reinstate what it cannot represent" do
+        element = engine.new_element("el") << "a\x01b"
+
+        expect(engine.dump(element, invalid_replace: nil).strip)
+          .to eq "<el>ab</el>"
+      end
     end
   end
 
@@ -264,5 +371,12 @@ RSpec.describe Plurimath::XmlEngine do
     let(:tested_engine) { Plurimath::XmlEngine::Oga }
 
     it_behaves_like "all engines"
+
+    it "references a tab in an attribute, where a literal one would normalise" do
+      element = engine.new_element("el")
+      element["c"] = "a\tb"
+
+      expect(engine.dump(element).strip).to eq %(<el c="a&#x0009;b"/>)
+    end
   end
 end

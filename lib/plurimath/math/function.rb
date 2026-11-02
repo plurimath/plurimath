@@ -105,6 +105,7 @@ module Plurimath
       autoload :Underbrace, "#{__dir__}/function/ubrace"
       autoload :Underline, "#{__dir__}/function/ul"
       autoload :UnaryFunction, "#{__dir__}/function/unary_function"
+      autoload :Uncertainty, "#{__dir__}/function/uncertainty"
       autoload :Underover, "#{__dir__}/function/underover"
       autoload :Underset, "#{__dir__}/function/underset"
       autoload :Unitsml, "#{__dir__}/function/unitsml"

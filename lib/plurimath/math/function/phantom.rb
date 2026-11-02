@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Phantom < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Reserves the space of its argument without rendering it."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mphantom"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def to_asciimath(options:)
           Array.new(asciimath_value(options: options)&.length, '\ ').join.to_s
         end

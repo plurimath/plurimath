@@ -39,16 +39,19 @@ RSpec.configure do |config|
     Plurimath.xml_engine = Plurimath::XmlEngine::OxEngine
     Mml::V4::Configuration.adapter = :ox
     example.run
-    Plurimath.xml_engine = Plurimath::XmlEngine::Oga
-    Mml::V4::Configuration.adapter = :oga
-    example.run
-    if defined?(Plurimath::XmlEngine::LeptrisEngine)
-      Plurimath.xml_engine = Plurimath::XmlEngine::LeptrisEngine
-      # mml's serialization adapter is a separate (moxml) layer from
-      # plurimath's engine; the leptris run inherits the oga run's :oga
-      # adapter — a :leptris mml adapter needs moxml >= 0.5, which the
-      # suite does not pull in
+    # Shared golden bytes record Ox; native specs still cover both engines.
+    unless example.metadata[:shared_corpus]
+      Plurimath.xml_engine = Plurimath::XmlEngine::Oga
+      Mml::V4::Configuration.adapter = :oga
       example.run
+      if defined?(Plurimath::XmlEngine::LeptrisEngine)
+        Plurimath.xml_engine = Plurimath::XmlEngine::LeptrisEngine
+        # mml's serialization adapter is a separate (moxml) layer from
+        # plurimath's engine; the leptris run inherits the oga run's :oga
+        # adapter — a :leptris mml adapter needs moxml >= 0.5, which the
+        # suite does not pull in
+        example.run
+      end
     end
   end
 

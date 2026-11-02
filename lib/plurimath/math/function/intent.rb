@@ -4,11 +4,46 @@ module Plurimath
   module Math
     module Function
       class Intent < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An expression carrying an `intent` annotation for MathML accessibility semantics."
+        REFERENCE = "https://www.w3.org/TR/mathml4/#mixing_intent"
+        EXAMPLE = -> { new(expr(sym("x")), Text.new("variable")) }
+        CATALOG_FORMAT_LIMITATIONS = {
+          asciimath: {
+            status: :limited,
+            notes: ["The intent string is emitted as a visible function argument instead of metadata."],
+          },
+          latexmath: {
+            status: :limited,
+            notes: ["The intent string is emitted as a visible function argument instead of metadata."],
+          },
+          omml: {
+            status: :limited,
+            notes: ["The MathML intent annotation is omitted; only the expression is emitted."],
+          },
+        }.freeze
+        # --- end catalog documentation ---
+
         def to_mathml_without_math_tag(intent, options:)
           first_value = parameter_one.to_mathml_without_math_tag(intent,
                                                                  options: options)
           first_value.attributes["intent"] = encoded_intent(first_value)
           first_value
+        end
+
+        # The intent string is metadata, not content: OMML has no slot for it,
+        # so only the wrapped content is written. The inherited BinaryFunction
+        # rendering wrapped both parameters in an <m:r>, nesting runs (invalid
+        # OMML) and printing the intent text as a visible run.
+        def to_omml_without_math_tag(display_style, options:)
+          return [] unless parameter_one
+
+          parameter_one.insert_t_tag(display_style, options: options)
+        end
+
+        # Same leak as OMML: the inherited rendering printed the intent text.
+        def to_html(options:)
+          "<i>#{parameter_one.to_html(options: options)}</i>" if parameter_one
         end
 
         def to_unicodemath(options:)

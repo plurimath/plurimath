@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Hat < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A hat (circumflex) accent over an expression."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mover"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         attr_accessor :attributes
 
         def initialize(parameter_one = nil, attributes = {})
@@ -52,7 +58,7 @@ module Plurimath
             accent_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("&#x302;") unless hide_function_name
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(
+            Overset.new(symbol, parameter_one).to_omml_without_math_tag(
               display_style, options: options
             )
           end
@@ -66,7 +72,7 @@ module Plurimath
           parameter_one&.line_breaking(obj)
           if obj.value_exist?
             obj.update(
-              Overset.new(Utility.filter_values(obj.value), nil),
+              Overset.new(nil, Utility.filter_values(obj.value)),
             )
           end
         end

@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Limits < TernaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Lower and upper bounds forced below and above an operator, as with LaTeX's \\limits."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/munderover"
+        EXAMPLE = -> { new(Int.new, sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "function apply",
           first_value: "base",

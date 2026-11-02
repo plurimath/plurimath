@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Dim < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "The dimension of a vector space."
+        REFERENCE = "https://en.wikipedia.org/wiki/Dimension_(vector_space)"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         def validate_function_formula
           false
         end

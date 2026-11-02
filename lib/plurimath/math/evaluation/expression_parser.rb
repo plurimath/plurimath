@@ -4,22 +4,23 @@ module Plurimath
   module Math
     module Evaluation
       # Resolves operator precedence over the flat token sequences stored in
-      # Formula#value, delegating node evaluation back to the evaluator.
+      # Formula#value, delegating operands and folds to a backend. The numeric
+      # evaluator computes values; the semantic display builds a transient view.
       #
       # Standard recursive-descent precedence ladder — each level parses its
       # operands at the next-tighter level, so the operands of `+`/`-` are
       # whole multiplicative expressions, and so on down to single operands:
-      #   parse_additive -> parse_multiplicative -> parse_unary
+      #   parse_relation -> parse_additive -> parse_multiplicative -> parse_unary
       #     -> parse_power -> parse_operand
       class ExpressionParser
         def initialize(evaluator, tokens)
           @evaluator = evaluator
-          @tokens = tokens
+          @tokens = evaluator.normalize_tokens(tokens)
           @index = 0
         end
 
         def parse
-          result = parse_additive
+          result = parse_relation
           evaluator.unsupported(current) unless eof?
 
           result
@@ -29,13 +30,22 @@ module Plurimath
 
         attr_reader :evaluator, :tokens
 
+        def parse_relation
+          result = parse_additive
+          while evaluator.relation_operator?(current)
+            operator = next_token
+            result = evaluator.relation(operator, result, parse_additive)
+          end
+          result
+        end
+
         def parse_additive
           result = parse_multiplicative
           loop do
             if take?(:plus_operator?)
-              result += parse_multiplicative
+              result = evaluator.add(result, parse_multiplicative)
             elsif take?(:minus_operator?)
-              result -= parse_multiplicative
+              result = evaluator.subtract(result, parse_multiplicative)
             else
               break result
             end
@@ -46,11 +56,11 @@ module Plurimath
           result = parse_unary
           loop do
             if take?(:multiply_operator?)
-              result *= parse_unary
+              result = evaluator.multiply(result, parse_unary, implicit: false)
             elsif take?(:divide_operator?)
               result = evaluator.divide(result, parse_unary)
             elsif implicit_multiplication?
-              result *= parse_power
+              result = evaluator.multiply(result, parse_power, implicit: true)
             else
               break result
             end
@@ -59,7 +69,7 @@ module Plurimath
 
         def parse_unary
           if take?(:plus_operator?)
-            parse_unary
+            evaluator.positive(parse_unary)
           elsif take?(:minus_operator?)
             negated_unary
           else
@@ -70,9 +80,9 @@ module Plurimath
         # Unary minus binds tighter than `mod`, so `-7 mod 3` negates the
         # dividend, not the result: `(-7) mod 3 == 2`, not `-(7 mod 3)`.
         def negated_unary
-          return next_token.evaluate_negated(evaluator) if current.is_a?(Function::Mod)
+          return evaluator.negated_mod(next_token) if current.is_a?(Function::Mod)
 
-          -parse_unary
+          evaluator.negate(parse_unary)
         end
 
         # Chained powers evaluate left-to-right, matching the left-nested
@@ -85,7 +95,7 @@ module Plurimath
 
         def parse_exponent
           if take?(:plus_operator?)
-            parse_exponent
+            evaluator.positive(parse_exponent)
           elsif take?(:minus_operator?)
             negated_exponent
           else
@@ -94,9 +104,9 @@ module Plurimath
         end
 
         def negated_exponent
-          return next_token.evaluate_negated(evaluator) if current.is_a?(Function::Mod)
+          return evaluator.negated_mod(next_token) if current.is_a?(Function::Mod)
 
-          -parse_exponent
+          evaluator.negate(parse_exponent)
         end
 
         def parse_operand
@@ -115,11 +125,11 @@ module Plurimath
         # "unmatched parenthesis" is reserved for true end-of-input.
         def parse_group
           advance
-          result = parse_additive
+          result = parse_relation
           evaluator.unsupported(current || "unmatched parenthesis") unless close_paren?(current)
 
           advance
-          result
+          evaluator.group(result)
         end
 
         # Unary functions and `log` parse separately from their argument in
@@ -137,9 +147,8 @@ module Plurimath
         # the following sibling token; AsciiMath binds a single operand as the
         # body, so we match by adopting the next operand as parameter_three.
         def nary_body?(node)
-          (node.is_a?(Function::Sum) || node.is_a?(Function::Prod)) &&
+          evaluator.nary_function?(node) &&
             node.parameter_three.nil? &&
-            node.parameter_one && node.parameter_two &&
             !eof? && operand_start?(current)
         end
 
@@ -157,7 +166,7 @@ module Plurimath
         end
 
         def bind_log_argument(node)
-          evaluator.real_result(node.evaluate_with_argument(evaluator, next_token))
+          evaluator.log_argument(node, next_token)
         end
 
         # Adjacent operands multiply by juxtaposition (`2a`, `2(a+b)`), except
@@ -169,7 +178,7 @@ module Plurimath
         end
 
         def operand_start?(node)
-          return false if node.nil? || node.operator?
+          return false if node.nil? || node.operator? || evaluator.relation_operator?(node)
 
           !close_paren?(node)
         end

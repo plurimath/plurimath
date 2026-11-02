@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Obrace < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An overbrace spanning an expression."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mover"
+        EXAMPLE = -> { new(sym("x")) }
+        # --- end catalog documentation ---
+
         attr_accessor :attributes
 
         def initialize(parameter_one = nil, attributes = {})
@@ -48,7 +54,7 @@ module Plurimath
             acc_tag(display_style, options: options)
           else
             symbol = Symbols::Symbol.new("⏞")
-            Overset.new(parameter_one, symbol).to_omml_without_math_tag(true,
+            Overset.new(symbol, parameter_one).to_omml_without_math_tag(true,
                                                                         options: options)
           end
         end

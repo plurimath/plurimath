@@ -5,13 +5,7 @@ module Plurimath
     module ParsingRules
       module Helper
         def self.included(base)
-          base.extend(ClassMethods)
-        end
-      end
-
-      module ClassMethods
-        def rule(name, &block)
-          Parslet::Parser.rule(name, &block)
+          base.extend(Parsanol::ClassMethods)
         end
       end
     end

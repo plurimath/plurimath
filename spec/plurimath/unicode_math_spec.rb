@@ -1,4 +1,5 @@
 require "spec_helper"
+require "support/shared_renderer_examples"
 
 RSpec.describe Plurimath::UnicodeMath do
   describe "#described_class" do
@@ -18,101 +19,25 @@ RSpec.describe Plurimath::UnicodeMath do
 
     let(:formula) { Plurimath::Math.parse(asciimath_string, :asciimath) }
 
-    context "contains example #01" do
-      let(:asciimath_string) { '"unitsml(V*s//A,symbol:V cdot s//A)"' }
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-21-1"
 
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = "\\mupV ⋅ \\mups ⋅ \\mupA^(− 1)"
-        expect(string).to eq(unicodemath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-30-1"
 
-    context "contains example #02" do
-      let(:asciimath_string) { 'log_(1+2+3+4)^("4 terms")' }
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-39-1"
 
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = 'log_(1 + 2 + 3 + 4)^("4 terms")'
-        expect(string).to eq(unicodemath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-50-1"
 
-    context "contains example #03" do
-      let(:asciimath_string) do
-        "left[[1,3], [1,3], [1,3]right] left(sum_prod^sigmaright)"
-      end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-59-1"
 
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = "ⓢ(1&3@1&3@1&3) ( ∑_(∏)^(σ) )"
-        expect(string).to eq(unicodemath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-68-1"
 
-    context "contains example #04" do
-      let(:asciimath_string) { "hat(ab) bar(xy) ul(A) vec(v)" }
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-77-1"
 
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = "(a b)̂ (x y)̅ ▁(A) (v)⃗"
-        expect(string).to eq(unicodemath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-88-1"
 
-    context "contains example #05" do
-      let(:asciimath_string) { "|(a,b),(c,d)|" }
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-97-1"
 
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = "⒱(a&b@c&d)"
-        expect(string).to eq(unicodemath)
-      end
-    end
-
-    context "contains example #06" do
-      let(:asciimath_string) { "obrace(sum) ubrace(sum) tilde(d)" }
-
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = "⏞(∑) ⏟(∑) (d)̃"
-        expect(string).to eq(unicodemath)
-      end
-    end
-
-    context "contains example #07" do
-      let(:asciimath_string) do
-        "lcm(d) exp(d) gcd(d) glb(d) ln(d) lub(d) max(d) min(d) floor(d) norm(d) ceil(d) dot(d) cancel(d)"
-      end
-
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = "lcm⁡(d) exp⁡(d) gcd⁡(d) glb⁡(d) ln⁡(d) lub⁡(d) max⁡(d) min⁡(d) ⌊d⌋ ‖d‖ ⌈d⌉ (d)̇ ╱(d)"
-        expect(string).to eq(unicodemath)
-      end
-    end
-
-    context "contains example #08" do
-      let(:asciimath_string) { "ubrace_d^2 bigwedge_2^d 1 mod 3" }
-
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = '⏟(\\_) d^(2) ⋀_(2)^(d) 1mod3'
-        expect(string).to eq(unicodemath)
-      end
-    end
-
-    context "contains example #9" do
-      let(:asciimath_string) do
-        "[(cos{:y_2:},sin y_2),(-(sin y_2)//y_1,(cos y_2)//y_1)] ."
-      end
-
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = "ⓢ(cos⁡〖y_(2)〗&sin⁡y_(2)@−(sin⁡y_(2))/y_(1)&(cos⁡y_(2))/y_(1)) ."
-        expect(string).to eq(unicodemath)
-      end
-    end
-
-    context "contains example #10" do
-      let(:asciimath_string) { "stackrel(70)(n)" }
-
-      it "matches parsed Asciimath string to UnicodeMath" do
-        unicodemath = "(n)┴(70)"
-        expect(string).to eq(unicodemath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-108-1"
   end
 
   describe "#to_unicodemath LaTeX" do
@@ -120,50 +45,15 @@ RSpec.describe Plurimath::UnicodeMath do
 
     let(:formula) { Plurimath::Math.parse(latex_string, :latex) }
 
-    context "contains example #1" do
-      let(:latex_string) { '\sum_{\substack{1\le i\le n \\\\ i\ne j}}' }
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-123-1"
 
-      it "matches parsed LaTeX string to UnicodeMath" do
-        unicodemath = "∑_(■(1≤i≤n@i≠j))"
-        expect(string).to eq(unicodemath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-132-1"
 
-    context "contains example #2" do
-      let(:latex_string) { '\int\limits_{0}^{\pi}' }
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-141-1"
 
-      it "matches parsed LaTeX string to UnicodeMath" do
-        unicodemath = "∫┴(π)┬(0)"
-        expect(string).to eq(unicodemath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-150-1"
 
-    context "contains example #3" do
-      let(:latex_string) { '\inf_{x > s}f(x)' }
-
-      it "matches parsed LaTeX string to UnicodeMath" do
-        unicodemath = "inf_(x > s) f (x)"
-        expect(string).to eq(unicodemath)
-      end
-    end
-
-    context "contains example #4" do
-      let(:latex_string) { '\rule[-1mm]{5mm}{1cm} \mbox{symmentic}' }
-
-      it "matches parsed LaTeX string to UnicodeMath" do
-        unicodemath = ' "symmentic"'
-        expect(string).to eq(unicodemath)
-      end
-    end
-
-    context "contains example #5" do
-      let(:latex_string) { '{1 \over 2}' }
-
-      it "matches parsed LaTeX string to UnicodeMath" do
-        unicodemath = "(1)/(2)"
-        expect(string).to eq(unicodemath)
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-159-1"
   end
 
   describe "#to_unicodemath MathML" do
@@ -171,14 +61,6 @@ RSpec.describe Plurimath::UnicodeMath do
 
     let(:formula) { Plurimath::Math.parse(mathml_string, :mathml) }
 
-    context "menclose mixing a known and an unrecognized notation" do
-      let(:mathml_string) do
-        '<math><menclose notation="top radical"><mi>x</mi></menclose></math>'
-      end
-
-      it "drops the unknown notation and masks on the known one" do
-        expect(string).to eq("▭(14&x)")
-      end
-    end
+    it_behaves_like "shared renderer fixture", "renderer-unicode_math-unicode_math-174-1"
   end
 end

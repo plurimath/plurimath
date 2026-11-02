@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Underset < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "An expression set as an underscript below a base."
+        REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/munder"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         attr_accessor :options
 
         FUNCTION = {
@@ -32,7 +38,7 @@ module Plurimath
 
         def to_omml_without_math_tag(display_style, options:)
           if !display_style
-            base = Base.new(parameter_one, parameter_two)
+            base = Base.new(parameter_two, parameter_one)
             return base.to_omml_without_math_tag(display_style,
                                                  options: options)
           end
@@ -48,9 +54,9 @@ module Plurimath
             limlow,
             [
               limlowpr,
-              omml_parameter(parameter_one, display_style, tag_name: "e",
+              omml_parameter(parameter_two, display_style, tag_name: "e",
                                                            options: options),
-              omml_parameter(parameter_two, display_style, tag_name: "lim",
+              omml_parameter(parameter_one, display_style, tag_name: "lim",
                                                            options: options),
             ],
           )

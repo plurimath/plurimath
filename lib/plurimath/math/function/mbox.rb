@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Mbox < UnaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "Typesets its argument in a single-line text box."
+        REFERENCE = "https://latexref.xyz/_005cmbox-_0026-_005cmakebox.html"
+        EXAMPLE = -> { new("x") }
+        # --- end catalog documentation ---
+
         def to_asciimath(options:)
           Text.new(parameter_one).to_asciimath(options: options)
         end

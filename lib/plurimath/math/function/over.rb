@@ -4,6 +4,12 @@ module Plurimath
   module Math
     module Function
       class Over < BinaryFunction
+        # --- Catalog documentation (see Plurimath::Documentation) ---
+        DESCRIPTION = "A fraction formed with the LaTeX \\over primitive."
+        REFERENCE = "https://en.wikipedia.org/wiki/Fraction"
+        EXAMPLE = -> { new(sym("x"), sym("y")) }
+        # --- end catalog documentation ---
+
         FUNCTION = {
           name: "over",
           first_value: "numerator",
