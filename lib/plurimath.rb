@@ -65,6 +65,9 @@ default_adapter =
     require "plurimath/setup/oga"
     require "plurimath/setup/opal"
     :oga
+  elsif ENV["PLURIMATH_LEPTRIS"]
+    require "plurimath/setup/leptris_engine"
+    :leptris
   elsif ENV["PLURIMATH_OGA"]
     require "plurimath/setup/oga"
     :oga

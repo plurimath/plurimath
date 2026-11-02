@@ -51,7 +51,7 @@ module Plurimath
     option :xml_engine,
            aliases: "-e",
            default: "ox",
-           desc: "XML engine to use for parsing and rendering (ox or oga)"
+           desc: "XML engine to use for parsing and rendering (ox, oga or leptris)"
 
     def convert
       Convert.new(options).call
@@ -101,7 +101,7 @@ module Plurimath
     option :xml_engine,
            aliases: "-e",
            default: "ox",
-           desc: "XML engine to use for parsing and rendering (ox or oga)"
+           desc: "XML engine to use for parsing and rendering (ox, oga or leptris)"
 
     def render
       Render.new(options).call
