@@ -1,309 +1,266 @@
 = Measurement uncertainty
+:toc:
 
-*Status: proposal, not yet approved.* This page proposes how Plurimath should
-represent a measured value with its uncertainty
-(https://github.com/plurimath/plurimath/issues/493[#493]). Nothing here is
-implemented. Once approved, record the approval link and the approved revision
-here, and build the work on this page and on
-`spec/plurimath/fixtures/uncertainty/contract.yml`, which holds every exact
-string and XML form referred to below.
+Plurimath represents a reported measurement result, such as `100.02147(35)` or
+`(10.0 ± 0.3), k = 2`, as one node,
+`Plurimath::Math::Function::Uncertainty`, and reads and writes it in every
+format it supports. This page specifies that node, the marker each format
+uses to carry it, what survives a round trip, and the decisions that are still
+open. It is part of the specification set tracked in
+https://github.com/plurimath/plurimath/issues/525[#525]; the AsciiMath call
+forms are specified in full in link:asciimath.adoc[AsciiMath in Plurimath].
 
 Section numbers refer to JCGM 100:2008 (the GUM) unless marked JCGM 101:2008.
 
-== What is supported
+== Status
 
-Plurimath records and converts a reported result such as `100.02147(35)` or
-`(10.0 ± 0.3), k = 2`. It does not calculate anything: no uncertainty
-propagation, no combination, no conversion between `U`, `k`, `p` and `u`,
-no rounding, no unit conversion.
+The model, its six writers and its four readers are implemented. They were
+built for https://github.com/plurimath/plurimath/issues/493[#493].
 
-Input and output: AsciiMath, MathML, OMML and UnicodeMath. Output only: LaTeX
-and HTML.
+[cols="3,1,3"]
+|===
+|Part |Status |Where
 
-An ordinary `±` keeps meaning plus-or-minus (`Math::Symbols::Pm`). A measurement
-is only recognised from an explicit form (see <<plain-pm>>).
+|The node, its validation and the LaTeX, HTML, MathML, OMML, UnicodeMath and
+AsciiMath writers
+|implemented
+|https://github.com/plurimath/plurimath/pull/496[#496],
+https://github.com/plurimath/plurimath/pull/506[#506]
 
-== The three kinds of result
+|MathML, OMML and UnicodeMath readers
+|implemented
+|https://github.com/plurimath/plurimath/pull/497[#497],
+https://github.com/plurimath/plurimath/pull/502[#502],
+https://github.com/plurimath/plurimath/pull/503[#503],
+https://github.com/plurimath/plurimath/pull/504[#504],
+https://github.com/plurimath/plurimath/pull/505[#505],
+https://github.com/plurimath/plurimath/pull/507[#507],
+https://github.com/plurimath/plurimath/pull/508[#508]
 
-Standard uncertainty (§7.2.1, §7.2.2)::
-A value `y` and its standard uncertainty `u`, an absolute, nonnegative number in
-the unit of `y`. It has no coverage factor and no coverage probability.
-Supplying either is an error, because §7.2.2 (note) warns that reading `u` as an
-interval with a level of confidence is usually not justified.
+|AsciiMath reader (`ustd`, `uexp`, `ucov`)
+|implemented
+|https://github.com/plurimath/plurimath/pull/498[#498],
+https://github.com/plurimath/plurimath/pull/499[#499]
 
-Expanded uncertainty, symmetric (§6.2.1, §6.3, §7.2.3, §7.2.4)::
-A value `y`, an expanded uncertainty `U` and the coverage factor `k` that was
-used. `k` is required: §7.2.3 (4) asks for it, and without it the result cannot
-be told apart from an unqualified `±`. Write that as ordinary `±` instead.
-The coverage probability `p` is optional and only recorded if the author gives
-it. Plurimath never derives `p` from `k` or the reverse: §6.3.2 says these
-parameters are not enough to know the level of confidence exactly, and §6.3.3
-gives `k = 2` ≈ 95 % only under stated conditions.
+|Rejection of likely decimal commas in AsciiMath calls
+|implemented
+|https://github.com/plurimath/plurimath/pull/509[#509]
 
-Asymmetric: coverage interval (proposal, needs a decision)::
-JCGM 101 §5.3.2 defines a coverage interval by its two endpoints for a stated
-coverage probability `p`. §5.3.3 and §5.3.4 name two choices: the
-probabilistically symmetric interval and the shortest interval. §5.5 asks for
-the estimate `y`, its standard uncertainty, the coverage probability, the
-endpoints and which interval was chosen. (The standard uncertainty can be given
-as a separate standard-uncertainty result.) Its example: `y = 1.024 V`, shortest 95 % coverage interval
-`[0.983, 1.088] V`.
-+
-Proposal: record `y`, the lower and upper *endpoints* (not distances from `y`),
-the required `p`, and the optional interval choice (`shortest`,
-`probabilistically-symmetric`, or not stated). `k` is rejected. Plurimath does not
-require `y` to lie between the endpoints, because JCGM 101 §5.3.4 only says the
-shortest interval contains the mode, not the estimate.
-+
-The common `10.0^{+0.3}_{-0.2}` layout is *not* proposed. Neither JCGM 100 §6–§7
-nor JCGM 101 §5.3/§5.5 defines what its two numbers mean, so supporting it needs
-a maintainer decision about its meaning first. Approving, changing or leaving
-out this variant is a scope decision for #493.
+|AsciiMath units that UnitsML 0.6.10 and later cannot read fall back to `+rm(...)+`
+|implemented
+|https://github.com/plurimath/plurimath/pull/516[#516]
 
-== Model node
+|Shared decimal exponent in the AsciiMath calls
+|implemented
+|https://github.com/plurimath/plurimath/pull/526[#526],
+https://github.com/plurimath/amath/pull/15[amath#15]
 
-Proposed class `Plurimath::Math::Function::Uncertainty`
-(`lib/plurimath/math/function/uncertainty.rb`), a direct subclass of
-`Math::Core`.
+|Everything listed under <<open-decisions>>
+|proposed or undecided
+|https://github.com/plurimath/plurimath/issues/524[#524] and the issues named
+there
+|===
+
+== Scope
+
+Plurimath records and converts a reported result. It does not calculate
+anything: no uncertainty propagation, no combination, no conversion between
+`U`, `k`, `p` and `u`, no rounding and no unit conversion. Evaluation with
+uncertainty is a separate requirement set,
+https://github.com/plurimath/plurimath/issues/514[#514].
+
+AsciiMath, MathML, OMML and UnicodeMath are read and written. LaTeX and HTML
+are written only.
+
+An ordinary plus-minus sign keeps its meaning. A measurement is recognised only
+from the explicit forms in <<markers>>.
+
+[[model]]
+== The model
 
 [source,ruby]
 ----
-Uncertainty.new(
+Plurimath::Math::Function::Uncertainty.new(
   value,                       # Math::Number, the measured value y
   category:,                   # :standard, :expanded or :coverage_interval
-  magnitude: nil,              # Math::Number, u or U (standard, expanded)
-  coverage_factor: nil,        # Math::Number, k (expanded only, required)
-  coverage_probability: nil,   # Math::Number, p (optional for expanded, required for coverage_interval)
-  lower: nil, upper: nil,      # Math::Number, interval endpoints (coverage_interval only)
-  interval_kind: nil,          # :shortest, :probabilistically_symmetric or nil (coverage_interval only)
+  magnitude: nil,              # Math::Number, u or U
+  coverage_factor: nil,        # Math::Number, k
+  coverage_probability: nil,   # Math::Number, p
+  lower: nil, upper: nil,      # Math::Number, interval endpoints
+  interval_kind: nil,          # :shortest, :probabilistically_symmetric or nil
   notation: :absolute,         # :absolute or :concise (standard only)
   unit: nil,                   # Math::Function::Unitsml, or Math::Formula when read from markup
 )
 ----
 
-Validation runs in the constructor and raises a new
-`Plurimath::Errors::InvalidUncertainty < Plurimath::Error`:
+=== The three categories
 
-* every number is a `Math::Number` whose text is a plain decimal,
-  `-?[0-9]+(\.[0-9]+)?`; magnitudes, `k`, `p` and endpoints have no sign. No
-  exponent, no comma or other locale decimal marker, no `base`, no mini-sized
-  digits. Text is kept as given (`1.230` stays `1.230`); no `Float` is used.
-  Range checks use exact decimal comparison of the text.
-* `u` and `U` are ≥ 0; `k` is > 0; `p` is strictly between 0 and 1 (`0.95`, not
-  `95`); `lower` < `upper`.
-* fields that do not belong to the category must be `nil` (for example `k` on a
-  standard result, `notation` other than `:absolute` on an expanded one).
-* `notation: :concise` needs `magnitude` to have exactly as many decimal places
-  as `value` (see <<concise>>).
-* `unit` is `nil`, a `Math::Function::Unitsml`, or a `Math::Formula` (only
-  produced by the MathML, OMML and UnicodeMath readers, see <<units>>). A
-  `Math::Formula` unit must not be empty and must not contain another
-  `Uncertainty`; either raises `Errors::InvalidUncertainty`.
+Standard uncertainty (§7.2.1, §7.2.2)::
+A value `y` and its standard uncertainty `u`, an absolute, nonnegative number
+in the unit of `y`. It takes no coverage factor and no coverage probability:
+§7.2.2 (note) warns that reading `u` as an interval with a level of confidence
+is usually not justified.
 
-Equality (`==`) compares class and every field, including `notation` and the
-exact number text. `ustd(1.23(4))` and `ustd(1.23, 0.04)` hold the same
-magnitude but are *not* equal, matching how `Math::Number` already compares text.
+Expanded uncertainty (§6.2.1, §6.3, §7.2.3, §7.2.4)::
+A value `y`, a symmetric expanded uncertainty `U` and the coverage factor `k`
+that was used. `k` is required: §7.2.3 (4) asks for it, and without it the
+result could not be told apart from an ordinary `±`. The coverage probability
+`p` is optional and only recorded when given. Plurimath never derives `p`
+from `k` or the reverse (§6.3.2, §6.3.3).
 
-Cloning: `Core#cloned_objects` builds `self.class.new(nil)` and then copies
-instance variables. A validating constructor would raise on that call, so
-`Uncertainty` overrides `cloned_objects` to rebuild itself through the full
-constructor with cloned children, as `Math::Function::Unitsml#cloned_objects`
-already does. The other `self.class.new(nil)` caller,
-`Core#updated_object_values`, is only reached when a field holds a line break;
-the fields above cannot, so B1 adds a test that line breaking leaves the node
-alone. The clone must be `==` to the original and share no child objects.
+Coverage interval (JCGM 101 §5.3, §5.5)::
+A value `y`, the lower and upper endpoints of the interval (not distances from
+`y`), the required coverage probability `p`, and optionally which interval was
+chosen: the shortest (§5.3.4) or the probabilistically symmetric (§5.3.3).
+`k` is not accepted. `y` need not lie between the endpoints, because
+§5.3.4 only says the shortest interval contains the mode.
 
-Numbers are rendered as their raw text. The configured number formatter and
-locale are not applied, so output never re-rounds a value or changes its
-decimal marker. Rounding (§7.2.6) is the author's choice, not Plurimath's.
+=== Exact decimal text
 
-[[plain-pm]]
-== Plain ± and measurements
+Every number is a `Math::Number` whose text is a plain decimal,
+`-?[0-9]+(\.[0-9]+)?`. Only `value` may be negative. No exponent, no comma or
+other decimal marker, no `base`, and no mini-sized digits. The text is kept as
+given, so `1.230` stays `1.230`, and no `Float` is ever made. Range checks
+compare the decimal text exactly. Writers print the text as stored: the
+configured number formatter and locale are not applied, so output never
+re-rounds a value or changes its decimal marker.
 
-A measurement is recognised only from these explicit forms. Everything else
-keeps its current meaning.
+=== Validation
 
-[cols="1,3,3"]
-|===
-|Language |Becomes `Uncertainty` |Stays ordinary
+The constructor raises `Plurimath::Errors::InvalidUncertainty` (a
+`Plurimath::Error`) unless:
 
-|AsciiMath
-|`ustd(...)`, `uexp(...)`, `ucov(...)` (added to amath at B4)
-|`+-`, `pm`, `±` are always `Pm`; `1.230(4)` is a number followed by a bracket
+* `u` and `U` are at least 0, `k` is greater than 0, and `p` lies strictly
+  between 0 and 1 (`0.95`, not `95`);
+* `lower` is below `upper`;
+* the fields that do not belong to the category are `nil` (for example `k` on
+  a standard result), and the required ones are present;
+* `notation` is `:absolute` or `:concise`, and is given only for a standard
+  result;
+* a `:concise` result has a magnitude with exactly as many decimal places as
+  the value;
+* `unit` is `nil`, a `Math::Function::Unitsml`, or a non-empty
+  `Math::Formula` that holds no other uncertainty.
 
-|MathML
-|an `mrow` whose `intent` starts with `standard-uncertainty`,
-`expanded-uncertainty` or `coverage-interval`
-|`<mo>±</mo>`, any other `intent` (still read as `Function::Intent`)
+=== Notations
 
-|OMML
-|an `m:box` whose first child is the hidden marker `m:phant` described below
-|`±` runs, `m:d` brackets, any other box or phantom
+§7.2.2 lists four ways to write a standard uncertainty. Two of them are
+`notation` values:
 
-|UnicodeMath
-|`ⓘ("<marker>" ...)` with one of the three marker names
-|`±`, any other `ⓘ(...)`
+* `:absolute` (form 3), `100.02147(0.00035)`: the number in brackets is the
+  uncertainty itself. This is the default.
+* `:concise` (form 2), `100.02147(35)`: the digits in brackets apply to the
+  last digits of the value.
 
-|LaTeX (output only)
-|—
-|`\pm`
-|===
+The model always stores the absolute magnitude. The two convert by moving the
+decimal point in the text: `1.23(4)` means `u = 0.04` and `1.230(4)` means
+`u = 0.004`. A magnitude that does not have the value's number of decimal
+places, such as `0.004` after `1.2`, cannot be concise. Form 4, `(y ± u)`, is
+not offered for a standard uncertainty, because the §7.2.2 note says to avoid
+it; `±` is written only for an expanded result, always with `k`.
 
-A marker that uses one of the three names but is malformed (missing `k`, bad
-number, wrong argument count) raises `InvalidUncertainty`. It is never quietly
-read as ordinary content.
+=== Equality and copies
 
-AsciiMath has no marker, only the words. A malformed AsciiMath call, for
-example `uexp(10.0, 0.3)` with no `k`, is not an uncertainty and falls back to
-the letter reading it had before the words were added: `u` followed by
-`exp(10.0, 0.3)` (plurimath/amath#9). No error is raised.
+`==` compares the class and every field, including `notation` and the exact
+number text. `ustd(1.23(4))` and `ustd(1.23, 0.04)` hold the same magnitude
+but are not equal. A copy made with `cloned_objects` goes through the
+constructor, is `==` to the original and shares no child objects. Line
+breaking never splits the node.
 
-Word list note for B4: today `uexp(10.0, 0.3, 2)` is read as `u` followed by
-`exp(...)`, and `ustd`, `ucov` as separate letters. Adding the words changes
-how such text is read, so B4 needs ambiguity tests for `uexp` against `exp`.
+[[units]]
+=== Units
 
-[[concise]]
-== Concise, absolute and ± notation
+The optional unit follows §7.2.1 (2) and §7.2.3 (2), which ask for the unit
+to be given, and §7.2.4, which places it after the bracketed result and before
+the coverage statement: `(100.02147 ± 0.00079) g, k = 2`.
 
-§7.2.2 lists four ways to write a standard uncertainty. Plurimath supports two
-of them as `notation`:
+* A unit built from AsciiMath or in code is a `Math::Function::Unitsml` and
+  keeps its UnitsML text.
+* A unit read from MathML, OMML or UnicodeMath is the rendered content, a
+  `Math::Formula`. Plurimath does not turn rendered markup back into UnitsML,
+  as for every other UnitsML node.
+* When writing AsciiMath, a `Math::Formula` unit is written back as
+  `+"unitsml(...)"+` when it is a `·`-separated product of upright ASCII-letter
+  symbols with optional integer powers, and UnitsML renders that text back to
+  the same product. `kg`, `+m^2+` and `+s^-1+` qualify. `µm` and `°C` do not, and
+  are written after the call in their AsciiMath form, for example
+  `+ustd(1.2, 0.1) rm(&#xb5;m)+`, which reads back as an uncertainty without a
+  unit followed by the unit expression.
+* A UnitsML text that the installed UnitsML version cannot read is rendered as
+  `+rm(...)+` (#516).
 
-* `:concise`, §7.2.2 form 2, `100.02147(35)`: the digits in parentheses apply
-  to the last digits of the value.
-* `:absolute`, §7.2.2 form 3, `100.02147(0.00035)`: the number in parentheses
-  is the uncertainty itself. This is the default, because it can always be
-  written and needs no digit alignment.
+[[markers]]
+== Marker grammars
 
-The model always stores the absolute magnitude. The two notations convert by
-moving the decimal point, never through floating point:
+=== The marker string
 
-* `1.23(4)` means `u = 0.04`; `1.230(4)` means `u = 0.004`.
-* From model to concise: `magnitude` must have the same number of decimal
-  places as `value`; the digits are `magnitude` without its decimal point and
-  leading zeros (`0.00035` with `100.02147` gives `35`; `2.0` with `1234.5`
-  gives `20`).
-* From concise to model: pad the digits with leading zeros and insert the
-  decimal point so the result has as many decimal places as `value`.
-* `1.2` with `0.004` cannot be written concisely; asking for that is an error.
-
-§7.2.2 form 4, `(y ± u)` with a written caveat, is not offered for standard
-uncertainty: the §7.2.2 note says to avoid it. `±` is used only for expanded
-uncertainty, always together with `k`. Form 1 (`u_c = 0.35 mg` as a separate
-statement) is ordinary text and needs no node.
-
-== Exact forms
-
-=== Visible rendering
-
-[cols="1,2,2,2"]
-|===
-| |LaTeX |HTML |Shown in MathML, OMML, UnicodeMath
-
-|standard, absolute
-|`1.230(0.004)`
-|`1.230(0.004)`
-|`1.230(0.004)`
-
-|standard, concise
-|`1.230(4)`
-|`1.230(4)`
-|`1.230(4)`
-
-|expanded
-|`(10.0 \pm 0.3),\ k = 2`
-|`(10.0 &#xb1; 0.3), k = 2`
-|`(10.0 ± 0.3), k = 2`
-
-|expanded with `p`
-|`(10.0 \pm 0.3),\ k = 2,\ p = 0.95`
-|`(10.0 &#xb1; 0.3), k = 2, p = 0.95`
-|`(10.0 ± 0.3), k = 2, p = 0.95`
-
-|coverage interval (proposal)
-|`1.024,\ [0.983, 1.088],\ p = 0.95`
-|`1.024, [0.983, 1.088], p = 0.95`
-|`1.024, [0.983, 1.088], p = 0.95`
-|===
-
-=== The marker
-
-MathML, OMML and UnicodeMath carry the full meaning in one marker string
-written in MathML intent syntax, with literal numbers:
-
-[cols="1,3"]
-|===
-|standard, absolute |`standard-uncertainty(1.230,0.004)`
-|standard, concise |`standard-uncertainty:concise(1.230,0.004)`
-|expanded |`expanded-uncertainty(10.0,0.3,2)`
-|expanded with `p` |`expanded-uncertainty(10.0,0.3,2,0.95)`
-|coverage interval (proposal) |`coverage-interval:shortest(1.024,0.983,1.088,0.95)`;
-`:probabilistically-symmetric`, or no property when the choice is not stated
-|with a unit |a final `$unit` argument, for example `expanded-uncertainty(100.02147,0.00079,2,$unit)`
-|===
-
-The concise marker still holds the absolute magnitude, so the meaning never
-depends on digit alignment. When reading, the marker is authoritative and the
+MathML, OMML and UnicodeMath carry the whole result in one marker string,
+written in MathML 4 intent syntax with literal numbers. The marker is
+authoritative: on reading, only the marker and the unit are used, and the
 visible content is regenerated on output.
 
-=== Per language
-
-AsciiMath (output at B2, input in amath at B4)::
-+
 [source]
 ----
-ustd(1.230, 0.004)            standard, absolute
-ustd(1.230(4))                standard, concise
-uexp(10.0, 0.3, 2)            expanded
-uexp(10.0, 0.3, 2, 0.95)      expanded with p
-ucov(1.024, 0.983, 1.088, 0.95, shortest)    coverage interval (proposal)
-uexp(100.02147, 0.00079, 2, "unitsml(g)")    with a unit, always last
+marker      = S name [S ":" property] S "(" arguments ")" S
+name        = "standard-uncertainty" | "expanded-uncertainty" | "coverage-interval"
+arguments   = S number S *("," S number S) ["," S "$unit" S]
+number      = ["-"] 1*digit ["." 1*digit]
 ----
-+
-Arguments always use a full stop as decimal marker and a comma between
-arguments, whatever the parse locale. Under a parse locale whose decimal marker
-is not a full stop (for example `locale: :fr`, decimal `,`, or `:ar`, decimal
-`٫`), a comma between arguments that is directly followed by a digit, as in
-`ustd(1,5)`, `uexp(10,0, 0,3, 2)`, `ustd(1,230, 0,004)` or `ustd(1.230,0.004)`,
-is taken as a likely decimal comma: the AsciiMath parser raises
-`Plurimath::Errors::InvalidUncertainty` instead of guessing, which
-`Plurimath::Math.parse` reports as `Plurimath::Math::ParseError`.
-`ustd(1.230, 0.004)`, with a full stop and a space after each comma, reads the
-same under every locale. Input without `ustd(`, `uexp(` or `ucov(` is not
-checked. A value written with the Arabic decimal mark, such as
-`ustd(1٫230, 0٫004)` under `:ar`, is not an uncertainty form and is still read
-as the letters `u s t d` followed by a bracket.
 
-UnicodeMath::
-The existing intent form `ⓘ("marker"content)`:
-+
+[cols="1,2,2"]
+|===
+|Category |Marker |Property
+
+|standard
+|`standard-uncertainty(y,u)`
+|none (absolute) or `concise`
+
+|expanded
+|`expanded-uncertainty(y,U,k)`, `expanded-uncertainty(y,U,k,p)`
+|none
+
+|coverage interval
+|`coverage-interval(y,lo,hi,p)`
+|none, `shortest` or `probabilistically-symmetric`
+|===
+
+`S` is optional whitespace. As in the MathML 4 intent grammar (section 5.1),
+whitespace may stand before a property's `:`, between the head and `(`, and
+around each argument, but not between `:` and the property name. `$unit` may
+only be the last argument and refers to the unit content of the markup. The
+concise marker still holds the absolute magnitude, so the meaning never
+depends on digit alignment. Writers emit no whitespace, for example
+`standard-uncertainty:concise(1.230,0.004)` or
+`expanded-uncertainty(100.02147,0.00079,2,$unit)`.
+
+Text that starts with one of the three names is a marker. A marker that does
+not have exactly this shape (wrong argument count, a bad number, an unknown
+property, `$unit` with no unit content) raises `InvalidUncertainty`; it is
+never read as ordinary content. The reader is
+`Plurimath::Mathml::UncertaintyMarker`, shared by the three formats.
+
+=== AsciiMath
+
 [source]
 ----
-ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
-ⓘ("standard-uncertainty:concise(1.230,0.004)"1.230(4))
-ⓘ("expanded-uncertainty(10.0,0.3,2)"(10.0±0.3), k=2)
-ⓘ("expanded-uncertainty(10.0,0.3,2,0.95)"(10.0±0.3), k=2, p=0.95)
-ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"1.024, [0.983, 1.088], p=0.95)
+ustd(1.230, 0.004)                            standard, absolute
+ustd(1.230(4))                                standard, concise
+uexp(10.0, 0.3, 2)                            expanded
+uexp(10.0, 0.3, 2, 0.95)                      expanded with p
+ucov(1.024, 0.983, 1.088, 0.95, shortest)     coverage interval
+uexp(100.02147, 0.00079, 2, "unitsml(g)")     with a unit, always last
 ----
-+
-`±` is written without spaces here because today's UnicodeMath reader fails on
-`1.23 ± 0.04` with spaces (see <<baseline>>).
-+
-A negative value that would start the visible content is put in the invisible
-`〖〗` group, because the reader cannot take `"marker"-…`. The marker is
-unchanged:
-+
-----
-ⓘ("standard-uncertainty(-1.230,0.004)"〖-1.230〗(0.004))
-ⓘ("coverage-interval(-1.024,0.983,1.088,0.95)"〖-1.024〗, [0.983, 1.088], p=0.95)
-----
-+
-An expanded result already starts with `(`, so it is written as before.
 
-MathML::
-An `mrow` carrying the marker as `intent`, written whatever the `intent:`
-option of `to_mathml` is, because it carries data, not just speech hints.
-Plurimath already writes back an `intent` it has read in the same way.
-+
+AsciiMath has no marker: the call is the whole form. The grammar, shared
+exponents, the fallback for malformed calls and the locale rule are in
+link:asciimath.adoc#uncertainty[AsciiMath in Plurimath].
+
+=== MathML
+
+An `mrow` whose `intent` is the marker. The marker is written whatever the
+`intent:` option of `to_mathml` is, because it carries data, not only speech
+hints. The unit is an `mrow arg="unit"` inside it.
+
 [source,xml]
 ----
 <mrow intent="standard-uncertainty(1.230,0.004)">
@@ -314,56 +271,19 @@ Plurimath already writes back an `intent` it has read in the same way.
     <mo>)</mo>
   </mrow>
 </mrow>
-
-<mrow intent="standard-uncertainty:concise(1.230,0.004)">
-  <mn>1.230</mn>
-  <mrow>
-    <mo>(</mo>
-    <mn>4</mn>
-    <mo>)</mo>
-  </mrow>
-</mrow>
-
-<mrow intent="expanded-uncertainty(10.0,0.3,2)">
-  <mrow>
-    <mo>(</mo>
-    <mn>10.0</mn>
-    <mo>&#xb1;</mo>
-    <mn>0.3</mn>
-    <mo>)</mo>
-  </mrow>
-  <mo>,</mo>
-  <mi>k</mi>
-  <mo>=</mo>
-  <mn>2</mn>
-</mrow>
-
-<mrow intent="coverage-interval:shortest(1.024,0.983,1.088,0.95)">
-  <mn>1.024</mn>
-  <mo>,</mo>
-  <mrow>
-    <mo>[</mo>
-    <mn>0.983</mn>
-    <mo>,</mo>
-    <mn>1.088</mn>
-    <mo>]</mo>
-  </mrow>
-  <mo>,</mo>
-  <mi>p</mi>
-  <mo>=</mo>
-  <mn>0.95</mn>
-</mrow>
 ----
-+
-Expanded with `p` appends `<mo>,</mo><mi>p</mi><mo>=</mo><mn>0.95</mn>`.
-The full `<math>` documents are in the contract. A reader that ignores `intent`
-shows the visible form; a reader that speaks `intent` hears the concept name
-and its numbers.
 
-OMML::
-OMML has no attribute for meaning, so the marker is the text of a hidden,
+An expanded result shows `(10.0 ± 0.3)` followed by `<mo>,</mo><mi>k</mi>`,
+`<mo>=</mo><mn>2</mn>` and, with `p`, the same for `p`. A coverage interval
+shows the value, a comma and the bracketed endpoints, then `p`. A reader that
+ignores `intent` shows the visible form. More than one `arg="unit"` child
+raises `InvalidUncertainty`.
+
+=== OMML
+
+OMML has no attribute for meaning. The marker is the text of a hidden,
 zero-size phantom placed first inside an `m:box` that holds the whole result:
-+
+
 [source,xml]
 ----
 <m:box>
@@ -402,121 +322,165 @@ zero-size phantom placed first inside an `m:box` that holds the whole result:
   </m:e>
 </m:box>
 ----
-+
-The other variants use the same box and phantom with their own marker, followed
-by the visible content written the way Plurimath writes it today: one `m:r` per
-number, `±`, `,`, `k`, `p` and `=`, and an `m:d` for each bracket (`(` `)` or
-`[` `]`). A unit is wrapped in its own inner `m:box`. Exact XML for every case is
-in the contract.
 
-[[units]]
-== Units
+The visible content follows as one `m:r` per number and sign and an `m:d` per
+bracket. A unit is the one inner `m:box` after it. A phantom counts as a
+marker only when `m:show` is off. A hidden phantom whose runs spell a marker
+but that also holds anything other than `m:r` runs, or a box with more than
+one inner `m:box`, raises `InvalidUncertainty`.
 
-Recommendation: *allow* an optional unit child, limited to
-`Math::Function::Unitsml`.
+=== UnicodeMath
 
-Why:
+The intent form `ⓘ("marker"visible)`, with the unit as `+ⓐ(unit ...)+`:
 
-* §7.2.1 (2) and §7.2.3 (2) say the unit should always be given.
-* §7.2.4 places the unit right after the bracketed result and before the
-  coverage statement: `(100.02147 ± 0.00079) g, k = 2`. A unit written as a
-  separate expression after the node would land after `k = 2`.
-* No dependency change is needed; the node reuses the existing
-  `Math::Function::Unitsml` rendering. No unit conversion is done.
+[source]
+----
+ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
+ⓘ("standard-uncertainty:concise(1.230,0.004)"1.230(4))
+ⓘ("expanded-uncertainty(10.0,0.3,2,0.95)"(10.0±0.3), k=2, p=0.95)
+ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"1.024, [0.983, 1.088], p=0.95)
+ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"(100.02147±0.00079)ⓐ(unit \mupg), k=2)
+----
 
-What survives a round trip:
+A negative value that would start the visible content is put in the invisible
+`〖〗` group, because the reader cannot take `+"marker"-...+`; the marker is
+unchanged: `ⓘ("standard-uncertainty(-1.230,0.004)"〖-1.230〗(0.004))`. The
+reader also accepts `±` with spaces around it.
 
-* AsciiMath: exact, the UnitsML text is written back
-  (`uexp(100.02147, 0.00079, 2, "unitsml(g)")`). A unit read from MathML,
-  OMML or UnicodeMath is a rendered `Math::Formula`; it is written back as
-  `"unitsml(...)"` when that is possible, by this rule:
-** The formula must be a product of unit symbols separated by `·`
-   (`Math::Symbols::Cdot`), each symbol optionally raised to an integer power,
-   which may be negative.
-** A unit symbol is ASCII letters only, upright (`Math::Function::FontStyle::Normal`)
-   or plain, held as a symbol or a text. `kg`, `m^2` and `s^-1` qualify; `µm`
-   and `°C` do not, because their rendered symbols are not UnitsML input.
-** The derived text, for example `kg*m^2` or `m*s^-1`, must parse as UnitsML
-   and UnitsML must render it back to the same product. A unit written as
-   `m/s` therefore comes back as `"unitsml(m*s^-1)"`, which renders the same.
-** Any other unit cannot be written in the AsciiMath call, whose grammar
-   accepts only a final `"unitsml(...)"` argument. It is written after the call
-   in its own AsciiMath form, for example `ustd(1.230, 0.004) mathbf(x)`. That
-   text still parses and shows the unit, but it reads back as an uncertainty
-   without a unit followed by the unit expression.
-* MathML: the unit is written with the usual UnitsML rendering in an
-  `mrow arg="unit"`, referred to by `$unit` in the marker. On reading, the unit
-  comes back as that rendered content (a `Math::Formula`), not as a `Unitsml`
-  node. This is the same loss every UnitsML node has today: Plurimath does not
-  turn rendered MathML, OMML, UnicodeMath or AsciiMath back into `Unitsml`.
-* OMML: as MathML, with the unit in an inner `m:box`.
-* UnicodeMath: as MathML, with the unit as `ⓐ(unit \mupg)`. Today's reader
-  rejects `ⓐ` in this position, so B3 needs grammar work for it.
+=== LaTeX and HTML
 
-If this is judged too much for the first release, the fallback is to leave
-units out of the node in B1–B4 and note that expanded results with units then
-render with the unit after `k`.
+Written only, in plain math with no package:
 
-== What each format keeps
+[cols="1,2,2"]
+|===
+| |LaTeX |HTML
+
+|standard, absolute |`1.230(0.004)` |`1.230(0.004)`
+|standard, concise |`1.230(4)` |`1.230(4)`
+|expanded |`(10.0 \pm 0.3),\ k = 2` |`+(10.0 &#xb1; 0.3), k = 2+`
+|expanded with `p` |`(10.0 \pm 0.3),\ k = 2,\ p = 0.95` |`+(10.0 &#xb1; 0.3), k = 2, p = 0.95+`
+|coverage interval |`1.024,\ [0.983, 1.088],\ p = 0.95` |`1.024, [0.983, 1.088], p = 0.95`
+|===
+
+The interval choice is not shown. An expanded or interval result is never
+written as a standard one, and a standard result is never written with `±`.
+Reading this LaTeX back gives ordinary numbers and brackets, not an
+uncertainty.
+
+[[round-trip]]
+== Round-trip matrix
+
+Each row says what survives writing a node in a format and reading it back
+with Plurimath. "Exact" means the node read back is `==` to the node written.
 
 [cols="2,1,1,1,1,1,1"]
 |===
 | |AsciiMath |MathML |OMML |UnicodeMath |LaTeX |HTML
 
-|value, magnitude or endpoints, exact text |yes |yes |yes |yes |shown |shown
-|kind of result |yes |yes |yes |yes |by layout only |by layout only
-|`k`, `p` |yes |yes |yes |yes |shown |shown
-|interval choice (shortest, symmetric) |yes |yes |yes |yes |lost |lost
-|concise or absolute notation |yes |yes |yes |yes |shown |shown
-|unit |exact |rendered only |rendered only |rendered only (B3 grammar) |shown |shown
-|read back as `Uncertainty` |from B4 |yes |yes |yes |no |no
+|value, magnitude, endpoints, `k`, `p` (exact text) |exact |exact |exact |exact |shown |shown
+|category |exact |exact |exact |exact |by layout |by layout
+|absolute or concise notation |exact |exact |exact |exact |shown |shown
+|interval choice |exact |exact |exact |exact |lost |lost
+|negative value |exact |exact |exact |exact |shown |shown
+|unit |exact |rendered |rendered |rendered |shown |shown
+|read back as `Uncertainty` |yes |yes |yes |yes |no |no
 |===
 
-"Shown" means visible in the output but there is no reader. LaTeX and HTML
-never turn an expanded or interval result into a standard one; standard results
-are never written with `±`.
+"Rendered" means the unit comes back as its rendered `Math::Formula`, not as
+a `Unitsml` node, so the node is not `==` to the one written, although its
+other fields are. Written on to AsciiMath, such a unit becomes
+`+"unitsml(...)"+` again when the rule in <<units>> allows it. Two cases do
+not:
 
-Other software: a MathML consumer that ignores `intent` shows the visible form
-correctly. An OMML consumer that ignores phantoms, including Plurimath before
-this work, will show the marker text as ordinary text. Today's Plurimath reads
-these MathML and UnicodeMath forms as a generic `Function::Intent` (except the
-UnicodeMath unit form, which it rejects).
+* units whose rendered symbols are not ASCII letters (`µm`, `°C`) are written
+  after the call;
+* in UnicodeMath, a multi-letter unit symbol written as `\mupkg` is read back
+  as the upright `k` followed by `g`, so `kg` and `+kg·m^2+` are written to
+  AsciiMath after the call (`ustd(1.2, 0.1) rm(k) g`). Units of one letter per
+  symbol, such as `g` and `+m·s^-1+`, return as `+"unitsml(...)"+`.
 
-== LaTeX input
+Other software: a MathML consumer that ignores `intent` shows the visible
+form. An OMML consumer that ignores hidden phantoms shows the marker text as
+ordinary text. Word's handling of the phantom is not yet tested (see
+<<open-decisions>>).
 
-Recommendation: output only for #493. #493 does not require LaTeX input, and
-LaTeX has no single notation for this; the usual one is the `siunitx` package
-(`\num{1.230(4)}`). Reading `siunitx` can be added later as its own task with
-its own tests. The LaTeX output above uses only plain math so that no package is
-needed.
+[[errors]]
+== Errors
 
-== Questions for the maintainer
+* `Plurimath::Errors::InvalidUncertainty`, a `Plurimath::Error`, is raised by
+  the constructor and by the marker reader. Through `Plurimath::Math.parse`
+  it reaches the caller as `Plurimath::Math::ParseError`, with no `cause`.
+* `Plurimath::Math::AmbiguousDecimalError`, a `Plurimath::Math::ParseError`,
+  is raised by the AsciiMath reader for a likely decimal comma in a call under
+  a non-dot locale, and reaches the caller unchanged.
+* A malformed AsciiMath call that does not match the call grammar is not an
+  error; it reads as letters (see link:asciimath.adoc#uncertainty[AsciiMath
+  in Plurimath]).
 
-. Approve, change or leave out the coverage-interval variant (and confirm that
-  the `+a/−b` layout stays out until its meaning is decided).
-. Units: allow the `Unitsml` child as recommended, or leave units out at first.
-. Marker names and the use of MathML intent syntax with literal numbers. The
-  syntax follows our reading of the MathML 4 intent grammar (concept name,
-  `:property`, arguments that are numbers or `$references`) and has not been
-  checked with a MathML 4 validator or screen reader.
-. OMML hidden phantom marker. Not yet checked in Microsoft Word: whether Word
-  keeps the hidden zero-size phantom when the equation is edited, and how it
-  displays it.
-. When the visible content in MathML, OMML or UnicodeMath disagrees with the
-  marker, the proposal trusts the marker without warning. A stricter option is to
-  raise an error.
-. AsciiMath word names `ustd`, `uexp`, `ucov`.
+[[conformance]]
+== Conformance
 
-[[baseline]]
-== Observations on the current code
+* `spec/plurimath/fixtures/uncertainty/contract.yml` holds the exact model,
+  output and input for every category, notation and unit case in every
+  format, the invalid cases with their errors, and the ordinary `±` cases.
+  `spec/plurimath/uncertainty_contract_spec.rb` checks it. Its header still
+  carries the "proposal" status it had before the work was merged; the cases
+  themselves are current.
+* Writers and the node: `spec/plurimath/math/function/uncertainty_spec.rb`,
+  `spec/plurimath/math/function/uncertainty_writers_spec.rb`,
+  `spec/plurimath/math/formula/uncertainty_spec.rb`.
+* Readers: `spec/plurimath/mathml/uncertainty_spec.rb`,
+  `spec/plurimath/omml/uncertainty_spec.rb`,
+  `spec/plurimath/unicode_math/uncertainty_spec.rb`,
+  `spec/plurimath/unicode_math/uncertainty_units_spec.rb`, and the AsciiMath
+  specs listed in link:asciimath.adoc#conformance[AsciiMath in Plurimath].
+* amath `corpora/uncertainty-shared-exponent.yml` for the shared-exponent
+  forms.
 
-Measured on revision `d2aa3236` while writing this page; none of these is
-changed by this proposal:
+The plurimath-testsuite stage corpora have no uncertainty rows yet.
 
-* UnicodeMath: `1.23 ± 0.04` (with spaces, as Plurimath itself writes it)
-  is read into raw arrays and fails to render; `1.23±0.04` works.
-* OMML input reads `1.23` as `Math::Symbols::Symbol`, not `Math::Number`, so
-  MathML written from OMML input uses `<mi>1.23</mi>`.
-* A generic `Function::Intent` written to OMML puts its intent text into the
-  visible equation inside nested `m:r` elements.
-* The MathML reader dropped `arg="unit"` on an `mrow` in our test.
+[[open-decisions]]
+== Open decisions
+
+These are not decided. Each links the issue where the decision belongs.
+
+. *Coverage interval and the `+a/−b` layout.* The coverage-interval variant is
+  implemented as above. The common `10.0^{+0.3}_{-0.2}` layout is not, because
+  neither JCGM 100 nor JCGM 101 defines what its two numbers mean. Whether to
+  support it, and with what meaning, is a maintainer decision
+  (https://github.com/plurimath/plurimath/issues/524[#524],
+  https://github.com/plurimath/plurimath/issues/493[#493]).
+. *Inline `±` sugar.* Whether `(10.3 ± 0.2) cm` should read as an
+  uncertainty at all, with which default category, and how `±` must be fenced.
+  #524 recommends rejecting `+-` (ambiguous with `3 + (-1)`) and `pm`
+  (picometre) (#524 item 4).
+. *Shared exponent outside the calls.* `(3.85 +/- 0.23)e4` and `680(41)e-3`
+  as bare forms depend on the `±` decision; the call forms already accept a
+  shared exponent (#524 item 1,
+  https://github.com/plurimath/amath/issues/13[amath#13]).
+. *Relative notation*, `(10.3 +/- 2%) cm`, stored as an absolute magnitude
+  (#524 item 2).
+. *Distribution tags* for Type B input (`+~rect+`, `+~triang+`, `+~arcsine+`) as a
+  structured field, never inferred from spelling (#524 item 3).
+. *Concise form scope.* `10.3(2)` outside a call stays markup-only; in an
+  evaluator language it would collide with function application (#524 item 5,
+  https://github.com/plurimath/plurimath/issues/513[#513]).
+. *Marker syntax against MathML 4.* The marker follows our reading of the
+  MathML 4 intent grammar and has not been checked with a MathML 4 validator
+  or screen reader (#524).
+. *OMML phantom in Word.* Whether Word keeps the hidden zero-size phantom when
+  the equation is edited, and how it displays it, is untested (#524).
+. *Marker against visible content.* When the visible content disagrees with
+  the marker, the reader trusts the marker without a warning. Raising an error
+  instead is the alternative (#524).
+. *Unit scoping.* One unit applies to the value and the uncertainty; an
+  uncertainty is a difference quantity, so a unit conversion would apply the
+  factor and never the offset. This matters once conversion exists (#524,
+  #514).
+. *LaTeX input.* Reading `siunitx` (`\num{1.230(4)}`) is a separate task
+  (#524).
+. *Where the AsciiMath call forms live.* They are implemented in the AsciiMath
+  grammar and stay there. Moving them into the proposed dialect P ("pma") is
+  tracked in https://github.com/plurimath/amath/issues/17[amath#17] and
+  waits on https://github.com/plurimath/amath/issues/16[amath#16].
+. *Closing #493.* All work planned in #493 is merged; the issue is still open.
