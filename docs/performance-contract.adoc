@@ -1,0 +1,214 @@
+= Performance contract
+
+This document records what plurimath measures about its own cost, how it
+measures it, the baseline taken on 2026-11-03, and the targets set in
+https://github.com/plurimath/plurimath/issues/537[#537]. The measurements do
+not gate merges yet. Gating starts once the staged-library work in #537 lands,
+and the thresholds will be the targets below.
+
+== What is measured
+
+[cols="1,2,1",options="header"]
+|===
+| Measurement | Meaning | Produced by
+
+| Require footprint
+| Wall time, allocated objects, RSS growth and loaded features of a cold
+  `require "plurimath"`, split into plurimath's own files, each gem and the
+  rest.
+| `scripts/measure_require.rb`
+
+| First-use footprint
+| The same figures for `Plurimath::Math.parse("x^2", :asciimath).to_mathml`
+  right after the require. This is what the autoloads deferred.
+| `scripts/measure_require.rb`
+
+| Autoload surface
+| `autoload` statements declared in `lib/` (static scan), and the autoloads
+  still pending after the require and after first use (runtime walk of the
+  `Plurimath` namespace).
+| `scripts/measure_require.rb`
+
+| Full-suite wall time
+| One run of the whole suite on a fixed runner, with example counts and the
+  summed example time per spec area.
+| `scripts/check_suite_budget.rb suite`
+
+| CI leg time
+| Wall time of each leg of the `rake` matrix, and of the step in it that runs
+  the suite.
+| `scripts/check_suite_budget.rb ci`
+|===
+
+== How it is measured
+
+The `performance` workflow (`.github/workflows/performance.yml`) runs on
+`ubuntu-22.04` with Ruby 4.0.1. It runs on pushes to `main`, on pull requests
+that change `lib/`, `spec/`, the `Gemfile`, the gemspec or these scripts, and on
+demand. Each job uploads its JSON as an artifact kept for 90 days.
+
+`require-footprint`:: Runs `scripts/measure_require.rb --samples 5` once with
+the Ox engine and once with the Oga engine. Each sample is a new Ruby process,
+so every require is cold. Bundler is set up before the clock starts. Time,
+allocation and memory values are medians over the samples; the counts must be
+equal in every sample or the script fails.
+
+`suite-timing`:: Runs `bundle exec rspec` once under
+`scripts/check_suite_budget.rb suite`, with the progress and JSON formatters.
+The examples, the spec helper and its engine loop are unchanged, so this is the
+same suite `rake` runs. The runner is a proxy for "local": it is the fixed
+machine on which #537's local-suite target is checked. It is not a measurement
+of any developer's machine.
+
+`ci-legs`:: After each `rake` run on `main` completes, reads that run through
+the GitHub API and records each leg. On other events it reads the newest
+completed `rake` run on `main`.
+
+Both scripts print JSON with sorted keys and no timestamps. Their usage and
+exit statuses are in the comment at the top of each script. Both can be run
+locally, but local timings depend on the machine and are not baseline numbers.
+
+[source,sh]
+----
+bundle exec ruby scripts/measure_require.rb --output require.json
+ruby scripts/check_suite_budget.rb ci --workflow rake.yml --branch main
+ruby scripts/check_suite_budget.rb suite --rspec-json rspec.json -- \
+  bundle exec rspec --format progress --format json --out rspec.json
+----
+
+`--enforce` makes `check_suite_budget.rb` exit 1 when a budget is exceeded. The
+workflow does not pass it yet.
+
+== Baseline (2026-11-03)
+
+Source: `main` at `632b6f21` (plurimath 0.11.17). The require and suite
+figures come from performance run
+https://github.com/plurimath/plurimath/actions/runs/41671803836[41671803836],
+which measured the pull request that added this workflow. That pull request
+changes no file under `lib/` or `spec/`, so the code measured is `main`'s.
+Runner: GitHub `ubuntu-22.04` image 20261026.341.1, 4 processors, Ruby 4.0.1.
+
+=== Require footprint
+
+Medians of 5 cold processes.
+
+[cols="2,1,1",options="header"]
+|===
+| Figure | Ox engine | Oga engine
+
+| `require "plurimath"` wall time | 1958 ms | 2065 ms
+| Allocated objects | 2,377,235 | 2,395,676
+| RSS growth | 74,264 KB | 78,112 KB
+| Loaded features | 670 | 714
+| of which plurimath's own `lib/` files | 4 | 4
+| First use (`x^2` AsciiMath to MathML) wall time | 1302 ms | 1336 ms
+| First use: plurimath `lib/` files loaded | 1515 | 1517
+| First use: allocated objects | 1,823,144 | 1,823,992
+| First use: RSS growth | 49,496 KB | 49,168 KB
+|===
+
+With Ox, the 670 features loaded by the require are mostly dependencies:
+lutaml-model 171, mml 164, concurrent-ruby 109, moxml 34, parslet 34, ffi 27,
+leptris 27, ox 15, htmlentities 8, parsanol 5 and 68 standard-library files.
+Plurimath itself loads 4 files and defers the rest. The first conversion then
+loads 1515 of the 1734 Ruby files under `lib/`. The deferral therefore moves
+the cost to the first call rather than removing it.
+
+=== Autoload surface
+
+[cols="2,1,1",options="header"]
+|===
+| Figure | Ox | Oga
+
+| `autoload` statements in `lib/` | 270 (in 24 files) | 270
+| Pending after `require` | 28 | 31
+| Pending after first use | 168 | 169
+|===
+
+`lib/plurimath/math/function.rb` alone declares 107 autoloads.
+
+=== Full suite on the fixed runner
+
+[cols="2,1",options="header"]
+|===
+| Figure | Value
+
+| Wall time of `bundle exec rspec` | 1273 s (21.2 min)
+| Examples | 19,684 (0 failures, 40 pending)
+| RSpec's own duration | 1259 s
+|===
+
+Every example runs twice, once per XML engine (Ox and Oga), through the
+`around` hook in `spec/spec_helper.rb`; shared-corpus examples run once. The
+summed example time by spec area shows where the suite spends its time. RSpec
+reports examples from shared example groups under the support file that
+defines them.
+
+[cols="2,1,1",options="header"]
+|===
+| Spec area | Examples | Example time
+
+| `support/shared_unicode_examples.rb` | 1350 | 586 s
+| `support/shared_renderer_examples.rb` | 3262 | 356 s
+| `plurimath/unicode_math` | 219 | 80 s
+| `support/shared_parser_examples.rb` | 836 | 80 s
+| `plurimath/latex` | 45 | 49 s
+| `conformance/shared_corpus` | 922 | 38 s
+| everything else | 13,050 | 68 s
+|===
+
+UnicodeMath parsing and rendering account for most of the time, which is the
+work #530 moves into the `unicodemath` gem.
+
+=== CI legs
+
+`rake` run
+https://github.com/plurimath/plurimath/actions/runs/41663916542[41663916542]
+on `main` at `632b6f21`. Two macOS legs were cancelled by the runner and have
+no time.
+
+[cols="2,1,1",options="header"]
+|===
+| Leg | Job | Suite step
+
+| Ruby 3.3 ubuntu-latest | 1318 s | 1271 s
+| Ruby 3.4 ubuntu-latest | 1711 s | 1657 s
+| Ruby 4.0 ubuntu-latest | 1108 s | 1058 s
+| Ruby 3.4 macos-latest | 1393 s | 1335 s
+| Ruby 3.3 windows-latest | 2159 s | 1953 s
+| Ruby 3.4 windows-latest | 2147 s | 1936 s
+| Ruby 4.0 windows-latest | 1754 s | 1574 s
+|===
+
+Two of the seven timed legs are over the 1800 s budget, both on Windows. The
+previous `main` run,
+https://github.com/plurimath/plurimath/actions/runs/41621164536[41621164536]
+at `57111026`, took 6113 s to 11,084 s per leg (median 7790 s), in line with
+the 2 to 3 hours reported in #537. The numbers vary this much between runs, so
+the gate will use a run on the measured commit, never an older one.
+
+== Targets
+
+These come from #537 and become the gates once the staged libraries land.
+
+[cols="2,1,1",options="header"]
+|===
+| Target | Budget | Baseline
+
+| Each CI `rake` leg
+| under 30 min (1800 s)
+| 1108 s to 2159 s; 2 of 7 legs over
+
+| Full suite on the fixed runner
+| under 10 min (600 s)
+| 1273 s
+
+| Autoload surface and `require "plurimath"` footprint
+| measured before and after each staging step, then held by a regression gate
+| see the require baseline
+|===
+
+The require footprint has no absolute number in #537. The gate will compare a
+change against the last measurement on `main`, using the loaded-feature and
+own-file counts (which are exact) and the medians of time and memory (which
+vary between runs).
