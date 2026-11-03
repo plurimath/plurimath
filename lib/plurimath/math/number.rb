@@ -81,13 +81,8 @@ module Plurimath
         false
       end
 
-      def evaluate(_evaluator)
-        raw_value = value.to_s
-        return raw_value.to_i if raw_value.match?(/\A[+-]?\d+\z/)
-
-        Float(raw_value)
-      rescue ArgumentError
-        raise Errors::Evaluation::UnsupportedExpressionError, "number `#{raw_value}`"
+      def evaluate(evaluator)
+        evaluator.number_value(value.to_s)
       end
 
       def mini_sized?

@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.atan(evaluator.evaluate_node(parameter_one))
+          evaluator.limited_operation("atan", [evaluator.evaluate_node(parameter_one)]) { ::Math.atan(evaluator.evaluate_node(parameter_one)) }
         end
       end
     end

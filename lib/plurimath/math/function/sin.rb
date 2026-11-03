@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.sin(evaluator.evaluate_node(parameter_one))
+          evaluator.limited_operation("sin", [evaluator.evaluate_node(parameter_one)]) { ::Math.sin(evaluator.evaluate_node(parameter_one)) }
         end
       end
     end

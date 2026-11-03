@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.log10(evaluator.evaluate_node(parameter_one))
+          evaluator.limited_operation("log10", [evaluator.evaluate_node(parameter_one)]) { ::Math.log10(evaluator.evaluate_node(parameter_one)) }
         end
 
         def to_omml_without_math_tag(display_style, options:)

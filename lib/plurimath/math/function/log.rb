@@ -30,7 +30,10 @@ module Plurimath
                   "log base must be a positive number other than 1"
           end
 
-          result = ::Math.log(evaluator.evaluate_node(argument), base)
+          argument_value = evaluator.evaluate_node(argument)
+          result = evaluator.limited_operation(
+            "log_base", [argument_value, base]
+          ) { ::Math.log(argument_value, base) }
           result = evaluator.power(result, evaluator.evaluate_node(parameter_two)) if parameter_two
           result
         end

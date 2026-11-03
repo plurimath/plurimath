@@ -50,7 +50,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.sqrt(evaluator.evaluate_node(parameter_one))
+          evaluator.square_root(parameter_one)
         end
       end
     end

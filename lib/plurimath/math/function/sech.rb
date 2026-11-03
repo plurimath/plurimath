@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          evaluator.divide(1.0, ::Math.cosh(evaluator.evaluate_node(parameter_one)))
+          evaluator.divide(1.0, evaluator.limited_operation("cosh", [evaluator.evaluate_node(parameter_one)]) { ::Math.cosh(evaluator.evaluate_node(parameter_one)) })
         end
       end
     end

@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.sinh(evaluator.evaluate_node(parameter_one))
+          evaluator.limited_operation("sinh", [evaluator.evaluate_node(parameter_one)]) { ::Math.sinh(evaluator.evaluate_node(parameter_one)) }
         end
       end
     end

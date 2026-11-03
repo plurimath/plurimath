@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.exp(evaluator.evaluate_node(parameter_one))
+          evaluator.limited_operation("exp", [evaluator.evaluate_node(parameter_one)]) { ::Math.exp(evaluator.evaluate_node(parameter_one)) }
         end
 
         def to_omml_without_math_tag(display_style, options:)
