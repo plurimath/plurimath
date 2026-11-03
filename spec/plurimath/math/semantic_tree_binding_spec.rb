@@ -186,7 +186,7 @@ RSpec.describe "Semantic operand binding" do
       formula.to_display(:unicodemath, tree: :semantic)
       expect { formula.evaluate(x: 2) }.to raise_error(before[0], before[1])
     end
-    expect(math.parse("sum_(i=1)^3 i", :asciimath).evaluate).to eq(6)
-    expect(math.parse("sin(1)^2", :asciimath).evaluate).to be_within(0.000001).of(::Math.sin(1)**2)
+    expect(math.parse("sum_(i=1)^3 i", :asciimath).evaluate.value).to eq(6)
+    expect(math.parse("sin(1)^2", :asciimath).evaluate.value).to be_within(0.000001).of(::Math.sin(1)**2)
   end
 end
