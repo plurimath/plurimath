@@ -55,13 +55,19 @@ module Plurimath
           object.left_right_wrapper == left_right_wrapper
       end
 
-      def evaluate(bindings = {})
+      # Keyword shorthand bindings (evaluate(a: 2)) are absorbed into the
+      # bindings hash; pass bindings positionally when a key collides with
+      # an option name (mode:, guard_digits:).
+      def evaluate(bindings = {}, mode: nil, guard_digits: nil, **rest)
+        bindings = rest unless rest.empty?
         hash = bindings.to_hash if bindings.respond_to?(:to_hash)
         unless hash.is_a?(Hash)
           raise ArgumentError, "bindings must be a Hash-like object"
         end
 
-        Evaluation::Evaluator.new(self, hash).evaluate
+        Evaluation::Evaluator.new(self, hash,
+                                  mode: mode || :approximate,
+                                  guard_digits: guard_digits).evaluate
       end
 
       def to_asciimath(formatter: nil, unitsml: {}, options: nil)

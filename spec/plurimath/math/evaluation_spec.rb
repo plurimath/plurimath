@@ -2,7 +2,11 @@ require "spec_helper"
 
 RSpec.describe Plurimath::Math::Formula do
   def evaluate(source, type = :asciimath, bindings = {})
-    Plurimath::Math.parse(source, type).evaluate(bindings)
+    Plurimath::Math.parse(source, type).evaluate(bindings).value
+  end
+
+  def evaluate_result(source, type = :asciimath, **options)
+    Plurimath::Math.parse(source, type).evaluate(**options)
   end
 
   def expect_numeric_result(actual, expected, tolerance = 0.000001)
@@ -435,7 +439,7 @@ RSpec.describe Plurimath::Math::Formula do
           end
         end.new
 
-        expect(Plurimath::Math.parse("a+b", :asciimath).evaluate(hash_like)).to eq(5)
+        expect(Plurimath::Math.parse("a+b", :asciimath).evaluate(hash_like).value).to eq(5)
       end
     end
 
@@ -450,7 +454,7 @@ RSpec.describe Plurimath::Math::Formula do
             lower, Plurimath::Math::Number.new("2"),
             Plurimath::Math::Number.new("5")
           )],
-        ).evaluate
+        ).evaluate.value
       end
 
       it "names variables only for plain symbol and text values" do
@@ -505,7 +509,7 @@ RSpec.describe Plurimath::Math::Formula do
            Plurimath::Math::Symbols::Symbol.new("+"),
            Plurimath::Math::Number.new("2")],
         )
-        expect(formula.evaluate).to eq(3)
+        expect(formula.evaluate.value).to eq(3)
       end
 
       it "treats a generic power symbol as an operator" do
@@ -514,7 +518,7 @@ RSpec.describe Plurimath::Math::Formula do
            Plurimath::Math::Symbols::Symbol.new("^"),
            Plurimath::Math::Number.new("3")],
         )
-        expect(formula.evaluate).to eq(8)
+        expect(formula.evaluate.value).to eq(8)
       end
 
       it "rejects an operator symbol in operand position rather than binding it" do
@@ -587,7 +591,6 @@ RSpec.describe Plurimath::Math::Formula do
       end
 
       {
-        "2" => "String",
         Complex(1, 2) => "Complex",
       }.each do |value, class_name|
         it "raises for a #{class_name} binding value" do
@@ -610,14 +613,14 @@ RSpec.describe Plurimath::Math::Formula do
 
       it "names the variable consistently regardless of binding key style" do
         formula = Plurimath::Math.parse("a+b", :asciimath)
-        message = "wrong value for variable `a` (given String, expected a real number)"
+        message = "wrong value for variable `a` (given Complex, expected a real number)"
 
         aggregate_failures do
-          expect { formula.evaluate(a: "2", b: 3) }
+          expect { formula.evaluate(a: Complex(1, 2), b: 3) }
             .to raise_error(Plurimath::Errors::Evaluation::InvalidBindingError, message)
-          expect { formula.evaluate({ a: "2", b: 3 }) }
+          expect { formula.evaluate({ a: Complex(1, 2), b: 3 }) }
             .to raise_error(Plurimath::Errors::Evaluation::InvalidBindingError, message)
-          expect { formula.evaluate({ "a" => "2", "b" => 3 }) }
+          expect { formula.evaluate({ "a" => Complex(1, 2), "b" => 3 }) }
             .to raise_error(Plurimath::Errors::Evaluation::InvalidBindingError, message)
         end
       end

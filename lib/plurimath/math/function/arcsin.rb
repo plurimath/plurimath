@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.asin(evaluator.evaluate_node(parameter_one))
+          evaluator.limited_operation("asin", [evaluator.evaluate_node(parameter_one)]) { ::Math.asin(evaluator.evaluate_node(parameter_one)) }
         end
       end
     end

@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.tan(evaluator.evaluate_node(parameter_one))
+          evaluator.limited_operation("tan", [evaluator.evaluate_node(parameter_one)]) { ::Math.tan(evaluator.evaluate_node(parameter_one)) }
         end
       end
     end

@@ -5,9 +5,11 @@ require "plurimath/errors/evaluation"
 module Plurimath
   module Math
     module Evaluation
+      autoload :Accuracy, "#{__dir__}/evaluation/accuracy"
       autoload :Evaluator, "#{__dir__}/evaluation/evaluator"
       autoload :ExpressionParser, "#{__dir__}/evaluation/expression_parser"
       autoload :Iteration, "#{__dir__}/evaluation/iteration"
+      autoload :Result, "#{__dir__}/evaluation/result"
     end
   end
 end

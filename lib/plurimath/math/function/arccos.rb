@@ -15,7 +15,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          ::Math.acos(evaluator.evaluate_node(parameter_one))
+          evaluator.limited_operation("acos", [evaluator.evaluate_node(parameter_one)]) { ::Math.acos(evaluator.evaluate_node(parameter_one)) }
         end
       end
     end
