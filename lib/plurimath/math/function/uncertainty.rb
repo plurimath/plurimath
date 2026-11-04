@@ -183,7 +183,10 @@ module Plurimath
         end
 
         def to_unicodemath(options:)
-          unit_text = "ⓐ(unit #{unit.to_unicodemath(options: options)})" if unit
+          if unit
+            unit_options = (options || {}).merge(unicodemath_unit: true)
+            unit_text = "ⓐ(unit #{unit.to_unicodemath(options: unit_options)})"
+          end
           visible = case category
                     when :standard
                       "#{unicodemath_value}(#{standard_parenthesised})#{unit_text}"

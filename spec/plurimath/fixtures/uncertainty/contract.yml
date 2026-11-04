@@ -1,10 +1,10 @@
 # Acceptance contract for measurement uncertainty (plurimath#493).
-# Status: proposal, not yet approved. Do not build B1-B4 on it until the
-# maintainer approves it; record the approval link and revision here then.
+# Status: implemented. The model, writers and readers it describes were merged
+# for #493; spec/plurimath/uncertainty_contract_spec.rb checks every case.
 # Human-readable design: docs/uncertainty.adoc
 ---
 schema_version: 1
-status: proposal, not yet approved
+status: implemented
 issue: https://github.com/plurimath/plurimath/issues/493
 design_note: docs/uncertainty.adoc
 baseline: plurimath d2aa3236 (lib/ identical to ae20be11)
