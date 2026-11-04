@@ -130,54 +130,6 @@ module Plurimath
         align: nil,
         array: nil,
       }.freeze
-      NUMERIC_VALUES = %w[
-        zero
-        one
-        two
-        three
-        four
-        five
-        six
-        seven
-        eight
-        nine
-      ].freeze
-      MATH_OPERATORS = %w[
-        liminf
-        arctan
-        arcsin
-        limsup
-        tanh
-        coth
-        cosh
-        sinh
-        int
-        sin
-        max
-        dim
-        arg
-        tan
-        sec
-        log
-        hom
-        det
-        cot
-        gcd
-        deg
-        min
-        ker
-        exp
-        csc
-        cos
-        Pr
-        ln
-        lg
-      ].freeze
-      UNDEROVER_CLASSES = %w[
-        bmod
-        pmod
-        mod
-      ].freeze
       LEFT_RIGHT_PARENTHESIS = {
         "\\backslash": "&#x5c;",
         "\\langle": "&#x2329;",
@@ -204,42 +156,6 @@ module Plurimath
         "[": "[",
         "]": "]",
       }.freeze
-
-      class << self
-        def symbols_constants
-          @@symbols ||= reverse_sort_hash(SYMBOLS.merge(symbols_hash))
-        end
-
-        def parenthesis
-          @@parens ||= { "\\(" => "\\)", "\\[" => "\\]", "\\{" => "\\}" }
-          rejected_paren(:close?).each do |paren, klass|
-            @@parens[paren] = klass.new.closing::INPUT[:latex].flatten
-          end
-          reverse_sort_hash(@@parens)
-        end
-
-        private
-
-        def symbols_hash
-          latex_symbols.filter_map { |sym, _klass| [sym, :symbols] }.to_h
-        end
-
-        def latex_symbols
-          @@latex_symbols ||= Utility.symbols_hash(:latex)
-        end
-
-        def latex_parens
-          @@latex_parens ||= Utility.parens_hash(:latex, skipables: ["lcurly"])
-        end
-
-        def rejected_paren(type)
-          latex_parens.reject { |_, klass| klass.new.send(type) }
-        end
-
-        def reverse_sort_hash(hash)
-          hash.sort_by { |str, _| -str.length }.to_h
-        end
-      end
     end
   end
 end

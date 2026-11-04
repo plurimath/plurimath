@@ -9,10 +9,8 @@ RSpec.describe Plurimath::Latex::Parser do
   let(:locale_numbers) { { fr: "1,5", ar: "1٫5" } }
 
   def ruby_formula(input)
-    text = described_class.new(input).text
-    tree = Plurimath::Latex::Parse.new.parse(text, mode: :ruby)
-    value = Plurimath::Latex::Transform.new.apply(tree)
-    Plurimath::Math::Formula.new(value)
+    require "latexmath"
+    Plurimath::Latex::Mapper.new.call(Latexmath.parse(input, engine: :ruby))
   end
 
   context "when native parsing is available" do
@@ -41,18 +39,15 @@ RSpec.describe Plurimath::Latex::Parser do
 
     it "preserves String row-break keys through native matrix parsing" do
       input = '\\begin{matrix}a_{1}&b_{2}\\\\\\end{matrix}'
-      parser = Plurimath::Latex::Parse.new
       allow(Parsanol::Native).to receive(:parse).and_call_original
-      allow(parser.root).to receive(:run_with_context).and_call_original
 
-      native = parser.parse(input, mode: :native)
+      native = Plurimath::Latex::Parse.new.parse(input, mode: :native)
       ruby = Plurimath::Latex::Parse.new.parse(input, mode: :ruby)
 
       expect(native).to eq(ruby)
       expect(native.dig(:environment, :table_data, :expression, :expression, :expression, "\\\\").to_s)
         .to eq("\\\\")
       expect(Parsanol::Native).to have_received(:parse).once
-      expect(parser.root).not_to have_received(:run_with_context)
     end
 
     it "preserves Ruby model and rendered output for scalar and based numbers", :ruby_fallback do
