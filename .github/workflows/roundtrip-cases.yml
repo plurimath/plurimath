@@ -1,0 +1,33 @@
+name: Roundtrip cases
+
+# scripts/roundtrip_cases.rb writes the uncertainty round-trip payloads of
+# plurimath-testsuite (stages/roundtrip). Check that it runs on both XML
+# engines, writes the same bytes twice, and agrees with its spec.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  roundtrip-cases:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0.1"
+          bundler-cache: true
+      - name: Generate the roundtrip payloads twice
+        run: |
+          bundle exec ruby scripts/roundtrip_cases.rb --out "$RUNNER_TEMP/roundtrip-a"
+          bundle exec ruby scripts/roundtrip_cases.rb --out "$RUNNER_TEMP/roundtrip-b"
+          diff -r "$RUNNER_TEMP/roundtrip-a" "$RUNNER_TEMP/roundtrip-b"
+      - name: Check the cases against the round-trip matrix
+        run: bundle exec rspec spec/plurimath/roundtrip_cases_spec.rb
