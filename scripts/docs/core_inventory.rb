@@ -263,8 +263,21 @@ module CoreInventory
              only_parser: symbols.count { |k| !k::INPUT.empty? && (k::INPUT.keys - %i[latex unicodemath]).empty? })
   end
 
-  def esc(text)
-    text.to_s.gsub("|", "\\|")
+  # Tables use "¦" as the cell separator, so cell text (which may hold "|",
+  # as in Vmatrix's defaults) needs no escaping. A cell that holds the
+  # separator itself is refused.
+  SEPARATOR = "\u00a6"
+
+  def table_start(cols)
+    "[cols=\"#{cols}\",options=\"header\",separator=#{SEPARATOR}]\n|===\n"
+  end
+
+  def row(cells)
+    cells = cells.map(&:to_s)
+    bad = cells.find { |c| c.include?(SEPARATOR) }
+    raise Error, "cell contains the table separator: #{bad}" if bad
+
+    "#{SEPARATOR} #{cells.join(" #{SEPARATOR} ")}\n"
   end
 
   def code(text)
@@ -284,9 +297,9 @@ module CoreInventory
       [FAMILY_TITLES.fetch(fam), in_fam.size, *marks.map { |mk| in_fam.count { |k| mark(k) == mk } }]
     end
     totals = ["*Total*", classes.size, *marks.map { |mk| classes.count { |k| mark(k) == mk } }]
-    out = +"[cols=\"3,1,1,1,1\",options=\"header\"]\n|===\n"
-    out << "| Family | Classes | stays-core | removed-by-531 | support\n\n"
-    (rows + [totals]).each { |r| out << "| #{r.join(' | ')}\n" }
+    out = +table_start("3,1,1,1,1")
+    out << row(["Family", "Classes", *MARKS]) << "\n"
+    (rows + [totals]).each { |r| out << row(r) }
     out << "|===\n"
   end
 
@@ -294,12 +307,12 @@ module CoreInventory
     owners = classes.select { |k| node?(k) }.filter_map { |k| field_owner(k) }.uniq
     owners += classes.select { |k| node?(k) }.filter_map { |k| constructor_owner(k) }
     owners = owners.uniq.sort_by(&:name)
-    out = +"[cols=\"2,3,4,1\",options=\"header\"]\n|===\n"
-    out << "| Class | Own fields | Constructor | Classes served\n\n"
+    out = +table_start("2,3,4,1")
+    out << row(["Class", "Own fields", "Constructor", "Classes served"]) << "\n"
     owners.each do |o|
       users = classes.count { |k| node?(k) && (field_owner(k) == o || constructor_owner(k) == o) }
       ctor = constructor_owner(o) == o ? code(signature(o)) : "inherited"
-      out << "| #{code(short(o))} | #{list(own_fields(o))} | #{esc(ctor)} | #{users}\n"
+      out << row([code(short(o)), list(own_fields(o)), ctor, users])
     end
     out << "|===\n"
   end
@@ -317,16 +330,16 @@ module CoreInventory
     [code(short(klass)), FAMILY_TITLES.fetch(family(klass)),
      code(klass.superclass.name.delete_prefix("Plurimath::Math::")),
      owner ? code(short(owner)) : "-", list(own_fields(klass)),
-     esc(constructor_text(klass)), list(own_methods(klass)),
+     constructor_text(klass), list(own_methods(klass)),
      list(missing_writers(klass)), mark(klass)]
   end
 
   def classes_region
     rows = classes.reject { |k| symbol_leaf?(k) }
-    out = +"[cols=\"3,2,2,2,2,3,5,2,1\",options=\"header\"]\n|===\n"
-    out << "| Class | Family | Superclass | Field owner | Own fields | Constructor | " \
-           "Own public methods | Writers not defined | Mark\n\n"
-    rows.each { |k| out << "| #{class_row(k).join(' | ')}\n" }
+    out = +table_start("3,2,2,2,2,3,5,2,1")
+    out << row(["Class", "Family", "Superclass", "Field owner", "Own fields", "Constructor",
+                "Own public methods", "Writers not defined", "Mark"]) << "\n"
+    rows.each { |k| out << row(class_row(k)) }
     out << "|===\n"
   end
 
@@ -354,11 +367,11 @@ module CoreInventory
   end
 
   def parser_only_region
-    out = +"[cols=\"2,3,2\",options=\"header\"]\n|===\n"
-    out << "| Method | Defined on | Called only from\n\n"
+    out = +table_start("2,3,2")
+    out << row(["Method", "Defined on", "Called only from"]) << "\n"
     rows = parser_only_methods
     rows.each do |name, owners, layers|
-      out << "| #{code(name)} | #{list(owners)} | #{layers.map { |l| "`lib/plurimath/#{l}/`" }.join(', ')}\n"
+      out << row([code(name), list(owners), layers.map { |l| "`lib/plurimath/#{l}/`" }.join(", ")])
     end
     out << "|===\n"
     c = input_table_counts
