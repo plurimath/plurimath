@@ -1,0 +1,125 @@
+name: performance
+
+# Measurement only: nothing here gates a merge yet. See
+# docs/performance-contract.adoc for what each job records and the targets.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "lib/**"
+      - "spec/**"
+      - "Gemfile"
+      - "plurimath.gemspec"
+      - "scripts/measure_require.rb"
+      - "scripts/check_suite_budget.rb"
+      - ".github/workflows/performance.yml"
+  workflow_dispatch:
+  workflow_run:
+    workflows: [rake]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: performance-${{ github.event_name }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  require-footprint:
+    if: github.event_name != 'workflow_run'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0.1"
+          bundler-cache: true
+      - name: Measure require "plurimath" (ox and oga engines)
+        run: |
+          mkdir -p tmp/performance
+          for engine in ox oga; do
+            bundle exec ruby scripts/measure_require.rb --samples 5 \
+              --engine "$engine" --output "tmp/performance/require-$engine.json"
+          done
+          ruby -rjson -e '
+            puts "### require \"plurimath\" (median of 5 cold processes)", ""
+            puts "| Engine | Wall ms | Features | Own lib files | Allocated | RSS KB | First use ms | First use files | Pending autoloads |"
+            puts "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"
+            Dir["tmp/performance/require-*.json"].sort.each do |f|
+              d = JSON.parse(File.read(f))
+              r, u, a = d["require"], d["first_use"], d["autoload"]
+              puts "| #{d["engine"]} | #{r["wall_ms"]} | #{r["loaded_features"]} | #{r["plurimath_lib_files"]} | #{r["allocated_objects"]} | #{r["rss_growth_kb"]} | #{u["wall_ms"]} | #{u["plurimath_lib_files"]} | #{a["pending_after_require"]} |"
+            end
+          ' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: performance-require
+          path: tmp/performance/
+          retention-days: 90
+
+  suite-timing:
+    # Full-suite wall time on one fixed runner: the proxy for the local-suite
+    # target. It runs the suite exactly as rake does; only the formatter
+    # differs, so the example list and engine loop are unchanged.
+    if: github.event_name != 'workflow_run'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0.1"
+          bundler-cache: true
+      - name: Run the full suite under the timing wrapper
+        run: |
+          mkdir -p tmp/performance
+          ruby scripts/check_suite_budget.rb suite --budget-seconds 600 \
+            --rspec-json tmp/performance/rspec.json \
+            --output tmp/performance/suite.json \
+            -- bundle exec rspec --format progress \
+               --format json --out tmp/performance/rspec.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-suite
+          path: tmp/performance/
+          retention-days: 90
+
+  ci-legs:
+    # Per-leg timings of the rake matrix. After each rake run on main it reads
+    # that run; on other events it reads the newest completed rake run on main.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0.1"
+      - name: Record rake leg timings
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          mkdir -p tmp/performance
+          if [ -n "$RUN_ID" ]; then
+            ruby scripts/check_suite_budget.rb ci --run-id "$RUN_ID" \
+              --budget-seconds 1800 --output tmp/performance/ci-legs.json
+          else
+            ruby scripts/check_suite_budget.rb ci --workflow rake.yml --branch main \
+              --budget-seconds 1800 --output tmp/performance/ci-legs.json
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: performance-ci-legs
+          path: tmp/performance/
+          retention-days: 90
