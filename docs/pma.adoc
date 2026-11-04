@@ -70,8 +70,8 @@ https://github.com/plurimath/plurimath/issues/541[#541]
 |proposed, partly open
 |amath#16 task 3, https://github.com/plurimath/plurimath/issues/524[#524]
 
-|Measured literal `+(v +/- u)+`
-|proposed, partly open
+|Measured literal `+(v +/- u)+`, a standard uncertainty
+|proposed
 |amath#16 task 3, #524 item 4
 
 |Shared exponent `+(3.85 +/- 0.23)e4+`
@@ -84,7 +84,7 @@ https://github.com/plurimath/amath/issues/13[amath#13]
 |amath#16 task 3, #524 item 2
 
 |Distribution tags `+~rect+`, `+~triang+`, `+~arcsine+`
-|proposed, partly open
+|proposed
 |amath#16 task 3, #524 item 3
 
 |Fenced `±` shorthand such as `+(10.3 ± 0.2)+`
@@ -125,6 +125,11 @@ These points are decided for this specification:
 * Version 1 has no fenced `±` shorthand. `+(v +/- u)+`, with `{plus}/-` as one
   terminal, is the only spelling of a measured literal.
 * The difference-quantity constructor is named `diff`.
+* `+(v +/- u)+` is a standard uncertainty, the same as `ustd(v, u)`
+  (<<measured-literals>>).
+* A distribution tag is a structured `distribution` field of the
+  uncertainty, written inside the bracket after the uncertainty, from the
+  closed set `+~rect+`, `+~triang+`, `+~arcsine+` (<<distribution-tags>>).
 * This specification is this file, `docs/pma.adoc` in Plurimath.
 
 === Relation to dialect L
@@ -342,7 +347,7 @@ unit conversion applies the conversion factor and never the offset (#524,
 "Unit scoping"; https://github.com/unitsml/unitsml-ruby/issues/92[unitsml-ruby#92]).
 pma only records the mark. In version 1 `q` is a measured value with its
 attached unit; whether it may also be a plain number with a unit, such as
-`+diff(5 unit(K))+`, waits on <<open-decisions>>, items 9 and 11.
+`+diff(5 unit(K))+`, waits on <<open-decisions>>, items 7 and 9.
 
 [cols="2,3"]
 |===
@@ -379,25 +384,31 @@ Numeric checks that need the whole result, such as `k > 0`, `0 < p < 1` or
 `lo < hi`, are not grammar rules. They are made when the `Uncertainty` node
 is built (<<errors>>).
 
+[[measured-literals]]
 === Measured literals
 
 [source]
 ----
-measured_literal = "(" pma_value plus_minus pma_number ")"
+measured_literal = "(" pma_value plus_minus pma_number [distribution_tag] ")"
 ----
 
 `+(v +/- u)+` is a value and its uncertainty in one bracket. `{plus}/-` is one
 terminal of three characters. It is the only plus-minus spelling of a
 measured literal in version 1: `{plus}-`, `pm`, `\pm` and a literal `±` do not
-form one. Which uncertainty category this literal stands for is open (see
-<<open-decisions>>, item 2); the grammar and the examples here hold whatever
-is decided.
+form one.
+
+A measured literal is a standard uncertainty: `+(v +/- u)+` means exactly
+`ustd(v, u)`, with `u` the standard uncertainty. This is the reading of the
+form that amath#13 cites, `+(3.85 +/- 0.23)e4+` from the Python
+`uncertainties` package, where the number after `{plus}/-` is the standard
+deviation. An expanded uncertainty or a coverage interval is written with
+its constructor, `uexp` or `ucov`, which also states `k` or `p`.
 
 [cols="2,3"]
 |===
 |Accepted |Notes
 
-|`+(10.3 +/- 0.2)+` |value `10.3`, magnitude `0.2`
+|`+(10.3 +/- 0.2)+` |standard, value `10.3`, standard uncertainty `0.2`
 |`+(-1.230 +/- 0.004)+` |a negative value
 |`+( 10.3 +/- 0.2 )+` |same as the first row
 |===
@@ -423,7 +434,7 @@ no input that version 1 accepts would change its meaning.
 
 [source]
 ----
-measured_literal =/ "(" pma_value plus_minus pma_number ")" shared_exponent
+measured_literal =/ "(" pma_value plus_minus pma_number [distribution_tag] ")" shared_exponent
 ----
 
 An `e` and a signed or unsigned integer directly after the closing bracket
@@ -457,13 +468,13 @@ characters is refused.
 
 [source]
 ----
-measured_literal =/ "(" pma_value plus_minus pma_number "%" ")"
+measured_literal =/ "(" pma_value plus_minus pma_number "%" [distribution_tag] ")"
 ----
 
 `+(v +/- p%)+` gives the uncertainty as a percentage of the value. The node
 stores an absolute magnitude, `v * p / 100`, computed exactly on the decimal
 text (#524 item 2). How many digits that magnitude keeps, and whether the
-relative spelling is kept for output, are open (<<open-decisions>>, item 6).
+relative spelling is kept for output, are open (<<open-decisions>>, item 4).
 
 [cols="2,3"]
 |===
@@ -482,37 +493,61 @@ relative spelling is kept for output, are open (<<open-decisions>>, item 6).
 |`+(10.3% +/- 2)+` |only the uncertainty may be relative
 |===
 
+[[distribution-tags]]
 === Distribution tags
 
 [source]
 ----
 distribution_tag  = "~" distribution_name
-distribution_name = "rect" / "triang" / "arcsine"    ; closed set, members beyond these open
+distribution_name = "rect" / "triang" / "arcsine"
 ----
 
 A distribution tag records the probability distribution stated for a Type B
 input as structured data (#524 item 3). It is metadata: it is never inferred
 from how the result is written, and pma derives nothing from it. No
 coverage factor, probability or magnitude is computed from a tag (JCGM 100
-§6.3.2). The names form a closed set taken from JCGM 100 and JCGM 101; an
-unknown name is an error. `+~arcsine+` replaces the earlier `+~U+`, and Type
-A and Type B are provenance, not distributions, so they are not tags.
+§6.3.2). Type A and Type B are provenance, not distributions, so they are
+not tags.
 
-amath#16 lists `+~rect|~triang|~arcsine|...+` and does not say where the tag
-stands in a measured value, or which further names belong to the set. Both
-are open (<<open-decisions>>, item 5). Until they are decided there are no
-normative accepted examples; amath#16 cannot be accepted without that
-decision.
+The tag is written inside the bracket of a measured literal, after the
+uncertainty and before the closing `)`: `+(10.3 +/- 0.2 ~rect)+`. It
+describes the uncertainty, and the position after the bracket stays free
+for a shared exponent and a trailing `+unit(...)+`. Whitespace may stand
+between the uncertainty and the tag, not inside the tag.
+
+The names form a closed set taken from JCGM 100 and JCGM 101. In version 1
+it is `+rect+` (rectangular), `+triang+` (triangular) and `+arcsine+`
+(U-shaped). Every other name is refused, so adding a name later is
+non-breaking. `+~arcsine+` replaces the earlier `+~U+`, which is refused.
+
+The tag is stored in the `distribution` field of the uncertainty, as the
+name without `~` (<<mapping>>).
 
 [cols="2,3"]
 |===
-|Refused in every placement |Why
+|Accepted |Meaning
 
-|`+~U+` |renamed to `+~arcsine+`
-|`+~typeB+` |Type A and Type B are not distributions
-|`+~ rect+` |whitespace inside the tag
-|`+~gauss+` |not in the closed set (unless the set is extended)
+|`+(10.3 +/- 0.2 ~rect)+` |standard uncertainty `0.2`, rectangular distribution
+|`+(10.3 +/- 0.2 ~triang) unit(cm)+` |triangular, with a unit
+|`+(3.85 +/- 0.23 ~arcsine)e4+` |arcsine, with a shared exponent
+|`+(10.3 +/- 2% ~rect)+` |a relative uncertainty with a tag
 |===
+
+[cols="2,3"]
+|===
+|Refused |Why
+
+|`+(10.3 +/- 0.2 ~U)+` |renamed to `+~arcsine+`
+|`+(10.3 +/- 0.2 ~typeB)+` |Type A and Type B are not distributions
+|`+(10.3 +/- 0.2 ~ rect)+` |whitespace inside the tag
+|`+(10.3 +/- 0.2 ~gauss)+` |not in the closed set of version 1
+|`+(10.3 +/- 0.2) ~rect+` |the tag stands inside the bracket
+|`+(10.3 ~rect +/- 0.2)+` |the tag follows the uncertainty
+|`+ustd(1.2, 0.1 ~rect)+` |no tag in a constructor in version 1
+|===
+
+Whether a constructor may carry a tag is not stated in amath#16 or #524.
+Version 1 refuses it, so allowing it later is non-breaking.
 
 [[attachment]]
 === Unit attachment
@@ -548,7 +583,7 @@ order of JCGM 100 §7.2.4 the unit follows the bracketed result.
 amath#16 names the attachment but not its targets. A measured literal and
 the three uncertainty constructors are targets; whether a plain number such
 as `+9.81 unit(m/s^2)+`, or any other term, may carry a unit is open
-(<<open-decisions>>, item 9).
+(<<open-decisions>>, item 7).
 
 [[quantity-assertion]]
 === Quantity assertion
@@ -589,7 +624,7 @@ pma itself.
 
 The asciiunits grammar has no `::` today, and the exact form of
 `quantity_ref` (a unitsdb identifier or a name) is not stated in amath#16.
-Both are open (<<open-decisions>>, item 10).
+Both are open (<<open-decisions>>, item 8).
 
 === Concise input is refused
 
@@ -608,7 +643,7 @@ example into MathML, from a node whose `notation` is `:concise`.
 |===
 
 Whether `+ustd(1.230(4))+`, which dialect L accepts, is also refused in pma
-is open (<<open-decisions>>, item 3). Version 1 refuses it.
+is open (<<open-decisions>>, item 2). Version 1 refuses it.
 
 === No conversion syntax
 
@@ -738,8 +773,9 @@ states what it must guarantee.
 == Mapping to the Uncertainty model
 
 pma builds the same `Plurimath::Math::Function::Uncertainty` node as every
-other reader (link:uncertainty.adoc#model[the model]); it adds no category,
-field or notation. amath's typed model holds the source texts, and the
+other reader (link:uncertainty.adoc#model[the model]). It adds no category
+or notation. It adds one field, `distribution`, which holds a distribution
+tag (#524 item 3); every other reader leaves it empty. amath's typed model holds the source texts, and the
 Plurimath mapper builds the node from them. The field names of the pma typed
 model come from the pma grammar's captures and are not fixed here.
 
@@ -760,7 +796,8 @@ model come from the pma grammar's captures and are not fixed here.
 `symmetric` gives `:probabilistically_symmetric`
 
 |`+(v +/- u)+`
-|`value: v`, `magnitude: u`; the category is open (<<open-decisions>>, item 2)
+|`category: :standard`, `value: v`, `magnitude: u`, `notation: :absolute`,
+the same node as `ustd(v, u)`
 
 |shared exponent `e n`
 |the value and the magnitude shifted by `n` places on their decimal text, as
@@ -768,10 +805,10 @@ for the dialect L shared exponent; the exponent itself is not stored
 
 |`+(v +/- p%)+`
 |`value: v`, `magnitude: v * p / 100` as exact decimal text; digits kept and
-output spelling open (item 6)
+output spelling open (item 4)
 
 |distribution tag
-|no field exists; #524 item 3 proposes a structured field (item 5)
+|`distribution:` the name without `~`: `rect`, `triang` or `arcsine`
 
 |trailing `+unit(...)+`
 |`unit:` a `Math::Function::Unitsml` holding the unit expression text, as the
@@ -781,10 +818,10 @@ dialect L `+"unitsml(...)"+` argument gives today
 |a `Math::Function::Unitsml`
 
 |`::` assertion
-|no field exists (item 10)
+|no field exists (item 8)
 
 |`diff(q)`
-|no node exists (item 11)
+|no node exists (item 9)
 |===
 
 Numbers keep their exact text throughout, so `+1.230+` stays `+1.230+`.
@@ -798,8 +835,7 @@ page] applies unchanged.
 
 These are not decided. Each links the issue where the decision belongs.
 Where a form is open, version 1 refuses it, so a later decision to accept it
-does not break any input that version 1 accepts. Items 2 and 5 block
-amath#16, because forms that amath#16 requires depend on them.
+does not break any input that version 1 accepts.
 
 . *Fenced `±` shorthand.* Version 1 has none: `+(v +/- u)+` is the only
   measured-literal spelling, and `+(10.3 ± 0.2)+` is refused. If the
@@ -807,11 +843,6 @@ amath#16, because forms that amath#16 requires depend on them.
   an explicit default category and to bind only inside a bracket; `{plus}-` and
   `pm` stay refused. Adding it is non-breaking because version 1 refuses the
   shape (https://github.com/plurimath/plurimath/issues/524[#524] item 4).
-. *Category of `+(v +/- u)+`.* amath#16 requires the literal but does not say
-  whether it is a standard or an expanded uncertainty. The model cannot hold
-  an expanded result without `k`, and JCGM 100 §7.2.2 (note) advises against
-  writing a standard uncertainty with `±`. #524 item 4 asks for "an explicit
-  default category" (#524, https://github.com/plurimath/amath/issues/16[amath#16]).
 . *Concise form scope.* `+10.3(2)+` is refused in pma. Whether the concise
   argument of a constructor, `+ustd(1.230(4))+`, is also refused, as "no
   concise input" suggests, is not stated. Version 1 refuses it (#524 item 5,
@@ -820,10 +851,6 @@ amath#16, because forms that amath#16 requires depend on them.
   disagrees with the marker, the readers trust the marker. Raising an error
   instead is the alternative. This is dialect-independent and pma does not
   change it (#524).
-. *Distribution tags.* Where a tag stands in a measured literal or a
-  constructor, which names complete the closed set beyond `+~rect+`,
-  `+~triang+` and `+~arcsine+`, and which model field holds the tag (#524
-  item 3, amath#16).
 . *Relative uncertainty.* #524 item 2 stores the magnitude "with the value's
   last place as reference" without saying whether `v * p / 100` is kept
   exact (`0.206` for 2 % of `10.3`) or cut to the value's places, while the
