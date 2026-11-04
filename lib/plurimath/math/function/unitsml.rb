@@ -30,8 +30,12 @@ module Plurimath
           formula(options).to_latex(options: options)
         end
 
+        # The unicodemath_unit option makes a multi-letter unit symbol read
+        # back as one upright run (see FontStyle::Normal#to_unicodemath).
         def to_unicodemath(options:)
-          formula(options).to_unicodemath(options: options)
+          formula(options).to_unicodemath(
+            options: options.merge(unicodemath_unit: true),
+          )
         end
 
         def to_html(options:)

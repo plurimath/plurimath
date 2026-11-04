@@ -121,4 +121,84 @@ RSpec.describe Plurimath::UnicodeMath do
       end
     end
   end
+
+  # A unit of more than one character is written as quoted upright text,
+  # \mup"kg", because UnicodeMath reads \mupkg as an upright k followed by g.
+  # One-letter units keep the \mupg form, which already reads back whole.
+  context "with a unit written to UnicodeMath and read back" do
+    sources = %i[from_asciimath from_mathml]
+    cases = {
+      "g" => ["\\mupg", %w[g], 'ustd(1.2, 0.1, "unitsml(g)")'],
+      "m" => ["\\mupm", %w[m], 'ustd(1.2, 0.1, "unitsml(m)")'],
+      "kg" => ['\\mup"kg"', %w[kg], 'ustd(1.2, 0.1, "unitsml(kg)")'],
+      "mol" => ['\\mup"mol"', %w[mol], 'ustd(1.2, 0.1, "unitsml(mol)")'],
+      "um" => ['\\mup"µm"', %w[µm], 'ustd(1.2, 0.1) rm("&#xb5;m")'],
+      "m*s^-1" => ["\\mupm ⋅ \\mups^(− 1)", %w[m s], 'ustd(1.2, 0.1, "unitsml(m*s^-1)")'],
+      "kg*m^2" => ['\\mup"kg" ⋅ \\mupm^(2)', %w[kg m], 'ustd(1.2, 0.1, "unitsml(kg*m^2)")'],
+    }
+
+    # The text of each upright run in a unit, in order.
+    def upright_runs(node)
+      case node
+      when math::Function::FontStyle::Normal
+        inner = node.parameter_one
+        text = inner.is_a?(math::Function::Text) ? inner.parameter_one : inner.value
+        [Plurimath::Utility.html_entity_to_unicode(text)]
+      when math::Formula then node.value.flat_map { |part| upright_runs(part) }
+      when math::Function::Power then upright_runs(node.parameter_one)
+      else []
+      end
+    end
+
+    def from_asciimath(unit)
+      math.parse("ustd(1.2, 0.1, \"unitsml(#{unit})\")", :asciimath)
+    end
+
+    def from_mathml(unit)
+      math.parse(from_asciimath(unit).to_mathml, :mathml)
+    end
+
+    cases.each do |unit, (written, runs, asciimath)|
+      sources.each do |source|
+        context "with #{unit} #{source.to_s.tr('_', ' ')}" do
+          let(:formula) { public_send(source, unit) }
+          let(:output) { formula.to_unicodemath }
+          let(:read_back) { math.parse(output, :unicode) }
+
+          it "writes the unit as #{written}" do
+            marker = "ⓘ(\"standard-uncertainty(1.2,0.1,$unit)\"1.2(0.1)ⓐ(unit "
+            expect(output).to eq("#{marker}#{written}))")
+          end
+
+          it "reads the unit back as the same upright runs" do
+            node = read_back.value.first
+
+            expect(read_back.value.length).to eq(1)
+            expect(node).to be_a(math::Function::Uncertainty)
+            expect(upright_runs(node.unit)).to eq(runs)
+          end
+
+          it "writes the same UnicodeMath and AsciiMath after reading it back" do
+            expect(read_back.to_unicodemath).to eq(output)
+            expect(read_back.to_asciimath).to eq(asciimath)
+          end
+        end
+      end
+    end
+
+    it "writes a UnitsML unit outside an uncertainty in the same way" do
+      expect(math.parse('1 "unitsml(kg)"', :asciimath).to_unicodemath)
+        .to eq('1 \\mup"kg"')
+      expect(math.parse('1 "unitsml(g)"', :asciimath).to_unicodemath)
+        .to eq("1 \\mupg")
+    end
+
+    it "keeps a multi-letter upright symbol outside a unit unchanged" do
+      formula = math::Formula.new(
+        [math::Function::FontStyle::Normal.new(math::Symbols::Symbol.new("kg"))],
+      )
+
+      expect(formula.to_unicodemath).to eq("\\mupkg")
+    end
+  end
 end
