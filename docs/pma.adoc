@@ -1,0 +1,912 @@
+= pma: the strict ASCII dialect
+:toc:
+
+This page specifies pma ("plurimath ascii", dialect P): a strict ASCII input
+language for mathematics that has reserved constructors for units and
+measurement uncertainty, measured literals and quantity assertions. It is
+part of the specification set tracked in
+https://github.com/plurimath/plurimath/issues/525[#525].
+
+This document is the `02-pma.md` that
+https://github.com/plurimath/amath/issues/16[amath#16] refers to. Its
+section <<section-2>> is the "§2" of that issue: amath#16 is accepted when
+pma parses every form listed there and refuses malformed input with the
+errors in <<errors>>.
+
+Nothing on this page is implemented yet. The grammar excerpts are
+*normative-to-be*: they state the contract that the amath pma grammar must
+meet. They are written by hand for now. Once amath ships
+`grammars/pma.parg` and its checksummed artifact, they are replaced by
+regions generated from that grammar and checked against its recorded
+checksums, as the excerpts in link:asciimath.adoc[AsciiMath in Plurimath]
+already are (see <<generated>>). Where this page and the shipped grammar
+disagree after that point, the generated excerpt wins and the prose is
+corrected.
+
+The measurement model that pma constructs, and how it is carried in the
+other formats, is in link:uncertainty.adoc[Measurement uncertainty].
+
+[[status]]
+== Status, scope and relation to dialect L
+
+=== Status
+
+Each form is either *implemented* (merged, and released or pinned by
+Plurimath), *proposed* (described in an open issue, not built), or *open*
+(the issue names the form but leaves part of its meaning undecided; see
+<<open-decisions>>).
+
+[cols="3,1,3"]
+|===
+|Form |Status |Where
+
+|Registry v2 with dialect tags and primitive bindings
+|proposed
+|https://github.com/plurimath/amath/issues/16[amath#16] task 1
+
+|Reserved words and the build-time collision check
+|proposed
+|amath#16 task 2
+
+|`Amath.parse(input, dialect: :pma)` and the Plurimath `:pma` input type
+|proposed
+|amath#16; selection decided in
+https://github.com/plurimath/plurimath/issues/541[#541]
+
+|Constructors `ustd`, `uexp`, `ucov`
+|proposed
+|amath#16 task 3; the same call forms are implemented in dialect L
+(https://github.com/plurimath/plurimath/pull/499[#499])
+
+|Constructor `+unit(...)+` and trailing unit attachment
+|proposed
+|amath#16 task 3
+
+|Quantity assertion `+unit(J::energy)+`
+|proposed, partly open
+|amath#16 task 3, https://github.com/unitsml/unitsml-ruby/issues/136[unitsml-ruby#136]
+
+|Constructor `diff(q)` for difference quantities
+|proposed, partly open
+|amath#16 task 3, https://github.com/plurimath/plurimath/issues/524[#524]
+
+|Measured literal `+(v +/- u)+`
+|proposed, partly open
+|amath#16 task 3, #524 item 4
+
+|Shared exponent `+(3.85 +/- 0.23)e4+`
+|proposed
+|amath#16 task 3, #524 item 1,
+https://github.com/plurimath/amath/issues/13[amath#13]
+
+|Relative uncertainty `+(10.3 +/- 2%)+`
+|proposed, partly open
+|amath#16 task 3, #524 item 2
+
+|Distribution tags `+~rect+`, `+~triang+`, `+~arcsine+`
+|proposed, partly open
+|amath#16 task 3, #524 item 3
+
+|Fenced `±` shorthand such as `+(10.3 ± 0.2)+`
+|not in version 1
+|#524 item 4 (see <<open-decisions>>)
+
+|Concise input `+10.3(2)+`
+|refused
+|amath#16 task 3, #524 item 5
+
+|Conversion syntax
+|not part of pma
+|conversion is an evaluator operation,
+https://github.com/plurimath/plurimath/issues/523[#523]
+
+|The pma corpus
+|proposed, location open
+|amath#16 task 4, see <<conformance>>
+|===
+
+=== Scope
+
+pma is a front end. It reads text into amath's typed model, which Plurimath
+maps to its shared formula tree. The `Uncertainty` node and the marker
+machinery for MathML, OMML and UnicodeMath are dialect-independent and are
+not changed by pma (amath#16, notes). pma adds no arithmetic, no
+evaluation, no unit conversion and no rounding: like the rest of Plurimath
+it records a reported result (see link:uncertainty.adoc[the
+uncertainty page]).
+
+These points are decided for this specification:
+
+* pma lives in amath, with the same registry, artifact pipeline and corpus
+  tooling as dialect L. amath#16 left repository placement to the
+  maintainers; this settles it.
+* pma is selected with an option on the single `Amath.parse`, not a second
+  parser API (<<selection>>).
+* Version 1 has no fenced `±` shorthand. `+(v +/- u)+`, with `{plus}/-` as one
+  terminal, is the only spelling of a measured literal.
+* The difference-quantity constructor is named `diff`.
+* This specification is this file, `docs/pma.adoc` in Plurimath.
+
+=== Relation to dialect L
+
+Dialect L is the AsciiMath that Plurimath reads today, specified in
+link:asciimath.adoc[AsciiMath in Plurimath]. It is the asciimath.org
+compatibility surface and does not grow new features
+(https://github.com/plurimath/amath/issues/17[amath#17]). Its bareword
+`ustd`, `uexp` and `ucov` calls are an unreleased extension that amath#17
+re-homes as pma constructors.
+
+Dialect L keeps the bareword calls until amath#17 lands. amath#17 is
+sequenced after amath#16 ships, so no ASCII front end loses uncertainty input
+in between. Until then both dialects read the calls; nothing on the dialect L
+page changes because of this page. After amath#17, rendering an uncertainty
+into dialect L emits the quoted compatibility form, such as
+`+"ustd(10.3, 0.2)"+`, and `±` and `{plus}-` in dialect L stay the plain
+plus-minus symbol with no meaning attached.
+
+The main differences, for readers who know dialect L:
+
+[cols="2,2,2"]
+|===
+|Input |Dialect L |pma
+
+|A malformed call such as `+uexp(10.0, 0.3)+`
+|read letter by letter, not an error
+|error
+
+|`+(10.3 +/- 0.2)+`
+|ordinary symbols
+|a measured literal
+
+|A unit on an uncertainty
+|last argument `+"unitsml(g)"+`, quoted
+|trailing `+unit(g)+`, unquoted
+
+|`+10.3(2)+` and `+ustd(1.230(4))+`
+|a number followed by a bracket; a concise call
+|error; see <<open-decisions>> for the call form
+
+|Whitespace between a reserved word and its bracket
+|changes the reading to letters
+|error
+|===
+
+[[selection]]
+== Selection API
+
+pma is selected by an option of the one public `Amath.parse`. The option is
+added beside the existing `decimal:` and `engine:` options of the
+link:https://github.com/plurimath/amath/blob/main/docs/parser-contract.adoc[amath
+parser contract]:
+
+[source,ruby]
+----
+Amath.parse(input, dialect: :legacy, decimal: ".", engine: :auto)
+Amath.parse(input, dialect: :pma)
+
+Plurimath::Math.parse(text, :asciimath)   # dialect L, unchanged
+Plurimath::Math.parse(text, :pma)         # dialect P
+----
+
+`dialect`:: `:legacy` (the default) or `:pma`. Any other value raises
+`ArgumentError` before an artifact is loaded, as an unknown `decimal:` or
+`engine:` does. Existing callers, which pass no `dialect:`, keep dialect L.
+
+Each dialect has its own checksummed grammar artifact. `dialect: :pma`
+loads only the pma artifact, and a missing or failing pma artifact raises
+`Amath::ArtifactError`. amath never parses pma input with the dialect L
+grammar, or the reverse, and never retries a refused input with the other
+dialect.
+
+Everything else in the parser contract applies to both dialects unchanged:
+the input type and encoding rules, engine selection and `Amath.last_engine`,
+deep-nesting behaviour, full consumption, and the `Amath::ParseError`
+positions (`byte_offset`, `char_offset`, `input`). This keeps the single
+`parse` of the
+link:https://github.com/plurimath/amath/blob/main/docs/stage-contract.adoc[shared
+stage contract]: the dialect is an option, not a second entry point.
+
+In Plurimath, `:pma` is a new input type next to `:asciimath`.
+`Plurimath::Math.parse(text, :pma)` parses with `dialect: :pma` and maps the
+typed model to the formula tree. `:asciimath` keeps meaning dialect L.
+
+Not decided yet, and listed in <<open-decisions>>: whether `decimal:` means
+anything for pma, whether pma results use the same `Amath::Model::Document`
+class as dialect L, and whether Plurimath also gains a pma writer.
+
+[[lexical]]
+== Lexical rules
+
+=== Whitespace
+
+Whitespace is one character of space, tab, line feed, carriage return,
+vertical tab or form feed, the same set as dialect L. Between two tokens,
+any run of whitespace, including none, may stand, and it does not change
+the result: `+(10.3 +/- 0.2) unit(cm)+` and `++(10.3+/-0.2)unit(cm)++` read
+the same.
+
+Whitespace is never load-bearing. Adding or removing whitespace either gives
+the same reading or an error, never a different successful reading. Where
+dialect L lets whitespace switch a call to its letter reading, pma refuses
+the input instead.
+
+These are single tokens, and whitespace inside them is an error:
+
+* a number, such as `+1.230+`;
+* the plus-minus terminal `{plus}/-`;
+* a reserved word and the `(` that follows it: `+ustd (1.2, 0.1)+` is an
+  error;
+* a measured literal's closing `)` and its shared exponent: `+(3.85 +/- 0.23)e4+`
+  is a shared exponent, and `+(3.85 +/- 0.23) e4+` is an error;
+* a relative magnitude and its `%`: `+2%+`;
+* a distribution tag, `~` and its name: `+~rect+`.
+
+For a reserved word and its bracket, and for the shared exponent, dialect L
+has the same adjacency rule but reads the spaced form as letters; pma refuses
+it. A later decision to accept a spaced form can be made without breaking
+any input that version 1 accepts.
+
+=== Numbers
+
+[source]
+----
+pma_digit   = %x30-39
+pma_number  = 1*pma_digit ["." 1*pma_digit]
+pma_value   = ["-"] pma_number
+----
+
+A number in a measured literal or a constructor is digits with an optional
+full stop and more digits. Only a value (`pma_value`) may carry a minus sign;
+magnitudes, endpoints, coverage factors, probabilities and percentages may
+not. A number has no exponent of its own: `+1.2e3+` is not a number, and the
+only exponent is the shared exponent of a measured literal. The text is kept
+exactly as written, so `+1.230+` stays `+1.230+` and no floating-point value
+is made.
+
+The decimal marker inside measured literals and constructors is always the
+full stop, as in the dialect L calls, because the model stores plain decimal
+text. Whether the `decimal:` option selects a marker for any other number
+in pma is open.
+
+=== Reserved words
+
+[source]
+----
+reserved_word = "unit" / "ustd" / "uexp" / "ucov" / "diff" / "quantity"
+----
+
+The six reserved words are terminals of the pma grammar, not entries of the
+symbol registry. Each may appear only as the start of its own production,
+immediately followed by `(`. Anywhere else it is an error: it is never read as
+letters, as an identifier or as a unit name. `quantity` is reserved without a
+production in version 1, so every use of it is an error (see
+<<open-decisions>>).
+
+Registry entries and unit terminals are matched longest first, so a
+reserved word is never split into or merged with a neighbouring spelling.
+
+The build fails if any reserved word is also a spelling in the registry, or
+a unit symbol or unit name from unitsdb (<<registry>>). amath#16 records that
+this intersection is empty today; CI keeps it empty.
+
+[[section-2]]
+== Productions (amath#16 §2)
+
+This section lists every form that amath#16 requires pma to parse. Each
+production has its normative-to-be grammar excerpt, accepted examples, and
+refused examples. The excerpts leave out inter-token whitespace, which the
+<<lexical>> govern, and the terminals of the asciiunits grammar, which pma
+uses and does not redefine.
+
+[source]
+----
+measured        = measured_literal / ustd_ctor / uexp_ctor / ucov_ctor
+attached        = measured unit_ctor
+plus_minus      = "+/-"
+shared_exponent = "e" ["+" / "-"] 1*pma_digit
+interval_kind   = "shortest" / "symmetric"
+----
+
+=== Constructors
+
+[source]
+----
+ustd_ctor = "ustd" "(" pma_value "," pma_number ")"
+uexp_ctor = "uexp" "(" pma_value "," pma_number "," pma_number ["," pma_number] ")"
+ucov_ctor = "ucov" "(" pma_value "," pma_number "," pma_number "," pma_number ["," interval_kind] ")"
+unit_ctor = "unit" "(" unit_expression ")"
+diff_ctor = "diff" "(" quantity_operand ")"
+quantity_operand = attached
+----
+
+`ustd(v, u)`:: a standard uncertainty: value `v` and standard uncertainty
+`u`.
+
+`uexp(v, U, k)`, `uexp(v, U, k, p)`:: an expanded uncertainty: value `v`,
+expanded uncertainty `U`, coverage factor `k`, and optionally the coverage
+probability `p`.
+
+`ucov(v, lo, hi, p)`, `ucov(v, lo, hi, p, kind)`:: a coverage interval: value
+`v`, the interval endpoints `lo` and `hi`, coverage probability `p`, and
+optionally which interval was chosen, `shortest` or `symmetric` (the
+probabilistically symmetric interval). The spellings are those of dialect L.
+
+`+unit(...)+`:: a unit. Its content is an asciiunits unit expression, written
+unquoted, parsed by the asciiunits artifact grammar
+(https://github.com/unitsml/asciiunits[unitsml/asciiunits]), with the
+optional quantity assertion of <<quantity-assertion>>. On its own it is a
+unit term; after a measured value it is that value's unit (<<attachment>>).
+
+`diff(q)`:: marks the quantity `q` as a difference quantity, so that a later
+unit conversion applies the conversion factor and never the offset (#524,
+"Unit scoping"; https://github.com/unitsml/unitsml-ruby/issues/92[unitsml-ruby#92]).
+pma only records the mark. In version 1 `q` is a measured value with its
+attached unit; whether it may also be a plain number with a unit, such as
+`+diff(5 unit(K))+`, waits on <<open-decisions>>, items 9 and 11.
+
+[cols="2,3"]
+|===
+|Accepted |Meaning
+
+|`+ustd(1.230, 0.004)+` |standard, `y = 1.230`, `u = 0.004`
+|`+ustd(-1.230, 0.004)+` |standard with a negative value
+|`+uexp(10.0, 0.3, 2)+` |expanded, `k = 2`
+|`+uexp(10.0, 0.3, 2, 0.95)+` |expanded, `k = 2`, `p = 0.95`
+|`+ucov(1.024, 0.983, 1.088, 0.95)+` |coverage interval
+|`+ucov(1.024, 0.983, 1.088, 0.95, shortest)+` |the shortest coverage interval
+|`+unit(m/s^2)+` |the unit metre per second squared
+|`+unit(kg*m^2)+` |a product unit
+|`+diff((5.0 +/- 0.1) unit(K))+` |a difference of 5.0 kelvin, with its uncertainty
+|`+diff((20.0 +/- 0.2) unit(degC))+` |a temperature difference, not a temperature
+|===
+
+[cols="2,3"]
+|===
+|Refused |Why
+
+|`+uexp(10.0, 0.3)+` |`uexp` needs `k`; dialect L reads this as letters
+|`+ustd(1.2, -0.1)+` |a magnitude has no sign
+|`+ustd(1.2e3, 0.1)+` |a number has no exponent of its own
+|`+ustd (1.2, 0.1)+` |whitespace between a reserved word and its bracket
+|`+ucov(1.024, 0.983, 1.088, 0.95, probabilistically-symmetric)+` |not an interval kind spelling in version 1
+|`+unit("m")+` |the unit expression is unquoted
+|`+unit(furlongs)+` |not an asciiunits unit expression
+|`+ustd(1.230, 0.004, "unitsml(g)")+` |the quoted unit argument is dialect L only
+|`+ustd+`, `+unit+`, `+quantity(x)+` |a reserved word outside its production
+|===
+
+Numeric checks that need the whole result, such as `k > 0`, `0 < p < 1` or
+`lo < hi`, are not grammar rules. They are made when the `Uncertainty` node
+is built (<<errors>>).
+
+=== Measured literals
+
+[source]
+----
+measured_literal = "(" pma_value plus_minus pma_number ")"
+----
+
+`+(v +/- u)+` is a value and its uncertainty in one bracket. `{plus}/-` is one
+terminal of three characters. It is the only plus-minus spelling of a
+measured literal in version 1: `{plus}-`, `pm`, `\pm` and a literal `±` do not
+form one. Which uncertainty category this literal stands for is open (see
+<<open-decisions>>, item 2); the grammar and the examples here hold whatever
+is decided.
+
+[cols="2,3"]
+|===
+|Accepted |Notes
+
+|`+(10.3 +/- 0.2)+` |value `10.3`, magnitude `0.2`
+|`+(-1.230 +/- 0.004)+` |a negative value
+|`+( 10.3 +/- 0.2 )+` |same as the first row
+|===
+
+[cols="2,3"]
+|===
+|Refused |Why
+
+|`+(10.3 +- 0.2)+` |`{plus}-` is refused: `3{plus}-1` reads as `3 + (-1)` too (#524 item 4)
+|`+(10.3 pm 0.2)+` |`pm` is the picometre (#524 item 4)
+|`+(10.3 ± 0.2)+` |no `±` shorthand in version 1 (see <<open-decisions>>, item 1)
+|`+(10.3 + / - 0.2)+` |`{plus}/-` has no internal whitespace
+|`+(10.3 +/- -0.2)+` |a magnitude has no sign
+|`+(x +/- 0.2)+` |both sides are numbers
+|`+10.3 +/- 0.2+` |a measured literal is always bracketed
+|===
+
+Refusing `+(10.3 ± 0.2)+` in version 1, rather than reading it as an
+ordinary plus-minus, is what makes adding the shorthand later non-breaking:
+no input that version 1 accepts would change its meaning.
+
+=== Shared exponent
+
+[source]
+----
+measured_literal =/ "(" pma_value plus_minus pma_number ")" shared_exponent
+----
+
+An `e` and a signed or unsigned integer directly after the closing bracket
+apply to the value and the uncertainty together, as an exact shift of the
+decimal point in their text (#524 item 1). The writer of the resulting node
+shows the shifted numbers.
+
+[cols="2,3"]
+|===
+|Accepted |Meaning
+
+|`+(3.85 +/- 0.23)e4+` |value `38500`, magnitude `2300`
+|`+(3.85 +/- 0.23)e+4+` |the same
+|`+(1.024 +/- 0.003)e-3+` |value `0.001024`, magnitude `0.000003`
+|===
+
+[cols="2,3"]
+|===
+|Refused |Why
+
+|`+(3.85 +/- 0.23) e4+` |whitespace before the exponent
+|`+(3.85 +/- 0.23)e+` |incomplete exponent
+|`+(3.85 +/- 0.23)e4.5+` |the exponent is an integer
+|`+(3.85 +/- 2%)e4+` |a shared exponent on a relative literal is not in version 1
+|===
+
+As in dialect L, a shift that would make a number longer than 1,000,000
+characters is refused.
+
+=== Relative uncertainty
+
+[source]
+----
+measured_literal =/ "(" pma_value plus_minus pma_number "%" ")"
+----
+
+`+(v +/- p%)+` gives the uncertainty as a percentage of the value. The node
+stores an absolute magnitude, `v * p / 100`, computed exactly on the decimal
+text (#524 item 2). How many digits that magnitude keeps, and whether the
+relative spelling is kept for output, are open (<<open-decisions>>, item 6).
+
+[cols="2,3"]
+|===
+|Accepted |Meaning
+
+|`+(10.3 +/- 2%)+` |value `10.3`, magnitude 2 % of `10.3`
+|`+(10.3 +/- 0.5%)+` |value `10.3`, magnitude 0.5 % of `10.3`
+|===
+
+[cols="2,3"]
+|===
+|Refused |Why
+
+|`+(10.3 +/- 2 %)+` |whitespace before `%`
+|`+(10.3 +/- -2%)+` |a percentage has no sign
+|`+(10.3% +/- 2)+` |only the uncertainty may be relative
+|===
+
+=== Distribution tags
+
+[source]
+----
+distribution_tag  = "~" distribution_name
+distribution_name = "rect" / "triang" / "arcsine"    ; closed set, members beyond these open
+----
+
+A distribution tag records the probability distribution stated for a Type B
+input as structured data (#524 item 3). It is metadata: it is never inferred
+from how the result is written, and pma derives nothing from it. No
+coverage factor, probability or magnitude is computed from a tag (JCGM 100
+§6.3.2). The names form a closed set taken from JCGM 100 and JCGM 101; an
+unknown name is an error. `+~arcsine+` replaces the earlier `+~U+`, and Type
+A and Type B are provenance, not distributions, so they are not tags.
+
+amath#16 lists `+~rect|~triang|~arcsine|...+` and does not say where the tag
+stands in a measured value, or which further names belong to the set. Both
+are open (<<open-decisions>>, item 5). Until they are decided there are no
+normative accepted examples; amath#16 cannot be accepted without that
+decision.
+
+[cols="2,3"]
+|===
+|Refused in every placement |Why
+
+|`+~U+` |renamed to `+~arcsine+`
+|`+~typeB+` |Type A and Type B are not distributions
+|`+~ rect+` |whitespace inside the tag
+|`+~gauss+` |not in the closed set (unless the set is extended)
+|===
+
+[[attachment]]
+=== Unit attachment
+
+[source]
+----
+attached = measured unit_ctor
+----
+
+A `+unit(...)+` directly after a measured value is the unit of that value. One
+unit applies to the value and its uncertainty (#524, "Unit scoping"). In the
+order of JCGM 100 §7.2.4 the unit follows the bracketed result.
+
+[cols="2,3"]
+|===
+|Accepted |Meaning
+
+|`+(10.3 +/- 0.2) unit(cm)+` |a measured literal in centimetres
+|`+(3.85 +/- 0.23)e4 unit(m)+` |the shifted literal in metres
+|`+(10.3 +/- 2%) unit(cm)+` |a relative literal in centimetres
+|`+ustd(1.230, 0.004) unit(g)+` |a standard uncertainty in grams
+|`+uexp(100.02147, 0.00079, 2) unit(g)+` |an expanded uncertainty in grams
+|===
+
+[cols="2,3"]
+|===
+|Refused |Why
+
+|`+(10.3 +/- 0.2) unit(cm) unit(m)+` |a value has one unit
+|`+ustd(1.230, 0.004, unit(g))+` |in version 1 a unit is attached after the value, not passed inside the call
+|===
+
+amath#16 names the attachment but not its targets. A measured literal and
+the three uncertainty constructors are targets; whether a plain number such
+as `+9.81 unit(m/s^2)+`, or any other term, may carry a unit is open
+(<<open-decisions>>, item 9).
+
+[[quantity-assertion]]
+=== Quantity assertion
+
+[source]
+----
+unit_expression = asciiunits_expression ["::" quantity_ref]
+----
+
+Inside `+unit(...)+`, `::` asserts which kind of quantity the unit expression
+measures, for example that a joule here measures energy and not work. The
+`::` has the lowest precedence in the unit expression and binds the whole of it:
+`+unit(N*m::torque)+` asserts that `N*m` as a whole measures torque. A unit
+expression has at most one `::`, at its top level. The assertion is
+recorded; the relations between quantity kinds that would check it, such as
+work being compatible with energy and energy not with torque, belong to
+https://github.com/unitsml/unitsml-ruby/issues/136[unitsml-ruby#136].
+Quantities and quantity kinds resolve from unitsdb and are never listed in
+pma itself.
+
+[cols="2,3"]
+|===
+|Accepted |Meaning
+
+|`+unit(J::energy)+` |the joule, asserted to measure energy
+|`+unit(N*m::torque)+` |the newton metre as a whole, asserted to measure torque
+|===
+
+[cols="2,3"]
+|===
+|Refused |Why
+
+|`+unit(J::)+` |no quantity named
+|`+unit(::energy)+` |no unit expression
+|`+unit(J::energy::work)+` |at most one assertion
+|`+unit((N::force)*m)+` |the assertion binds the whole unit expression only
+|===
+
+The asciiunits grammar has no `::` today, and the exact form of
+`quantity_ref` (a unitsdb identifier or a name) is not stated in amath#16.
+Both are open (<<open-decisions>>, item 10).
+
+=== Concise input is refused
+
+`+10.3(2)+`, the concise notation of JCGM 100 §7.2.2, is an output notation
+only. In an input language it collides with function application, so pma
+refuses it (#524 item 5). Plurimath still writes concise notation, for
+example into MathML, from a node whose `notation` is `:concise`.
+
+[cols="2,3"]
+|===
+|Refused |Why
+
+|`+10.3(2)+` |concise input
+|`+(10.3(2))+` |concise input
+|`+(680(41))e-3+` |concise input with a shared exponent
+|===
+
+Whether `+ustd(1.230(4))+`, which dialect L accepts, is also refused in pma
+is open (<<open-decisions>>, item 3). Version 1 refuses it.
+
+=== No conversion syntax
+
+pma has no syntax for converting a quantity to another unit. Conversion is
+an operation of the evaluator API
+(https://github.com/plurimath/plurimath/issues/523[#523]), not something a
+document writes. Input that tries to express one is refused by the grammar
+like any other text that matches no production.
+
+[[errors]]
+== Strict error taxonomy
+
+pma has no fallbacks. Text that matches no production is an error. It is
+never read as letters, never reinterpreted as dialect L and never accepted
+as a valid prefix followed by leftovers.
+
+Every refusal is an `Amath::ParseError` with `input`, `byte_offset` and
+`char_offset`, as in the amath parser contract; `Amath::NestingTooDeep`,
+`Amath::ArtifactError`, `Amath::EngineUnavailable` and `ArgumentError` keep
+their meaning. Message text is not part of the contract. The corpus pins
+each refusal by its position and a category (<<conformance>>). The
+categories below are normative-to-be; their final identifiers are set with
+the corpus.
+
+[cols="1,3,2"]
+|===
+|Category |Raised when |Example
+
+|`reserved-word`
+|a reserved word is not the start of its production, or is used with no
+production (`quantity`)
+|`+ustd+`, `+quantity(x)+`
+
+|`adjacency`
+|whitespace stands inside a single token (<<lexical>>)
+|`+ustd (1.2, 0.1)+`, `+(3.85 +/- 0.23) e4+`
+
+|`constructor-arity`
+|a constructor has too few or too many arguments
+|`+uexp(10.0, 0.3)+`
+
+|`constructor-argument`
+|an argument is not a number, carries a forbidden sign or exponent, or is
+not an interval kind
+|`+ustd(1.2, -0.1)+`
+
+|`measured-literal`
+|a bracket that uses `{plus}/-` is not a well-formed measured literal, or `{plus}/-`
+stands outside one
+|`+(x +/- 0.2)+`, `+10.3 +/- 0.2+`
+
+|`plus-minus-spelling`
+|`{plus}-`, `pm` or `±` is used where a measured literal's `{plus}/-` would stand
+|`+(10.3 +- 0.2)+`, `+(10.3 ± 0.2)+`
+
+|`shared-exponent`
+|an exponent is incomplete, not an integer, or follows something that is
+not a measured literal
+|`+(3.85 +/- 0.23)e+`
+
+|`relative`
+|a percentage is signed, spaced from its `%`, or on the value
+|`+(10.3% +/- 2)+`
+
+|`distribution-tag`
+|a tag name is not in the closed set, or a tag is misplaced
+|`+~U+`
+
+|`concise`
+|concise input
+|`+10.3(2)+`
+
+|`unit-expression`
+|the asciiunits grammar refuses the content of `+unit(...)+`
+|`+unit(furlongs)+`
+
+|`unit-attachment`
+|a unit follows something that cannot carry one, or a second unit follows
+|`+(10.3 +/- 0.2) unit(cm) unit(m)+`
+
+|`quantity-assertion`
+|`::` has no unit expression or no quantity, appears twice, or is not at the
+top level
+|`+unit(J::)+`
+|===
+
+A form that parses but whose numbers do not make a valid result, such as
+`+uexp(1.0, 0.3, 0, 0.95)+` or `+ucov(1.0, 2.0, 1.5, 0.95)+`, is refused when
+the `Uncertainty` node is built: the constructor raises
+`Plurimath::Errors::InvalidUncertainty`, and `Plurimath::Math.parse(text, :pma)`
+reports it as `Plurimath::Math::ParseError`, exactly as for dialect L
+(see link:asciimath.adoc#errors[the dialect L errors]). The validation rules
+are those of link:uncertainty.adoc#model[the uncertainty model].
+
+[[registry]]
+== The registry v2 contract
+
+pma and dialect L are generated from one shared registry. Today that is
+amath's `data/vocabulary.json` in the format `amath-vocabulary/v1`, a set
+of category lists exported from a pinned Plurimath revision (see
+link:asciimath.adoc#vocabulary[the dialect L vocabulary]). amath#16 extends it
+to `amath-vocabulary/v2`. The wire format belongs to amath; this section
+states what it must guarantee.
+
+. *Dialect tag.* Every entry is tagged `legacy`, `pma` or both. The dialect L
+  grammar is generated only from entries tagged `legacy` or both, and the pma
+  grammar only from entries tagged `pma` or both. A `pma`-only entry never
+  reaches the dialect L grammar.
+. *Primitive binding.* Every entry names its primitive binding: which parse
+  tree leaf it produces and which AST target that leaf maps to. Bindings
+  describe construction only, not writer behaviour, as the stage contract
+  requires.
+. *Pinned legacy snapshot.* The dialect L part is pinned by a registry
+  edition, so adding pma entries cannot change what dialect L accepts.
+. *Units from unitsdb.* Unit terminals are composed from unitsdb through the
+  asciiunits artifact, never copied into the registry. The registry records
+  the identity and checksum of the asciiunits artifact it was composed with.
+. *Reserved words.* The six reserved words are grammar terminals, not
+  registry entries. The build fails when the set
+  `unit ustd uexp ucov diff quantity` meets any registry spelling or any
+  unitsdb unit symbol or unit name. CI runs this check on every build.
+. *Edition in the artifact.* The pma grammar artifact records the registry
+  edition it was generated from, and its checksums are recorded beside it as
+  for `artifacts/asciimath.json`.
+
+[[mapping]]
+== Mapping to the Uncertainty model
+
+pma builds the same `Plurimath::Math::Function::Uncertainty` node as every
+other reader (link:uncertainty.adoc#model[the model]); it adds no category,
+field or notation. amath's typed model holds the source texts, and the
+Plurimath mapper builds the node from them. The field names of the pma typed
+model come from the pma grammar's captures and are not fixed here.
+
+[cols="2,3"]
+|===
+|pma form |Node
+
+|`ustd(v, u)`
+|`category: :standard`, `value: v`, `magnitude: u`, `notation: :absolute`
+
+|`uexp(v, U, k)`, `uexp(v, U, k, p)`
+|`category: :expanded`, `value: v`, `magnitude: U`, `coverage_factor: k`,
+`coverage_probability: p` when given
+
+|`ucov(v, lo, hi, p)`, with `kind`
+|`category: :coverage_interval`, `value: v`, `lower: lo`, `upper: hi`,
+`coverage_probability: p`; `shortest` gives `interval_kind: :shortest` and
+`symmetric` gives `:probabilistically_symmetric`
+
+|`+(v +/- u)+`
+|`value: v`, `magnitude: u`; the category is open (<<open-decisions>>, item 2)
+
+|shared exponent `e n`
+|the value and the magnitude shifted by `n` places on their decimal text, as
+for the dialect L shared exponent; the exponent itself is not stored
+
+|`+(v +/- p%)+`
+|`value: v`, `magnitude: v * p / 100` as exact decimal text; digits kept and
+output spelling open (item 6)
+
+|distribution tag
+|no field exists; #524 item 3 proposes a structured field (item 5)
+
+|trailing `+unit(...)+`
+|`unit:` a `Math::Function::Unitsml` holding the unit expression text, as the
+dialect L `+"unitsml(...)"+` argument gives today
+
+|`+unit(...)+` on its own
+|a `Math::Function::Unitsml`
+
+|`::` assertion
+|no field exists (item 10)
+
+|`diff(q)`
+|no node exists (item 11)
+|===
+
+Numbers keep their exact text throughout, so `+1.230+` stays `+1.230+`.
+Because the node is dialect-independent, its MathML, OMML, UnicodeMath,
+LaTeX, HTML and AsciiMath output is the same whichever dialect read it, and
+the round-trip matrix in link:uncertainty.adoc#round-trip[the uncertainty
+page] applies unchanged.
+
+[[open-decisions]]
+== Open decisions
+
+These are not decided. Each links the issue where the decision belongs.
+Where a form is open, version 1 refuses it, so a later decision to accept it
+does not break any input that version 1 accepts. Items 2 and 5 block
+amath#16, because forms that amath#16 requires depend on them.
+
+. *Fenced `±` shorthand.* Version 1 has none: `+(v +/- u)+` is the only
+  measured-literal spelling, and `+(10.3 ± 0.2)+` is refused. If the
+  shorthand is added, #524 requires it to desugar to a measured literal with
+  an explicit default category and to bind only inside a bracket; `{plus}-` and
+  `pm` stay refused. Adding it is non-breaking because version 1 refuses the
+  shape (https://github.com/plurimath/plurimath/issues/524[#524] item 4).
+. *Category of `+(v +/- u)+`.* amath#16 requires the literal but does not say
+  whether it is a standard or an expanded uncertainty. The model cannot hold
+  an expanded result without `k`, and JCGM 100 §7.2.2 (note) advises against
+  writing a standard uncertainty with `±`. #524 item 4 asks for "an explicit
+  default category" (#524, https://github.com/plurimath/amath/issues/16[amath#16]).
+. *Concise form scope.* `+10.3(2)+` is refused in pma. Whether the concise
+  argument of a constructor, `+ustd(1.230(4))+`, is also refused, as "no
+  concise input" suggests, is not stated. Version 1 refuses it (#524 item 5,
+  https://github.com/plurimath/plurimath/issues/513[#513]).
+. *Marker policy.* When the visible content of MathML, OMML or UnicodeMath
+  disagrees with the marker, the readers trust the marker. Raising an error
+  instead is the alternative. This is dialect-independent and pma does not
+  change it (#524).
+. *Distribution tags.* Where a tag stands in a measured literal or a
+  constructor, which names complete the closed set beyond `+~rect+`,
+  `+~triang+` and `+~arcsine+`, and which model field holds the tag (#524
+  item 3, amath#16).
+. *Relative uncertainty.* #524 item 2 stores the magnitude "with the value's
+  last place as reference" without saying whether `v * p / 100` is kept
+  exact (`0.206` for 2 % of `10.3`) or cut to the value's places, while the
+  model otherwise never rounds. Also open: whether the relative spelling is
+  kept so that the writer can show it, and whether a relative literal may
+  take a shared exponent (#524 item 2).
+. *Shared exponent in constructors.* Dialect L accepts `+ustd((3.85, 0.23)e4)+`.
+  amath#16 lists the shared exponent only on the measured literal. Version 1
+  refuses it in constructors (#524 item 1,
+  https://github.com/plurimath/amath/issues/13[amath#13]).
+. *Unit inside a constructor.* Dialect L takes the unit as a last quoted
+  argument. Whether pma also accepts `+ustd(1.230, 0.004, unit(g))+`, or only
+  the trailing form, is not stated. Version 1 accepts only the trailing form
+  (amath#16).
+. *Attachment targets.* Whether a plain number (`+9.81 unit(m/s^2)+`) or any
+  other term may carry a trailing unit (amath#16).
+. *Quantity assertion.* The asciiunits grammar has no `::`, so either pma
+  wraps the asciiunits expression or asciiunits gains the operator. The form
+  of the quantity reference (unitsdb identifier or name) is not stated, and
+  no model field holds the assertion (amath#16,
+  https://github.com/unitsml/unitsml-ruby/issues/136[unitsml-ruby#136]).
+. *`diff(q)`.* What `q` may be (a number with a unit, a measured value, a
+  unit alone) and which node represents a difference quantity. The name
+  `diff` is decided (amath#16, #524 "Unit scoping",
+  https://github.com/unitsml/unitsml-ruby/issues/92[unitsml-ruby#92]).
+. *`quantity`.* It is reserved but has no production in amath#16. Version 1
+  refuses every use (amath#16).
+. *The rest of the expression language.* amath#16 says pma is generated from
+  the registry entries tagged for it, but not which operators, functions and
+  letters those are, nor how a run of letters that is not a registry entry
+  is read when there is no fallback to letters. The closed expression
+  grammar of #513 R-B1 bears on this (amath#16, #513).
+. *Decimal marker.* Whether `decimal:` selects a marker for numbers outside
+  measured literals and constructors, or pma has only the full stop
+  (amath#16).
+. *Interval kind spelling.* Version 1 uses the dialect L words `shortest`
+  and `symmetric`. Whether pma also accepts `probabilistically-symmetric`
+  (amath#16).
+. *Exponents on plain numbers.* Whether `+1.2e3+` is a number in pma. Version 1
+  refuses it (amath#16).
+. *Writer and model class.* amath#16 asks for render vectors in the pma
+  corpus, but no pma writer is specified, and it is not stated whether pma
+  results share `Amath::Model::Document` with dialect L (amath#16).
+. *The `+a/−b` layout.* Unchanged from the uncertainty page: neither JCGM 100
+  nor JCGM 101 defines its meaning, so pma has no form for it (#524).
+. *Corpus placement.* See <<conformance>> (amath#16,
+  https://github.com/plurimath/plurimath/issues/540[#540],
+  https://github.com/unitsml/unitsml-testsuite/issues/1[unitsml-testsuite#1]).
+
+[[conformance]]
+== Conformance
+
+The pma corpus is the conformance contract for this page. It must hold, for
+every production in <<section-2>>, at least one accepted row with its typed
+model and the node it maps to, and for every category in <<errors>> at
+least one refused row with its position and category. amath#16 also asks
+that the pma grammar artifact record its registry edition and that the
+reserved-word collision check run in CI.
+
+Where the corpus lives is not decided:
+
+* plurimath-testsuite, as a stage generation under `stages/pma/`. Stage layout
+  revision 1
+  (https://github.com/plurimath/plurimath-testsuite/blob/6f8bc12602e6016290179f0939b6afd518ef44df/docs/stage-corpus-contract.adoc[plurimath-testsuite
+  `6f8bc12`]) admits only the languages `asciimath`, `latex`, `unicode`,
+  `mathml`, `omml`, `html` and `roundtrip`. A `pma` language needs a layout
+  revision first; a stage data pull request cannot add it.
+* unitsml-testsuite, which amath#16 names for the pma corpus ("render + parse
+  vectors"), and whose
+  https://github.com/unitsml/unitsml-testsuite/issues/1[issue #1] plans
+  `corpora/uncertainty/` for the uncertainty forms. This placement is
+  undecided.
+* amath's own `corpora/`, where the dialect L shared-exponent corpus lives
+  today, as staging until one of the above is decided.
+
+Until the corpus exists, nothing checks this page.
+
+[[generated]]
+== Becoming generated
+
+When amath ships `grammars/pma.parg` and its checksummed artifact, the
+excerpts on this page are replaced by `// BEGIN GENERATED` regions written
+from that grammar, together with a provenance table (amath revision, grammar
+and registry checksums, registry edition, artifact checksum, compiler
+version), in the way link:asciimath.adoc#regenerating[the dialect L page]
+is regenerated. Its `--check` mode then fails when this page is out of date.

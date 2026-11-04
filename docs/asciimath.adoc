@@ -57,7 +57,7 @@ https://github.com/plurimath/plurimath/issues/541[#541]
 |Dialect P ("pma"), a separate strict ASCII grammar with reserved
 constructors
 |proposed
-|https://github.com/plurimath/amath/issues/16[amath#16]
+|https://github.com/plurimath/amath/issues/16[amath#16], specified in link:pma.adoc[pma]
 
 |Moving the bareword call forms into dialect P
 |proposed
