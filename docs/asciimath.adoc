@@ -1,0 +1,570 @@
+= AsciiMath in Plurimath
+:toc:
+
+This page specifies the AsciiMath that Plurimath reads and writes: where the
+grammar comes from, the whitespace and number rules, how terms group, the
+symbol and operator vocabulary, the uncertainty call forms, the errors, and
+the corpora that check all of this. It is part of the specification set
+tracked in https://github.com/plurimath/plurimath/issues/525[#525].
+
+The grammar and vocabulary excerpts on this page are generated from the amath
+grammar artifact and checked against its recorded checksums (see
+<<regenerating>>). Everything else describes behaviour of the code at the
+revisions named in <<source-of-truth>>.
+
+The measurement model behind `ustd`, `uexp` and `ucov`, and how it is carried
+in the other formats, is in link:uncertainty.adoc[Measurement uncertainty].
+
+== Status
+
+Each form is either *implemented* (merged and released, or merged and pinned
+by Plurimath) or *proposed* (described in an open issue, not built).
+
+[cols="3,1,3"]
+|===
+|Form |Status |Where
+
+|AsciiMath parsed by the amath gem from its PARG artifact
+|implemented
+|https://github.com/plurimath/plurimath/pull/498[#498],
+https://github.com/plurimath/plurimath/pull/534[#534] (released gem),
+https://github.com/plurimath/plurimath/pull/544[#544] (`+amath ~> 0.1.0+` pin)
+
+|`ustd`, `uexp`, `ucov` call forms
+|implemented
+|https://github.com/plurimath/plurimath/pull/499[#499], issue
+https://github.com/plurimath/plurimath/issues/493[#493]
+
+|Malformed call read as letters, not as an error
+|implemented
+|https://github.com/plurimath/amath/pull/9[amath#9]
+
+|Shared decimal exponent in the call forms, such as `ustd((3.85, 0.23)e4)`
+|implemented
+|https://github.com/plurimath/plurimath/pull/526[#526],
+https://github.com/plurimath/amath/pull/15[amath#15]; issue
+https://github.com/plurimath/amath/issues/13[amath#13] is still open
+
+|Rejection of a likely decimal comma inside a call under a non-dot locale
+|implemented
+|https://github.com/plurimath/plurimath/pull/509[#509]
+
+|`Amath.parse` returning a typed model (amath 0.2.0)
+|proposed
+|amath `docs/stage-contract.adoc`, issue
+https://github.com/plurimath/plurimath/issues/541[#541]
+
+|Dialect P ("pma"), a separate strict ASCII grammar with reserved
+constructors
+|proposed
+|https://github.com/plurimath/amath/issues/16[amath#16]
+
+|Moving the bareword call forms into dialect P
+|proposed
+|https://github.com/plurimath/amath/issues/17[amath#17], waits on amath#16
+
+|Inline `(10.3 +/- 0.2)` sugar, relative `%` uncertainty, distribution tags
+|proposed
+|https://github.com/plurimath/plurimath/issues/524[#524]
+
+|A closed expression language with evaluation
+|proposed
+|https://github.com/plurimath/plurimath/issues/513[#513],
+https://github.com/plurimath/plurimath/issues/514[#514]
+|===
+
+The bareword `ustd`, `uexp` and `ucov` forms are implemented and stay
+supported. amath#17 proposes moving them into dialect P once that dialect
+exists; nothing on this page changes until that happens.
+
+[[source-of-truth]]
+== Grammar source of truth
+
+Plurimath has no AsciiMath grammar of its own. `Plurimath::Asciimath::Parse`
+calls `Amath.parse(text, decimal: Plurimath.configuration.decimal)` and
+adapts the returned tree for `Plurimath::Asciimath::Transform`. The grammar is
+the amath PARG artifact `artifacts/asciimath.json`, compiled by Parsanol from
+`grammars/asciimath.parg`. That file is itself generated from
+`grammars/asciimath.parg.template` and `data/vocabulary.json`, which amath
+exports once from a pinned Plurimath revision. amath's own contracts are
+`docs/parser-contract.adoc` (the 0.1.x API that Plurimath uses) and
+`docs/stage-contract.adoc` (the shared profile for the stage gems).
+
+Before the grammar runs, `Plurimath::Asciimath::Parser` replaces the bracket
+digraphs `|:` and `:|` by `|`, `{:` by U+2112, `:}` by U+211B, `(:` by U+1455
+and `:)` by U+1450. Those four code points are the invisible-bracket
+characters the grammar matches.
+
+Plurimath runs the released amath gem, pinned to `+~> 0.1.0+`. The documented
+amath revision below may be newer than the released gem. The table records
+both, and the generator refuses to run unless the uncertainty rules of the
+two are byte-identical. The grammars differ only in the entry rule: newer
+revisions wrap the whole tree in one `root` capture for the typed-model
+bindings, which amath removes before returning the tree.
+
+// BEGIN GENERATED provenance
+[cols="2,3"]
+|===
+|Item |Value
+
+|amath revision documented |`075eebddf9eda6d3ccdcbe63ce0fb554eb76b2a2`
+|`grammars/asciimath.parg` |`sha256:a305f3c0d7783e334b0fb8d5e323d4a9fc330348f340176ee1a8792a26384556`
+|`data/vocabulary.json` |`sha256:965b1f5c4e2d14ba7d045ba79c09097b42c311b737175c2199faca0cc87cf2a6`
+|vocabulary format |`amath-vocabulary/v1`
+|vocabulary oracle (Plurimath revision) |`ae20be111a26fdd988c58be0bfb2b7f6fe6e352f`
+|artifact checksum (`artifacts/asciimath.json`) |`sha256:6638174039925962b221cbedeec24bb616130670003d177b3a92911309c397c5`
+|artifact compiler (Parsanol) |`1.3.131`
+|artifact entries |`dot comma arabic`
+|runtime amath gem |`0.1.0`
+|runtime artifact checksum |`sha256:e90f836c851504dfcbd5b3d97c9224f2f1c8cb4d2167c10fc6f1d02a62646d43`
+|runtime grammar source hash |`sha256:566f8ba866e921308b3b947b2443a1278ffc1125e2b20a4afb5c14132f91f975`
+|runtime artifact compiler (Parsanol) |`1.3.109`
+|uncertainty rules, runtime vs documented revision |`byte-identical`
+|===
+// END GENERATED provenance
+
+== Whitespace and numbers
+
+The lexical rules, quoted from the grammar for the `dot` entry (the `comma`
+and `arabic` entries differ only in the decimal marker):
+
+// BEGIN GENERATED lexical-grammar
+[source]
+----
+space = " " / "\t" / "\n" / "\r" / %x0B / %x0C
+space_opt = [space]
+comma = "," space_opt
+digit = %x30-39
+decimal_marker__dot = "."
+decimal_number__dot = (1*digit decimal_marker__dot 1*digit) / 1*digit
+number__dot = hex_number / binary_number / octal_number / (decimal_number__dot) as number / (".") as symbol
+signed_number__dot = ("-" decimal_operand__dot) as number
+hex_number = ("0x" / "0X") ((1*(%x30-39 / %x41-46 / %x61-66)) as hex_number)
+binary_number = ("0b" / "0B") ((1*(%x30-31)) as binary_number)
+octal_number = ("0o" / "0O") ((1*(%x30-37)) as octal_number)
+base = !"__|" "_"
+power = "^"
+frac_slash = "/" !"/"
+quoted_text = ("\"" "unitsml(" (*(!")\"" any_char)) as unitsml ")\"") / ("\"" (*(!"\"" any_char)) as text "\"") / ("\"" "" as text)
+----
+// END GENERATED lexical-grammar
+
+Whitespace::
+`space` is exactly one character of space, tab, line feed, carriage return,
+vertical tab or form feed. Outside the uncertainty calls, whitespace between
+terms is consumed one character at a time, so runs of any length are allowed
+and do not change the result: `x  +  y` reads the same as `x + y`. The
+AsciiMath writer emits its own spacing.
+
+Whitespace inside uncertainty calls::
+Inside `ustd(`, `uexp(` and `ucov(`, any amount of whitespace may stand after
+the opening bracket, around each comma and before the closing bracket. No
+whitespace may stand between the word and its bracket (`ustd (1.2, 0.1)` is
+the letters `u s t d` followed by a bracketed group), or before the `e` of a
+shared exponent.
+
+Numbers::
+A number is digits with an optional single decimal marker followed by more
+digits, or a `0x`, `0b` or `0o` prefixed integer. The decimal marker is the
+one selected by the parse locale (see <<locale>>); there is no exponent
+syntax outside the uncertainty calls, so `1.2e3` is the number `1.2`, the
+letter `e` and the number `3`.
+
+[[precedence]]
+== Precedence and grouping
+
+AsciiMath has no operator precedence table in the usual sense: `+`, `-`, `=`
+and the other operators are symbols in a flat sequence. Only a few
+constructions take operands, and they bind in this order, tightest first:
+
+. Brackets, `+text(...)+`, quoted text and the function words with their
+  arguments (`sqrt x`, `frac a b`, `root 3 x`, `+sum_(i=1)^n+`).
+. Subscript `_` and superscript `+^+`. Both may follow the same base, in either
+  order (`+a_b^c+`, `+a^b_c+`). A second `+^+` after a superscript is a new
+  superscript on the result (`+x^2^3+`).
+. Fraction `/`. A fraction takes the preceding script expression or bracket
+  as its numerator and the rest of the following operand as its denominator,
+  so it groups to the right: `1/2/3` is `1/(2/3)`, and `+a/b^2+` is
+  `+a/(b^2)+`. A function word stays in the numerator: `sqrt x/y` is
+  `(sqrt x)/y`. `//` is the slash symbol, not a fraction.
+. `mod`, whose divisor may itself be a fraction (`a mod b/c` is
+  `a mod (b/c)`), while a fraction's denominator may hold a `mod`
+  (`a/b mod c` is `a/(b mod c)`).
+. Everything else is a left-to-right sequence. `a+b/c+d` is `a`, `+`,
+  `b/c`, `+`, `d`. A leading `-` is a symbol, so `-a/b` is `-` followed by
+  `a/b`.
+
+An uncertainty call is an ordinary operand: `ustd(1.2, 0.1)/2` is a fraction
+whose numerator is the uncertainty, and `+ustd(1.2, 0.1)^2+` puts a superscript
+on it.
+
+These groupings follow from the order of the alternatives in the grammar
+rules `iteration`, `frac`, `mod` and `power_base`; the corpus groups `frac`,
+`mod`, `powers` and `operators` (see <<conformance>>) pin them.
+
+[[vocabulary]]
+== Symbol and operator table
+
+The vocabulary is the data the grammar turns into alternatives. Symbols and
+function words are matched longest first, so `<=>` wins over `<=`, and
+`sinh` over `sin`. The vocabulary lists spellings and their grammar role
+only. The character each symbol produces, and its MathML, OMML, LaTeX and
+UnicodeMath output, comes from Plurimath's symbol classes, which
+link:catalog.adoc[the Ruby reference catalog] exports; the generated
+link:../supported_symbols_list.adoc[symbol list] and
+link:../AsciiMath-Supported-Data.adoc[AsciiMath supported data] pages show
+them per symbol.
+
+// BEGIN GENERATED vocabulary-summary
+[cols="1,2,1"]
+|===
+|Category |Spelling shape |Entries
+
+|`fonts` |all |14
+|`special_fonts` |all |5
+|`symbol` |all |3267
+|`unary_class` |all |44
+|`symbol` |ASCII letters only |155
+|`symbol` |ASCII punctuation only |68
+|`symbol` |other ASCII spellings |8
+|`symbol` |non-ASCII characters |1
+|`symbol` |quoted names such as `"P{name}"` |1626
+|`symbol` |numeric character references such as `+&#x2213;+` |1409
+|===
+// END GENERATED vocabulary-summary
+
+Function words and brackets, by grammar role:
+
+// BEGIN GENERATED vocabulary-classes
+....
+unary_class (44):
+  abs         arccos      arcsin      arctan      bar         cancel
+  ceil        cos         cosh        cot         coth        csc
+  csch        ddot        det         dim         dot         exp
+  floor       gcd         glb         hat         lcm         ln
+  lub         max         min         norm        obrace      overbrace
+  sec         sech        sin         sinh        sqrt        tan
+  tanh        text        tilde       ubrace      ul          underbrace
+  underline   vec
+
+fonts (14):
+  bb        bbb       cc        fr        ii        mathbb    mathbf
+  mathcal   mathfrak  mathsf    mathtt    rm        sf        tt
+
+special_fonts (5):
+  CC  NN  QQ  RR  ZZ
+
+binary_classes (5):
+  frac      overset   root      stackrel  underset
+
+ternary_classes (4):
+  int   oint  prod  sum
+
+sub_sup_classes (2):
+  lim  log
+
+unary_underscore_words (2):
+  ubrace      underbrace
+
+parenthesis:
+  U+1455 U+1450  U+2112 U+211B  ( )            { }            [ ]
+
+table_parenthesis:
+  U+1455 U+1450  U+2112 U+211B  [ ]            ( )
+
+decimal_markers:
+  U+002E  U+002C  U+066B
+
+base_number_prefix:
+  hex_number     binary_number  octal_number
+
+....
+// END GENERATED vocabulary-classes
+
+Symbol spellings other than quoted names and numeric character references,
+which are counted above and not repeated here. `␣` marks a space that is part
+of the spelling.
+
+// BEGIN GENERATED vocabulary-symbols
+....
+word (155):
+  AA                     Delta                  EE
+  Gamma                  Lambda                 Leftarrow
+  Leftrightarrow         Omega                  Phi
+  Pi                     Psi                    Rightarrow
+  Sigma                  TT                     Theta
+  Xi                     aleph                  alpha
+  angle                  approx                 ast
+  backslash              because                beta
+  bigcap                 bigcup                 bigvee
+  bigwedge               bot                    bowtie
+  cap                    cdot                   cdots
+  chi                    circ                   cong
+  cup                    darr                   ddots
+  del                    delta                  diamond
+  div                    downarrow              emptyset
+  epsilon                equiv                  eta
+  exists                 forall                 frown
+  gamma                  ge                     gg
+  grad                   gt                     hArr
+  harr                   if                     iff
+  implies                in                     infty
+  iota                   kappa                  lArr
+  lambda                 langle                 larr
+  lceiling               ldots                  le
+  leftarrow              leftrightarrow         lfloor
+  ll                     lt                     ltimes
+  mapsto                 mgt                    mlt
+  models                 mu                     nabla
+  ne                     neg                    nnn
+  not                    notin                  nu
+  odot                   omega                  oo
+  oplus                  otimes                 ox
+  partial                phi                    pi
+  pm                     prec                   preceq
+  prime                  prop                   propto
+  psi                    quad                   rArr
+  rangle                 rarr                   rceiling
+  rfloor                 rho                    rightarrow
+  rightarrowtail         rtimes                 sigma
+  square                 star                   sub
+  sube                   subset                 subseteq
+  succ                   succeq                 sup
+  supe                   supset                 supseteq
+  tau                    therefore              theta
+  times                  to                     top
+  triangle               twoheadrightarrow      twoheadrightarrowtail
+  uarr                   uparrow                upsilon
+  uu                     uuu                    varepsilon
+  varphi                 vartheta               vdash
+  vdots                  vee                    vv
+  vvv                    wedge                  xi
+  xx                     zeta
+
+operator (68):
+  !     !=    #     $     %     &     '     ''    *     **    ***   +
+  +-    ,     -     -:    -<    -<=   -=    ->    ->>   .     ..    ...
+  //    /_    /_\   :     :'    :.    :}    ;     <     <<    <=    <=>
+  =     =>    >     >-    >-=   >->   >->>  ><|   >=    >>    ?     @
+  \     ^     ^^    ^^^   _     __|   _|_   {:    |     |--   |->   |==
+  |><   |><|  |__   |~    ~     ~=    ~|    ~~
+
+mixed (8):
+  !in      &gt;     &lt;     &times;  O/       \␣       o+       o.
+
+non-ascii (1):
+  ¯
+
+....
+// END GENERATED vocabulary-symbols
+
+[[uncertainty]]
+== Uncertainty call forms
+
+The three words `ustd`, `uexp` and `ucov` start a call that reads as one
+`Plurimath::Math::Function::Uncertainty` node. The normative rules, quoted
+from the grammar:
+
+// BEGIN GENERATED uncertainty-grammar
+[source]
+----
+unc_number = 1*digit ["." 1*digit]
+unc_value = (["-"] unc_number) as value
+unc_sep = *space "," *space
+unc_unit = unc_sep "\"unitsml(" (*(!")\"" any_char)) as unit ")\""
+unc_open = "(" *space
+unc_close = *space ")"
+unc_shared_exponent = "e" (["+" / "-"] 1*digit) as shared_exponent
+unc_measured_pair = unc_value unc_sep (unc_number) as magnitude
+unc_scaled_pair = unc_open unc_measured_pair unc_close unc_shared_exponent
+unc_measured_interval = unc_value unc_sep (unc_number) as lower unc_sep (unc_number) as upper
+unc_scaled_interval = unc_open unc_measured_interval unc_close unc_shared_exponent
+unc_standard = unc_scaled_pair / unc_value (unc_sep (unc_number) as magnitude / "(" (1*digit) as concise_digits ")" [unc_shared_exponent])
+uncertainty = (uncertainty_std / uncertainty_exp / uncertainty_cov) as uncertainty
+uncertainty_std = ("ustd") as uncertainty_class unc_open unc_standard [unc_unit] unc_close
+uncertainty_exp = ("uexp") as uncertainty_class unc_open (unc_scaled_pair / unc_measured_pair) unc_sep (unc_number) as coverage_factor [unc_sep (unc_number) as coverage_probability] [unc_unit] unc_close
+uncertainty_cov = ("ucov") as uncertainty_class unc_open (unc_scaled_interval / unc_measured_interval) unc_sep (unc_number) as coverage_probability [unc_sep ("shortest" / "symmetric") as interval_kind] [unc_unit] unc_close
+----
+
+Checksum of the excerpt (lines joined by line feeds): `sha256:4ff5df3b0613419404fdfc9db0949439c4600cd392f0773b958f9800d349d0d9`.
+// END GENERATED uncertainty-grammar
+
+The forms they accept:
+
+[cols="2,3"]
+|===
+|Form |Meaning
+
+|`ustd(y, u)`
+|standard uncertainty, absolute notation
+
+|`ustd(y(d))`
+|standard uncertainty, concise notation: `ustd(1.230(4))` means `u = 0.004`
+
+|`uexp(y, U, k)`, `uexp(y, U, k, p)`
+|expanded uncertainty with coverage factor `k` and optional coverage
+probability `p`
+
+|`ucov(y, lo, hi, p)`, `ucov(y, lo, hi, p, shortest)`, `ucov(y, lo, hi, p, symmetric)`
+|coverage interval with its endpoints, coverage probability and optional
+interval choice; `symmetric` is the probabilistically symmetric interval
+
+|any of the above with a last argument `+"unitsml(...)"+`
+|the same result with a UnitsML unit, for example
+`uexp(100.02147, 0.00079, 2, "unitsml(g)")`
+|===
+
+Only the value `y` may carry a minus sign. Every number uses a full stop as
+its decimal marker and has no exponent of its own. The interval choice is
+written `symmetric` because AsciiMath would read the `-` of
+`probabilistically-symmetric` as minus. The numbers are kept as written:
+`1.230` stays `1.230`, and no floating-point value is computed.
+
+=== Shared exponents
+
+The measured fields may be grouped and followed by `e` and a signed or
+unsigned integer, which applies to the value and the magnitude, or to the
+value and both endpoints. Coverage factors and probabilities are not scaled.
+
+[cols="2,2"]
+|===
+|Input |Written back
+
+|`ustd((3.85, 0.23)e4)` |`ustd(38500, 2300)`
+|`ustd(680(41)e-3)` |`ustd(0.680(41))`
+|`uexp((3.85, 0.23)e+4, 2, 0.95)` |`uexp(38500, 2300, 2, 0.95)`
+|`ucov((1.024, 0.983, 1.088)e-3, 0.95, shortest)` |`ucov(0.001024, 0.000983, 0.001088, 0.95, shortest)`
+|===
+
+The shift is done on the decimal text. For concise notation the magnitude is
+derived from the value's decimal places before the shift. A shift that would
+make a number longer than 1,000,000 characters is rejected. The writer emits
+the shifted numbers, not the exponent.
+
+=== When a call is not an uncertainty
+
+A call that does not match these rules is not an error. The grammar falls back
+to the reading it had before the words existed, letter by letter
+(amath#9):
+
+* `uexp(10.0, 0.3)` (no `k`) is `u` followed by `exp(10.0, 0.3)`;
+* `ustd(1.2, -0.1)`, `ustd(1.2e3, 0.1)`, `ustd (1.2, 0.1)` and
+  `ustd((3.85, 0.23) e4)` are the letters `u s t d` followed by a bracketed
+  group;
+* `+-` and `pm` are always the plus-minus symbol (`Math::Symbols::Pm`), a
+  literal `±` is an ordinary symbol, and `1.230(4)` outside a call is a number
+  followed by a bracketed group. None of them starts an uncertainty.
+
+A call that matches the rules but whose numbers are not a valid result, such
+as `uexp(1.0, 0.3, 0, 0.95)` (`k` must be greater than 0) or
+`ucov(1.0, 2.0, 1.5, 0.95)` (the lower endpoint is above the upper one), is an
+error (see <<errors>>).
+
+The parse tree each form produces, before Plurimath turns it into a node, is
+recorded in link:uncertainty-asciimath-tree.md[the AsciiMath uncertainty tree
+contract].
+
+[[locale]]
+=== Locale and decimal commas
+
+`+Plurimath::Math.parse(text, :asciimath, locale: ...)+` selects the decimal
+marker for ordinary numbers: amath has one artifact entry per marker (`dot`,
+`comma` and `arabic`). Inside an uncertainty call the marker is always a full
+stop and the argument separator is always a comma.
+
+Under a locale whose decimal marker is not a full stop, a call in which a
+separator comma is directly followed by a digit, such as `ustd(1,5)` or
+`ustd(1.2,0.1)` under `locale: :fr`, raises
+`Plurimath::Math::AmbiguousDecimalError` instead of guessing.
+`ustd(1.230, 0.004)`, with a space after each comma, reads the same under every
+locale. Calls inside quoted text are not checked. A value written with the
+Arabic decimal mark, such as `ustd(1٫230, 0٫004)` under `locale: :ar`, is not
+an uncertainty call and reads as letters followed by a bracketed group.
+
+[[errors]]
+== Errors
+
+`Plurimath::Math.parse(text, :asciimath)` raises these errors. All of them are
+`Plurimath::Math::ParseError`, which is a `Plurimath::Error`.
+
+[cols="2,3"]
+|===
+|Error |Raised when
+
+|`Plurimath::Math::ParseError`
+|amath rejects the input (`Amath::ParseError`, including
+`Amath::NestingTooDeep` for input nested too deeply for the engine), or the
+transform cannot build a node from the tree. An uncertainty call whose
+numbers fail validation is reported this way: the
+`Plurimath::Errors::InvalidUncertainty` raised inside is not kept as the
+`cause`.
+
+|`Plurimath::Math::AmbiguousDecimalError` (a `ParseError`)
+|a call has a likely decimal comma under a non-dot locale (<<locale>>). It is
+raised before amath runs and reaches the caller unchanged.
+
+|`Plurimath::Math::MissingDependencyError` (a `ParseError`)
+|the amath gem cannot be loaded.
+|===
+
+Building the node directly, with `Plurimath::Math::Function::Uncertainty.new`,
+raises `Plurimath::Errors::InvalidUncertainty` (a `Plurimath::Error`, not a
+`ParseError`) for any field that does not form a valid result. Unknown parse
+options raise `Plurimath::Errors::ParseOptionError`, and an unknown format
+name raises `Plurimath::Math::InvalidTypeError`.
+
+amath's own error classes (`Amath::ParseError` with `byte_offset` and
+`char_offset`, `Amath::NestingTooDeep`, `Amath::ArtifactError`,
+`Amath::EngineUnavailable`) are specified in amath's
+`docs/parser-contract.adoc`. Plurimath turns an amath rejection into a
+`Parslet::ParseFailed` positioned at amath's byte offset before
+`Plurimath::Math.parse` reports it.
+
+[[conformance]]
+== Conformance
+
+These corpora and fixtures check the behaviour on this page:
+
+* plurimath-testsuite, `stages/asciimath/generations/000001/payloads/`, layout
+  revision 1 (plurimath-testsuite `6f8bc12`). Its 28 groups, with 173 rows,
+  cover numbers, whitespace, symbols, operators, fractions, `mod`, powers,
+  roots, fonts, matrices, brackets, quoted text, UnitsML, number formatting
+  and rejections. Generation 1 is a byte copy of `corpus/asciimath/` at
+  plurimath-testsuite `281059b`, which is the commit of Plurimath's
+  `submodules/plurimath-testsuite`; Plurimath replays it with
+  `scripts/replay_asciimath_corpus.rb` and
+  `spec/plurimath/asciimath_corpus_replay_spec.rb`.
+* amath `corpora/uncertainty-shared-exponent.yml`: the input, tree and exact
+  decimal expectation for every shared-exponent form, checked by amath's
+  specs and by `spec/plurimath/asciimath/uncertainty_shared_exponent_spec.rb`.
+* Plurimath `spec/plurimath/fixtures/uncertainty/contract.yml`: the exact
+  output of every uncertainty form in every format, its invalid cases, and the
+  ordinary `±` cases, checked by `spec/plurimath/uncertainty_contract_spec.rb`
+  and `spec/plurimath/asciimath/uncertainty_spec.rb`.
+* `spec/plurimath/asciimath/uncertainty_locale_spec.rb` and
+  `spec/plurimath/asciimath/uncertainty_contexts_spec.rb`: the locale rule and
+  uncertainty calls inside other constructions.
+
+The testsuite has no uncertainty rows yet. They are expected as a later
+asciimath generation, appended under the stage layout of
+https://github.com/plurimath/plurimath/issues/540[#540].
+
+[[regenerating]]
+== Regenerating this page
+
+The regions between `// BEGIN GENERATED` and `// END GENERATED` comments are
+written by `scripts/docs/asciimath_tables.rb`. Do not edit them by hand. To
+update them after an amath change, check out amath at the revision to
+document and run, from the Plurimath checkout:
+
+[source,sh]
+----
+bundle exec ruby scripts/docs/asciimath_tables.rb --amath ../amath
+----
+
+The script checks `grammars/asciimath.parg` and `data/vocabulary.json`
+against `artifacts/asciimath.checksums.txt` in that checkout, and compares the
+uncertainty rules with the artifact of the amath gem the bundle loads. It
+stops without writing anything when either check fails. Add `--check` to
+verify that this page is current without changing it; it then exits 1 when the
+page is out of date.
