@@ -22,44 +22,49 @@ module Plurimath
       # A grammar refusal raises Parsanol::ParseFailed at the position the
       # grammar reports in #text.
       def parse
-        load_latexmath
+        self.class.load_latexmath
         parse_with_latexmath
       end
 
-      private
+      class << self
+        # Loaded here, outside the methods that rescue ::Latexmath::...
+        # errors, so those clauses are never evaluated while Latexmath is
+        # undefined.
+        def load_latexmath
+          require "latexmath"
+        rescue LoadError => e
+          raise unless e.path == "latexmath" || e.message.end_with?("-- latexmath")
 
-      # Loaded here, outside parse_with_latexmath, so its
-      # `rescue ::Latexmath::...` clause is never evaluated while Latexmath
-      # is undefined.
-      def load_latexmath
-        require "latexmath"
-      rescue LoadError => e
-        raise unless e.path == "latexmath" || e.message.end_with?("-- latexmath")
+          raise Math::MissingDependencyError.new(
+            :latex,
+            format_name: "LaTeX",
+            gem_name: "latexmath",
+            gemfile_line: LATEXMATH_GEMFILE_LINE,
+          ), cause: nil
+        end
 
-        raise Math::MissingDependencyError.new(
-          :latex,
-          format_name: "LaTeX",
-          gem_name: "latexmath",
-          gemfile_line: LATEXMATH_GEMFILE_LINE,
-        ), cause: nil
+        # The Parsanol::ParseFailed for a latexmath refusal (+error+), or for
+        # input without a formula (+error+ nil, grammar input +text+), with
+        # its cause at the grammar's position.
+        def parse_failed(error, text)
+          message = error&.message || "LaTeX input has no formula"
+          source = Parsanol::Source.new(error&.grammar_input || text)
+          cause = Parsanol::Cause.new(message, source, error&.grammar_byte_offset || 0, [])
+          Parsanol::ParseFailed.new(message, cause)
+        end
       end
+
+      private
 
       def parse_with_latexmath
         document = ::Latexmath.parse(@input, decimal: Plurimath.configuration.decimal)
         # Input without a formula (empty, or only spaces and newlines) is a
         # refusal at its start, as the grammar reports it.
-        raise parse_failed(nil) if document.expression.nil?
+        raise self.class.parse_failed(nil, text) if document.expression.nil?
 
         Mapper.new.call(document)
       rescue ::Latexmath::ParseError => e
-        raise parse_failed(e)
-      end
-
-      def parse_failed(error)
-        message = error&.message || "LaTeX input has no formula"
-        source = Parsanol::Source.new(error&.grammar_input || text)
-        cause = Parsanol::Cause.new(message, source, error&.grammar_byte_offset || 0, [])
-        Parsanol::ParseFailed.new(message, cause)
+        raise self.class.parse_failed(e, text)
       end
 
       def pre_processing(text)

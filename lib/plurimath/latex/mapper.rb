@@ -10,9 +10,11 @@ module Plurimath
     # and the few captures its shape normalization adds (see latexmath's
     # docs/model-contract.adoc) are listed in WRAPPERS. The mapper first reads
     # a model node as the capture tree it stands for (#captures), then builds
-    # the Formula with the LaTeX rule table (Transform).
+    # the Formula with the LaTeX rule table (Mapper::Rules).
     class Mapper
       extend Parsanol::Atoms::CanFlatten
+
+      autoload :Rules, "#{__dir__}/mapper/rules"
 
       # The captures latexmath's shape normalization adds, and the value each
       # one stands for (latexmath 1.0, grammars/latex.wrappers.json):
@@ -44,7 +46,7 @@ module Plurimath
         Utility.parens_hash(:latex, skipables: PAREN_SKIPABLES)
 
         tree = slices(captures(expression))
-        formula = Transform.new.apply(tree)
+        formula = Rules.new.apply(tree)
         formula = [formula] unless formula.is_a?(Array)
 
         Math::Formula.new(formula)
