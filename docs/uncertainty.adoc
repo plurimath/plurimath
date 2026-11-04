@@ -340,7 +340,11 @@ The intent form `ⓘ("marker"visible)`, with the unit as `+ⓐ(unit ...)+`:
 ⓘ("expanded-uncertainty(10.0,0.3,2,0.95)"(10.0±0.3), k=2, p=0.95)
 ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"1.024, [0.983, 1.088], p=0.95)
 ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"(100.02147±0.00079)ⓐ(unit \mupg), k=2)
+ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mup"kg"))
 ----
+
+A unit symbol of more than one character is written as quoted upright text,
+`+\mup"kg"+`, so that it reads back as one symbol (see <<round-trip>>).
 
 A negative value that would start the visible content is put in the invisible
 `〖〗` group, because the reader cannot take `+"marker"-...+`; the marker is
@@ -393,11 +397,18 @@ other fields are. Written on to AsciiMath, such a unit becomes
 not:
 
 * units whose rendered symbols are not ASCII letters (`µm`, `°C`) are written
-  after the call;
-* in UnicodeMath, a multi-letter unit symbol written as `\mupkg` is read back
-  as the upright `k` followed by `g`, so `kg` and `+kg·m^2+` are written to
-  AsciiMath after the call (`ustd(1.2, 0.1) rm(k) g`). Units of one letter per
-  symbol, such as `g` and `+m·s^-1+`, return as `+"unitsml(...)"+`.
+  after the call. Through UnicodeMath, `µm` comes back as one upright run,
+  `+ustd(1.2, 0.1) rm("&#xb5;m")+`.
+* a unit symbol of more than one character that is not written by Plurimath's
+  UnicodeMath writer, such as a hand-written `\mupkg`, is read back as the
+  upright `k` followed by `g`, and AsciiMath gets `ustd(1.2, 0.1) rm(k) g`.
+
+In UnicodeMath a unit symbol of more than one character is written as quoted
+upright text, `+\mup"kg"+`, `+\mup"mol"+` or `+\mup"µm"+`, because
+UnicodeMath reads `\mupkg` as an upright `k` followed by `g`. A one-letter
+symbol keeps the `\mupg` form. So `kg`, `mol` and `+kg·m^2+` written to
+UnicodeMath return to AsciiMath as `+"unitsml(...)"+`, like `g` and
+`+m·s^-1+`.
 
 Other software: a MathML consumer that ignores `intent` shows the visible
 form. An OMML consumer that ignores hidden phantoms shows the marker text as
@@ -423,9 +434,9 @@ ordinary text. Word's handling of the phantom is not yet tested (see
 * `spec/plurimath/fixtures/uncertainty/contract.yml` holds the exact model,
   output and input for every category, notation and unit case in every
   format, the invalid cases with their errors, and the ordinary `±` cases.
-  `spec/plurimath/uncertainty_contract_spec.rb` checks it. Its header still
-  carries the "proposal" status it had before the work was merged; the cases
-  themselves are current.
+  `spec/plurimath/uncertainty_contract_spec.rb` checks it. Its header says
+  the contract is implemented. The `status` of each case is the one it had
+  during the design; the cases themselves are current.
 * Writers and the node: `spec/plurimath/math/function/uncertainty_spec.rb`,
   `spec/plurimath/math/function/uncertainty_writers_spec.rb`,
   `spec/plurimath/math/formula/uncertainty_spec.rb`.
