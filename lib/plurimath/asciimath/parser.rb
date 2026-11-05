@@ -13,15 +13,18 @@ module Plurimath
       # dialect L spellings only.
       def initialize(text, dialect: :legacy)
         @dialect = dialect
-        return @text = text if dialect == :pma
+        @text = dialect == :pma ? text : legacy_text(text)
+      end
 
-        @text = text
+      def legacy_text(text)
+        text
           &.gsub(/(\|:|:\|)/, "|")
           &.gsub(/(\{:)/, "ℒ")
           &.gsub(/(:\})/, "ℛ")
           &.gsub(/(\(:)/, "ᑕ")
           &.gsub(/(:\))/, "ᑐ")
       end
+      private :legacy_text
 
       # The amath gem parses #text (dialect L, the Ruby engine) into its
       # typed model, which Mapper turns into a Formula. A grammar refusal

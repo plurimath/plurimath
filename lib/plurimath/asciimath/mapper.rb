@@ -80,7 +80,7 @@ module Plurimath
 
       def relative_magnitude(value, percent)
         product = BigDecimal(value.to_s).abs * BigDecimal(percent.to_s) / 100
-        product.to_s("F").sub(/\.0\z/, "")
+        product.to_s("F").delete_suffix(".0")
       end
 
       # A model node as its capture tree: Hashes keyed by capture name,

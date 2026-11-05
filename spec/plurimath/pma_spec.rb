@@ -5,7 +5,7 @@ require "spec_helper"
 # The :pma input type (docs/pma.adoc): every accepted form of the pma
 # specification, the refusals Plurimath adds, and the forms on which pma
 # and dialect L (:asciimath) agree.
-RSpec.describe "Plurimath::Math.parse(text, :pma)" do
+RSpec.describe Plurimath::Pma do
   def number(text)
     text && Plurimath::Math::Number.new(text)
   end
@@ -36,7 +36,7 @@ RSpec.describe "Plurimath::Math.parse(text, :pma)" do
   end
 
   it "is a valid input type" do
-    expect(Plurimath::Math::VALID_TYPES).to include(pma: Plurimath::Pma)
+    expect(Plurimath::Math::VALID_TYPES).to include(pma: described_class)
     expect(Plurimath::Math::INPUT_ONLY_TYPES).to eq(%i[pma])
   end
 
