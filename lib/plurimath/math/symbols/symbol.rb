@@ -12,6 +12,26 @@ module Plurimath
         attribute :mini_sup_sized, :boolean
         attribute :options, :hash
 
+        # Options keep symbol keys, which JSON turns into strings, so they
+        # are read back through a method.
+        key_value do
+          map "__class", to: :__class
+          map "value", to: :value
+          map "slashed", to: :slashed
+          map "mini_sub_sized", to: :mini_sub_sized
+          map "mini_sup_sized", to: :mini_sup_sized
+          map "options", with: { to: :options_to_kv, from: :options_from_kv }
+        end
+
+        def options_to_kv(model, doc)
+          options = model.instance_variable_get(:@options)
+          doc["options"] = options if options.is_a?(::Hash)
+        end
+
+        def options_from_kv(model, value)
+          model.instance_variable_set(:@options, Core.deep_keys(value, :to_sym))
+        end
+
         INPUT = {}.freeze
 
         def initialize(sym = nil,

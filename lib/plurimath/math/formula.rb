@@ -9,8 +9,11 @@ module Plurimath
 
       include Mathml::FormulaTransformation
 
-      attr_accessor :value, :left_right_wrapper, :displaystyle, :input_string,
-                    :display
+      node_fields :value, collections: %i[value],
+                          scalars: { left_right_wrapper: :boolean,
+                                     displaystyle: :boolean,
+                                     input_string: :string },
+                          values: %i[display]
 
       POWER_BASE_CLASSES = %w[powerbase power base].freeze
       DERIVATIVE_CONSTS  = ["&#x1d451;", "&#x2145;", "&#x2146;", "d"].freeze

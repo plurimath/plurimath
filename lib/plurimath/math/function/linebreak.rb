@@ -4,7 +4,8 @@ module Plurimath
   module Math
     module Function
       class Linebreak < UnaryFunction
-        attr_accessor :attributes
+        node_fields :parameter_one, scalars: { hide_function_name: :boolean },
+                                    hashes: %i[attributes]
 
         def initialize(parameter_one = nil, attributes = {})
           @parameter_one = parameter_one

@@ -10,7 +10,8 @@ module Plurimath
         EXAMPLE = -> { new(sym("x")) }
         # --- end catalog documentation ---
 
-        attr_accessor :attributes
+        node_fields :parameter_one, scalars: { hide_function_name: :boolean },
+                                    hashes: %i[attributes]
 
         def initialize(parameter_one = nil, attributes = {})
           super(parameter_one)

@@ -10,7 +10,9 @@ module Plurimath
         EXAMPLE = -> { new(sym("x")) }
         # --- end catalog documentation ---
 
-        attr_accessor :open_paren, :close_paren
+        node_fields :parameter_one, scalars: { hide_function_name: :boolean,
+                                               open_paren: :boolean,
+                                               close_paren: :boolean }
 
         def to_asciimath(options:)
           parameter_one.is_a?(Table) ? "norm#{parameter_one.to_asciimath(options: options)}" : super

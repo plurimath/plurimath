@@ -10,6 +10,9 @@ module Plurimath
         EXAMPLE = -> { new("x") }
         # --- end catalog documentation ---
 
+        node_fields :parameter_one, scalars: { hide_function_name: :boolean },
+                                    symbols: %i[lang]
+
         PARSER_REGEX = %r{unicode\[:(?<unicode>\w{1,})\]}
 
         def initialize(parameter_one = "", lang: nil)

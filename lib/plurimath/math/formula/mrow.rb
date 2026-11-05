@@ -4,7 +4,12 @@ module Plurimath
   module Math
     class Formula
       class Mrow < Formula
-        attr_accessor :is_mrow
+        node_fields :value, collections: %i[value],
+                            scalars: { left_right_wrapper: :boolean,
+                                       displaystyle: :boolean,
+                                       input_string: :string,
+                                       is_mrow: :boolean },
+                            values: %i[display]
 
         def initialize(
           value = [],

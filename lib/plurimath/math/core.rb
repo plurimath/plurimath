@@ -38,40 +38,62 @@ module Plurimath
 
       # Declares node-holding fields. Each field keeps its storage in the
       # existing instance variable. lutaml-model sees a Core-typed view of
-      # it, plus a "<field>_text" key for String values. Every mapped key
-      # must be listed here, because a key_value block replaces the
-      # inherited one as a whole.
-      def self.node_fields(*fields, collections: [], scalars: {}, hashes: [])
+      # it, plus a "<field>_text" key for String values and a
+      # "<field>_value" key for an attribute Hash or an empty array. A field
+      # that is not a collection also gets a "<field>_list" key, for the
+      # nodes that keep an array of nodes in a single-node field. Every
+      # mapped key must be listed here, because a key_value block replaces
+      # the automatic mapping. A subclass keeps the rules it inherits and
+      # adds its own.
+      #
+      # Fields that hold no nodes are mapped through plain methods: hashes
+      # (keys kept as symbols), symbols (stored as strings) and values
+      # (stored as they are).
+      def self.node_fields(*fields, collections: [], scalars: {}, hashes: [],
+                           symbols: [], values: [])
         fields.each { |field| declare_node_field(field, collections.include?(field)) }
-        hashes.each { |field| declare_hash_field(field) }
+        hashes.each { |field| declare_plain_field(field, :hash) }
+        symbols.each { |field| declare_plain_field(field, :symbol) }
+        values.each { |field| declare_plain_field(field, :value) }
         scalars.each { |name, type| attribute(name, type) }
-        rules = { fields: fields, scalars: scalars.keys, hashes: hashes }
+        rules = { fields: fields, lists: fields - collections,
+                  scalars: scalars.keys, plain: hashes + symbols + values }
         key_value { Core.node_field_rules(self, **rules) }
       end
 
-      def self.node_field_rules(mapping, fields:, scalars:, hashes:)
+      def self.node_field_rules(mapping, fields:, lists:, scalars:, plain:)
         mapping.map "__class", to: :__class
         scalars.each { |name| mapping.map name.to_s, to: name }
-        hashes.each do |name|
+        plain.each do |name|
           mapping.map name.to_s, with: { to: :"#{name}_to_kv", from: :"#{name}_from_kv" }
         end
+        polymorphic = { attribute: "__class", class_map: NODE_CLASS_MAP }
         fields.each do |name|
-          mapping.map name.to_s, to: :"__#{name}_node",
-                                 polymorphic: { attribute: "__class",
-                                                class_map: NODE_CLASS_MAP }
+          mapping.map name.to_s, to: :"__#{name}_node", polymorphic: polymorphic
+          if lists.include?(name)
+            mapping.map "#{name}_list", to: :"__#{name}_nodes", polymorphic: polymorphic
+          end
           mapping.map "#{name}_text", with: { to: :"#{name}_text_to_kv",
                                               from: :"#{name}_text_from_kv" }
+          mapping.map "#{name}_value", with: { to: :"#{name}_value_to_kv",
+                                               from: :"#{name}_value_from_kv" }
         end
       end
 
       def self.declare_node_field(name, collection)
         attribute :"__#{name}_node", Core, polymorphic: true, collection: collection
+        if collection
+          hide_node_list(name)
+        else
+          declare_node_list(name)
+        end
         attr_accessor name
+
         ivar = :"@#{name}"
         define_method(:"__#{name}_node") do
           value = instance_variable_get(ivar)
           if value.is_a?(::Array)
-            value if value.all?(Core)
+            value if collection && value.all?(Core)
           elsif value.is_a?(Core)
             value
           end
@@ -86,17 +108,77 @@ module Plurimath
         define_method(:"#{name}_text_from_kv") do |model, value|
           model.instance_variable_set(ivar, value)
         end
+        # Some node fields hold an attribute Hash (Td's parameter_two) or an
+        # empty array, which neither node view keeps.
+        define_method(:"#{name}_value_to_kv") do |model, doc|
+          value = model.instance_variable_get(ivar)
+          if value.is_a?(::Hash)
+            doc["#{name}_value"] = Core.deep_keys(value, :to_s)
+          elsif value == []
+            doc["#{name}_value"] = []
+          end
+        end
+        define_method(:"#{name}_value_from_kv") do |model, value|
+          model.instance_variable_set(ivar, Core.deep_keys(value, :to_sym))
+        end
       end
 
-      def self.declare_hash_field(name)
-        attr_accessor name
+      # The array view of a single-node field. It is empty unless the field
+      # holds a non-empty array of nodes, so it never replaces a single node.
+      def self.declare_node_list(name)
+        attribute :"__#{name}_nodes", Core, polymorphic: true, collection: true
         ivar = :"@#{name}"
+        define_method(:"__#{name}_nodes") do
+          value = instance_variable_get(ivar)
+          value if value.is_a?(::Array) && !value.empty? && value.all?(Core)
+        end
+        define_method(:"__#{name}_nodes=") do |value|
+          instance_variable_set(ivar, value) if value.is_a?(::Array) && !value.empty?
+        end
+      end
+
+      # A subclass that turns an inherited single-node field into a
+      # collection still inherits the array view, so keep that view empty.
+      def self.hide_node_list(name)
+        return unless method_defined?(:"__#{name}_nodes")
+
+        define_method(:"__#{name}_nodes") { nil }
+        define_method(:"__#{name}_nodes=") { |_value| nil }
+      end
+
+      PLAIN_DUMP = {
+        hash: ->(value) { Core.deep_keys(value, :to_s) if value.is_a?(::Hash) },
+        symbol: ->(value) { value.to_s if value.is_a?(::Symbol) },
+        value: ->(value) { value },
+      }.freeze
+
+      PLAIN_LOAD = {
+        hash: ->(value) { Core.deep_keys(value, :to_sym) },
+        symbol: ->(value) { value&.to_sym },
+        value: ->(value) { value },
+      }.freeze
+
+      def self.declare_plain_field(name, kind)
+        attr_accessor name
+
+        ivar = :"@#{name}"
+        dump = PLAIN_DUMP.fetch(kind)
+        load = PLAIN_LOAD.fetch(kind)
         define_method(:"#{name}_to_kv") do |model, doc|
-          value = model.instance_variable_get(ivar)
-          doc[name.to_s] = value.transform_keys(&:to_s) if value.is_a?(::Hash)
+          value = dump.call(model.instance_variable_get(ivar))
+          doc[name.to_s] = value unless value.nil?
         end
         define_method(:"#{name}_from_kv") do |model, value|
-          model.instance_variable_set(ivar, value&.transform_keys(&:to_sym))
+          model.instance_variable_set(ivar, load.call(value))
+        end
+      end
+
+      def self.deep_keys(value, method)
+        case value
+        when ::Hash
+          value.to_h { |key, item| [key.public_send(method), deep_keys(item, method)] }
+        when ::Array then value.map { |item| deep_keys(item, method) }
+        else value
         end
       end
 

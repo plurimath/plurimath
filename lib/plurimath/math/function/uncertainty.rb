@@ -47,14 +47,17 @@ module Plurimath
         # One unit symbol as UnitsML writes it, for example "kg".
         UNIT_SYMBOL = /\A[A-Za-z]+\z/
 
-        attr_reader :value, :category, :magnitude, :coverage_factor,
-                    :coverage_probability, :lower, :upper, :interval_kind,
-                    :notation, :unit
+        node_fields :value, :magnitude, :coverage_factor, :coverage_probability,
+                    :lower, :upper, :unit,
+                    symbols: %i[category interval_kind notation]
 
         # The keyword list is the documented model (docs/uncertainty.adoc).
+        # lutaml-model builds a blank node with no arguments as the receiver
+        # of its mapping methods, so a node with neither a value nor a
+        # category skips validation.
         def initialize( # rubocop:disable Metrics/ParameterLists
-          value,
-          category:,
+          value = nil,
+          category: nil,
           magnitude: nil,
           coverage_factor: nil,
           coverage_probability: nil,
@@ -75,7 +78,7 @@ module Plurimath
           @notation = category == :standard ? notation : nil
           @unit = unit
           super()
-          validate!(notation)
+          validate!(notation) unless value.nil? && category.nil?
         end
 
         def ==(other)
