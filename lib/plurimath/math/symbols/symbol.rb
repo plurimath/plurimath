@@ -6,8 +6,11 @@ module Plurimath
       class Symbol < Core
         extend SymbolDocumentation
 
-        attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized,
-                      :options
+        attribute :value, :string
+        attribute :slashed, :boolean
+        attribute :mini_sub_sized, :boolean
+        attribute :mini_sup_sized, :boolean
+        attribute :options, :hash
 
         INPUT = {}.freeze
 
@@ -15,7 +18,10 @@ module Plurimath
                        slashed = nil,
                        mini_sub_sized: false,
                        mini_sup_sized: false,
-                       options: {})
+                       options: {},
+                       lutaml_register: nil)
+          @lutaml_register = lutaml_register if lutaml_register
+          @using_default = {}
           @value = sym.is_a?(Array) ? sym.join : sym&.to_s
           @slashed = slashed if slashed
           @mini_sub_sized = mini_sub_sized if mini_sub_sized

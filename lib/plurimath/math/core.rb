@@ -2,7 +2,7 @@
 
 module Plurimath
   module Math
-    class Core
+    class Core < Lutaml::Model::Serializable
       REPLACABLES = {
         /&amp;/ => "&",
         /^\n/ => "",
