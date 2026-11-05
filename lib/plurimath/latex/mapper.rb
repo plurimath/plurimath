@@ -11,6 +11,10 @@ module Plurimath
     # docs/model-contract.adoc) are listed in WRAPPERS. The mapper first reads
     # a model node as the capture tree it stands for (#captures), then builds
     # the Formula with the LaTeX rule table (Mapper::Rules).
+    #
+    # Leaf nodes (see LEAVES) are built from the model directly: their Math
+    # object takes the place of their capture hash, and the rule table only
+    # unwraps it.
     class Mapper
       extend Parsanol::Atoms::CanFlatten
 
@@ -33,6 +37,22 @@ module Plurimath
       # The matrix row break: latexmath names the capture +row_break+, the
       # rule table keys it as the String "\\\\".
       RENAMES = { row_break: "\\\\" }.freeze
+
+      # A node whose only set attribute is one of these text captures is a
+      # leaf: it maps straight to the Math object built from that text.
+      LEAVES = {
+        number: ->(t) { Math::Number.new(Utility.html_entity_to_unicode(t.to_s)) },
+        unary: ->(t) { Utility.get_class(t).new },
+        ternary: ->(t) { Utility.get_class(t).new },
+        space: ->(_) { Math::Function::Text.new(" ") },
+        operant: ->(t) { Utility.symbols_class(t, lang: :latex) },
+        numeric_values: ->(t) { Utility.symbols_class(t, lang: :latex) },
+        lparen: ->(t) { Utility.symbols_class(t, lang: :latex) },
+        rparen: ->(t) { Utility.symbols_class(t, lang: :latex) },
+        text: ->(t) { Math::Function::Text.new(t) },
+        three_per_em_space: ->(_) { Math::Symbols::ThreePerEmSpace.new },
+        row_break: ->(_) { Math::Function::Linebreak.new },
+      }.freeze
 
       # Utility caches each language's paren table on first use. LaTeX
       # parsing has always built it first, without Lcurly, so "\\{" stays a
@@ -72,6 +92,9 @@ module Plurimath
       # hash parts; each wrapper is the value it stands for. The parts fold
       # as the grammar's sequence folded them.
       def node_captures(node)
+        leaf = leaf(node)
+        return { built: leaf } if leaf
+
         parts = []
         run = nil
         only_absent = true
@@ -96,6 +119,21 @@ module Plurimath
         self.class.send(:foldl, parts) { |l, r| self.class.send(:merge_fold, l, r) }
       end
 
+      # The Math object for a leaf node, or nil when the node is not one.
+      def leaf(node)
+        set = node.class.attributes.each_key.reject { |n| node.public_send(n).nil? }
+        return unless set.size == 1
+
+        name = set.first
+        value = node.public_send(name)
+        build = LEAVES[name]
+        build.call(slice(value)) if build && value.is_a?(String)
+      end
+
+      def slice(text)
+        Parsanol::Slice.new(0, text.dup.force_encoding(Encoding::UTF_8))
+      end
+
       def wrapped(kind, value)
         case kind
         when :text then value.nil? || value == [] ? +"" : value
@@ -112,7 +150,7 @@ module Plurimath
         case tree
         when Hash then tree.transform_values { |v| slices(v) }
         when Array then tree.map { |v| slices(v) }
-        when String then Parsanol::Slice.new(0, tree.dup.force_encoding(Encoding::UTF_8))
+        when String then slice(tree)
         else tree
         end
       end

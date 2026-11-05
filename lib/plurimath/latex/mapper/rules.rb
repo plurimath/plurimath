@@ -8,6 +8,8 @@ module Plurimath
       class Rules < Parsanol::Transform
         include Plurimath::BaseNumberPrefix::Transform
 
+        # A leaf the mapper built from the model (Mapper::LEAVES).
+        rule(built: simple(:built))     { built }
         rule(base: simple(:base))       { base }
         rule(over: simple(:over))       { over }
         rule(number: simple(:num))      { Math::Number.new(Utility.html_entity_to_unicode(num.to_s)) }
