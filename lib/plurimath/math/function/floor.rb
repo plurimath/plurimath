@@ -10,7 +10,9 @@ module Plurimath
         EXAMPLE = -> { new(sym("x")) }
         # --- end catalog documentation ---
 
-        attr_accessor :open_paren, :close_paren
+        node_fields :parameter_one, scalars: { hide_function_name: :boolean,
+                                               open_paren: :boolean,
+                                               close_paren: :boolean }
 
         def to_latex(options:)
           "{\\lfloor #{parameter_one.to_latex(options: options)} \\rfloor}"

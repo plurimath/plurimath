@@ -16,7 +16,8 @@ module Plurimath
           second_value: "supscript",
         }.freeze
 
-        attr_accessor :options
+        node_fields :parameter_one, :parameter_two, :parameter_three,
+                    scalars: { hide_function_name: :boolean }, hashes: %i[options]
 
         def evaluate(evaluator)
           if parameter_one.nil? || parameter_two.nil? || parameter_three.nil?
@@ -33,7 +34,7 @@ module Plurimath
                        parameter_three = nil,
                        options = {})
           super(parameter_one, parameter_two, parameter_three)
-          @options = options unless options&.empty?
+          @options = options unless options && options.empty?
         end
 
         def ==(object)
