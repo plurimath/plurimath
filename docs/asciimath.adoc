@@ -55,8 +55,8 @@ https://github.com/plurimath/amath/issues/13[amath#13] is still open
 https://github.com/plurimath/plurimath/issues/541[#541]
 
 |Dialect P ("pma"), a separate strict ASCII grammar with reserved
-constructors
-|proposed
+constructors, read with the `:pma` input type
+|implemented
 |https://github.com/plurimath/amath/issues/16[amath#16], specified in link:pma.adoc[pma]
 
 |Moving the bareword call forms into dialect P
@@ -64,8 +64,8 @@ constructors
 |https://github.com/plurimath/amath/issues/17[amath#17], waits on amath#16
 
 |Inline `(10.3 +/- 0.2)` sugar, relative `%` uncertainty, distribution tags
-|proposed
-|https://github.com/plurimath/plurimath/issues/524[#524]
+|implemented in dialect P only
+|https://github.com/plurimath/plurimath/issues/524[#524], link:pma.adoc[pma]
 
 |A closed expression language with evaluation
 |proposed
@@ -84,7 +84,9 @@ Plurimath has no AsciiMath grammar of its own. `Plurimath::Asciimath::Parser`
 calls `Amath.parse(text, dialect: :legacy, engine: :ruby, decimal:
 Plurimath.configuration.decimal)`, and `Plurimath::Asciimath::Mapper` turns
 the returned typed model (`Amath::Model::Document`) into a Formula with the
-rule table `Plurimath::Asciimath::Mapper::Rules`.
+rule table `Plurimath::Asciimath::Mapper::Rules`. The `:pma` input type
+goes through the same parser and mapper with `dialect: :pma`
+(link:pma.adoc#selection[pma selection]); `:asciimath` is always dialect L.
 `Plurimath::Asciimath::Parse` stays as a tree-level entry point that returns
 amath's internal legacy-shaped raw tree; Plurimath's own parsing does not use
 it. The grammar is

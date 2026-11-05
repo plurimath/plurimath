@@ -1250,7 +1250,7 @@ module Plurimath
           }.freeze
 
           FIELDS = {
-            standard: %i[value magnitude concise_digits unit],
+            standard: %i[value magnitude concise_digits unit distribution],
             expanded: %i[value magnitude coverage_factor coverage_probability
                          unit],
             coverage_interval: %i[value lower upper coverage_probability
@@ -1340,6 +1340,7 @@ module Plurimath
             options = NUMBER_FIELDS.to_h { |field| [field, number(fields[field])] }
             options[:interval_kind] = interval_kind(fields[:interval_kind])
             options[:unit] = fields[:unit] && Math::Function::Unitsml.new(fields[:unit])
+            options[:distribution] = fields[:distribution]&.to_sym
             concise!(options, fields) if fields.key?(:concise_digits)
             options
           end
