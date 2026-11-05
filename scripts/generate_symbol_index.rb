@@ -103,7 +103,9 @@ end
 
 content = build
 if ARGV.include?("--check")
-  current = File.exist?(INDEX_FILE) ? File.binread(INDEX_FILE) : ""
+  # Compare without line-ending differences: a Windows checkout may have
+  # converted the committed file to CRLF.
+  current = File.exist?(INDEX_FILE) ? File.binread(INDEX_FILE).gsub("\r\n", "\n") : ""
   if current == content.b
     puts "symbol index is up to date"
   else
