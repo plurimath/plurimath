@@ -72,8 +72,7 @@ input trees and exact normalized model expectations checked by the reader specs.
 `probabilistically-symmetric` cannot be used, because AsciiMath reads the `-` as
 minus. `symmetric` means the probabilistically symmetric coverage interval of
 JCGM 101 §5.3.4 and maps to `:probabilistically_symmetric`. The output side
-(`Uncertainty#to_asciimath`, which today writes `probabilistically-symmetric`)
-must write `symmetric` so that output reads back.
+(`Uncertainty#to_asciimath`) writes `symmetric`, so its output reads back.
 
 ## Errors
 

@@ -3,9 +3,9 @@
 module Plurimath
   class Latex
     autoload :Constants, "#{__dir__}/latex/constants"
+    autoload :Mapper, "#{__dir__}/latex/mapper"
     autoload :Parse, "#{__dir__}/latex/parse"
     autoload :Parser, "#{__dir__}/latex/parser"
-    autoload :Transform, "#{__dir__}/latex/transform"
     autoload :Utility, "#{__dir__}/latex/utility"
 
     attr_accessor :text

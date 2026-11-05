@@ -38,6 +38,27 @@ module Plurimath
           def to_omml_without_math_tag(display_style, options:)
             font_styles(display_style, sty: "p", options: options)
           end
+
+          # In a unit, a symbol of more than one character is written as
+          # quoted text, \mup"kg": UnicodeMath reads \mupkg as an upright k
+          # followed by g. One-letter units keep the \mupg form.
+          def to_unicodemath(options:)
+            return super unless unicodemath_unit_text?(options)
+
+            text = Text.new(parameter_one.value)
+            "#{font_family(unicode: true)}#{text.to_unicodemath(options: options)}"
+          end
+
+          private
+
+          def unicodemath_unit_text?(options)
+            return false unless options.is_a?(Hash) && options[:unicodemath_unit]
+            return false unless parameter_one.instance_of?(Math::Symbols::Symbol)
+
+            value = parameter_one.value.to_s
+            !value.start_with?("\\") &&
+              Utility.html_entity_to_unicode(value).length > 1
+          end
         end
       end
     end
