@@ -52,6 +52,28 @@ module Plurimath
         text: ->(t) { Math::Function::Text.new(t) },
         three_per_em_space: ->(_) { Math::Symbols::ThreePerEmSpace.new },
         row_break: ->(_) { Math::Function::Linebreak.new },
+        symbols: ->(t) { Utility.symbols_class(t, lang: :latex) },
+        unicode_symbols: ->(t) { Utility.symbols_class(t, lang: :latex) },
+        symbol: ->(t) { Utility.symbols_class(t, lang: :latex) },
+        binary: ->(t) { Utility.get_class(t).new },
+      }.freeze
+
+      # A node whose only set attribute is one of these, holding a node the
+      # mapper built, stands for that built node.
+      PASS_THROUGH = %i[
+        binary unary_functions ternary_class power_base under_over limits
+        left_right
+      ].freeze
+
+      # Nodes whose set attributes are exactly these keys are built from
+      # their children's Math objects.
+      COMPOSITES = {
+        %i[dividend divisor] => lambda do |dividend, divisor|
+          Math::Function::Over.new(
+            Math::Formula.new(Array(dividend).flatten),
+            Math::Formula.new(Array(divisor).flatten),
+          )
+        end,
       }.freeze
 
       # Utility caches each language's paren table on first use. LaTeX
@@ -119,15 +141,30 @@ module Plurimath
         self.class.send(:foldl, parts) { |l, r| self.class.send(:merge_fold, l, r) }
       end
 
-      # The Math object for a leaf node, or nil when the node is not one.
+      # The Math object for a leaf, pass-through or composite node, or nil
+      # when the node is none of these.
       def leaf(node)
         set = node.class.attributes.each_key.reject { |n| node.public_send(n).nil? }
+        return if set.any? { |n| WRAPPERS.key?(n) }
+
+        composite = COMPOSITES[set]
+        return composite.call(*set.map { |n| built(node.public_send(n)) }) if composite
         return unless set.size == 1
 
         name = set.first
         value = node.public_send(name)
-        build = LEAVES[name]
-        build.call(slice(value)) if build && value.is_a?(String)
+        value = captures(value) if value.is_a?(Lutaml::Model::Serializable)
+        if value.is_a?(String)
+          build = LEAVES[name]
+          build&.call(slice(value))
+        elsif PASS_THROUGH.include?(name) && value.is_a?(Hash) && value.keys == [:built]
+          value[:built]
+        end
+      end
+
+      # A child node as the rule table would build it.
+      def built(node)
+        Rules.new.apply(slices(captures(node)))
       end
 
       def slice(text)
