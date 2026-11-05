@@ -47,8 +47,9 @@ module Plurimath
       # adds its own.
       #
       # Fields that hold no nodes are mapped through plain methods: hashes
-      # (keys kept as symbols), symbols (stored as strings) and values
-      # (stored as they are).
+      # (keys keep their Symbol or String type), symbols (a Symbol is stored
+      # as its name, a String as { "string" => string }, so the two stay
+      # apart) and values (stored as they are).
       def self.node_fields(*fields, collections: [], scalars: {}, hashes: [],
                            symbols: [], values: [])
         fields.each { |field| declare_node_field(field, collections.include?(field)) }
@@ -77,6 +78,8 @@ module Plurimath
                                               from: :"#{name}_text_from_kv" }
           mapping.map "#{name}_value", with: { to: :"#{name}_value_to_kv",
                                                from: :"#{name}_value_from_kv" }
+          mapping.map "#{name}_mixed", with: { to: :"#{name}_mixed_to_kv",
+                                               from: :"#{name}_mixed_from_kv" }
         end
       end
 
@@ -113,13 +116,54 @@ module Plurimath
         define_method(:"#{name}_value_to_kv") do |model, doc|
           value = model.instance_variable_get(ivar)
           if value.is_a?(::Hash)
-            doc["#{name}_value"] = Core.deep_keys(value, :to_s)
+            doc["#{name}_value"] = Core.dump_keys(value)
           elsif value == []
             doc["#{name}_value"] = []
           end
         end
         define_method(:"#{name}_value_from_kv") do |model, value|
-          model.instance_variable_set(ivar, Core.deep_keys(value, :to_sym))
+          model.instance_variable_set(ivar, Core.load_keys(value))
+        end
+        declare_mixed_list(name)
+      end
+
+      # An array that mixes Strings and nodes fits neither node view nor the
+      # text key, so it goes in "<field>_mixed" as a tagged list: a String
+      # becomes { "text" => string } and a node { "class" => name,
+      # "node" => hash }. Writers never read these keys.
+      def self.declare_mixed_list(name)
+        ivar = :"@#{name}"
+        define_method(:"#{name}_mixed_to_kv") do |model, doc|
+          value = model.instance_variable_get(ivar)
+          doc["#{name}_mixed"] = Core.dump_mixed(value) if Core.mixed?(value)
+        end
+        define_method(:"#{name}_mixed_from_kv") do |model, value|
+          model.instance_variable_set(ivar, Core.load_mixed(value)) if value.is_a?(::Array)
+        end
+      end
+
+      def self.mixed?(value)
+        value.is_a?(::Array) && !value.all?(Core) &&
+          value.all? { |item| item.is_a?(::String) || item.is_a?(Core) }
+      end
+
+      def self.dump_mixed(value)
+        value.map do |item|
+          next { "text" => item } if item.is_a?(::String)
+
+          { "class" => item.class.name, "node" => item.to_hash }
+        end
+      end
+
+      def self.load_mixed(value)
+        value.map do |item|
+          item = item.transform_keys(&:to_s)
+          next item["text"] unless item.key?("node")
+
+          name = NODE_CLASS_MAP[item["class"]]
+          raise ArgumentError, "unknown node class #{item['class'].inspect}" unless name
+
+          Object.const_get(name).from_hash(item["node"])
         end
       end
 
@@ -147,14 +191,21 @@ module Plurimath
       end
 
       PLAIN_DUMP = {
-        hash: ->(value) { Core.deep_keys(value, :to_s) if value.is_a?(::Hash) },
-        symbol: ->(value) { value.to_s if value.is_a?(::Symbol) },
+        hash: ->(value) { Core.dump_keys(value) if value.is_a?(::Hash) },
+        symbol: lambda { |value|
+          case value
+          when ::Symbol then value.to_s
+          when ::String then { "string" => value }
+          end
+        },
         value: ->(value) { value },
       }.freeze
 
       PLAIN_LOAD = {
-        hash: ->(value) { Core.deep_keys(value, :to_sym) },
-        symbol: ->(value) { value&.to_sym },
+        hash: ->(value) { Core.load_keys(value) },
+        symbol: lambda { |value|
+          value.is_a?(::Hash) ? value.transform_keys(&:to_s)["string"] : value&.to_sym
+        },
         value: ->(value) { value },
       }.freeze
 
@@ -173,11 +224,39 @@ module Plurimath
         end
       end
 
-      def self.deep_keys(value, method)
+      # Hashes held by nodes mostly have Symbol keys. Keys are stored as
+      # Strings, and the keys that were Strings are listed under
+      # STRING_KEYS, so load_keys gives each key its original type back. A
+      # hash with Symbol keys only is stored as before.
+      STRING_KEYS = "__string_keys"
+
+      # With stringify: false the keys are kept as they are, and only the
+      # STRING_KEYS list is added, which JSON needs.
+      def self.dump_keys(value, stringify: true)
         case value
         when ::Hash
-          value.to_h { |key, item| [key.public_send(method), deep_keys(item, method)] }
-        when ::Array then value.map { |item| deep_keys(item, method) }
+          dumped = value.to_h do |key, item|
+            [stringify ? key.to_s : key, dump_keys(item, stringify: stringify)]
+          end
+          strings = value.keys.grep(::String)
+          dumped[STRING_KEYS] = strings unless strings.empty?
+          dumped
+        when ::Array then value.map { |item| dump_keys(item, stringify: stringify) }
+        else value
+        end
+      end
+
+      def self.load_keys(value)
+        case value
+        when ::Hash
+          strings = Array(value[STRING_KEYS] || value[STRING_KEYS.to_sym]).map(&:to_s)
+          value.each_with_object({}) do |(key, item), loaded|
+            next if key.to_s == STRING_KEYS
+
+            key = key.to_s
+            loaded[strings.include?(key) ? key : key.to_sym] = load_keys(item)
+          end
+        when ::Array then value.map { |item| load_keys(item) }
         else value
         end
       end

@@ -12,8 +12,9 @@ module Plurimath
         attribute :mini_sup_sized, :boolean
         attribute :options, :hash
 
-        # Options keep symbol keys, which JSON turns into strings, so they
-        # are read back through a method.
+        # Options keep their key types, which JSON would turn into strings,
+        # so they are written and read back through Core.dump_keys and
+        # Core.load_keys.
         key_value do
           map "__class", to: :__class
           map "value", to: :value
@@ -25,11 +26,11 @@ module Plurimath
 
         def options_to_kv(model, doc)
           options = model.instance_variable_get(:@options)
-          doc["options"] = options if options.is_a?(::Hash)
+          doc["options"] = Core.dump_keys(options, stringify: false) if options.is_a?(::Hash)
         end
 
         def options_from_kv(model, value)
-          model.instance_variable_set(:@options, Core.deep_keys(value, :to_sym))
+          model.instance_variable_set(:@options, Core.load_keys(value))
         end
 
         INPUT = {}.freeze
