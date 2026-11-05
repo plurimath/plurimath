@@ -19,6 +19,8 @@ gem "nokogiri"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 gem "parsanol"
+# unicodemath is unpublished; pinned until its first release.
+gem "unicodemath", github: "plurimath/unicodemath", ref: "76a8c704001874b0d23ae53f0f79efba90ce65a4"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"
