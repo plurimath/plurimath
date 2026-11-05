@@ -10,10 +10,13 @@ module Plurimath
     # and the few captures its shape normalization adds (see unicodemath's
     # docs/model-contract.adoc) are listed in WRAPPERS. The mapper first reads
     # a model node as the capture tree it stands for (#captures), then builds
-    # the Formula with the UnicodeMath rule table (Mapper::Rules).
+    # the Formula with the UnicodeMath rule table (Mapper::Rules). The model
+    # declares fields alphabetically; each Hash of the capture tree lists
+    # them in the grammar's capture order instead (Mapper::CaptureOrder).
     class Mapper
       extend Parsanol::Atoms::CanFlatten
 
+      autoload :CaptureOrder, "#{__dir__}/mapper/capture_order"
       autoload :Rules, "#{__dir__}/mapper/rules"
 
       # The captures unicodemath's shape normalization adds, and the value
@@ -41,10 +44,11 @@ module Plurimath
         tree(expression)
       end
 
-      # The capture tree of the model node +expression+, with the grammar's
-      # text as Parsanol::Slice values: the input of the rule table.
+      # The capture tree of the model node +expression+ (the formula, captured
+      # as the grammar's root), with the grammar's text as Parsanol::Slice
+      # values: the input of the rule table.
       def tree(expression)
-        slices(captures(expression))
+        slices(captures(expression, capture_order.root_capture))
       end
 
       # The capture tree of a unicodemath raw tree (Hashes keyed by capture
@@ -62,23 +66,33 @@ module Plurimath
 
       private
 
-      # A model node as its capture tree: Hashes keyed by capture name,
-      # Arrays for repetitions, and the captured text.
-      def captures(node)
+      # A model node, captured as +capture+, as its capture tree: Hashes
+      # keyed by capture name, Arrays for repetitions, and the captured text.
+      def captures(node, capture)
         case node
-        when Array then self.class.send(:flatten_repetition, node.map { |v| captures(v) }, true)
-        when Lutaml::Model::Serializable then fold(node_fields(node))
+        when Array then self.class.send(:flatten_repetition, node.map { |v| captures(v, capture) }, true)
+        when Lutaml::Model::Serializable then fold(node_fields(node, capture))
         else node
         end
       end
 
-      # The node's set attributes, in declared order, as [name, captures].
-      def node_fields(node)
+      # The node's set attributes as [name, captures], in the order the
+      # grammar captures them.
+      def node_fields(node, capture)
         names = node.class.attributes.keys
         names -= SYMBOL_FIELDS if names.include?(:spelling)
-        names.filter_map do |name|
-          value = node.public_send(name)
-          [name, captures(value)] unless value.nil?
+        names = names.reject { |name| node.public_send(name).nil? }
+        capture_order.order(capture, names).map do |name|
+          [name, captures(node.public_send(name), name)]
+        end
+      end
+
+      # The grammar the model was parsed with: unicodemath's compiled
+      # artifact, entry for the configured decimal marker.
+      def capture_order
+        @capture_order ||= begin
+          entry = ::Unicodemath::RawParser.entry_for(Plurimath.configuration.decimal)
+          CaptureOrder.for(::Unicodemath.artifacts.parse.entry(entry).fetch("grammar"))
         end
       end
 
