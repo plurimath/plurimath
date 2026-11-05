@@ -5,7 +5,7 @@ require "spec_helper"
 # The common Function holders declare their node fields through
 # lutaml-model. Each field is a polymorphic Core view of the existing
 # instance variable, so writers keep reading the same storage.
-RSpec.describe "Plurimath::Math::Core node fields" do
+RSpec.describe Plurimath::Math::Core, ".node_fields" do
   let(:math) { Plurimath::Math }
   let(:function) { Plurimath::Math::Function }
   let(:one) { math::Number.new("1") }

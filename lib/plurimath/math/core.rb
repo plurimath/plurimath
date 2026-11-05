@@ -67,6 +67,7 @@ module Plurimath
       def self.declare_node_field(name, collection)
         attribute :"__#{name}_node", Core, polymorphic: true, collection: collection
         attr_accessor name
+
         ivar = :"@#{name}"
         define_method(:"__#{name}_node") do
           value = instance_variable_get(ivar)
@@ -90,6 +91,7 @@ module Plurimath
 
       def self.declare_hash_field(name)
         attr_accessor name
+
         ivar = :"@#{name}"
         define_method(:"#{name}_to_kv") do |model, doc|
           value = model.instance_variable_get(ivar)
