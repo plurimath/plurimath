@@ -5,9 +5,9 @@ module Plurimath
     class Parser
       attr_accessor :text
 
-      # unicodemath is a runtime dependency; this line is only guidance for
+      # umath is a runtime dependency; this line is only guidance for
       # installs where the gem is unexpectedly missing.
-      UNICODEMATH_GEMFILE_LINE = 'gem "unicodemath"'
+      UMATH_GEMFILE_LINE = 'gem "umath"'
 
       LABELED_TR_REGEX = /"([^"]*(#|&#x23;|\\\\eqno)[^"]*[^"]*|[^"]*(#|&#x23;|\\\\eqno)[^"]*[^"]*)"/
 
@@ -26,13 +26,13 @@ module Plurimath
         @text = @text.strip
       end
 
-      # The unicodemath gem parses the input (it runs the same preprocessing
+      # The umath gem parses the input (it runs the same preprocessing
       # as #text) into its typed model, which Mapper turns into a capture
       # tree for the rule table. A grammar refusal raises
       # Parsanol::ParseFailed.
       def parse
-        self.class.load_unicodemath
-        tree = parse_with_unicodemath
+        self.class.load_umath
+        tree = parse_with_umath
         tree = post_processing(tree) if @splitted
         Math::Formula.new(
           Array(
@@ -42,23 +42,23 @@ module Plurimath
       end
 
       class << self
-        # Loaded here, outside the methods that rescue ::Unicodemath::...
-        # errors, so those clauses are never evaluated while Unicodemath is
+        # Loaded here, outside the methods that rescue ::Umath::...
+        # errors, so those clauses are never evaluated while Umath is
         # undefined.
-        def load_unicodemath
-          require "unicodemath"
+        def load_umath
+          require "umath"
         rescue LoadError => e
-          raise unless e.path == "unicodemath" || e.message.end_with?("-- unicodemath")
+          raise unless e.path == "umath" || e.message.end_with?("-- umath")
 
           raise Math::MissingDependencyError.new(
             :unicode,
             format_name: "UnicodeMath",
-            gem_name: "unicodemath",
-            gemfile_line: UNICODEMATH_GEMFILE_LINE,
+            gem_name: "umath",
+            gemfile_line: UMATH_GEMFILE_LINE,
           ), cause: nil
         end
 
-        # The Parsanol::ParseFailed for a unicodemath refusal (+error+), with
+        # The Parsanol::ParseFailed for a umath refusal (+error+), with
         # its cause at the reported position in +text+.
         def parse_failed(error, text)
           message = error.message
@@ -70,10 +70,10 @@ module Plurimath
 
       private
 
-      def parse_with_unicodemath
-        document = ::Unicodemath.parse(@input, decimal: Plurimath.configuration.decimal)
+      def parse_with_umath
+        document = ::Umath.parse(@input, decimal: Plurimath.configuration.decimal)
         Mapper.new.call(document)
-      rescue ::Unicodemath::ParseError => e
+      rescue ::Umath::ParseError => e
         raise self.class.parse_failed(e, text)
       end
 

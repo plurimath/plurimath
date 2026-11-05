@@ -4,7 +4,7 @@ module Plurimath
   class UnicodeMath
     class Mapper
       # The rule table that builds Formula objects from the capture tree of a
-      # unicodemath model node (see Mapper#captures).
+      # umath model node (see Mapper#captures).
       class Rules < Parsanol::Transform
         include Plurimath::BaseNumberPrefix::Transform
 

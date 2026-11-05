@@ -1,5 +1,5 @@
 require "spec_helper"
-require "unicodemath"
+require "umath"
 
 RSpec.describe Plurimath::UnicodeMath::Mapper do
   # Every Hash's keys, in order, depth first.
@@ -14,8 +14,8 @@ RSpec.describe Plurimath::UnicodeMath::Mapper do
   end
 
   def mapped(input)
-    Plurimath::UnicodeMath::Parser.load_unicodemath
-    described_class.new.call(Unicodemath.parse(input))
+    Plurimath::UnicodeMath::Parser.load_umath
+    described_class.new.call(Umath.parse(input))
   end
 
   def grammar_tree(input)
@@ -50,7 +50,7 @@ RSpec.describe Plurimath::UnicodeMath::Mapper do
     it "uses the declared order where the grammar allows either and the model does not say" do
       # x^b_a captures sup before sub, x_a^b sub before sup; both give the
       # same model, so both map with sub first.
-      expect(Unicodemath.parse("x^b_a")).to eq(Unicodemath.parse("x_a^b"))
+      expect(Umath.parse("x^b_a")).to eq(Umath.parse("x_a^b"))
       expect(mapped("x^b_a")[:subsup_exp].keys).to eq(%i[base sub sup])
     end
   end

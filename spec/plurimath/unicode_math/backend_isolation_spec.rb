@@ -1,16 +1,16 @@
 require "spec_helper"
-require "unicodemath"
+require "umath"
 
 RSpec.describe Plurimath::UnicodeMath::Parse do
-  it "parses through the unicodemath gem, with no in-tree grammar or transform" do
+  it "parses through the umath gem, with no in-tree grammar or transform" do
     expect(described_class.ancestors).not_to include(Parsanol::Parser)
     expect(Plurimath::UnicodeMath.const_defined?(:Transform, false)).to be(false)
     expect(Plurimath::UnicodeMath.const_defined?(:ParsingRules, false)).to be(false)
 
-    allow(Unicodemath).to receive(:parse).and_call_original
+    allow(Umath).to receive(:parse).and_call_original
     Plurimath::Math.parse("a/b", :unicode)
 
-    expect(Unicodemath).to have_received(:parse).once
+    expect(Umath).to have_received(:parse).once
   end
 
   modes = %i[ruby native].freeze

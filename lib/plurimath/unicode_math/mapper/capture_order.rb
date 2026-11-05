@@ -13,7 +13,7 @@ module Plurimath
       # up inside the Formula as it is, so the mapper rebuilds each Hash in
       # the grammar's order.
       #
-      # The order is read from the compiled grammar that unicodemath runs
+      # The order is read from the compiled grammar that umath runs
       # (its artifact's atoms). For a node captured as +capture+ with the
       # fields +names+, every way the grammar can capture exactly those
       # names under +capture+ is listed, skipping any branch that captures

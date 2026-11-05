@@ -2,12 +2,12 @@
 
 module Plurimath
   class UnicodeMath
-    # Maps the typed UnicodeMath model that the unicodemath gem returns
-    # (Unicodemath::Model::Document) to a Plurimath::Math::Formula.
+    # Maps the typed UnicodeMath model that the umath gem returns
+    # (Umath::Model::Document) to a Plurimath::Math::Formula.
     #
-    # unicodemath owns the grammar and the model. Its model classes are the
+    # umath owns the grammar and the model. Its model classes are the
     # grammar's captures, typed: each class has one attribute per capture key,
-    # and the few captures its shape normalization adds (see unicodemath's
+    # and the few captures its shape normalization adds (see umath's
     # docs/model-contract.adoc) are listed in WRAPPERS. The mapper first reads
     # a model node as the capture tree it stands for (#captures), then builds
     # the Formula with the UnicodeMath rule table (Mapper::Rules). The model
@@ -19,8 +19,8 @@ module Plurimath
       autoload :CaptureOrder, "#{__dir__}/mapper/capture_order"
       autoload :Rules, "#{__dir__}/mapper/rules"
 
-      # The captures unicodemath's shape normalization adds, and the value
-      # each one stands for (unicodemath 0.1, grammars/unicodemath.wrappers.json):
+      # The captures umath's shape normalization adds, and the value
+      # each one stands for (umath 0.1, grammars/umath.wrappers.json):
       #   :text   the wrapped text ("" when empty);
       #   :empty  an absent optional part ("");
       #   :list   the list ("" when it is empty);
@@ -34,7 +34,7 @@ module Plurimath
         spelling: :text,
       }.freeze
 
-      # Filled from the symbol catalog by unicodemath, not by the grammar.
+      # Filled from the symbol catalog by umath, not by the grammar.
       SYMBOL_FIELDS = %i[value kind].freeze
 
       def call(document)
@@ -51,7 +51,7 @@ module Plurimath
         slices(captures(expression, capture_order.root_capture))
       end
 
-      # The capture tree of a unicodemath raw tree (Hashes keyed by capture
+      # The capture tree of a umath raw tree (Hashes keyed by capture
       # name, Arrays and Parsanol::Slice leaves): its wrappers folded away.
       def unwrap(value)
         case value
@@ -87,12 +87,12 @@ module Plurimath
         end
       end
 
-      # The grammar the model was parsed with: unicodemath's compiled
+      # The grammar the model was parsed with: umath's compiled
       # artifact, entry for the configured decimal marker.
       def capture_order
         @capture_order ||= begin
-          entry = ::Unicodemath::RawParser.entry_for(Plurimath.configuration.decimal)
-          CaptureOrder.for(::Unicodemath.artifacts.parse.entry(entry).fetch("grammar"))
+          entry = ::Umath::RawParser.entry_for(Plurimath.configuration.decimal)
+          CaptureOrder.for(::Umath.artifacts.parse.entry(entry).fetch("grammar"))
         end
       end
 
