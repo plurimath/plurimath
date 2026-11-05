@@ -62,8 +62,12 @@ module Plurimath
       # mapper built, stands for that built node.
       PASS_THROUGH = %i[
         binary unary_functions ternary_class power_base under_over limits
-        left_right
+        left_right expression environment table_data intermediate_exp
       ].freeze
+
+      # A node whose only set attribute is one of these, holding a sequence
+      # of nodes the mapper built, stands for a Formula of them.
+      SEQUENCES = %i[expression].freeze
 
       # Nodes whose set attributes are exactly these keys are built from
       # their children's Math objects.
@@ -159,7 +163,14 @@ module Plurimath
           build&.call(slice(value))
         elsif PASS_THROUGH.include?(name) && value.is_a?(Hash) && value.keys == [:built]
           value[:built]
+        elsif SEQUENCES.include?(name) && sequence?(value)
+          Math::Formula.new(value.map { |v| v[:built] })
         end
+      end
+
+      def sequence?(value)
+        value.is_a?(Array) && !value.empty? &&
+          value.all? { |v| v.is_a?(Hash) && v.keys == [:built] }
       end
 
       # A child node as the rule table would build it.
