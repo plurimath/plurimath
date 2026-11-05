@@ -15,6 +15,103 @@ module Plurimath
         parameter_four
       ].freeze
 
+      # Discriminator for polymorphic node fields. It is computed from the
+      # class name and never stored, so writers and == do not see it.
+      attribute :__class, :string, polymorphic_class: true
+
+      # Resolves a "__class" value to a node class. The map is built from
+      # the class tree on demand instead of listing every node class.
+      NODE_CLASS_MAP = Hash.new do |map, name|
+        klass = name.is_a?(String) && name.start_with?("Plurimath::Math::") &&
+          Object.const_get(name)
+        map[name] = name if klass.is_a?(Class) && klass <= Core
+      rescue NameError
+        nil
+      end
+
+      # from_hash must not call the hand-written constructors, because some
+      # of them take required arguments. lutaml-model then allocates the
+      # node and sets the mapped fields only.
+      def self.constructs_through_initialize?
+        false
+      end
+
+      # Declares node-holding fields. Each field keeps its storage in the
+      # existing instance variable. lutaml-model sees a Core-typed view of
+      # it, plus a "<field>_text" key for String values. Every mapped key
+      # must be listed here, because a key_value block replaces the
+      # inherited one as a whole.
+      def self.node_fields(*fields, collections: [], scalars: {}, hashes: [])
+        fields.each { |field| declare_node_field(field, collections.include?(field)) }
+        hashes.each { |field| declare_hash_field(field) }
+        scalars.each { |name, type| attribute(name, type) }
+        rules = { fields: fields, scalars: scalars.keys, hashes: hashes }
+        key_value { Core.node_field_rules(self, **rules) }
+      end
+
+      def self.node_field_rules(mapping, fields:, scalars:, hashes:)
+        mapping.map "__class", to: :__class
+        scalars.each { |name| mapping.map name.to_s, to: name }
+        hashes.each do |name|
+          mapping.map name.to_s, with: { to: :"#{name}_to_kv", from: :"#{name}_from_kv" }
+        end
+        fields.each do |name|
+          mapping.map name.to_s, to: :"__#{name}_node",
+                                 polymorphic: { attribute: "__class",
+                                                class_map: NODE_CLASS_MAP }
+          mapping.map "#{name}_text", with: { to: :"#{name}_text_to_kv",
+                                              from: :"#{name}_text_from_kv" }
+        end
+      end
+
+      def self.declare_node_field(name, collection)
+        attribute :"__#{name}_node", Core, polymorphic: true, collection: collection
+        attr_accessor name
+        ivar = :"@#{name}"
+        define_method(:"__#{name}_node") do
+          value = instance_variable_get(ivar)
+          if value.is_a?(::Array)
+            value if value.all?(Core)
+          elsif value.is_a?(Core)
+            value
+          end
+        end
+        define_method(:"__#{name}_node=") do |value|
+          instance_variable_set(ivar, value) unless value.nil?
+        end
+        define_method(:"#{name}_text_to_kv") do |model, doc|
+          value = model.instance_variable_get(ivar)
+          doc["#{name}_text"] = value if value.is_a?(String)
+        end
+        define_method(:"#{name}_text_from_kv") do |model, value|
+          model.instance_variable_set(ivar, value)
+        end
+      end
+
+      def self.declare_hash_field(name)
+        attr_accessor name
+        ivar = :"@#{name}"
+        define_method(:"#{name}_to_kv") do |model, doc|
+          value = model.instance_variable_get(ivar)
+          doc[name.to_s] = value.transform_keys(&:to_s) if value.is_a?(::Hash)
+        end
+        define_method(:"#{name}_from_kv") do |model, value|
+          model.instance_variable_set(ivar, value&.transform_keys(&:to_sym))
+        end
+      end
+
+      def __class
+        self.class.name
+      end
+
+      def __class=(_value); end
+
+      # Hand-written constructors set fields directly, so lutaml-model never
+      # learns which fields were given. Treat every field as given.
+      def using_default?(_attribute_name)
+        false
+      end
+
       def self.inherited(subclass)
         @descendants ||= []
         @descendants << subclass

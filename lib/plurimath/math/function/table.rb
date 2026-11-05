@@ -25,7 +25,8 @@ module Plurimath
         EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
         # --- end catalog documentation ---
 
-        attr_accessor :value, :open_paren, :close_paren, :options
+        node_fields :value, :open_paren, :close_paren,
+                    collections: %i[value], hashes: %i[options]
 
         SIMPLE_TABLES = %w[array align split].freeze
 

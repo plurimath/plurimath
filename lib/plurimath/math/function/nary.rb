@@ -15,8 +15,8 @@ module Plurimath
         EXAMPLE = -> { new(sym("v"), sym("x"), sym("y"), sym("z")) }
         # --- end catalog documentation ---
 
-        attr_accessor :parameter_one, :parameter_two, :parameter_three,
-                      :parameter_four, :options
+        node_fields :parameter_one, :parameter_two, :parameter_three,
+                    :parameter_four, hashes: %i[options]
 
         def initialize(parameter_one = nil,
                        parameter_two = nil,

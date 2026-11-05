@@ -11,7 +11,7 @@ module Plurimath
           EXAMPLE = -> { new(sym("x")) }
           # --- end catalog documentation ---
 
-          def initialize(parameter_one,
+          def initialize(parameter_one = nil,
                          parameter_two = "rm")
             super
           end

@@ -4,6 +4,10 @@ module Plurimath
   module Math
     module Function
       class Multiscript < TernaryFunction
+        node_fields :parameter_one, :parameter_two, :parameter_three,
+                    collections: %i[parameter_two parameter_three],
+                    scalars: { hide_function_name: :boolean }
+
         # --- Catalog documentation (see Plurimath::Documentation) ---
         DESCRIPTION = "A base carrying prescripts set before it, optionally alongside postscripts after it."
         REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mmultiscripts"

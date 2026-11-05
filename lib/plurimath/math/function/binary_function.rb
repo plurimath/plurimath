@@ -8,7 +8,7 @@ module Plurimath
 
         CATALOG_TYPE = :binary
 
-        attr_accessor :parameter_one, :parameter_two, :hide_function_name
+        node_fields :parameter_one, :parameter_two, scalars: { hide_function_name: :boolean }
 
         def initialize(parameter_one = nil, parameter_two = nil)
           @parameter_one = parameter_one

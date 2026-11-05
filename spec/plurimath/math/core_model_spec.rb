@@ -20,32 +20,35 @@ RSpec.describe Plurimath::Math::Core do
     end
 
     it "keeps the instance variables set by the constructor" do
-      expect(node.variables).to eq(hash.keys.map { |key| :"@#{key}" })
+      expect(node.variables)
+        .to eq((hash.keys - ["__class"]).map { |key| :"@#{key}" })
     end
   end
 
   describe Plurimath::Math::Number do
     it_behaves_like "a declared leaf node",
-                    { "value" => "12", "mini_sub_sized" => false,
+                    { "__class" => "Plurimath::Math::Number",
+                      "value" => "12", "mini_sub_sized" => false,
                       "mini_sup_sized" => false, "base" => 16 } do
       let(:node) { described_class.new("12", base: 16) }
     end
 
     it "declares its fields" do
       expect(described_class.attributes.keys)
-        .to eq(%i[value mini_sub_sized mini_sup_sized base])
+        .to eq(%i[__class value mini_sub_sized mini_sup_sized base])
     end
   end
 
   describe Plurimath::Math::Symbols::Symbol do
     it_behaves_like "a declared leaf node",
-                    { "value" => "x", "slashed" => true, "options" => { a: 1 } } do
+                    { "__class" => "Plurimath::Math::Symbols::Symbol",
+                      "value" => "x", "slashed" => true, "options" => { a: 1 } } do
       let(:node) { described_class.new("x", true, options: { a: 1 }) }
     end
 
     it "declares its fields" do
       expect(described_class.attributes.keys)
-        .to eq(%i[value slashed mini_sub_sized mini_sup_sized options])
+        .to eq(%i[__class value slashed mini_sub_sized mini_sup_sized options])
     end
 
     it "still joins an array value" do
@@ -55,7 +58,8 @@ RSpec.describe Plurimath::Math::Core do
 
   describe Plurimath::Math::Symbols::Paren do
     it_behaves_like "a declared leaf node",
-                    { "value" => "(" } do
+                    { "__class" => "Plurimath::Math::Symbols::Paren",
+                      "value" => "(" } do
       let(:node) { described_class.new("(") }
     end
   end
