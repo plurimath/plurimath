@@ -80,14 +80,19 @@ exists; nothing on this page changes until that happens.
 [[source-of-truth]]
 == Grammar source of truth
 
-Plurimath has no AsciiMath grammar of its own. `Plurimath::Asciimath::Parse`
-calls `Amath.parse(text, decimal: Plurimath.configuration.decimal)` and
-adapts the returned tree for `Plurimath::Asciimath::Transform`. The grammar is
+Plurimath has no AsciiMath grammar of its own. `Plurimath::Asciimath::Parser`
+calls `Amath.parse(text, dialect: :legacy, engine: :ruby, decimal:
+Plurimath.configuration.decimal)`, and `Plurimath::Asciimath::Mapper` turns
+the returned typed model (`Amath::Model::Document`) into a Formula with the
+rule table `Plurimath::Asciimath::Mapper::Rules`.
+`Plurimath::Asciimath::Parse` stays as a tree-level entry point that returns
+amath's internal legacy-shaped raw tree; Plurimath's own parsing does not use
+it. The grammar is
 the amath PARG artifact `artifacts/asciimath.json`, compiled by Parsanol from
 `grammars/asciimath.parg`. That file is itself generated from
 `grammars/asciimath.parg.template` and `data/vocabulary.json`, which amath
 exports once from a pinned Plurimath revision. amath's own contracts are
-`docs/parser-contract.adoc` (the 0.1.x API that Plurimath uses) and
+`docs/parser-contract.adoc` (the typed-model API that Plurimath uses) and
 `docs/stage-contract.adoc` (the shared profile for the stage gems).
 
 Before the grammar runs, `Plurimath::Asciimath::Parser` replaces the bracket

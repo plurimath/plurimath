@@ -3,6 +3,9 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in plurimath.gemspec
 gemspec
 
+# amath's typed model (Amath.parse returning Amath::Model::Document) is not
+# released yet; pinned to its commit until a release carries it.
+gem "amath", github: "plurimath/amath", ref: "6e91de80597df107c56a87255a0e1c810d7500a1"
 gem "canon"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # Optional native image-rendering backend for `Formula#render` / `plurimath
