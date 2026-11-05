@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "mml"
+Plurimath.load_mml
 require_relative "uncertainty_marker"
 
 module Plurimath
