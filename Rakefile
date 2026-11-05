@@ -116,6 +116,8 @@ end
 
 def intent_classes
   require_math_function_files
+  # Symbol classes load on demand; load them all so descendants is complete.
+  Plurimath::Math::Symbols.eager_load!
 
   intent_classes = [
     Plurimath::Math::Function::TernaryFunction.descendants,
