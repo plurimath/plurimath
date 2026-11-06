@@ -1,7 +1,13 @@
 if RUBY_ENGINE != "opal"
-  require "simplecov"
-  SimpleCov.start do
-    add_filter "/spec/"
+  # Coverage instrumentation slows the CPU-bound parser specs, and the
+  # Windows runners are already ~30% slower per example than ubuntu. The
+  # ubuntu and macOS legs report coverage, so Windows skips it to stay
+  # under the CI leg time limit.
+  unless Gem.win_platform?
+    require "simplecov"
+    SimpleCov.start do
+      add_filter "/spec/"
+    end
   end
 
   require "bundler/setup"
@@ -23,6 +29,8 @@ else
   require "nokogiri"
 end
 require "canon/rspec_matchers"
+require "json"
+require_relative "support/engine_loop"
 
 Lutaml::Model::Config.configure do |config|
   config.xml_adapter_type = :nokogiri
@@ -35,20 +43,28 @@ RSpec.configure do |config|
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!
 
+  # The Oga pass runs only for examples whose Ox pass reached the XML layer
+  # (see spec/support/engine_loop.rb). Shared golden bytes record Ox only.
+  #
+  # The leptris engine is selectable at runtime (xml_engine / -t unitsml
+  # embedding) but is not yet part of this loop: its element still leaks
+  # post-processing-removed attributes into serialized MathML after the
+  # subtree has been attached (attach-time attribute snapshot). Re-add a
+  # leptris pass once remove_attr survives attachment.
   config.around do |example|
-    Plurimath.xml_engine = Plurimath::XmlEngine::OxEngine
-    Mml::V4::Configuration.adapter = :ox
-    example.run
-    # Shared golden bytes record Ox; native specs still cover both engines.
-    unless example.metadata[:shared_corpus]
-      Plurimath.xml_engine = Plurimath::XmlEngine::Oga
-      Mml::V4::Configuration.adapter = :oga
+    if example.metadata[:shared_corpus]
+      Plurimath.xml_engine = Plurimath::XmlEngine::OxEngine
+      Mml::V4::Configuration.adapter = :ox
       example.run
-      # The leptris engine is selectable at runtime (xml_engine / -t unitsml
-      # embedding) but is not yet part of this loop: its element still leaks
-      # post-processing-removed attributes into serialized MathML after the
-      # subtree has been attached (attach-time attribute snapshot). Re-add a
-      # leptris pass here once remove_attr survives attachment.
+    else
+      EngineLoop.run(example)
+    end
+  end
+
+  config.after(:suite) do
+    RSpec.configuration.reporter.message(EngineLoop.summary)
+    if (path = ENV.fetch("ENGINE_LOOP_REPORT", nil))
+      File.write(path, JSON.generate(EngineLoop.counts))
     end
   end
 

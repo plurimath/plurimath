@@ -1,0 +1,34 @@
+{
+  "engines": {
+    "oga": {
+      "autoload": {
+        "pending_after_require": 32
+      },
+      "first_use": {
+        "plurimath_lib_files": 61,
+        "wall_ms": 933.6
+      },
+      "require": {
+        "loaded_features": 112,
+        "plurimath_lib_files": 4,
+        "wall_ms": 49.7
+      }
+    },
+    "ox": {
+      "autoload": {
+        "pending_after_require": 29
+      },
+      "first_use": {
+        "plurimath_lib_files": 59,
+        "wall_ms": 917.8
+      },
+      "require": {
+        "loaded_features": 73,
+        "plurimath_lib_files": 4,
+        "wall_ms": 24.8
+      }
+    }
+  },
+  "schema": "plurimath-perf/require-baseline/1",
+  "source": "counts: measure_require.rb on main at 85fd8deb with #555 (feat/541-e2 at 0b492508) merged; wall times: performance run 42176576146 (push to main at c511801b), ubuntu-22.04, Ruby 4.0.1, median of 5 cold processes"
+}
