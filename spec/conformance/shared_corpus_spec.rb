@@ -4,6 +4,11 @@ require "spec_helper"
 require_relative "../support/shared_corpus"
 
 RSpec.describe "shared corpus conformance", :shared_corpus do # rubocop:disable RSpec/DescribeClass
+  it "pins the known legacy unicode rejection divergences" do
+    expect(SharedCorpus::LEGACY_REJECTION_DIVERGENCES.size)
+      .to eq(SharedCorpus::LEGACY_REJECTION_DIVERGENCE_COUNT)
+  end
+
   SharedCorpus.load.each do |row|
     # Bind each shared-data row into its example without repeated fixture loads.
     # rubocop:disable RSpec/LeakyLocalVariable
@@ -21,8 +26,18 @@ RSpec.describe "shared corpus conformance", :shared_corpus do # rubocop:disable 
             .to eq(kase.fetch("preprocessed"))
           expect { Plurimath::Math.parse(kase.fetch("input"), format.name.to_sym) }
             .to raise_error(Plurimath::Math::ParseError)
-          expect(SharedCorpus.rejection_error(format, kase.fetch("input")))
-            .to eq(kase.fetch("error"))
+          divergence = format.name == "unicode" &&
+            SharedCorpus::LEGACY_REJECTION_DIVERGENCES[kase.fetch("id")]
+          if divergence
+            expect(kase.fetch("error").fetch("index")).to eq(divergence.fetch(:legacy_index))
+            stage_offset = SharedCorpus.stage_raw_byte_offset(kase.fetch("id"))
+            expect(stage_offset).to eq(divergence.fetch(:umath_index))
+            expect(SharedCorpus.rejection_error(format, kase.fetch("input")))
+              .to eq(kase.fetch("error").merge("index" => stage_offset))
+          else
+            expect(SharedCorpus.rejection_error(format, kase.fetch("input")))
+              .to eq(kase.fetch("error"))
+          end
         end
         next
       end

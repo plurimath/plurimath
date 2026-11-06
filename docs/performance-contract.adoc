@@ -158,7 +158,7 @@ defines them.
 |===
 
 UnicodeMath parsing and rendering account for most of the time, which is the
-work #530 moves into the `unicodemath` gem.
+work #530 moves into the `umath` gem.
 
 === CI legs
 

@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bigdecimal"
   spec.add_dependency "htmlentities"
   spec.add_dependency "latexmath", "~> 1.0"
+  spec.add_dependency "umath", "~> 0.1"
   spec.add_dependency "lutaml-model", "~> 0.8.155"
   spec.add_dependency "mml", "~> 2.4.2"
   spec.add_dependency "omml", "~> 0.2.5"
