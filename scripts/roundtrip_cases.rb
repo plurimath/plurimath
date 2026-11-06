@@ -352,6 +352,7 @@ module RoundtripCases
 
   def with_engine(name)
     engine, adapter = ENGINES.fetch(name)
+    Plurimath.load_mml
     saved = [Plurimath.xml_engine, Mml::V4::Configuration.adapter]
     Plurimath.xml_engine = engine
     Mml::V4::Configuration.adapter = adapter

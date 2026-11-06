@@ -148,28 +148,32 @@ module Plurimath
         text.to_s.split("_").map(&:capitalize).join
       end
 
+      # Loads every paren class.
       def paren_files
-        Math::Symbols::Paren.descendants
+        Math::Symbols.indexed_classes(:parens)
       end
 
+      # Loads every symbol class.
       def symbols_files
-        Math::Symbols::Symbol.descendants
+        Math::Symbols.indexed_classes(:symbols)
       end
 
+      # The tables below are built from Math::SymbolIndex in the order the
+      # classes are defined, and load a class only when its entry is read.
       def symbols_hash(lang)
         @@symbols ||= {}
         lang_symbols = @@symbols[lang]
         return lang_symbols if lang_symbols && !lang_symbols.empty?
 
         lang_symbols = {}
-        symbols_files.map do |class_object|
-          class_object::INPUT[lang]&.flatten&.each do |symbol|
+        Math::Symbols.indexed_inputs(:symbols, lang).each do |class_ref, inputs|
+          inputs.each do |symbol|
             next if lang_symbols.key?(symbol)
 
-            lang_symbols[symbol] = class_object
+            lang_symbols[symbol] = class_ref
           end
         end
-        @@symbols[lang] = lang_symbols.sort_by { |v, _| -v.length }.to_h
+        @@symbols[lang] = Math::SymbolTable.new(lang_symbols.sort_by { |v, _| -v.length })
       end
 
       def parens_hash(lang, skipables: nil)
@@ -178,19 +182,37 @@ module Plurimath
         return lang_parens if lang_parens && !lang_parens.empty?
 
         lang_parens = {}
-        paren_files.map do |class_object|
-          class_object::INPUT[lang]&.flatten&.each do |symbol|
-            next if skipables&.include?(class_object.new.class_name)
+        Math::Symbols.indexed_inputs(:parens, lang).each do |class_ref, inputs|
+          next if skipables&.include?(symbol_class_name(class_ref))
+
+          inputs.each do |symbol|
             next if lang_parens.key?(symbol)
 
-            lang_parens[symbol] = class_object
+            lang_parens[symbol] = class_ref
           end
         end
-        @@parens[lang] = lang_parens.sort_by { |v, _| -v.length }.to_h
+        @@parens[lang] = Math::SymbolTable.new(lang_parens.sort_by { |v, _| -v.length })
       end
 
+      # The merged table is cached for as long as both source tables are.
       def all_symbols_classes(lang)
-        symbols_hash(lang).merge(parens_hash(lang))
+        symbols = symbols_hash(lang)
+        parens = parens_hash(lang)
+        @@all_symbols ||= {}
+        cached = @@all_symbols[lang]
+        return cached[2] if cached && cached[0].equal?(symbols) && cached[1].equal?(parens)
+
+        merged = Math::SymbolTable.new(symbols.raw_pairs + parens.raw_pairs)
+        @@all_symbols[lang] = [symbols, parens, merged]
+        merged
+      end
+
+      # Core#class_name without loading an indexed class: the last segment of
+      # its constant path, downcased.
+      def symbol_class_name(class_ref)
+        return class_ref.new.class_name if class_ref.is_a?(Class)
+
+        class_ref.split("::").last.downcase
       end
 
       def filter_values(array, new_formula: true)
