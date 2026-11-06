@@ -24,6 +24,11 @@ else
 end
 require "canon/rspec_matchers"
 
+# lutaml-model's entry registers the autoload table: without it, a
+# transitive partial load of the Lutaml::Model namespace (deep
+# requires from the omml/canon chain) leaves Config unresolved.
+require "lutaml/model"
+
 Lutaml::Model::Config.configure do |config|
   config.xml_adapter_type = :nokogiri
 end
