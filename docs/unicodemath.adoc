@@ -1,0 +1,445 @@
+= UnicodeMath in Plurimath
+:toc:
+
+This page specifies the UnicodeMath that Plurimath reads and writes: how input
+is prepared and parsed, the output, how measurement results and units are
+carried with `ⓘ` and `ⓐ`, what does not survive a round trip, the errors,
+and the corpora that check all of this. It is part of the specification set
+tracked in https://github.com/plurimath/plurimath/issues/525[#525].
+
+UnicodeMath is the linear format of
+https://www.unicode.org/notes/tn28/[Unicode Technical Note 28]. The notation
+the grammar accepts, construct by construct, is specified in
+https://github.com/plurimath/umath/blob/main/docs/unicodemath.adoc[the umath
+gem's `docs/unicodemath.adoc`]. umath reads the same subset that Plurimath
+read at Plurimath 0.11.17, when the grammar was still part of Plurimath. This
+page covers what Plurimath does around the grammar, and shows in
+<<constructs>> what Plurimath makes of the common constructs.
+
+The examples, the construct table and the corpus counts on this page are
+generated (see <<regenerating>>). Each example is Ruby code that the
+generator runs; the block after it is what that code returned.
+
+== Status
+
+[cols="3,1,3"]
+|===
+|Part |Status |Where
+
+|Reading UnicodeMath with the umath gem and mapping its typed model
+|implemented
+|https://github.com/plurimath/plurimath/pull/555[#555]; issue
+https://github.com/plurimath/plurimath/issues/531[#531]
+
+|Writing UnicodeMath
+|implemented
+|
+
+|Measurement results as `ⓘ("marker" ...)`, read and written
+|implemented
+|https://github.com/plurimath/plurimath/pull/496[#496],
+https://github.com/plurimath/plurimath/pull/497[#497],
+https://github.com/plurimath/plurimath/pull/502[#502],
+https://github.com/plurimath/plurimath/pull/506[#506]
+
+|Units as `ⓐ(unit ...)`, multi-letter symbols as quoted upright text
+|implemented
+|https://github.com/plurimath/plurimath/pull/507[#507],
+https://github.com/plurimath/plurimath/pull/549[#549]
+|===
+
+[[reading]]
+== Reading
+
+The format name is `:unicode`. `Plurimath::Math.parse(text, :unicode)`
+creates a `Plurimath::UnicodeMath::Parser`, which calls
+`Umath.parse(text, decimal: Plurimath.configuration.decimal)` and turns the
+returned typed model into a `Plurimath::Math::Formula` with
+`Plurimath::UnicodeMath::Mapper`. umath is a runtime dependency; if it
+cannot be loaded, the parser raises `Plurimath::Math::MissingDependencyError`
+with the Gemfile line to add.
+
+umath prepares the text before its grammar runs, in the same way Plurimath
+did before the grammar moved (the steps are in
+https://github.com/plurimath/umath/blob/main/docs/parser-contract.adoc[umath's
+`docs/parser-contract.adoc`]). Plurimath splits off the label itself, in the
+same way. Together they:
+
+. splits the text at every `#`, except one inside `✎(...)`. The text before
+  the first `#` is the formula and the text after the last `#` is the label
+  of a labelled row; anything between is dropped. A `#` inside a quoted
+  string is split too;
+. writes every non-ASCII character, and every character that HTML escapes
+  other than `&` and `"`, as a hexadecimal character reference;
+. removes everything from the first `⫷` to the last `⫸`, which UnicodeMath
+  uses for comments;
+. replaces `\\` by `\` and turns each `\u` escape into a character
+  reference;
+. strips leading and trailing whitespace.
+
+// BEGIN GENERATED example read
+[source,ruby]
+----
+Plurimath::Math.parse("(a)/(b) + √(x)", :unicode).to_asciimath
+----
+
+[source]
+----
+frac(a)(b) + sqrt(x)
+----
+// END GENERATED example read
+
+A `\u` escape takes up to five hexadecimal digits, which are copied into the
+reference as written, and drops up to five letters or digits that follow
+them. The symbol table only knows references without leading zeros, so
+`\u3b1` is read as α but `\u03B1` stays an unknown character, and in
+`\u03B1x` the `x` is lost:
+
+// BEGIN GENERATED example read-escape-short
+[source,ruby]
+----
+Plurimath::Math.parse("\\u3b1+1", :unicode).to_latex
+----
+
+[source]
+----
+\alpha + 1
+----
+// END GENERATED example read-escape-short
+
+// BEGIN GENERATED example read-escape
+[source,ruby]
+----
+Plurimath::Math.parse("\\u03B1+1", :unicode).to_latex
+----
+
+[source]
+----
+&#x03B1; + 1
+----
+// END GENERATED example read-escape
+
+// BEGIN GENERATED example read-escape-trailing
+[source,ruby]
+----
+Plurimath::Math.parse("\\u03B1x+1", :unicode).to_latex
+----
+
+[source]
+----
+&#x03B1; + 1
+----
+// END GENERATED example read-escape-trailing
+
+The label is the text after the last `#`:
+
+// BEGIN GENERATED example read-label
+[source,ruby]
+----
+Plurimath::Math.parse("E=mc^2#(1)", :unicode).to_mathml
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mtable>
+      <mlabeledtr>
+        <mtd>
+          <mtext>(1)</mtext>
+        </mtd>
+        <mtd>
+          <mrow>
+            <mi>E</mi>
+            <mo>=</mo>
+            <mrow>
+              <mi>m</mi>
+              <msup>
+                <mi>c</mi>
+                <mn>2</mn>
+              </msup>
+            </mrow>
+          </mrow>
+        </mtd>
+      </mlabeledtr>
+    </mtable>
+  </mstyle>
+</math>
+----
+// END GENERATED example read-label
+
+// BEGIN GENERATED example read-label-twice
+[source,ruby]
+----
+Plurimath::Math.parse("x#(1)#(2)", :unicode).to_asciimath
+----
+
+[source]
+----
+mlabeledtr(x)("(2)")
+----
+// END GENERATED example read-label-twice
+
+// BEGIN GENERATED example read-label-quoted
+[source,ruby]
+----
+Plurimath::Math.parse(%q("a#b"), :unicode)
+----
+
+[source]
+----
+raises Plurimath::Math::ParseError
+----
+// END GENERATED example read-label-quoted
+
+UnicodeMath takes the `locale:` parse option, which sets the decimal marker:
+
+// BEGIN GENERATED example read-locale
+[source,ruby]
+----
+Plurimath::Math.parse("1,5", :unicode, locale: :de).value.map(&:class)
+----
+
+[source]
+----
+[Plurimath::Math::Number]
+----
+// END GENERATED example read-locale
+
+The writer method is `to_unicodemath`, but the input format is `:unicode`;
+`:unicodemath` is not a format name:
+
+// BEGIN GENERATED example read-wrong-type
+[source,ruby]
+----
+Plurimath::Math.parse("x^2", :unicodemath)
+----
+
+[source]
+----
+raises Plurimath::Math::InvalidTypeError
+----
+// END GENERATED example read-wrong-type
+
+[[writing]]
+== Writing
+
+`Formula#to_unicodemath` joins the output of each node with a space, then
+replaces every character reference with its character and every ` / ` with
+`/`.
+
+// BEGIN GENERATED writer-options
+`Plurimath::Math::Formula#to_unicodemath` in `lib/plurimath/math/formula.rb` takes these keyword options:
+
+[cols="1,1"]
+|===
+|Option |Default
+
+|`formatter:` |`nil`
+|`unitsml:` |`{}`
+|`options:` |`nil`
+|===
+// END GENERATED writer-options
+
+`formatter:` and `unitsml:` work as for MathML (see
+link:mathml.adoc#writing[MathML in Plurimath]). `options:` is a prepared
+options hash and takes the place of the other two.
+
+// BEGIN GENERATED example write
+[source,ruby]
+----
+Plurimath::Math.parse("x^2 + frac(a)(b) + sqrt(x)", :asciimath).to_unicodemath
+----
+
+[source]
+----
+x^(2) + (a)/(b) + √(x)
+----
+// END GENERATED example write
+
+// BEGIN GENERATED example write-symbols
+[source,ruby]
+----
+Plurimath::Math.parse("alpha + oo", :asciimath).to_unicodemath
+----
+
+[source]
+----
+α + ∞
+----
+// END GENERATED example write-symbols
+
+[[constructs]]
+== Constructs
+
+Each row below is read as UnicodeMath, written as AsciiMath, and written back
+as UnicodeMath from the same formula. A difference between the input and the
+"Written back" column shows what the writer normalises or changes:
+
+* scripts, fractions and roots are written with brackets, and operators with
+  spaces around them;
+* the operand of a large operator such as `∑` or `∫` is written after `▒` in
+  `〖〗`;
+* a function name is followed by U+2061 FUNCTION APPLICATION, which is
+  invisible;
+* a combining accent or overline is written after its base in brackets;
+* `a¦b`, which UTN 28 defines as a stack without a bar, is read as a fraction,
+  and written back with `¦`;
+* a matrix in round brackets is written with `⒨`; a matrix with a bracket on
+  one side is read with the right bracket as an unknown character, and
+  written back as `Ⓢ`;
+* a bold letter such as `𝐱` is kept as its character, which AsciiMath can
+  only write as a character reference.
+
+// BEGIN GENERATED constructs
+[cols="2,3l,3l,3l",options="header"]
+|===
+|Construct |Input |AsciiMath |Written back
+|Number |12.5 |12.5 |12.5
+|Letter |x |x |x
+|Superscript |x^2 |x^(2) |x^(2)
+|Subscript |x_i |x_(i) |x_(i)
+|Both scripts |x_i^2 |x_(i)^(2) |x_(i)^(2)
+|Fraction |a/b |frac(a)(b) |(a)/(b)
+|Stacked, no bar |a¦b |frac(a)(b) |(a)¦(b)
+|Square root |√x |sqrt(x) |√(x)
+|Cube root |∛x |root(3)(x) |√(3&x)
+|Root with index |√(3&x) |root(3)(x) |√(3&x)
+|Sum with limits |∑_(i=1)^n i |sum_(i = 1)^(n) i |∑_(i = 1)^(n)▒〖i〗
+|Integral |∫_0^1 f(x) dx |int_(0)^(1) f (x) d x |∫_(0)^(1)▒〖f (x)〗 d x
+|Limit |lim_(x→0) x |lim_(x to 0) x |lim_(x → 0) x
+|Function name |sin x |sinx |sin⁡x
+|Symbols |α+∞ |alpha + oo |α + ∞
+|Control word |\alpha |alpha |α
+|Relation |x≤y |x le y |x ≤ y
+|Brackets |(x) |(x) |(x)
+|Matrix |■(a&b@c&d) |[[a, b], [c, d]] |■(a&b@c&d)
+|Matrix in brackets |(■(a&b@c&d)) |([a, b], [c, d]) |⒨(a&b@c&d)
+|Matrix in brackets, short form |⒨(a&b) |([a, b]) |⒨(a&b)
+|Bracket on one side |{■(a&b)┤ |{[a, b]&#x2524; |Ⓢ(a&b)
+|Text |"if" |"if" |"if"
+|Bold letter |𝐱 |&#x1d431; |𝐱
+|Combining accent |x̂ |overset(^)(x) |(x)̂
+|Combining overline |x̅ |overset("P{overbar}")(x) |(x)̅
+|Brace with label |⏞(x)^n |overset(n)(obrace(x)) |⏞(x)^(n)
+|===
+// END GENERATED constructs
+
+[[uncertainty]]
+== Measurement uncertainty and units
+
+A measurement result is written in the intent form `ⓘ("marker"visible)`. The
+marker is the same string MathML puts in `intent`; its grammar is in
+link:uncertainty.adoc#markers[Measurement uncertainty]. On reading, the
+marker is used and the visible content is regenerated.
+
+// BEGIN GENERATED example uncertainty
+[source,ruby]
+----
+Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_unicodemath
+----
+
+[source]
+----
+ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
+----
+// END GENERATED example uncertainty
+
+The reader cannot take a marker string followed directly by `-`, so a negative
+value that would start the visible content is put in the invisible `〖〗`
+group. The marker is unchanged:
+
+// BEGIN GENERATED example uncertainty-negative
+[source,ruby]
+----
+Plurimath::Math.parse("ustd(-1.230, 0.004)", :asciimath).to_unicodemath
+----
+
+[source]
+----
+ⓘ("standard-uncertainty(-1.230,0.004)"〖-1.230〗(0.004))
+----
+// END GENERATED example uncertainty-negative
+
+A unit is written as `ⓐ(unit ...)` after the visible content and is referred
+to by `$unit` in the marker. A unit symbol of more than one character is
+written as quoted upright text, `\mup"kg"`, because UnicodeMath reads `\mupkg`
+as an upright `k` followed by `g`:
+
+// BEGIN GENERATED example uncertainty-unit
+[source,ruby]
+----
+Plurimath::Math.parse(%q(ustd(1.2, 0.1, "unitsml(kg)")), :asciimath).to_unicodemath
+----
+
+[source]
+----
+ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mup"kg"))
+----
+// END GENERATED example uncertainty-unit
+
+// BEGIN GENERATED example uncertainty-unit-readback
+[source,ruby]
+----
+Plurimath::Math.parse("ⓘ(\"standard-uncertainty(1.2,0.1,$unit)\"1.2(0.1)ⓐ(unit \\mup\"kg\"))", :unicode).to_asciimath
+----
+
+[source]
+----
+ustd(1.2, 0.1, "unitsml(kg)")
+----
+// END GENERATED example uncertainty-unit-readback
+
+[[round-trip]]
+== Round trips
+
+A unit read from UnicodeMath comes back as its rendered formula, not as a
+UnitsML node; written on to AsciiMath it becomes `"unitsml(...)"` again when
+its symbols are ASCII letters. A multi-letter unit written by hand as
+`\mupkg`, and `µm`, do not come back as one unit. The cases are listed in
+link:uncertainty.adoc#round-trip[the round-trip matrix].
+
+[[errors]]
+== Errors
+
+`Plurimath::Math.parse(text, :unicode)` raises
+`Plurimath::Math::ParseError` when the grammar rejects the text or the
+transform cannot build a node; the original error is not kept as the `cause`.
+A marker that does not match the marker grammar raises
+`Plurimath::Errors::InvalidUncertainty` inside, which also reaches the caller
+as a `ParseError`.
+
+[[conformance]]
+== Conformance
+
+// BEGIN GENERATED conformance
+Shared testsuite at `337262eda0483ceaa43a02cc52362c5b721e5eb3` (the `submodules/plurimath-testsuite` commit):
+
+[cols="3,1,3"]
+|===
+|Rows |Cases |Groups
+
+|`corpus/unicode/`, inputs read |20 |`fences`, `numbers`, `operators`, `symbols`
+|`corpus/unicode/rejections.yaml`, inputs refused |52 |`rejections`
+|`corpus/*/`, cases with `unicodemath` output |780 |74 payloads
+|`stages/roundtrip/generations/000001/payloads/`, written as `unicode` and read back |46 |33 lossless, 9 lossy, 4 refused
+|===
+// END GENERATED conformance
+
+* `spec/conformance/shared_corpus_spec.rb` replays every `corpus/` case
+  above, comparing each target byte for byte.
+* `spec/conformance/stage_roundtrips_spec.rb` replays the roundtrip
+  generation pinned in `spec/fixtures/roundtrip-pin.yml`.
+* `spec/plurimath/unicode_math/uncertainty_spec.rb`,
+  `spec/plurimath/unicode_math/uncertainty_units_spec.rb` and
+  `spec/plurimath/fixtures/uncertainty/contract.yml` check the marker and
+  units.
+* The `stages/unicode/` generations of plurimath-testsuite are replayed by
+  the umath gem, not by Plurimath.
+
+[[regenerating]]
+== Regenerating this page
+
+The generated regions are written by `scripts/docs/format_specs.rb`, as
+described in link:mathml.adoc#regenerating[MathML in Plurimath]. Do not edit
+them by hand.
