@@ -18,19 +18,23 @@ module Plurimath
           &.gsub(/(:\))/, "ᑐ")
       end
 
+      # The amath gem parses #text (dialect L, the Ruby engine) into its
+      # typed model, which Mapper turns into a Formula. A grammar refusal
+      # raises Parslet::ParseFailed at the position amath reports in #text.
       def parse
         ambiguous_uncertainty_comma!
-        nodes = parse_tree
-        transformed_tree = Transform.new.apply(nodes)
-        return transformed_tree if transformed_tree.is_a?(Math::Formula)
-
-        Math::Formula.new(transformed_tree)
+        Parse.new.load_amath
+        parse_with_amath
       end
 
       private
 
-      def parse_tree
-        Parse.new.parse(text)
+      def parse_with_amath
+        document = ::Amath.parse(text, dialect: :legacy, engine: :ruby,
+                                       decimal: Plurimath.configuration.decimal)
+        Mapper.new.call(document, text)
+      rescue ::Amath::ParseError => e
+        raise Parse.parse_failed(e, text)
       end
 
       # Uncertainty arguments use "." as the decimal mark and "," between

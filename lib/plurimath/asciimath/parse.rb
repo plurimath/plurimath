@@ -3,10 +3,15 @@
 module Plurimath
   class Asciimath
     # The AsciiMath grammar lives in the amath gem. This class keeps the
-    # tree-level entry point for callers that parse without transforming
-    # (plurimath-testsuite's corpus generator calls Parse.new.parse): it
-    # returns the Parslet-shaped tree Asciimath::Transform expects, and
-    # raises Parslet::ParseFailed with a cause at amath's rejection position.
+    # tree-level entry point for callers that parse without building a
+    # Formula (plurimath-testsuite's corpus generator calls
+    # Parse.new.parse): it returns amath's legacy-shaped raw tree as the
+    # Parslet-shaped tree Mapper::Rules reads, and raises
+    # Parslet::ParseFailed with a cause at amath's rejection position.
+    #
+    # The raw tree is an amath internal (Amath::Parser.raw), not its public
+    # API (Amath.parse and the typed model are); nothing in plurimath's own
+    # parsing uses it.
     class Parse
       # amath is a runtime dependency (published on RubyGems); this line is
       # only guidance for installs where the gem is unexpectedly missing.
@@ -17,10 +22,8 @@ module Plurimath
         parse_with_amath(text)
       end
 
-      private
-
-      # Loaded here, outside parse_with_amath, so its `rescue ::Amath::...`
-      # clause is never evaluated while Amath is undefined.
+      # Loaded here, outside the methods that rescue ::Amath::... errors, so
+      # those clauses are never evaluated while Amath is undefined.
       def load_amath
         require "amath"
       rescue LoadError => e
@@ -34,18 +37,22 @@ module Plurimath
         ), cause: nil
       end
 
-      def parse_with_amath(text)
-        tree = ::Amath.parse(text, decimal: Plurimath.configuration.decimal)
-        SliceAdapter.convert(tree, text)
-      rescue ::Amath::ParseError => e
-        raise parse_failed(e, text)
-      end
-
-      def parse_failed(error, text)
+      # The Parslet::ParseFailed for an amath refusal of +text+, with its
+      # cause at amath's position.
+      def self.parse_failed(error, text)
         position = Parslet::Position.new(text, error.byte_offset)
         cause = Parslet::Cause.new(error.message, Parslet::Source.new(text),
                                    position, [])
         Parslet::ParseFailed.new(error.message, cause)
+      end
+
+      private
+
+      def parse_with_amath(text)
+        tree = ::Amath::Parser.raw(text, decimal: Plurimath.configuration.decimal)
+        SliceAdapter.convert(tree, text)
+      rescue ::Amath::ParseError => e
+        raise self.class.parse_failed(e, text)
       end
     end
   end

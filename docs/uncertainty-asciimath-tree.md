@@ -1,7 +1,7 @@
 # AsciiMath uncertainty: parse tree contract (plurimath#493, B4)
 
 The amath grammar turns `ustd(...)`, `uexp(...)` and `ucov(...)` into the tree
-below. `Plurimath::Asciimath::Transform` (rule `uncertainty:`) turns it into
+below. `Plurimath::Asciimath::Mapper::Rules` (rule `uncertainty:`) turns it into
 `Math::Function::Uncertainty`. Design: `docs/uncertainty.adoc`; cases:
 `spec/plurimath/fixtures/uncertainty/contract.yml`; spec that checks this
 tree against amath, the transform and `Math.parse`, and round-trips every case

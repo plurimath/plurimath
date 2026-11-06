@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-# SliceAdapter::Walker#walk and Asciimath::Transform#apply keep their own
+# SliceAdapter::Walker#walk and Asciimath::Mapper::Rules#apply keep their own
 # stack instead of recursing. These specs hold them to the recursive versions
 # they replace, and check that a very deep tree no longer overflows.
 RSpec.describe Plurimath::Asciimath do
@@ -22,7 +22,7 @@ RSpec.describe Plurimath::Asciimath do
 
     # Parslet's own recursive Transform#apply, with the same rules.
     let(:recursive_transform) do
-      Class.new(Plurimath::Asciimath::Transform) do
+      Class.new(Plurimath::Asciimath::Mapper::Rules) do
         def apply(obj, context = nil)
           Parslet::Transform.instance_method(:apply).bind_call(self, obj, context)
         end
@@ -104,7 +104,7 @@ RSpec.describe Plurimath::Asciimath do
 
         it "transforms the tree as Parslet's recursive apply does" do
           nodes = Plurimath::Asciimath::Parse.new.parse(text)
-          iterative = Plurimath::Asciimath::Transform.new.apply(nodes)
+          iterative = Plurimath::Asciimath::Mapper::Rules.new.apply(nodes)
           recursive = recursive_transform.new.apply(nodes)
 
           expect(iterative).to eq(recursive)
@@ -128,7 +128,7 @@ RSpec.describe Plurimath::Asciimath do
         seen
       end
 
-      expect(calls.call(Plurimath::Asciimath::Transform))
+      expect(calls.call(Plurimath::Asciimath::Mapper::Rules))
         .to eq(calls.call(recursive_transform))
     end
 
@@ -160,7 +160,7 @@ RSpec.describe Plurimath::Asciimath do
       # matches the expr rule, which flattens it.
       it "applies the Transform without a SystemStackError" do
         tree = (depth / 2).times.reduce(:leaf) { |inner, _| { expr: [inner] } }
-        result = Plurimath::Asciimath::Transform.new.apply(tree)
+        result = Plurimath::Asciimath::Mapper::Rules.new.apply(tree)
 
         expect(result).to eq([:leaf])
       end
