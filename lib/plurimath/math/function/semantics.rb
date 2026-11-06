@@ -24,6 +24,41 @@ module Plurimath
         }.freeze
         # --- end catalog documentation ---
 
+        # One annotation of parameter_two, which holds them as
+        # { tag => [nodes] } hashes. It exists only so that lutaml-model can
+        # map the annotations; writers keep reading the hashes.
+        class Annotation < Core
+          node_fields :content, collections: %i[content], symbols: %i[tag]
+
+          def ==(other)
+            other.is_a?(Annotation) && other.tag == tag && other.content == content
+          end
+        end
+
+        # parameter_two holds annotation hashes rather than nodes, so its
+        # list view goes through Annotation nodes.
+        def __parameter_two_nodes
+          return unless parameter_two.is_a?(::Array) && !parameter_two.empty? &&
+            parameter_two.all?(::Hash)
+
+          parameter_two.flat_map do |hash|
+            hash.map do |tag, content|
+              Annotation.new.tap do |annotation|
+                annotation.tag = tag
+                annotation.content = content
+              end
+            end
+          end
+        end
+
+        def __parameter_two_nodes=(value)
+          return unless value.is_a?(::Array) && !value.empty?
+
+          @parameter_two = value.map do |item|
+            item.is_a?(Annotation) ? { item.tag => item.content } : item
+          end
+        end
+
         FUNCTION = {
           name: "semantics",
           first_value: "first argument",

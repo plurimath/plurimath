@@ -8,8 +8,8 @@ module Plurimath
 
         CATALOG_TYPE = :ternary
 
-        attr_accessor :parameter_one, :parameter_two, :parameter_three,
-                      :hide_function_name
+        node_fields :parameter_one, :parameter_two, :parameter_three,
+                    scalars: { hide_function_name: :boolean }
 
         def initialize(parameter_one = nil,
                        parameter_two = nil,

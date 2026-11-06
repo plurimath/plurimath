@@ -4,6 +4,9 @@ module Plurimath
   module Math
     module Function
       class Tr < UnaryFunction
+        node_fields :parameter_one, collections: %i[parameter_one],
+                                    scalars: { hide_function_name: :boolean }
+
         def initialize(parameter_one = [])
           if parameter_one&.all?("@")
             parameter_one.map!.with_index do |_, _index|

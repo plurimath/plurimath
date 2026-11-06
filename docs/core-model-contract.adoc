@@ -1,0 +1,767 @@
+= Core model contract
+:toc:
+
+This document scopes
+https://github.com/plurimath/plurimath/issues/337[#337], the migration of
+the Plurimath formula tree to lutaml-model. It lists what is left to
+migrate, the order the migration follows, how each step proves it changed
+nothing, and the risks and dependencies. Its roadmap position and definition
+of done are in https://github.com/plurimath/plurimath/issues/541[#541].
+
+[WARNING]
+====
+*Pre-#531 snapshot; refresh after #531.* The inventory below was taken on
+`main` at `70c3384d`, before
+https://github.com/plurimath/plurimath/issues/531[#531] replaces the in-tree
+LaTeX and UnicodeMath parsers with the `latexmath` and `unicodemath` gems.
+The shared corpus figures come from `plurimath-testsuite` at `281059b2`, the
+revision the submodule pins, and the lutaml-model figures from 0.8.164, the
+version in `Gemfile.lock`. The list of what to refresh is in
+<<refresh-after-531>>.
+====
+
+== Scope
+
+After the stage gems are extracted, only the shared core is left to migrate:
+`Plurimath::Math::Formula`, the `Plurimath::Math::Function` classes, `Core`,
+`Number`, the symbol classes and the uncertainty and UnitsML nodes. The stage
+gems (`amath`, `latexmath`, `unicodemath`) define their own models in
+lutaml-model from the start, so none of their classes appear here.
+
+The migration follows three rules from the #541 definition of done and from
+https://github.com/lutaml/lutaml-model/issues/1033[lutaml-model#1033]:
+
+* The core tree is defined with lutaml-model. Hand-written field
+  declarations (`attr_accessor` and the constructors that fill them) are
+  generated or replaced by lutaml-model attributes.
+* lutaml-model carries the data and the per-format writers stay in Ruby.
+  The writer methods (`to_asciimath`, `to_latex`,
+  `to_mathml_without_math_tag`, `to_omml_without_math_tag`,
+  `to_unicodemath`, `to_html`) and everything they call are not moved into
+  lutaml-model mappings.
+* The public API does not change, and the bytes every writer produces over
+  the corpora do not change.
+
+The following are out of scope:
+
+* The stage gems' models and the mapping from them into the core tree. That
+  mapping belongs to #531.
+* The symbol catalog data, meaning the `INPUT` spelling tables and the
+  per-symbol writer bodies. They are staged separately under
+  https://github.com/plurimath/plurimath/issues/537[#537]. This migration
+  only declares the fields of the symbol base classes.
+* The support classes under `Plurimath::Math` that are not tree nodes, such
+  as the evaluator, the semantic tree view and the error classes.
+
+== Inventory
+
+=== Regenerating
+
+The tables marked as generated are written by
+`scripts/docs/core_inventory.rb`. Do not edit them by hand. To refresh them
+from the checked-out revision, run:
+
+[source,sh]
+----
+bundle exec ruby scripts/docs/core_inventory.rb
+----
+
+With `--check` the script writes nothing and exits 1 when the generated
+regions are out of date. The output depends only on the source tree.
+
+The script loads Plurimath, requires every file under `lib/plurimath/math`
+and lists every class whose name starts with `Plurimath::Math::`. For each
+class it reads:
+
+* the fields, meaning methods created by `attr_accessor`, `attr_reader` or
+  `attr_writer`, and the class that declares them;
+* the class that defines `#initialize`, with its parameters and default
+  expressions copied from the source;
+* the public methods the class defines itself, without the field methods;
+* which of the six writers the class responds to.
+
+=== Marks
+
+Each class gets one mark:
+
+stays-core:: A tree node that carries at least one writer, plus the abstract
+root `Core`. It is used by the writers and by the shared tree, so it stays
+in Plurimath after #531 and is migrated by #337.
+removed-by-531:: A tree node with no writer at all. It cannot reach any
+output, so it would only exist for the in-tree LaTeX and UnicodeMath
+parsers, and #531 removes it.
+support:: A class under `Plurimath::Math` that is not a tree node. It is not
+migrated.
+
+On this snapshot no class is marked removed-by-531. The in-tree LaTeX and
+UnicodeMath parsers live outside `Plurimath::Math`, under
+`lib/plurimath/latex/` and `lib/plurimath/unicode_math/`, and every class
+they build is also written by the writers. #531 keeps all of these classes,
+because the stage-gem mappings must build the same trees for the writer
+output to stay byte-identical. What #531 can remove inside `Plurimath::Math`
+is listed in <<parser-only>>.
+
+=== Counts
+
+// BEGIN GENERATED counts
+[cols="3,1,1,1,1",options="header",separator=¦]
+|===
+¦ Family ¦ Classes ¦ stays-core ¦ removed-by-531 ¦ support
+
+¦ Core and Number ¦ 3 ¦ 2 ¦ 1 ¦ 0
+¦ Formula ¦ 3 ¦ 3 ¦ 0 ¦ 0
+¦ Function, unary ¦ 67 ¦ 67 ¦ 0 ¦ 0
+¦ Function, binary ¦ 35 ¦ 35 ¦ 0 ¦ 0
+¦ Function, ternary ¦ 11 ¦ 11 ¦ 0 ¦ 0
+¦ Function, n-ary ¦ 1 ¦ 1 ¦ 0 ¦ 0
+¦ Function, table ¦ 11 ¦ 11 ¦ 0 ¦ 0
+¦ Uncertainty and UnitsML nodes ¦ 2 ¦ 2 ¦ 0 ¦ 0
+¦ Symbols ¦ 1436 ¦ 1436 ¦ 0 ¦ 0
+¦ Symbols, parentheses ¦ 25 ¦ 25 ¦ 0 ¦ 0
+¦ Support (not tree nodes) ¦ 10 ¦ 0 ¦ 0 ¦ 10
+¦ *Total* ¦ 1604 ¦ 1593 ¦ 1 ¦ 10
+|===
+// END GENERATED counts
+
+=== Field-owning base classes
+
+These are the classes that declare fields or a constructor themselves. The
+last column counts the classes that take their fields or constructor from
+this class as the nearest owner. These are the declarations the migration
+replaces. The leaf classes below them only add writer behaviour.
+
+// BEGIN GENERATED bases
+[cols="2,3,4,1",options="header",separator=¦]
+|===
+¦ Class ¦ Own fields ¦ Constructor ¦ Classes served
+
+¦ `+Formula+` ¦ `+display+`, `+value+` ¦ `+(value = [], left_right_wrapper = true, display_style: true, input_string: nil)+` ¦ 2
+¦ `+Formula::Mrow+` ¦ `+display+`, `+value+` ¦ `+(value = [], left_right_wrapper = true, display_style: true, input_string: nil)+` ¦ 1
+¦ `+Function::Abs+` ¦ `+parameter_one+` ¦ inherited ¦ 1
+¦ `+Function::Bar+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Base+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ 1
+¦ `+Function::BinaryFunction+` ¦ `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil)+` ¦ 29
+¦ `+Function::Ceil+` ¦ `+parameter_one+` ¦ inherited ¦ 1
+¦ `+Function::Color+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ 1
+¦ `+Function::Ddot+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Dot+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Fenced+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ 1
+¦ `+Function::Floor+` ¦ `+parameter_one+` ¦ inherited ¦ 1
+¦ `+Function::FontStyle::Bold+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "bold")+` ¦ 1
+¦ `+Function::FontStyle::DoubleStruck+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "double-struck")+` ¦ 1
+¦ `+Function::FontStyle::Fraktur+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "fraktur")+` ¦ 1
+¦ `+Function::FontStyle::Italic+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "italic")+` ¦ 1
+¦ `+Function::FontStyle::Monospace+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "monospace")+` ¦ 1
+¦ `+Function::FontStyle::Normal+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "rm")+` ¦ 1
+¦ `+Function::FontStyle::SansSerif+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "sans-serif")+` ¦ 1
+¦ `+Function::FontStyle::Script+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "script")+` ¦ 1
+¦ `+Function::Frac+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ 1
+¦ `+Function::Hat+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Int+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ 1
+¦ `+Function::Linebreak+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Longdiv+` ¦ `+parameter_one+` ¦ inherited ¦ 1
+¦ `+Function::Mglyph+` ¦ - ¦ `+(parameter_one = {})+` ¦ 1
+¦ `+Function::Mpadded+` ¦ `+options+`, `+parameter_one+` ¦ `+(parameter_one = nil, options = {})+` ¦ 1
+¦ `+Function::Msgroup+` ¦ `+parameter_one+` ¦ inherited ¦ 1
+¦ `+Function::Multiscript+` ¦ `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ inherited ¦ 1
+¦ `+Function::Nary+` ¦ `+options+`, `+parameter_four+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, parameter_four = nil, options = {})+` ¦ 1
+¦ `+Function::Norm+` ¦ `+parameter_one+` ¦ inherited ¦ 1
+¦ `+Function::Obrace+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Oint+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ 1
+¦ `+Function::Overleftrightarrow+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Overset+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ 1
+¦ `+Function::Prod+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ 1
+¦ `+Function::Semantics::Annotation+` ¦ `+content+`, `+tag+` ¦ inherited ¦ 1
+¦ `+Function::Sqrt+` ¦ `+options+`, `+parameter_one+` ¦ inherited ¦ 1
+¦ `+Function::Sum+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ 1
+¦ `+Function::Table+` ¦ `+close_paren+`, `+open_paren+`, `+options+`, `+value+` ¦ `+(value = nil, open_paren = nil, close_paren = nil, options = {})+` ¦ 11
+¦ `+Function::Table::Align+` ¦ - ¦ `+(value = nil, open_paren = "[", close_paren = "]", options = {})+` ¦ 1
+¦ `+Function::Table::Array+` ¦ - ¦ `+(value = [], open_paren = "[", close_paren = "]", options = {})+` ¦ 1
+¦ `+Function::Table::Bmatrix+` ¦ - ¦ `+(value = nil, open_paren = "[", close_paren = "]", options = {})+` ¦ 1
+¦ `+Function::Table::Cases+` ¦ - ¦ `+(value = [], open_paren = "{", close_paren = ":}", options = {})+` ¦ 1
+¦ `+Function::Table::Eqarray+` ¦ - ¦ `+(value = [], open_paren = "", close_paren = "", options = {})+` ¦ 1
+¦ `+Function::Table::Matrix+` ¦ - ¦ `+(value = [], open_paren = "(", close_paren = ")", options = {})+` ¦ 1
+¦ `+Function::Table::Multline+` ¦ - ¦ `+(value = nil, open_paren = "[", close_paren = "]", options = {})+` ¦ 1
+¦ `+Function::Table::Pmatrix+` ¦ - ¦ `+(value = nil, open_paren = "(", close_paren = ")", options = {})+` ¦ 1
+¦ `+Function::Table::Split+` ¦ - ¦ `+(value = nil, open_paren = "[", close_paren = "]", options = {})+` ¦ 1
+¦ `+Function::Table::Vmatrix+` ¦ - ¦ `+(value = nil, open_paren = "|", close_paren = "|", options = {})+` ¦ 1
+¦ `+Function::Td+` ¦ `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil)+` ¦ 1
+¦ `+Function::TernaryFunction+` ¦ `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil)+` ¦ 6
+¦ `+Function::Text+` ¦ `+lang+`, `+parameter_one+` ¦ `+(parameter_one = "", lang: nil)+` ¦ 1
+¦ `+Function::Tilde+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Tr+` ¦ `+parameter_one+` ¦ `+(parameter_one = [])+` ¦ 1
+¦ `+Function::Ubrace+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::Ul+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Function::UnaryFunction+` ¦ `+parameter_one+` ¦ `+(parameter_one = nil)+` ¦ 53
+¦ `+Function::Uncertainty+` ¦ `+category+`, `+coverage_factor+`, `+coverage_probability+`, `+distribution+`, `+interval_kind+`, `+lower+`, `+magnitude+`, `+notation+`, `+unit+`, `+upper+`, `+value+` ¦ `+(value = nil, category: nil, magnitude: nil, coverage_factor: nil, coverage_probability: nil, lower: nil, upper: nil, interval_kind: nil, notation: :absolute, unit: nil, distribution: nil)+` ¦ 1
+¦ `+Function::Underset+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ 1
+¦ `+Function::Unitsml+` ¦ - ¦ `+(text = nil)+` ¦ 1
+¦ `+Function::Vec+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
+¦ `+Number+` ¦ - ¦ `+(value = nil, mini_sub_sized: false, mini_sup_sized: false, base: nil, lutaml_register: nil)+` ¦ 1
+¦ `+Symbols::Symbol+` ¦ - ¦ `+(sym = nil, slashed = nil, mini_sub_sized: false, mini_sup_sized: false, options: {}, lutaml_register: nil)+` ¦ 1461
+|===
+// END GENERATED bases
+
+Three things in this table shape the migration:
+
+* Field ownership is not limited to the five Function bases. 27 leaf
+  classes declare one more field of their own: `attributes` (accent
+  classes such as `Hat` and `Vec`), `options` (`Frac`, `Sum`, `Int` and
+  others) or `open_paren` and `close_paren` (`Abs`, `Ceil`, `Floor`,
+  `Norm`).
+* Some leaf classes only override the constructor to change a default, such
+  as the `FontStyle` and `Table` subclasses. The defaults are part of the
+  public API and stay as they are.
+* `Uncertainty` uses keyword arguments and read-only fields, and `Unitsml`
+  keeps a derived value (the parsed UnitsML) next to its one field.
+
+=== Classes
+
+Every class except the leaf symbol classes, which follow in the next
+section. The "Writers not defined" column lists the writers a tree node does
+not respond to. On the field-owning bases these gaps are filled by the leaf
+classes. The migration keeps them as they are and does not fill them.
+
+// BEGIN GENERATED classes
+[cols="3,2,2,2,2,3,5,2,1",options="header",separator=¦]
+|===
+¦ Class ¦ Family ¦ Superclass ¦ Field owner ¦ Own fields ¦ Constructor ¦ Own public methods ¦ Writers not defined ¦ Mark
+
+¦ `+Core+` ¦ Core and Number ¦ `+Lutaml::Model::Serializable+` ¦ - ¦ - ¦ - ¦ `+__assign_parsed___class=+`, `+__attribute_definition___class+`, `+__class+`, `+__class=+`, `+__lutaml_raw___class+`, `+ascii_fields_to_print+`, `+class_name+`, `+cloned_objects+`, `+close?+`, `+common_math_zone_conversion+`, `+divide_operator?+`, `+dump_mathml+`, `+dump_nodes+`, `+dump_omml+`, `+dump_ox_nodes+`, `+empty_tag+`, `+evaluate+`, `+extract_class_name_from_text+`, `+extractable?+`, `+filtered_values+`, `+font_style_t_tag+`, `+get+`, `+gsub_spacing+`, `+insert_t_tag+`, `+invert_unicode_symbols+`, `+is_binary_function?+`, `+is_mrow?+`, `+is_mstyle?+`, `+is_nary_function?+`, `+is_nary_symbol?+`, `+is_ternary_function?+`, `+is_unary?+`, `+latex_fields_to_print+`, `+line_breaking+`, `+linebreak?+`, `+mathml_fields_to_print+`, `+mathml_nodes+`, `+mini_sized?+`, `+minus_operator?+`, `+msty_tag_with_attrs+`, `+multiply_operator?+`, `+nary_attr_value+`, `+nary_intent_name+`, `+omml_fields_to_print+`, `+omml_nodes+`, `+omml_parameter+`, `+omml_tag_name+`, `+open?+`, `+operator?+`, `+ox_element+`, `+paren?+`, `+plus_operator?+`, `+power_operator?+`, `+pretty_print_instance_variables+`, `+prime_unicode?+`, `+r_element+`, `+replacable_values+`, `+reserved_constant+`, `+result+`, `+separate_table+`, `+set+`, `+symbol?+`, `+tag_name+`, `+to_ms_value+`, `+unicodemath_fields_to_print+`, `+unicodemath_parens+`, `+updated_object_values+`, `+using_default?+`, `+validate_function_formula+`, `+validate_mathml_fields+`, `+variable_name+`, `+variable_value+`, `+variables+` ¦ - ¦ stays-core
+¦ `+Evaluation::Evaluator+` ¦ Support (not tree nodes) ¦ `+Object+` ¦ `+Evaluation::Evaluator+` ¦ `+bindings+`, `+guard_digits+`, `+mode+` ¦ `+(formula, bindings = {}, mode: :approximate, guard_digits: nil)+` ¦ `+add+`, `+divide+`, `+evaluate+`, `+evaluate_arguments+`, `+evaluate_formula+`, `+evaluate_node+`, `+evaluate_nodes+`, `+function_arguments+`, `+group+`, `+limited_operation+`, `+log_argument+`, `+modulo+`, `+multiply+`, `+nary_function?+`, `+negate+`, `+negated_mod+`, `+normalize_tokens+`, `+number_value+`, `+positive+`, `+power+`, `+real_result+`, `+relation_operator?+`, `+square_root+`, `+strict?+`, `+subtract+`, `+unsupported+`, `+value_for+`, `+with_binding+` ¦ - ¦ support
+¦ `+Evaluation::Evaluator::BoundaryReached+` ¦ Support (not tree nodes) ¦ `+StandardError+` ¦ - ¦ - ¦ - ¦ - ¦ - ¦ support
+¦ `+Evaluation::ExpressionParser+` ¦ Support (not tree nodes) ¦ `+Object+` ¦ `+Evaluation::ExpressionParser+` ¦ `+evaluator+`, `+tokens+` ¦ `+(evaluator, tokens)+` ¦ `+parse+` ¦ - ¦ support
+¦ `+Evaluation::Iteration+` ¦ Support (not tree nodes) ¦ `+Object+` ¦ `+Evaluation::Iteration+` ¦ `+body+`, `+evaluator+`, `+lower+`, `+upper+` ¦ `+(evaluator, lower, upper, body)+` ¦ `+accumulate+` ¦ - ¦ support
+¦ `+Evaluation::Result+` ¦ Support (not tree nodes) ¦ `+Object+` ¦ `+Evaluation::Result+` ¦ `+boundaries+`, `+unevaluated+`, `+value+` ¦ `+(value:, boundaries: [], unevaluated: [])+` ¦ `+==+`, `+deferred?+`, `+exact?+` ¦ - ¦ support
+¦ `+Formula+` ¦ Formula ¦ `+Core+` ¦ `+Formula+` ¦ `+display+`, `+value+` ¦ `+(value = [], left_right_wrapper = true, display_style: true, input_string: nil)+` ¦ `+==+`, `+__assign_parsed___value_node=+`, `+__assign_parsed_displaystyle=+`, `+__assign_parsed_input_string=+`, `+__assign_parsed_left_right_wrapper=+`, `+__attribute_definition___value_node+`, `+__attribute_definition_displaystyle+`, `+__attribute_definition_input_string+`, `+__attribute_definition_left_right_wrapper+`, `+__lutaml_raw___value_node+`, `+__lutaml_raw_displaystyle+`, `+__lutaml_raw_input_string+`, `+__lutaml_raw_left_right_wrapper+`, `+__value_node+`, `+__value_node=+`, `+cloned_objects+`, `+display_from_kv+`, `+display_to_kv+`, `+displaystyle+`, `+displaystyle=+`, `+evaluate+`, `+extract_class_name_from_text+`, `+input_string+`, `+input_string=+`, `+insert+`, `+intent=+`, `+intent_names+`, `+left_right_wrapper+`, `+left_right_wrapper=+`, `+line_breaked_mathml+`, `+line_breaking+`, `+mathcolor=+`, `+mathml_content+`, `+mathvariant=+`, `+mini_sized?+`, `+nary_attr_value+`, `+new_line_support+`, `+omml_content+`, `+render+`, `+reprocess_value+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_display+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+update+`, `+validate_function_formula+`, `+value_exist?+`, `+value_mixed_from_kv+`, `+value_mixed_to_kv+`, `+value_text_from_kv+`, `+value_text_to_kv+`, `+value_value_from_kv+`, `+value_value_to_kv+` ¦ - ¦ stays-core
+¦ `+Formula::ClassTree+` ¦ Support (not tree nodes) ¦ `+Object+` ¦ - ¦ - ¦ - ¦ `+render+` ¦ - ¦ support
+¦ `+Formula::Mrow+` ¦ Formula ¦ `+Formula+` ¦ `+Formula::Mrow+` ¦ `+display+`, `+value+` ¦ `+(value = [], left_right_wrapper = true, display_style: true, input_string: nil)+` ¦ `+__assign_parsed___value_node=+`, `+__assign_parsed_displaystyle=+`, `+__assign_parsed_input_string=+`, `+__assign_parsed_is_mrow=+`, `+__assign_parsed_left_right_wrapper=+`, `+__attribute_definition___value_node+`, `+__attribute_definition_displaystyle+`, `+__attribute_definition_input_string+`, `+__attribute_definition_is_mrow+`, `+__attribute_definition_left_right_wrapper+`, `+__lutaml_raw___value_node+`, `+__lutaml_raw_displaystyle+`, `+__lutaml_raw_input_string+`, `+__lutaml_raw_is_mrow+`, `+__lutaml_raw_left_right_wrapper+`, `+__value_node+`, `+__value_node=+`, `+display_from_kv+`, `+display_to_kv+`, `+displaystyle+`, `+displaystyle=+`, `+input_string+`, `+input_string=+`, `+is_mrow+`, `+is_mrow=+`, `+is_mrow?+`, `+left_right_wrapper+`, `+left_right_wrapper=+`, `+organize_value+`, `+value_mixed_from_kv+`, `+value_mixed_to_kv+`, `+value_text_from_kv+`, `+value_text_to_kv+`, `+value_value_from_kv+`, `+value_value_to_kv+` ¦ - ¦ stays-core
+¦ `+Formula::Mstyle+` ¦ Formula ¦ `+Formula+` ¦ `+Formula+` ¦ - ¦ from `+Formula+` ¦ `+displaystyle=+`, `+is_mstyle?+`, `+omml_content+` ¦ - ¦ stays-core
+¦ `+Function::Abs+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Abs+` ¦ `+parameter_one+` ¦ from `+Function::UnaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_close_paren=+`, `+__assign_parsed_hide_function_name=+`, `+__assign_parsed_open_paren=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_close_paren+`, `+__attribute_definition_hide_function_name+`, `+__attribute_definition_open_paren+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_close_paren+`, `+__lutaml_raw_hide_function_name+`, `+__lutaml_raw_open_paren+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+close_paren+`, `+close_paren=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+intent_names+`, `+line_breaking+`, `+open_paren+`, `+open_paren=+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Arccos+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Arcsin+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Arctan+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Arg+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_mathml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Bar+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Bar+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+swap_class+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Base+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::Base+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+is_nary_function?+`, `+line_breaking+`, `+new_nary_function+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::BinaryFunction+` ¦ Function, binary ¦ `+Core+` ¦ `+Function::BinaryFunction+` ¦ `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil)+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+all_values_exist?+`, `+any_value_exist?+`, `+hide_function_name+`, `+hide_function_name=+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath_math_zone+` ¦ `+to_unicodemath+` ¦ stays-core
+¦ `+Function::Cancel+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Ceil+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Ceil+` ¦ `+parameter_one+` ¦ from `+Function::UnaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_close_paren=+`, `+__assign_parsed_hide_function_name=+`, `+__assign_parsed_open_paren=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_close_paren+`, `+__attribute_definition_hide_function_name+`, `+__attribute_definition_open_paren+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_close_paren+`, `+__lutaml_raw_hide_function_name+`, `+__lutaml_raw_open_paren+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+close_paren+`, `+close_paren=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+open_paren+`, `+open_paren=+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+paren_node+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Color+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::Color+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Cos+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Cosh+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Cot+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Coth+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Csc+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Csch+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Ddot+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Ddot+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_html+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Deg+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Det+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Dim+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Dot+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Dot+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Exp+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Fenced+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::Fenced+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_three_node=+`, `+__assign_parsed___parameter_three_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_three_node+`, `+__attribute_definition___parameter_three_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_three_node+`, `+__lutaml_raw___parameter_three_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_three_node+`, `+__parameter_three_node=+`, `+__parameter_three_nodes+`, `+__parameter_three_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+close=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+intent_names+`, `+line_breaking+`, `+mini_sized?+`, `+mini_sized_unicode+`, `+open=+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_three_mixed_from_kv+`, `+parameter_three_mixed_to_kv+`, `+parameter_three_text_from_kv+`, `+parameter_three_text_to_kv+`, `+parameter_three_value_from_kv+`, `+parameter_three_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+separators=+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+` ¦ - ¦ stays-core
+¦ `+Function::Floor+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Floor+` ¦ `+parameter_one+` ¦ from `+Function::UnaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_close_paren=+`, `+__assign_parsed_hide_function_name=+`, `+__assign_parsed_open_paren=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_close_paren+`, `+__attribute_definition_hide_function_name+`, `+__attribute_definition_open_paren+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_close_paren+`, `+__lutaml_raw_hide_function_name+`, `+__lutaml_raw_open_paren+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+close_paren+`, `+close_paren=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+open_paren+`, `+open_paren=+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+==+`, `+empty_font_style_r_tag+`, `+extract_class_name_from_text+`, `+extractable?+`, `+flatten_omml_nodes+`, `+font_family+`, `+font_styles+`, `+inject_font_style_recursive+`, `+inject_font_style_rpr+`, `+line_breaking+`, `+r_tag_node?+`, `+supported_fonts+`, `+t_tag_node?+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::Bold+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "bold")+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::BoldFraktur+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::BoldItalic+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::BoldSansSerif+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::BoldScript+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::DoubleStruck+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "double-struck")+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::Fraktur+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "fraktur")+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::Italic+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "italic")+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::Monospace+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "monospace")+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::Normal+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "rm")+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::SansSerif+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "sans-serif")+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::SansSerifBoldItalic+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::SansSerifItalic+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::FontStyle::Script+` ¦ Function, binary ¦ `+Function::FontStyle+` ¦ `+Function::BinaryFunction+` ¦ - ¦ `+(parameter_one = nil, parameter_two = "script")+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::Frac+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::Frac+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+choose_frac+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+intent_names+`, `+line_breaking+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Gcd+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Glb+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_latex+`, `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Hat+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Hat+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Hom+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::Inf+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+intent_names+`, `+line_breaking+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Int+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::Int+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_three_node=+`, `+__assign_parsed___parameter_three_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_three_node+`, `+__attribute_definition___parameter_three_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_three_node+`, `+__lutaml_raw___parameter_three_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_three_node+`, `+__parameter_three_node=+`, `+__parameter_three_nodes+`, `+__parameter_three_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+intent_names+`, `+is_nary_function?+`, `+line_breaking+`, `+nary_array+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_three_mixed_from_kv+`, `+parameter_three_mixed_to_kv+`, `+parameter_three_text_from_kv+`, `+parameter_three_text_to_kv+`, `+parameter_three_value_from_kv+`, `+parameter_three_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Intent+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+intent_names+`, `+to_html+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Ker+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::Lcm+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+to_asciimath+`, `+to_latex+`, `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Left+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Lg+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Lim+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+intent_names+`, `+line_breaking+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Liminf+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::Limits+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::TernaryFunction+` ¦ - ¦ from `+Function::TernaryFunction+` ¦ `+line_breaking+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Limsup+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::Linebreak+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Linebreak+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+linebreak?+`, `+omml_line_break+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+separate_table+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Ln+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Log+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+evaluate+`, `+evaluate_with_argument+`, `+line_breaking+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Longdiv+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Longdiv+` ¦ `+parameter_one+` ¦ from `+Function::UnaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Lub+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Max+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Mbox+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Menclose+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Merror+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Mglyph+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ `+(parameter_one = {})+` ¦ `+alt+`, `+alt=+`, `+index+`, `+index=+`, `+src+`, `+src=+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Min+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+to_omml_without_math_tag+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Mlabeledtr+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+to_mathml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Mod+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+evaluate+`, `+evaluate_negated+`, `+line_breaking+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Mpadded+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Mpadded+` ¦ `+options+`, `+parameter_one+` ¦ `+(parameter_one = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+depth=+`, `+height=+`, `+hide_function_name+`, `+hide_function_name=+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+voffset+`, `+voffset=+`, `+width=+` ¦ - ¦ stays-core
+¦ `+Function::Ms+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+value+`, `+value=+` ¦ - ¦ stays-core
+¦ `+Function::Msgroup+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Msgroup+` ¦ `+parameter_one+` ¦ from `+Function::UnaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+` ¦ - ¦ stays-core
+¦ `+Function::Msline+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Multiscript+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::Multiscript+` ¦ `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ from `+Function::TernaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_three_node=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_three_node+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_three_node+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_three_node+`, `+__parameter_three_node=+`, `+__parameter_three_nodes+`, `+__parameter_three_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_three_mixed_from_kv+`, `+parameter_three_mixed_to_kv+`, `+parameter_three_text_from_kv+`, `+parameter_three_text_to_kv+`, `+parameter_three_value_from_kv+`, `+parameter_three_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Nary+` ¦ Function, n-ary ¦ `+Core+` ¦ `+Function::Nary+` ¦ `+options+`, `+parameter_four+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, parameter_four = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_four_node=+`, `+__assign_parsed___parameter_four_nodes=+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_three_node=+`, `+__assign_parsed___parameter_three_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__attribute_definition___parameter_four_node+`, `+__attribute_definition___parameter_four_nodes+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_three_node+`, `+__attribute_definition___parameter_three_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__lutaml_raw___parameter_four_node+`, `+__lutaml_raw___parameter_four_nodes+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_three_node+`, `+__lutaml_raw___parameter_three_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__parameter_four_node+`, `+__parameter_four_node=+`, `+__parameter_four_nodes+`, `+__parameter_four_nodes=+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_three_node+`, `+__parameter_three_node=+`, `+__parameter_three_nodes+`, `+__parameter_three_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+intent_names+`, `+is_nary_function?+`, `+line_breaking+`, `+nary_symbol_classes+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_four_mixed_from_kv+`, `+parameter_four_mixed_to_kv+`, `+parameter_four_text_from_kv+`, `+parameter_four_text_to_kv+`, `+parameter_four_value_from_kv+`, `+parameter_four_value_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_three_mixed_from_kv+`, `+parameter_three_mixed_to_kv+`, `+parameter_three_text_from_kv+`, `+parameter_three_text_to_kv+`, `+parameter_three_value_from_kv+`, `+parameter_three_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ `+to_html+` ¦ stays-core
+¦ `+Function::None+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Norm+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Norm+` ¦ `+parameter_one+` ¦ from `+Function::UnaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_close_paren=+`, `+__assign_parsed_hide_function_name=+`, `+__assign_parsed_open_paren=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_close_paren+`, `+__attribute_definition_hide_function_name+`, `+__attribute_definition_open_paren+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_close_paren+`, `+__lutaml_raw_hide_function_name+`, `+__lutaml_raw_open_paren+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+close_paren+`, `+close_paren=+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+open_paren+`, `+open_paren=+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Obrace+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Obrace+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Oint+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::Oint+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_three_node=+`, `+__assign_parsed___parameter_three_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_three_node+`, `+__attribute_definition___parameter_three_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_three_node+`, `+__lutaml_raw___parameter_three_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_three_node+`, `+__parameter_three_node=+`, `+__parameter_three_nodes+`, `+__parameter_three_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+intent_names+`, `+is_nary_function?+`, `+line_breaking+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_three_mixed_from_kv+`, `+parameter_three_mixed_to_kv+`, `+parameter_three_text_from_kv+`, `+parameter_three_text_to_kv+`, `+parameter_three_value_from_kv+`, `+parameter_three_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Over+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+line_breaking+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Overleftrightarrow+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Overleftrightarrow+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+accent_char+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Overset+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::Overset+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+accent=+`, `+hide_function_name+`, `+hide_function_name=+`, `+is_nary_function?+`, `+line_breaking+`, `+new_nary_function+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Phantom+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+line_breaking+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Power+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+evaluate+`, `+is_nary_function?+`, `+line_breaking+`, `+new_nary_function+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::PowerBase+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::TernaryFunction+` ¦ - ¦ from `+Function::TernaryFunction+` ¦ `+is_nary_function?+`, `+line_breaking+`, `+mmultiscript+`, `+new_nary_function+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Prod+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::Prod+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_three_node=+`, `+__assign_parsed___parameter_three_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_three_node+`, `+__attribute_definition___parameter_three_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_three_node+`, `+__lutaml_raw___parameter_three_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_three_node+`, `+__parameter_three_node=+`, `+__parameter_three_nodes+`, `+__parameter_three_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+intent_names+`, `+is_nary_function?+`, `+line_breaking+`, `+nary_attr_value+`, `+nary_values+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_three_mixed_from_kv+`, `+parameter_three_mixed_to_kv+`, `+parameter_three_text_from_kv+`, `+parameter_three_text_to_kv+`, `+parameter_three_value_from_kv+`, `+parameter_three_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Right+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Root+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+evaluate+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Rule+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::TernaryFunction+` ¦ - ¦ from `+Function::TernaryFunction+` ¦ `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Scarries+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::Scarry+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Sec+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Sech+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Semantics+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+line_breaking+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ `+to_unicodemath+` ¦ stays-core
+¦ `+Function::Semantics::Annotation+` ¦ Core and Number ¦ `+Core+` ¦ `+Function::Semantics::Annotation+` ¦ `+content+`, `+tag+` ¦ - ¦ `+==+`, `+__assign_parsed___content_node=+`, `+__attribute_definition___content_node+`, `+__content_node+`, `+__content_node=+`, `+__lutaml_raw___content_node+`, `+content_mixed_from_kv+`, `+content_mixed_to_kv+`, `+content_text_from_kv+`, `+content_text_to_kv+`, `+content_value_from_kv+`, `+content_value_to_kv+`, `+tag_from_kv+`, `+tag_to_kv+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_html+` ¦ removed-by-531
+¦ `+Function::Sin+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Sinh+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Sqrt+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Sqrt+` ¦ `+options+`, `+parameter_one+` ¦ from `+Function::UnaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Stackrel+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+line_breaking+`, `+to_asciimath+`, `+to_html+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Substack+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Sum+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::Sum+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_three_node=+`, `+__assign_parsed___parameter_three_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_three_node+`, `+__attribute_definition___parameter_three_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_three_node+`, `+__lutaml_raw___parameter_three_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_three_node+`, `+__parameter_three_node=+`, `+__parameter_three_nodes+`, `+__parameter_three_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+intent_names+`, `+is_nary_function?+`, `+line_breaking+`, `+nary_attr_value+`, `+omml_tag_name+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_three_mixed_from_kv+`, `+parameter_three_mixed_to_kv+`, `+parameter_three_text_from_kv+`, `+parameter_three_text_to_kv+`, `+parameter_three_value_from_kv+`, `+parameter_three_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Sup+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::Table+` ¦ Function, table ¦ `+Core+` ¦ `+Function::Table+` ¦ `+close_paren+`, `+open_paren+`, `+options+`, `+value+` ¦ `+(value = nil, open_paren = nil, close_paren = nil, options = {})+` ¦ `+==+`, `+__assign_parsed___close_paren_node=+`, `+__assign_parsed___close_paren_nodes=+`, `+__assign_parsed___open_paren_node=+`, `+__assign_parsed___open_paren_nodes=+`, `+__assign_parsed___value_node=+`, `+__attribute_definition___close_paren_node+`, `+__attribute_definition___close_paren_nodes+`, `+__attribute_definition___open_paren_node+`, `+__attribute_definition___open_paren_nodes+`, `+__attribute_definition___value_node+`, `+__close_paren_node+`, `+__close_paren_node=+`, `+__close_paren_nodes+`, `+__close_paren_nodes=+`, `+__lutaml_raw___close_paren_node+`, `+__lutaml_raw___close_paren_nodes+`, `+__lutaml_raw___open_paren_node+`, `+__lutaml_raw___open_paren_nodes+`, `+__lutaml_raw___value_node+`, `+__open_paren_node+`, `+__open_paren_node=+`, `+__open_paren_nodes+`, `+__open_paren_nodes=+`, `+__value_node+`, `+__value_node=+`, `+close_paren_mixed_from_kv+`, `+close_paren_mixed_to_kv+`, `+close_paren_text_from_kv+`, `+close_paren_text_to_kv+`, `+close_paren_value_from_kv+`, `+close_paren_value_to_kv+`, `+columnlines=+`, `+frame=+`, `+intent_names+`, `+open_paren_mixed_from_kv+`, `+open_paren_mixed_to_kv+`, `+open_paren_text_from_kv+`, `+open_paren_text_to_kv+`, `+open_paren_value_from_kv+`, `+open_paren_value_to_kv+`, `+options_from_kv+`, `+options_to_kv+`, `+rowlines=+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+value_mixed_from_kv+`, `+value_mixed_to_kv+`, `+value_text_from_kv+`, `+value_text_to_kv+`, `+value_value_from_kv+`, `+value_value_to_kv+` ¦ - ¦ stays-core
+¦ `+Function::Table::Align+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = nil, open_paren = "[", close_paren = "]", options = {})+` ¦ `+to_latex+` ¦ - ¦ stays-core
+¦ `+Function::Table::Array+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = [], open_paren = "[", close_paren = "]", options = {})+` ¦ `+to_latex+`, `+to_mathml_without_math_tag+` ¦ - ¦ stays-core
+¦ `+Function::Table::Bmatrix+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = nil, open_paren = "[", close_paren = "]", options = {})+` ¦ `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Table::Cases+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = [], open_paren = "{", close_paren = ":}", options = {})+` ¦ `+to_mathml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Table::Eqarray+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = [], open_paren = "", close_paren = "", options = {})+` ¦ `+to_mathml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Table::Matrix+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = [], open_paren = "(", close_paren = ")", options = {})+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Table::Multline+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = nil, open_paren = "[", close_paren = "]", options = {})+` ¦ `+to_latex+` ¦ - ¦ stays-core
+¦ `+Function::Table::Pmatrix+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = nil, open_paren = "(", close_paren = ")", options = {})+` ¦ `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Table::Split+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = nil, open_paren = "[", close_paren = "]", options = {})+` ¦ `+to_latex+` ¦ - ¦ stays-core
+¦ `+Function::Table::Vmatrix+` ¦ Function, table ¦ `+Function::Table+` ¦ `+Function::Table+` ¦ - ¦ `+(value = nil, open_paren = "|", close_paren = "|", options = {})+` ¦ `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Tan+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Tanh+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Td+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::Td+` ¦ `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil)+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+omml_content+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+` ¦ - ¦ stays-core
+¦ `+Function::TernaryFunction+` ¦ Function, ternary ¦ `+Core+` ¦ `+Function::TernaryFunction+` ¦ `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil)+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_three_node=+`, `+__assign_parsed___parameter_three_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_three_node+`, `+__attribute_definition___parameter_three_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_three_node+`, `+__lutaml_raw___parameter_three_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_three_node+`, `+__parameter_three_node=+`, `+__parameter_three_nodes+`, `+__parameter_three_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+all_values_exist?+`, `+any_value_exist?+`, `+hide_function_name+`, `+hide_function_name=+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_three_mixed_from_kv+`, `+parameter_three_mixed_to_kv+`, `+parameter_three_text_from_kv+`, `+parameter_three_text_to_kv+`, `+parameter_three_value_from_kv+`, `+parameter_three_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_unicodemath_math_zone+` ¦ `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ stays-core
+¦ `+Function::Text+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Text+` ¦ `+lang+`, `+parameter_one+` ¦ `+(parameter_one = "", lang: nil)+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+element_order=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+insert_t_tag+`, `+lang_from_kv+`, `+lang_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+validate_function_formula+`, `+value+`, `+value=+`, `+variable_name+` ¦ - ¦ stays-core
+¦ `+Function::Tilde+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Tilde+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+accent_char+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Tr+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Tr+` ¦ `+parameter_one+` ¦ `+(parameter_one = [])+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+hide_function_name+`, `+hide_function_name=+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+remove_hline+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+` ¦ - ¦ stays-core
+¦ `+Function::Ubrace+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Ubrace+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+omml_tag_name+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+tag_name+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+validate_function_formula+` ¦ - ¦ stays-core
+¦ `+Function::Ul+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Ul+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+accent_char+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+class_name+`, `+hide_function_name+`, `+hide_function_name=+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+swap_class+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::UnaryFunction+` ¦ Function, unary ¦ `+Core+` ¦ `+Function::UnaryFunction+` ¦ `+parameter_one+` ¦ `+(parameter_one = nil)+` ¦ `+==+`, `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+custom_array_line_breaking+`, `+hide_function_name+`, `+hide_function_name=+`, `+intent_names+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+reprocess_parameter_one+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+update+`, `+value_nil?+` ¦ - ¦ stays-core
+¦ `+Function::Uncertainty+` ¦ Uncertainty and UnitsML nodes ¦ `+Core+` ¦ `+Function::Uncertainty+` ¦ `+category+`, `+coverage_factor+`, `+coverage_probability+`, `+distribution+`, `+interval_kind+`, `+lower+`, `+magnitude+`, `+notation+`, `+unit+`, `+upper+`, `+value+` ¦ `+(value = nil, category: nil, magnitude: nil, coverage_factor: nil, coverage_probability: nil, lower: nil, upper: nil, interval_kind: nil, notation: :absolute, unit: nil, distribution: nil)+` ¦ `+==+`, `+__assign_parsed___coverage_factor_node=+`, `+__assign_parsed___coverage_factor_nodes=+`, `+__assign_parsed___coverage_probability_node=+`, `+__assign_parsed___coverage_probability_nodes=+`, `+__assign_parsed___lower_node=+`, `+__assign_parsed___lower_nodes=+`, `+__assign_parsed___magnitude_node=+`, `+__assign_parsed___magnitude_nodes=+`, `+__assign_parsed___unit_node=+`, `+__assign_parsed___unit_nodes=+`, `+__assign_parsed___upper_node=+`, `+__assign_parsed___upper_nodes=+`, `+__assign_parsed___value_node=+`, `+__assign_parsed___value_nodes=+`, `+__attribute_definition___coverage_factor_node+`, `+__attribute_definition___coverage_factor_nodes+`, `+__attribute_definition___coverage_probability_node+`, `+__attribute_definition___coverage_probability_nodes+`, `+__attribute_definition___lower_node+`, `+__attribute_definition___lower_nodes+`, `+__attribute_definition___magnitude_node+`, `+__attribute_definition___magnitude_nodes+`, `+__attribute_definition___unit_node+`, `+__attribute_definition___unit_nodes+`, `+__attribute_definition___upper_node+`, `+__attribute_definition___upper_nodes+`, `+__attribute_definition___value_node+`, `+__attribute_definition___value_nodes+`, `+__coverage_factor_node+`, `+__coverage_factor_node=+`, `+__coverage_factor_nodes+`, `+__coverage_factor_nodes=+`, `+__coverage_probability_node+`, `+__coverage_probability_node=+`, `+__coverage_probability_nodes+`, `+__coverage_probability_nodes=+`, `+__lower_node+`, `+__lower_node=+`, `+__lower_nodes+`, `+__lower_nodes=+`, `+__lutaml_raw___coverage_factor_node+`, `+__lutaml_raw___coverage_factor_nodes+`, `+__lutaml_raw___coverage_probability_node+`, `+__lutaml_raw___coverage_probability_nodes+`, `+__lutaml_raw___lower_node+`, `+__lutaml_raw___lower_nodes+`, `+__lutaml_raw___magnitude_node+`, `+__lutaml_raw___magnitude_nodes+`, `+__lutaml_raw___unit_node+`, `+__lutaml_raw___unit_nodes+`, `+__lutaml_raw___upper_node+`, `+__lutaml_raw___upper_nodes+`, `+__lutaml_raw___value_node+`, `+__lutaml_raw___value_nodes+`, `+__magnitude_node+`, `+__magnitude_node=+`, `+__magnitude_nodes+`, `+__magnitude_nodes=+`, `+__unit_node+`, `+__unit_node=+`, `+__unit_nodes+`, `+__unit_nodes=+`, `+__upper_node+`, `+__upper_node=+`, `+__upper_nodes+`, `+__upper_nodes=+`, `+__value_node+`, `+__value_node=+`, `+__value_nodes+`, `+__value_nodes=+`, `+category_from_kv+`, `+category_to_kv+`, `+cloned_objects+`, `+concise_digits+`, `+coverage_factor_mixed_from_kv+`, `+coverage_factor_mixed_to_kv+`, `+coverage_factor_text_from_kv+`, `+coverage_factor_text_to_kv+`, `+coverage_factor_value_from_kv+`, `+coverage_factor_value_to_kv+`, `+coverage_probability_mixed_from_kv+`, `+coverage_probability_mixed_to_kv+`, `+coverage_probability_text_from_kv+`, `+coverage_probability_text_to_kv+`, `+coverage_probability_value_from_kv+`, `+coverage_probability_value_to_kv+`, `+distribution_from_kv+`, `+distribution_to_kv+`, `+interval_kind_from_kv+`, `+interval_kind_to_kv+`, `+line_breaking+`, `+lower_mixed_from_kv+`, `+lower_mixed_to_kv+`, `+lower_text_from_kv+`, `+lower_text_to_kv+`, `+lower_value_from_kv+`, `+lower_value_to_kv+`, `+magnitude_mixed_from_kv+`, `+magnitude_mixed_to_kv+`, `+magnitude_text_from_kv+`, `+magnitude_text_to_kv+`, `+magnitude_value_from_kv+`, `+magnitude_value_to_kv+`, `+marker+`, `+notation_from_kv+`, `+notation_to_kv+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+unit_mixed_from_kv+`, `+unit_mixed_to_kv+`, `+unit_text_from_kv+`, `+unit_text_to_kv+`, `+unit_value_from_kv+`, `+unit_value_to_kv+`, `+upper_mixed_from_kv+`, `+upper_mixed_to_kv+`, `+upper_text_from_kv+`, `+upper_text_to_kv+`, `+upper_value_from_kv+`, `+upper_value_to_kv+`, `+value_mixed_from_kv+`, `+value_mixed_to_kv+`, `+value_text_from_kv+`, `+value_text_to_kv+`, `+value_value_from_kv+`, `+value_value_to_kv+` ¦ - ¦ stays-core
+¦ `+Function::Underover+` ¦ Function, ternary ¦ `+Function::TernaryFunction+` ¦ `+Function::TernaryFunction+` ¦ - ¦ from `+Function::TernaryFunction+` ¦ `+is_nary_function?+`, `+line_breaking+`, `+new_nary_function+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Underset+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::Underset+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed___parameter_two_node=+`, `+__assign_parsed___parameter_two_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition___parameter_two_node+`, `+__attribute_definition___parameter_two_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw___parameter_two_node+`, `+__lutaml_raw___parameter_two_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+__parameter_two_node+`, `+__parameter_two_node=+`, `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+group_chr+`, `+hide_function_name+`, `+hide_function_name=+`, `+is_nary_function?+`, `+line_breaking+`, `+new_nary_function+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+parameter_two_mixed_from_kv+`, `+parameter_two_mixed_to_kv+`, `+parameter_two_text_from_kv+`, `+parameter_two_text_to_kv+`, `+parameter_two_value_from_kv+`, `+parameter_two_value_to_kv+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+Function::Unitsml+` ¦ Uncertainty and UnitsML nodes ¦ `+Core+` ¦ - ¦ - ¦ `+(text = nil)+` ¦ `+==+`, `+__assign_parsed_input_string=+`, `+__assign_parsed_text=+`, `+__attribute_definition_input_string+`, `+__attribute_definition_text+`, `+__lutaml_raw_input_string+`, `+__lutaml_raw_text+`, `+cloned_objects+`, `+input_string+`, `+input_string=+`, `+text+`, `+text=+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+` ¦ - ¦ stays-core
+¦ `+Function::Vec+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Vec+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+accent_char+`, `+attributes_from_kv+`, `+attributes_to_kv+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_asciimath_math_zone+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
+¦ `+ModelHelper+` ¦ Support (not tree nodes) ¦ `+Object+` ¦ - ¦ - ¦ - ¦ - ¦ - ¦ support
+¦ `+Number+` ¦ Core and Number ¦ `+Core+` ¦ - ¦ - ¦ `+(value = nil, mini_sub_sized: false, mini_sup_sized: false, base: nil, lutaml_register: nil)+` ¦ `+==+`, `+__assign_parsed_base=+`, `+__assign_parsed_mini_sub_sized=+`, `+__assign_parsed_mini_sup_sized=+`, `+__assign_parsed_value=+`, `+__attribute_definition_base+`, `+__attribute_definition_mini_sub_sized+`, `+__attribute_definition_mini_sup_sized+`, `+__attribute_definition_value+`, `+__lutaml_raw_base+`, `+__lutaml_raw_mini_sub_sized+`, `+__lutaml_raw_mini_sup_sized+`, `+__lutaml_raw_value+`, `+base+`, `+base=+`, `+element_order=+`, `+evaluate+`, `+font_style_t_tag+`, `+insert_t_tag+`, `+mini_sized?+`, `+mini_sub_sized+`, `+mini_sub_sized=+`, `+mini_sup_sized+`, `+mini_sup_sized=+`, `+nary_attr_value+`, `+t_tag+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+validate_function_formula+`, `+value+`, `+value=+` ¦ - ¦ stays-core
+¦ `+SemanticTree+` ¦ Support (not tree nodes) ¦ `+Object+` ¦ - ¦ - ¦ `+(language, options)+` ¦ `+add+`, `+divide+`, `+evaluate_node+`, `+group+`, `+log_argument+`, `+multiply+`, `+nary_function?+`, `+negate+`, `+negated_mod+`, `+normalize_tokens+`, `+positive+`, `+power+`, `+relation+`, `+relation_operator?+`, `+render+`, `+subtract+`, `+unsupported+` ¦ - ¦ support
+¦ `+SemanticTree::View+` ¦ Support (not tree nodes) ¦ `+Struct+` ¦ - ¦ - ¦ - ¦ `+children+`, `+children=+`, `+label+`, `+label=+`, `+source+`, `+source=+` ¦ - ¦ support
+¦ `+SymbolTable+` ¦ Support (not tree nodes) ¦ `+Hash+` ¦ - ¦ - ¦ `+(pairs = nil)+` ¦ `+<+`, `+<=+`, `+==+`, `+>+`, `+>=+`, `+[]+`, `+[]=+`, `+all?+`, `+any?+`, `+assoc+`, `+chain+`, `+chunk+`, `+chunk_while+`, `+clear+`, `+collect+`, `+collect_concat+`, `+compact+`, `+compact!+`, `+compare_by_identity+`, `+count+`, `+cycle+`, `+deconstruct_keys+`, `+default=+`, `+default_proc=+`, `+delete+`, `+delete_if+`, `+detect+`, `+dig+`, `+drop+`, `+drop_while+`, `+each+`, `+each_cons+`, `+each_entry+`, `+each_pair+`, `+each_slice+`, `+each_value+`, `+each_with_index+`, `+each_with_object+`, `+entries+`, `+eql?+`, `+except+`, `+fetch+`, `+fetch_values+`, `+filter+`, `+filter!+`, `+filter_map+`, `+find+`, `+find_all+`, `+find_index+`, `+first+`, `+flat_map+`, `+flatten+`, `+grep+`, `+grep_v+`, `+group_by+`, `+has_value?+`, `+hash+`, `+inject+`, `+inspect+`, `+invert+`, `+keep_if+`, `+key+`, `+lazy+`, `+map+`, `+max+`, `+max_by+`, `+merge+`, `+merge!+`, `+min+`, `+min_by+`, `+minmax+`, `+minmax_by+`, `+none?+`, `+one?+`, `+partition+`, `+rassoc+`, `+raw_pairs+`, `+reduce+`, `+rehash+`, `+reject+`, `+reject!+`, `+replace+`, `+resolve_all!+`, `+reverse_each+`, `+select+`, `+select!+`, `+shift+`, `+slice+`, `+slice_after+`, `+slice_before+`, `+slice_when+`, `+sort+`, `+sort_by+`, `+store+`, `+sum+`, `+take+`, `+take_while+`, `+tally+`, `+to_a+`, `+to_h+`, `+to_hash+`, `+to_proc+`, `+to_s+`, `+to_set+`, `+transform_keys+`, `+transform_keys!+`, `+transform_values+`, `+transform_values!+`, `+uniq+`, `+update+`, `+value?+`, `+values+`, `+values_at+`, `+zip+` ¦ - ¦ support
+¦ `+Symbols::Paren+` ¦ Symbols, parentheses ¦ `+Symbols::Symbol+` ¦ - ¦ - ¦ from `+Symbols::Symbol+` ¦ `+paren?+` ¦ - ¦ stays-core
+¦ `+Symbols::Symbol+` ¦ Symbols ¦ `+Core+` ¦ - ¦ - ¦ `+(sym = nil, slashed = nil, mini_sub_sized: false, mini_sup_sized: false, options: {}, lutaml_register: nil)+` ¦ `+==+`, `+__assign_parsed_mini_sub_sized=+`, `+__assign_parsed_mini_sup_sized=+`, `+__assign_parsed_options=+`, `+__assign_parsed_slashed=+`, `+__assign_parsed_value=+`, `+__attribute_definition_mini_sub_sized+`, `+__attribute_definition_mini_sup_sized+`, `+__attribute_definition_options+`, `+__attribute_definition_slashed+`, `+__attribute_definition_value+`, `+__lutaml_raw_mini_sub_sized+`, `+__lutaml_raw_mini_sup_sized+`, `+__lutaml_raw_options+`, `+__lutaml_raw_slashed+`, `+__lutaml_raw_value+`, `+divide_operator?+`, `+evaluate+`, `+font_style_t_tag+`, `+input+`, `+insert_t_tag+`, `+linebreak?+`, `+mini_sized?+`, `+mini_sub_sized+`, `+mini_sub_sized=+`, `+mini_sup_sized+`, `+mini_sup_sized=+`, `+minus_operator?+`, `+multiply_operator?+`, `+nary_attr_value+`, `+omml_nodes+`, `+omml_tag_name+`, `+options+`, `+options=+`, `+options_from_kv+`, `+options_to_kv+`, `+paren?+`, `+plus_operator?+`, `+power_operator?+`, `+separate_table+`, `+slashed+`, `+slashed=+`, `+t_tag+`, `+tag_name+`, `+to_asciimath+`, `+to_asciimath_math_zone+`, `+to_html+`, `+to_latex+`, `+to_latex_math_zone+`, `+to_mathml_math_zone+`, `+to_mathml_without_math_tag+`, `+to_omml_math_zone+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_unicodemath_math_zone+`, `+validate_function_formula+`, `+value+`, `+value=+`, `+variable_name+` ¦ - ¦ stays-core
+|===
+// END GENERATED classes
+
+=== Symbol classes
+
+The leaf symbol classes, grouped by shape: same superclass, same own fields,
+same constructor owner, same own public methods and the same mark. Almost
+all of them take their fields and constructor from `Symbols::Symbol`, so
+declaring that one base covers them. Their spelling tables and writer bodies
+are catalog data and are staged under #537.
+
+// BEGIN GENERATED symbols
+[%collapsible]
+.Shape 1: 1407 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Aa, Ac, Accurrent, Acidfree, Acute, Acwcirclearrow, Acwgapcirclearrow, Acwleftarcarrow, Acwoverarcarrow, Acwunderarcarrow, Aleph, Alpha, Amalg, Ampersand, Anchor, Angdnr, Angle, Angles, Angleubar, Angmsd, Angrtvb, Angsph, Angstrom, Annuity, Aplboxquestion, Aplboxupcaret, Aplcomment, Apldownarrowbox, Aplinput, Aplinv, Aplleftarrowbox, Apllog, Aplrightarrowbox, Apluparrowbox, Apprge, Apprle, Approx, Approxeq, Approxeqq, Approxident, Aquarius, Arceq, Aries, Arrowbullet, Assert, Ast, Asteq, Asteraccent, Asymp, Atsign, Awint, Backcong, Backdprime, Backepsilon, Backprime, Backsim, Backsimeq, Backslash, Backtrprime, Bagmember, Ballotx, Bar, Barcap, Barcup, Barin, Barleftarrow, Barleftarrowrightarrowba, Barleftharpoon, Barovernorthwestarrow, Barrightarrowdiamond, Barrightharpoon, Baruparrow, Barv, Barvee, Barwedge, Bbrktbrk, Bdtriplevdash, Because, Benzenr, Beth, Between, Bigblacktriangledown, Bigblacktriangleup, Bigbot, Bigcupdot, Biginterleave, Bigodot, Bigoplus, Bigotimes, Bigslopedvee, Bigslopedwedge, Bigsqcap, Bigsqcup, Bigstar, Bigtalloblong, Bigtop, Bigtriangledown, Bigtriangleleft, Bigtriangleup, Biguplus, Bigwhitestar, Bij, Biohazard, Blackcircledownarrow, Blackcircledrightdot, Blackcircledtwodots, Blackcircleulquadwhite, Blackdiamonddownarrow, Blackhourglass, Blackinwhitediamond, Blackinwhitesquare, Blacklozenge, Blackpointerleft, Blackpointerright, Blacksmiley, Blacktriangle, Blacktriangledown, Blkhorzoval, Blkvertoval, Blockfull, Blockhalfshaded, Blocklefthalf, Blocklowhalf, Blockqtrshaded, Blockrighthalf, Blockthreeqtrshaded, Blockuphalf, Bnot, Bot, Botsemicircle, Bowtie, Box, Boxast, Boxbar, Boxbox, Boxbslash, Boxcircle, Boxdiag, Boxdot, Boxminus, Boxonbox, Boxplus, Boxtimes, Breve, Bsimilarleftarrow, Bsimilarrightarrow, Bsolhsub, Btimes, Bullet, Bullseye, Bumpeq, Bumpeqq, Buni, Cancer, Candra, Cap, Capbarcup, Capdot, Capovercup, Capricornus, Capwedge, Caretinsert, Carriagereturn, Cat, Cc, Ccwundercurvearrow, Cdotp, Cdots, Cent, Check, Checkedbox, Checkmark, Chi, Cirbot, Circ, Circeq, Circle, Circlebottomhalfblack, Circledbullet, Circledgtr, Circledownarrow, Circledparallel, Circledr, Circledrightdot, Circledstar, Circledtwodots, Circledvert, Circledwhitebullet, Circlehbar, Circlellquad, Circlelrquad, Circleonleftarrow, Circleonrightarrow, Circletophalfblack, Circleulquad, Circleurquad, Circleurquadblack, Circlevertfill, Cire, Cirfnint, Cirmid, Cirscir, Closedvarcap, Closedvarcup, Closedvarcupsmashprod, Closure, Clubsuit, Colon, Coloneq, Comma, Commaminus, Comp, Complement, Concavediamond, Concavediamondtickleft, Concavediamondtickright, Cong, Congdot, Conictaper, Conjquant, Csub, Csube, Csup, Csupe, Cuberoot, Cup, Cupbarcap, Cupdot, Cupleftarrow, Cupovercap, Cupvee, Curlyeqprec, Curlyeqsucc, Curlyvee, Curlywedge, Curvearrowleftplus, Curvearrowright, Curvearrowrightminus, Cwcirclearrow, Cwgapcirclearrow, Cwrightarcarrow, Cwundercurvearrow, Dag, Daleth, Danger, Darr, Dasharrow, Dasharrowright, Dashv, Dashvdash, Dbkarow, Ddag, Ddddot, Dddot, Ddot, Ddots, Ddotseq, Ddownarrow, Degc, Degf, Degree, Del, Delta, Deltaeq, Diameter, Diamond, Diamondblack, Diamondbotblack, Diamonddot, Diamondleftarrow, Diamondleftarrowbar, Diamondleftblack, Diamondrightblack, Diamondtopblack, Dicei, Diceii, Diceiii, Diceiv, Dicev, Dicevi, Digamma, Dingasterisk, Disin, Disjquant, Divideontimes, Dot, Doteq, Dotequiv, Dotminus, Dotplus, Dots, Dotsim, Dotsminusdots, Dottedcircle, Dottedsquare, Dottimes, Doublebarvee, Doublebarwedge, Doubleplus, Downarrow, Downarrowbar, Downarrowbarred, Downarrows, Downdasharrow, Downdownharpoons, Downfishtail, Downharpoonleft, Downharpoonright, Downleftteevector, Downleftvectorbar, Downrightcurvedarrow, Downrightteevector, Downrightvectorbar, Downtriangleleftblack, Downtrianglerightblack, Downuparrows, Downupharpoons, Downwhitearrow, Dprime, Draftingarrow, Drbkarow, Droang, Dsol, Dsub, Dualmap, Earth, Ee, Egsdot, Eighthnote, Elinters, Ell, Elsdot, Emptyset, Emptysetoarr, Emptysetoarrl, Emptysetobar, Emptysetocirc, Enclosecircle, Enclosediamond, Enclosesquare, Enclosetriangle, Enleadertwodots, Epar, Eparsl, Epsilon, Eqcirc, Eqcolon, Eqdef, Eqdot, Eqeq, Eqgtr, Eqless, Eqno, Eqqcolon, Eqqgtr, Eqqless, Eqqplus, Eqqsim, Eqqslantgtr, Eqqslantless, Eqsim, Eqslantgtr, Eqslantless, Equal, Equalleftarrow, Equalrightarrow, Equiv, Equivdd, Equivvert, Equivvvert, Eqvparsl, Errbarblackcircle, Errbarblackdiamond, Errbarblacksquare, Errbarcircle, Errbardiamond, Errbarsquare, Eta, Eth, Euler, Euro, Exclam, Exi, Exists, Fallingdotseq, Fbowtie, Fdiagovnearrow, Fdiagovrdiag, Ffun, Finj, Fint, Finv, Fisheye, Flat, Fltns, Forall, Forks, Forksnot, Forkv, Fourthroot, Fourvdots, Fracslash, Frown, Fullouterjoin, Funcapply, Game, Gamma, Ge, Gemini, Geq, Geqq, Geqqslant, Geqslant, Gescc, Gesdot, Gesdoto, Gesdotol, Gesles, Gets, Gg, Ggg, Gggnest, Gimel, Gla, Gle, Gleichstark, Glj, Gnapprox, Gneq, Gneqq, Gnsim, Grad, Grave, Greater, Gsime, Gsiml, Gt, Gtcc, Gtcir, Gtlpar, Gtquest, Gtrapprox, Gtrarr, Gtrdot, Gtreqless, Gtreqqless, Gtrless, Harr, Hash, Hatapprox, Hbar, Hearsuit, Hermaphrodite, Hermitmatrix, Hexagon, Hexagonblack, Hide, Hknearrow, Hknwarrow, Hksearow, Hkswarow, Hline, Hookleftarrow, Hookrightarrow, Horizbar, Hourglass, House, Hrectangle, Hrectangleblack, Hyphenbullet, Hzigzag, If, Iff, Iinfin, Im, Imageof, Imath, Impliedby, In, Inc, Int, Intbar, Intbottom, Intcap, Intcup, Interleave, Intextender, Intlarhk, Intprod, Intprodr, Inttop, Intx, Invdiameter, Inversebullet, Inversewhitecircle, Invlazys, Invnot, Invwhitelowerhalfcircle, Invwhiteupperhalfcircle, Iota, Isindot, Isine, Isinobar, Isins, Isinvb, Jmath, Join, Jupiter, Kappa, Kernelcontraction, Koppa, Lambda, Land, Lang, Langledot, Laplac, Larr, Lat, Late, Lbag, Lblkbrbrak, Lblot, Lbracelend, Lbracemid, Lbraceuend, Lbrackextender, Lbracklend, Lbracklltick, Lbrackubar, Lbrackuend, Lbrackultick, Lbrbrak, Lcurvyangle, Ldsh, Le, Leadsto, Leftarrow, Leftarrowapprox, Leftarrowbackapprox, Leftarrowbsimilar, Leftarrowless, Leftarrowonoplus, Leftarrowplus, Leftarrowshortrightarrow, Leftarrowsimilar, Leftarrowsubset, Leftarrowtail, Leftarrowtriangle, Leftarrowx, Leftbarharpoon, Leftbkarrow, Leftcircle, Leftcurvedarrow, Leftdasharrow, Leftdbkarrow, Leftdbltail, Leftdotarrow, Leftdowncurvedarrow, Leftdownteevector, Leftdownvectorbar, Leftharpoondown, Leftharpoonup, Leftleftarrows, Leftleftharpoons, Leftmoon, Leftouterjoin, Leftrightarrow, Leftrightarrowcircle, Leftrightarrows, Leftrightarrowtriangle, Leftrightharpoon, Leftrightharpoondown, Leftrightharpoonsdown, Leftrightharpoonsup, Leftrightharpoonup, Leftrightwavearrow, Leftsquigarrow, Lefttail, Leftteevector, Leftthreearrows, Leftthreetimes, Leftturn, Leftupdownharpoon, Leftupteevector, Leftupvectorbar, Leftvectorbar, Leftwavearrow, Leftwhitearrow, Leo, Leq, Leqq, Leqqslant, Leqslant, Lescc, Lesdot, Lesdoto, Lesdotor, Lesges, Less, Lessapprox, Lessdot, Lesseqgtr, Lesseqqgtr, Lessgtr, Lfbowtie, Lftimes, Lgblkcircle, Lgblksquare, Lge, Lgroup, Lgwhtcircle, Lgwhtsquare, Lhd, Libra, Lightning, Limg, Linefeed, Ll, Llarc, Llblacktriangle, Llcorner, Lleftarrow, Lll, Lllnest, Lltriangle, Lmoust, Lmoustache, Lnapprox, Lneq, Lnot, Lnsim, Longdashv, Longdivision, Longleftarrow, Longleftrightarrow, Longleftsquigarrow, Longmapsfrom, Longmapsto, Longrightarrow, Looparrowleft, Lor, Lowint, Lozenge, Lozengeminus, Lparen, Lparenextender, Lparengtr, Lparenlend, Lparenless, Lparenuend, Lrarc, Lrblacktriangle, Lrcorner, Lrhar, Lrtimes, Lrtriangle, Lrtriangleeq, Lsh, Lsime, Lsimg, Lsqhook, Lt, Ltcc, Ltcir, Ltimes, Ltlarr, Ltquest, Ltrivb, Lvboxline, Lvec, Lvzigzag, Maltese, Mapsdown, Mapsfrom, Mapsto, Mapstoleft, Mapsup, Mars, Mathcolon, Mathdollar, Mathslash, Mdblkdiamond, Mdblklozenge, Mdblksquare, Mdlgblksquare, Mdsmblksquare, Mdsmwhtcircle, Mdsmwhtsquare, Mdwhtdiamond, Mdwhtlozenge, Mdwhtsquare, Measangledltosw, Measangledrtose, Measangleldtosw, Measanglelutonw, Measanglerdtose, Measanglerutone, Measangleultonw, Measangleurtone, Measeq, Measuredangleleft, Medblackstar, Medbullet, Medcirc, Medsp, Medwhitestar, Mercury, Mho, Mid, Midbarvee, Midbarwedge, Midcir, Minusdot, Minusfdots, Minusrdots, Mlcp, Models, Modtwosum, Mp, Mu, Multimap, Multimapinv, Nabla, Napprox, Nasymp, Natural, Ncong, Ne, Nearrow, Neg, Neovnwarrow, Neovsearrow, Neptune, Neq, Nequiv, Neswarrow, Neuter, Nexi, Ngeq, Ngt, Ngtrless, Ngtrsim, Nhdownarrow, Nhpar, Nhuparrow, Nhvvert, Ni, Nin, Niobar, Nis, Nisd, Nleftarrow, Nleftrightarrow, Nleq, Nless, Nlessgtr, Nlesssim, Nmid, Nn, Nni, Nnn, Not, Notbackslash, Notin, Notslash, Nparallel, Npolint, Nprec, Npreceq, Nrightarrow, Nsim, Nsime, Nsqsubseteq, Nsqsuperseteq, Nsub, Nsucc, Nsucceq, Nsup, Ntriangleleft, Ntriangleright, Nu, Nunlhd, Nunrhd, Nvdash, Nvinfty, Nvleftarrow, Nvleftarrowtail, Nvleftrightarrow, Nvrightarrow, Nvtwoheadleftarrow, Nvtwoheadleftarrowtail, Nvtwoheadrightarrow, Nvtwoheadrightarrowtail, Nwarrow, Nwovnearrow, Nwsearrow, Oast, Obar, Obot, Obrace, Obrbrak, Obslash, Ocirc, Ocommatopright, Octothorpe, Odash, Odiv, Odot, Odotslashdot, Oeq, Olcross, Olessthan, Omega, Ominus, Oo, Operp, Oplus, Opluslhrim, Oplusrhrim, Origof, Oslash, Otimes, Otimeshat, Otimeslhrim, Otimesrhrim, Oturnedcomma, Overbar, Overbracket, Overleftrightarrow, Overline, Ovhook, Ox, Parallelogram, Parallelogramblack, Parsim, Partial, Partialmeetcontraction, Pencil, Pentagon, Pentagonblack, Percent, Period, Perp, Perps, Pfun, Phi, Pinj, Pisces, Pitchfork, Planckconst, Plusdot, Pluseqq, Plushat, Plussim, Plussubtwo, Plustrif, Pluto, Pm, Pointint, Pointright, Postalmark, Pounds, Pppprime, Ppprime, Pprime, Prcue, Prec, Precapprox, Preceq, Preceqq, Precnapprox, Precneq, Precneqq, Precnsim, Precsim, Prime, Profline, Profsurf, Project, Prop, Propertyline, Psi, Psur, Pullback, Pushout, Qed, Qprime, Qq, Qquad, Quad, Quarternote, Questeq, Question, Radiation, Rang, Rangledot, Rangledownzigzagarrow, Ratio, Rbag, Rblkbrbrak, Rblot, Rbracelend, Rbracemid, Rbraceuend, Rbrackextender, Rbracklend, Rbracklrtick, Rbrackubar, Rbrackuend, Rbrackurtick, Rbrbrak, Rcurvyangle, Rddots, Rdiagovfdiag, Rdiagovsearrow, Rdsh, Re, Recycle, Rel, Restriction, Revangle, Revangleubar, Revemptyset, Revnmid, Rfbowtie, Rftimes, Rgroup, Rhd, Rho, Rightangle, Rightanglemdot, Rightanglesqr, Rightarrow, Rightarrowapprox, Rightarrowbackapprox, Rightarrowbar, Rightarrowbsimilar, Rightarrowdiamond, Rightarrowgtr, Rightarrowonoplus, Rightarrowplus, Rightarrowshortleftarrow, Rightarrowsimilar, Rightarrowsupset, Rightarrowtail, Rightarrowtriangle, Rightarrowx, Rightbarharpoon, Rightbkarrow, Rightcircle, Rightdbltail, Rightdotarrow, Rightdowncurvedarrow, Rightdownteevector, Rightdownvectorbar, Rightharpoonaccent, Rightharpoondown, Rightharpoonup, Rightimply, Rightleftarrow, Rightleftharpoon, Rightleftharpoonsdown, Rightleftharpoonsup, Rightmoon, Rightouterjoin, Rightpentagon, Rightpentagonblack, Rightrightarrows, Rightrightharpoons, Rightsquigarrow, Righttail, Rightteevector, Rightthreearrows, Rightthreetimes, Rightturn, Rightupdownharpoon, Rightupteevector, Rightupvectorbar, Rightvectorbar, Rightwavearrow, Rightwhitearrow, Rimg, Ring, Ringplus, Risingdotseq, Rlhar, Rmoust, Rparen, Rparenextender, Rparengtr, Rparenlend, Rparenless, Rparenuend, Rppolint, Rr, Rrightarrow, Rsh, Rsolbar, Rsqhook, Rsub, Rtimes, Rtriltri, Ruledelayed, Rvboxline, Rvert, Rvzigzag, Sadface, Sagittarius, Same, Sampi, Sanslmirrored, Sanslturned, Saturn, Scorpio, Scpolint, Scurel, Sdef, Searrow, Second, Semi, Semicolon, Seovnearrow, Setminus, Sharp, Shortdowntack, Shortlefttack, Shortrightarrowleftarrow, Shortuptack, Shuffle, Sigma, Sim, Simeq, Simge, Simgtr, Similarleftarrow, Similarrightarrow, Simle, Simless, Simminussim, Simneqq, Simplus, Simrdots, Sixteenthnote, Skull, Smallblacktriangleleft, Smallblacktriangleright, Smallin, Smallni, Smalltriangleleft, Smalltriangleright, Smashtimes, Smblkcircle, Smblkdiamond, Smblklozenge, Smblksquare, Smeparsl, Smile, Smiley, Smt, Smte, Smwhitestar, Smwhtcircle, Smwhtlozenge, Smwhtsquare, Space, Spadesuit, Spddot, Sphat, Sphericalangleup, Spot, Sprime, Sptilde, Sqcap, Sqcup, Sqint, Sqlozenge, Sqrtbottom, Sqsubset, Sqsubseteq, Sqsubsetneq, Sqsupset, Sqsupseteq, Square, Squarebotblack, Squarecrossfill, Squarehfill, Squarehvfill, Squareleftblack, Squarellblack, Squarellquad, Squarelrblack, Squarelrquad, Squareneswfill, Squarenwsefill, Squarerightblack, Squaretopblack, Squareulblack, Squareulquad, Squareurblack, Squareurquad, Squarevfill, Squoval, Sslash, Star, Stareq, Steaming, Stigma, Strictfi, Strictif, Strns, Sub, Sube, Subedot, Submult, Subrarr, Subset, Subsetapprox, Subsetcirc, Subsetdot, Subseteq, Subseteqq, Subsetneq, Subsetneqq, Subsetplus, Subsim, Subsub, Succ, Succapprox, Succcurlyeq, Succeq, Succeqq, Succnapprox, Succneq, Succneqq, Succnsim, Succsim, Sumbottom, Sumint, Sumtop, Sun, Sup, Supdsub, Supe, Supedot, Suphsol, Suphsub, Suplarr, Supmult, Supset, Supsetapprox, Supsetcirc, Supsetdot, Supseteq, Supseteqq, Supsetneq, Supsetneqq, Supsetplus, Supsim, Supsub, Supsup, Swarrow, Swords, Talloblong, Tau, Taurus, Tcmu, Tcohm, Therefore, Thermod, Theta, Third, ThreePerEmSpace, Threedangle, Threedotcolon, Threeunderdot, Tieinfty, Tilde, Timesbar, Tinj, Tminus, To, Toea, Tona, Top, Topbot, Topcir, Topfork, Topsemicircle, Tosa, Towa, Tplus, Trapezium, Triangle, Trianglecdot, Triangledown, Triangleleftblack, Triangleminus, Triangleodot, Triangleplus, Trianglerightblack, Triangles, Triangleserifs, Triangletimes, Triangleubar, Tripleplus, Trslash, Tsur, Tt, Turnangle, Turnediota, Turnednot, Twocaps, Twocups, Twoheaddownarrow, Twoheadleftarrow, Twoheadleftarrowtail, Twoheadleftdbkarrow, Twoheadmapsfrom, Twoheadmapsto, Twoheadrightarrow, Twoheadrightarrowtail, Twoheaduparrow, Twoheaduparrowcircle, Twolowline, Twonotes, Typecolon, Uarr, Ubrace, Ubrbrak, Ul, Ularc, Ulblacktriangle, Ulcorner, Ultriangle, Uminus, Underbar, Underbracket, Underleftarrow, Underleftharpoondown, Underline, Underparen, Underrightarrow, Underrightharpoondown, Unicodeellipsis, Unlhd, Unrhd, Upalpha, Upand, Uparrow, Uparrowbarred, Uparrowoncircle, Upbeta, UpcaseCap, UpcaseDelta, UpcaseEquiv, UpcaseGamma, UpcaseLambda, UpcaseMapsto, UpcaseOmega, UpcasePhi, UpcasePi, UpcasePsi, UpcaseRbrack, UpcaseRightarrow, UpcaseSigma, UpcaseTheta, UpcaseWedge, UpcaseXi, UpcaseupOmega, Upchi, Updasharrow, Updownarrow, Updownarrowbar, Updownarrows, Updownharpoonleftright, Updownharpoonrightleft, Upepsilon, Upequilibrium, Upeta, Upfishtail, Upharpoonleft, Upin, Upint, Upiota, Upkappa, Upkoppa, Upmu, Upnu, Upomicron, Uprho, Uprightcurvearrow, Upsilon, Uptau, Upuparrows, Upupharpoons, Upvarsigma, Upvartheta, Upwhitearrow, Upzeta, Uranus, Urarc, Urblacktriangle, Urcorner, Urtriangle, Utilde, Uu, Uuparrow, Uuu, Varbarwedge, Varbeta, Varcarriagereturn, Varclub, Vardiamond, Vardoublebarwedge, Varepsilon, Varheart, Varhexagon, Varhexagonblack, Varhexagonlrbonds, Varisins, Varkappa, Varlrtriangle, Varniobar, Varnis, Varnothing, Varphi, Varpi, Varprod, Varrho, Varsigma, Varspade, Varstar, Vartheta, Vartriangle, Vartriangleleft, Vartriangleright, Varvdash, Varveebar, Vbar, Vbarv, Vbraceextender, Vbrtri, Vdash, Vddash, Vdots, Vec, Vectimes, Vee, Veebar, Veedot, Veedoublebar, Veeeq, Veemidvert, Veeodot, Veeonvee, Veeonwedge, Venus, Vertoverlay, Viewdata, Virgo, Vlongdash, Vrectangle, Vrectangleblack, Vv, Vvdash, Vvv, Vysmblkcircle, Vysmblksquare, Vysmwhtcircle, Vysmwhtsquare, Vzigzag, Warning, Wasytherefore, Wedge, Wedgebar, Wedgedot, Wedgedoublebar, Wedgemidvert, Wedgeodot, Wedgeonwedge, Whitearrowupfrombar, Whiteinwhitetriangle, Whitepointerleft, Whitepointerright, Whitesquaretickleft, Whitesquaretickright, Whthorzoval, Whtvertoval, Wideangledown, Wideangleup, Widebridgeabove, Wideparen, Wp, Wr, Xbox, Xi, Xsol, Xx, Yen, Yinyang, Yup, Zbar, Zeta, Zpipe, Zwnj, Zwsp, Zz.
+====
+
+[%collapsible]
+.Shape 2: 8 classes < `+Symbols::Paren+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+close?+`, `+closing+`, `+open?+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Paren::Lbbrack, Paren::Lbrace, Paren::Lbrack, Paren::Lceil, Paren::Lfloor, Paren::Rbbrack, Paren::UpcaseLangle, Paren::UpcaseRangle.
+====
+
+[%collapsible]
+.Shape 3: 7 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+is_nary_symbol?+`, `+nary_intent_name+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Bigwedge, Coprod, Dint, Duni, Iiiint, Iiint, Iint.
+====
+
+[%collapsible]
+.Shape 4: 6 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+is_nary_symbol?+`, `+nary_intent_name+`, `+omml_tag_name+`, `+tag_name+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Clockoint, Cntclockoint, Intclockwise, Oiiint, Oiint, Oint.
+====
+
+[%collapsible]
+.Shape 5: 5 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+intent_names+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Dd, Ii, Intercal, Jj, UpcaseDd.
+====
+
+[%collapsible]
+.Shape 6: 4 classes < `+Symbols::Paren+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+close?+`, `+open?+`, `+opening+`, `+paren_value+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Paren::Rangle, Paren::Rcurly, Paren::Rround, Paren::Rsquare.
+====
+
+[%collapsible]
+.Shape 7: 4 classes < `+Symbols::Paren+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+close?+`, `+open?+`, `+opening+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Paren::Rbrace, Paren::Rbrack, Paren::Rceil, Paren::Rfloor.
+====
+
+[%collapsible]
+.Shape 8: 3 classes < `+Symbols::Paren+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+close?+`, `+closing+`, `+open?+`, `+paren_value+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_matrices+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Paren::Lcurly, Paren::Lround, Paren::Lsquare.
+====
+
+[%collapsible]
+.Shape 9: 3 classes < `+Symbols::Paren+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+close?+`, `+closing+`, `+open?+`, `+paren_value+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Paren::CloseParen, Paren::Langle, Paren::OpenParen.
+====
+
+[%collapsible]
+.Shape 10: 2 classes < `+Symbols::Paren+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+close?+`, `+closing+`, `+open?+`, `+opening+`, `+paren_value+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_matrices+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Paren::Norm, Paren::Vert.
+====
+
+[%collapsible]
+.Shape 11: 2 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+divide_operator?+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Div, Slash.
+====
+
+[%collapsible]
+.Shape 12: 2 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+multiply_operator?+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Cdot, Times.
+====
+
+[%collapsible]
+.Shape 13: 2 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+omml_tag_name+`, `+tag_name+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Prod, Sum.
+====
+
+[%collapsible]
+.Shape 14: 1 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+minus_operator?+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Minus.
+====
+
+[%collapsible]
+.Shape 15: 1 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+plus_operator?+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Plus.
+====
+
+[%collapsible]
+.Shape 16: 1 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+power_operator?+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Hat.
+====
+
+[%collapsible]
+.Shape 17: 1 classes < `+Symbols::Symbol+`, stays-core
+====
+Own fields: -. Constructor: `+Symbols::Symbol+`.
+Own public methods: `+reserved_constant+`, `+to_asciimath+`, `+to_html+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`.
+
+Classes: Pi.
+====
+
+// END GENERATED symbols
+
+[[parser-only]]
+=== Parser-only surfaces
+
+These are the public methods on tree nodes whose only call sites in `lib/`
+are in the parser layers #531 removes, and the size of the symbol spelling
+tables. #531 decides whether to remove them. The `latex` and `unicodemath`
+spelling tables stay if the #531 mapping uses them to find the Plurimath
+class for a stage-gem symbol. The `unicodemath` table is also read by the
+UnicodeMath writer (`Core#unicodemath_field_value`).
+
+// BEGIN GENERATED parser-only
+[cols="2,3,2",options="header",separator=¦]
+|===
+¦ Method ¦ Defined on ¦ Called only from
+
+¦ `+separate_table+` ¦ `+Core+`, `+Function::Linebreak+`, `+Symbols::Symbol+` ¦ `lib/plurimath/latex/`
+|===
+
+Symbol `INPUT` tables (1460 symbol classes):
+
+* `asciimath`: 1459 classes
+* `html`: 1459 classes
+* `latex`: 1459 classes
+* `mathml`: 1459 classes
+* `omml`: 1459 classes
+* `unicodemath`: 1459 classes
+* only `latex` and/or `unicodemath` keys: 0 classes
+// END GENERATED parser-only
+
+== Migration plan
+
+=== Order
+
+The migration goes through the field-owning classes in a fixed order, from
+the leaves of the tree to its root. Each step is one pull request, and a step
+starts only after the previous one is merged with full CI at its exact head.
+
+[cols="1,3,3",options="header"]
+|===
+| Step | Declares in lutaml-model | Why here
+
+| F2
+| `Core` becomes the lutaml-model root of the tree. `Number`,
+  `Symbols::Symbol` and `Symbols::Paren` declare their fields.
+| These hold only strings, booleans and option hashes, never other nodes, so
+  nothing in them is recursive. One base covers all symbol classes.
+
+| F2a
+| The common Function owners: `UnaryFunction`, `BinaryFunction`,
+  `TernaryFunction`, `Nary` and `Table`.
+| Their `parameter_*` and `value` fields hold other nodes, so this is where
+  the tree becomes recursive (see <<risks>>).
+
+| Further cards
+| The leaf classes that add their own field (`attributes`, `options`,
+  `open_paren` and `close_paren`), then `Uncertainty` and `Unitsml`.
+| Each is cut as its own card from the bases table above before F3. They
+  depend on the F2a bases.
+
+| F2b
+| `Formula`, `Formula::Mrow` and `Formula::Mstyle`: the `value` collection
+  and the display fields.
+| `Formula` is the container every reader returns and every writer starts
+  from, so it goes last.
+
+| F3
+| Nothing new. It checks that every stays-core class in the regenerated
+  inventory has its fields declared in lutaml-model, directly or through a
+  base, and that the API and byte baselines still match.
+| Closes the #337 definition of done.
+|===
+
+=== What each step declares and what stays Ruby
+
+Each step declares, in lutaml-model, the fields of the classes it migrates:
+name, type, whether it is a collection, and the default. The field names do
+not change.
+
+The following stay hand-written Ruby:
+
+* Every writer method and the helpers they call. These are almost all of the
+  "Own public methods" column.
+* The constructors. Their positional and keyword parameters and defaults are
+  public API (see the bases table), so each migrated class keeps an
+  `initialize` that accepts the same arguments and fills the declared
+  attributes. lutaml-model#1033 already plans to export such classes with a
+  custom-initialize marker rather than reject them.
+* `==` on every class, and the per-class normalisation in setters such as
+  `Symbol#value=`.
+* The no-op `element_order=` on `Number` and `Function::Text`, and
+  `Core#pretty_print_instance_variables`. These are the only public method
+  names a node shares with `Lutaml::Model::Serializable` on 0.8.164. The
+  Plurimath definitions keep precedence.
+
+lutaml-model also adds its own public methods (85 on 0.8.164, such as
+`to_hash` and `to_yaml`) to every node. This adds to the API and changes no
+existing method, and each step's API check records it.
+
+=== Byte and API baseline
+
+Before F2 starts, on the `main` revision it branches from, the following are
+recorded. Every later step compares against them at its exact head.
+
+* *Writer bytes:* for every input in the shared corpus at the pinned
+  testsuite generation (922 cases in the snapshot above, 780 to 782 per
+  target), parse it with its reader and write it with all six writers, with
+  the call options the corpus records. This runs once per XML engine (Ox, Oga
+  and Leptris, as `spec_helper` does). The result is one digest per engine
+  and target over the whole corpus, kept with the outputs so that a mismatch
+  points to the case. The shared conformance suite already checks the Ox
+  bytes on every pull request. The other two engines are covered by this
+  baseline and by the full suite in GHA.
+* *Field types:* over the same parses, the class of every value each field
+  holds. Each step picks its lutaml-model attribute types from this list,
+  not from reading the code.
+* *API:* the generated tables in this document, meaning constructor
+  signatures and defaults, fields and own public methods. Each step
+  regenerates them and the diff may only show the migrated declarations
+  moving into lutaml-model and the methods lutaml-model adds.
+
+The full suite and the shared conformance suite run in GHA on every step.
+They are not run locally.
+
+=== Stop rule
+
+A step stops and reports, rather than working around the problem, when a
+class does not fit:
+
+* a field holds more than one kind of value that lutaml-model cannot declare
+  without a union type (`Lml.export` rejects unions on 0.8.x), such as a
+  field that holds either a node or a plain string;
+* a constructor or default cannot be kept byte-for-byte and API-for-API;
+* any baseline digest changes;
+* a class needs a change in lutaml-model itself. That work belongs to the
+  lutaml-model maintainers and is out of scope here.
+
+The report names the class, the field and the failing check, and the class
+stays hand-written until a separate card settles it. The migration does not
+change writers, the symbol vocabulary or reader transforms to make a class
+fit.
+
+[[risks]]
+== Risks and dependencies
+
+=== lutaml-model serialization of recursive models
+
+On lutaml-model 0.8.162, `to_hash` and `to_yaml` never finished on the
+recursive stage-gem models. The amath and UnicodeMath model work found this.
+Building the models and exporting their declarations worked. The cost
+appears to come from the key-value transformation being rebuilt for every
+attribute type it reaches, with no memo, so it grows with the cycles in the
+declared type graph and not with the size of the value.
+
+A probe on 0.8.164 shows the same growth. With N classes that each declare
+an attribute of every other class, `to_hash` of a two-node value took
+0.08 s for N=2, 0.78 s for N=6 and 54 s for N=8. The core tree is a worst
+case for this, because almost any node can hold any other node.
+
+The `unicodemath` gem works around it with shared hub classes. Node slots
+are typed by a few hub classes instead of one class per capture, and its
+generator checks that the declared type graph has no cycle outside the
+hubs. In the same probe, with one hub class and N classes whose only node
+slot is a collection of the hub, `to_hash` took 0.13 s for N=8 and 0.41 s for
+N=120.
+
+For this migration that means:
+
+* Node-valued fields (`parameter_*`, `value`, `open_paren`, `close_paren`)
+  are typed by one hub, the abstract `Core`. No other class may appear as an
+  attribute type of another node class. F2a adds the same no-cycle check as
+  `unicodemath`.
+* Whether lutaml-model serializes a subclass instance held in a hub-typed
+  field with all of that subclass's fields must be shown in F2a. If it
+  cannot without a union or polymorphic declaration, the stop rule applies.
+* Plurimath does not call `to_hash` or `to_yaml` on the tree today, so the
+  bug blocks no existing path. It blocks any new serialization of the core
+  tree until it is fixed in lutaml-model or the hub layout avoids it.
+
+=== Symbol catalog size
+
+The symbol classes are 1,461 of the 1,602 classes. They are declared through
+their two base classes, so the migration does not touch each one. Their
+spelling tables, per-symbol writer bodies and load cost are #537's staged
+symbol catalog. If #537 moves the catalog to data before F2, the symbol rows
+of the inventory change and the F2 scope shrinks to the two bases.
+
+=== The three-engine spec loop
+
+`spec_helper` runs every example on Ox, Oga and Leptris. The full suite took
+1273 s on the fixed runner in the performance baseline
+(`docs/performance-contract.adoc`). Each migration step needs a full run at
+its exact head, so the steps are bounded by GHA time, not by local runs. #537
+moves the engine loop into the per-stage suites. Until then the loop stays,
+and the byte baseline above is taken on all three engines for the same
+reason.
+
+=== Order relative to #531
+
+* This scope is finalised only after #531 lands. #531 removes
+  `lib/plurimath/latex/` and `lib/plurimath/unicode_math/` and may remove the
+  parser-only surfaces listed above. F2 then branches from post-#531 `main`.
+* The byte baseline is taken after #531 and after any open change to writer
+  output, such as the UnicodeMath writer fix for multi-letter units, so that
+  it records the bytes the migration must keep.
+* F2 also waits for the model-ownership decision the plan records as O2.
+* lutaml-model#1033 (the declaration exporter) is a dependency for
+  exporting and checking the migrated declarations, not for declaring them.
+
+[[refresh-after-531]]
+== Refresh after #531
+
+When #531 is merged:
+
+. Run `scripts/docs/core_inventory.rb` on the new `main` and update the
+  revision in the warning at the top.
+. Check the counts. If #531 removed parser-only methods or spelling tables,
+  the parser-only section and the symbol shapes change. If it removed
+  classes, they disappear from the tables.
+. Update the testsuite revision and the corpus figures in the byte baseline
+  section to the generation #531 pins.
+. Recheck the lutaml-model version in `Gemfile.lock` and rerun the
+  serialization probe on it.
+. Record how the #531 mapping finds the Plurimath class for a stage-gem
+  symbol, and whether the `latex` and `unicodemath` spelling tables are
+  still used.
+. Remove the warning when the refreshed figures are in.

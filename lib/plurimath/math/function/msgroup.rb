@@ -24,6 +24,9 @@ module Plurimath
         }.freeze
         # --- end catalog documentation ---
 
+        node_fields :parameter_one, collections: %i[parameter_one],
+                                    scalars: { hide_function_name: :boolean }
+
         def to_asciimath(options:)
           parameter_one.map do |param|
             param.to_asciimath(options: options)
