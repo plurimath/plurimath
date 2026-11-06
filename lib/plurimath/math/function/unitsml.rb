@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+Plurimath.load_mml
 require "unitsml"
 
 module Plurimath
   module Math
     module Function
       class Unitsml < Core
-        # The parsed form is derived from the text, so only the text is mapped.
-        node_fields scalars: { text: :string }
+        # The parsed form is derived from the text, so only the text and the
+        # input string are mapped.
+        node_fields scalars: { text: :string, input_string: :string }
 
         def initialize(text = nil)
           @text = text

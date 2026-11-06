@@ -146,7 +146,7 @@ module Plurimath
         end
 
         def intent_names
-          @@names ||= Symbols::Symbol.descendants.map.with_object({}) do |symbol, hash|
+          @@names ||= nary_symbol_classes.map.with_object({}) do |symbol, hash|
             sym_instance = symbol.new
             next unless sym_instance.is_nary_symbol?
 
@@ -159,6 +159,12 @@ module Plurimath
 
         def is_nary_function?
           true
+        end
+
+        # The n-ary symbol classes (from the index) plus any unindexed
+        # symbol subclass, so only the n-ary symbol files are loaded.
+        def nary_symbol_classes
+          Symbols.nary_classes
         end
 
         protected
