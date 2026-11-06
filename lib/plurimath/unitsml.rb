@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "unitsml"
 module Plurimath
   class Unitsml
     attr_accessor :text

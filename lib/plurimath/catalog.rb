@@ -70,11 +70,10 @@ module Plurimath
       # Dir.glob/require need a filesystem; under Opal the trees are build-loaded,
       # so skip enumeration there rather than crash (mirrors symbols.rb).
       if RUBY_ENGINE != "opal"
-        # math/symbols.rb loads the Symbol base (and nested bases) before their
-        # subclasses; a raw sorted Dir.glob would require symbols/alpha before
-        # symbols/symbol and raise NameError. The function tree loads its bases
-        # first, so glob it directly.
-        require File.join(__dir__, "math", "symbols")
+        # Symbol classes load lazily; eager_load! loads the whole symbol tree
+        # in definition order (bases before subclasses). The function tree
+        # loads its bases first, so glob it directly.
+        Math::Symbols.eager_load!
         Dir.glob(File.join(__dir__, "math", "function", "**", "*.rb")).each do |file|
           require file
         end

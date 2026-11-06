@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+Plurimath.load_mml
+
 module Plurimath
   class Mathml
     class Parser

@@ -1,4 +1,7 @@
-require "mml"
+# mml (and lutaml-model, moxml, leptris under it) is loaded on first
+# MathML, OMML or UnitsML use; see Plurimath.load_mml.
+autoload :Mml, "mml"
+autoload :Lutaml, "lutaml/model"
 require "parslet"
 require "parsanol"
 require "htmlentities"
@@ -37,7 +40,28 @@ module Plurimath
 
   def mml_adapter(adapter)
     require "lutaml/model"
+    require "mml"
+    # The adapter chosen at require time is applied first, so it still wins
+    # over a later call, as it did when it was set eagerly.
+    if (default = @default_mml_adapter)
+      @default_mml_adapter = nil
+      Mml::V4::Configuration.adapter = default unless Mml::V4::Configuration.adapter
+    end
     Mml::V4::Configuration.adapter = adapter unless Mml::V4::Configuration.adapter
+  end
+
+  # Records the adapter to set once mml is loaded, without loading it now.
+  def default_mml_adapter=(adapter)
+    @default_mml_adapter = adapter
+  end
+
+  # Loads mml and applies the default adapter. Called by the stages that
+  # parse or write XML through lutaml-model (MathML, OMML, UnitsML).
+  def load_mml
+    return if @mml_loaded
+
+    mml_adapter(nil)
+    @mml_loaded = true
   end
 
   def configuration
@@ -57,7 +81,8 @@ module Plurimath
     @configuration = previous_configuration
   end
 
-  module_function :mml_adapter, :configuration, :configure, :with_configuration
+  module_function :mml_adapter, :default_mml_adapter=, :load_mml,
+                  :configuration, :configure, :with_configuration
 end
 
 default_adapter =
@@ -76,4 +101,8 @@ default_adapter =
     :ox
   end
 
-Plurimath.mml_adapter(default_adapter)
+if RUBY_ENGINE == "opal"
+  Plurimath.mml_adapter(default_adapter)
+else
+  Plurimath.default_mml_adapter = default_adapter
+end
