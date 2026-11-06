@@ -8,22 +8,18 @@ module Plurimath
     # latexmath owns the grammar and the model. Its model classes are the
     # grammar's captures, typed: each class has one attribute per capture key,
     # and the few captures its shape normalization adds (see latexmath's
-    # docs/model-contract.adoc) are listed in WRAPPERS. The mapper first reads
-    # a model node as the capture tree it stands for (#captures), then builds
-    # the Formula with the LaTeX rule table (Mapper::Rules).
+    # docs/model-contract.adoc) are listed in WRAPPERS. The mapper builds
+    # each node from its children's values, bottom up: a node of one set
+    # attribute by its SINGLE builder, a node of several by its TYPED entry.
     #
     # A wrapper is always the only capture of its node: the grammar adds it
     # around a whole alternative (`((x) as literal) as c`, `(x / "" as
     # absent) as c`). So a node is either one wrapper, which stands for its
-    # value, or ordinary captures, which form one hash; no node's parts need
-    # folding together.
+    # value, or ordinary captures; no node's parts need folding together.
     #
-    # Leaf nodes (see LEAVES) are built from the model directly: their Math
-    # object takes the place of their capture hash, and the rule table only
-    # unwraps it.
+    # A node that no builder fits keeps its children's values in a Hash
+    # keyed by capture name, which ends up in the Formula as it is.
     class Mapper
-      autoload :Rules, "#{__dir__}/mapper/rules"
-
       # The captures latexmath's shape normalization adds, and the value each
       # one stands for (latexmath 1.0, grammars/latex.wrappers.json):
       #   :text      the wrapped text ("" when empty);
@@ -38,47 +34,46 @@ module Plurimath
         absent: :absent,
       }.freeze
 
-      # The matrix row break: latexmath names the capture +row_break+, the
-      # rule table keys it as the String "\\\\".
+      # The matrix row break: latexmath names the capture +row_break+; a node
+      # that no builder fits keys it as the String "\\\\", as the LaTeX
+      # transform did.
       RENAMES = { row_break: "\\\\" }.freeze
 
-      # A node whose only set attribute is one of these text captures is a
-      # leaf: it maps straight to the Math object built from that text.
-      LEAVES = {
-        number: ->(t) { Math::Number.new(Utility.html_entity_to_unicode(t.to_s)) },
-        unary: ->(t) { Utility.get_class(t).new },
-        ternary: ->(t) { Utility.get_class(t).new },
+      # A node whose only set attribute is one of these, holding one value
+      # (SHAPES[:simple]: not a Hash or Array, nil included), is built from
+      # that value. Text captures arrive as Parsanol::Slice text.
+      symbol = ->(v) { Utility.symbols_class(v, lang: :latex) }
+      same = ->(v) { v }
+      SINGLE = {
+        number: ->(v) { Math::Number.new(Utility.html_entity_to_unicode(v.to_s)) },
+        unary: ->(v) { Utility.get_class(v).new },
+        ternary: ->(v) { Utility.get_class(v).new },
         space: ->(_) { Math::Function::Text.new(" ") },
-        operant: ->(t) { Utility.symbols_class(t, lang: :latex) },
-        numeric_values: ->(t) { Utility.symbols_class(t, lang: :latex) },
-        lparen: ->(t) { Utility.symbols_class(t, lang: :latex) },
-        rparen: ->(t) { Utility.symbols_class(t, lang: :latex) },
-        text: ->(t) { Math::Function::Text.new(t) },
         three_per_em_space: ->(_) { Math::Symbols::ThreePerEmSpace.new },
         row_break: ->(_) { Math::Function::Linebreak.new },
-        symbols: ->(t) { Utility.symbols_class(t, lang: :latex) },
-        unicode_symbols: ->(t) { Utility.symbols_class(t, lang: :latex) },
-        symbol: ->(t) { Utility.symbols_class(t, lang: :latex) },
-        binary: ->(t) { Utility.get_class(t).new },
+        text: ->(v) { Math::Function::Text.new(v) },
+        binary: ->(v) { v.is_a?(Parsanol::Slice) ? Utility.get_class(v).new : v },
+        operant: symbol, symbol: symbol, symbols: symbol, unicode_symbols: symbol,
+        numeric_values: symbol, lparen: symbol, rparen: symbol,
+        # Base-prefix literals, built as Plurimath::BaseNumberPrefix::Transform
+        # builds them for the other formats.
+        hex_number: ->(v) { Math::Number.new(v.to_s, base: 16) },
+        binary_number: ->(v) { Math::Number.new(v.to_s.to_i(2).to_s, base: 2) },
+        octal_number: ->(v) { Math::Number.new(v.to_s.to_i(8).to_s, base: 8) },
+        # Nodes that stand for their only value.
+        base: same, over: same, power: same, limits: same, expression: same,
+        environment: same, unary_functions: same, ternary_class: same,
+        left_right: same, under_over: same, power_base: same,
+        table_data: same, intermediate_exp: same
       }.freeze
 
-      # A node whose only set attribute is one of these, holding a node the
-      # mapper built, stands for that built node; holding text that is not a
-      # LEAVES entry, it stands for the text.
-      PASS_THROUGH = %i[
-        binary unary_functions ternary_class power_base under_over limits
-        left_right expression environment table_data intermediate_exp
-        base power over
-      ].freeze
-
-      # A node whose only set attribute is one of these, holding a sequence
-      # of nodes the mapper built or one spliced list, stands for a Formula
-      # of them.
+      # A node whose only set attribute is one of these, holding a flat list
+      # (SHAPES[:sequence]), stands for a Formula of the list.
       SEQUENCES = %i[expression].freeze
 
-      # The capture a typed rule needs from a child: :simple is one value
-      # (not a Hash or Array), :sequence a list of such values, :subtree
-      # anything. These are the rule table's simple, sequence and subtree.
+      # The value a builder needs from a child: :simple is one value (not a
+      # Hash or Array), :sequence a list of such values, :subtree anything,
+      # as Parsanol::Transform's simple, sequence and subtree match them.
       SHAPES = {
         simple: ->(v) { !v.is_a?(Hash) && !v.is_a?(Array) },
         sequence: ->(v) { v.is_a?(Array) && v.none? { |e| e.is_a?(Hash) || e.is_a?(Array) } },
@@ -289,8 +284,7 @@ module Plurimath
 
         Utility.parens_hash(:latex, skipables: PAREN_SKIPABLES)
 
-        tree = slices(captures(expression))
-        formula = Rules.new.apply(tree)
+        formula = value(expression)
         formula = [formula] unless formula.is_a?(Array)
 
         Math::Formula.new(formula)
@@ -302,13 +296,21 @@ module Plurimath
 
       private
 
-      # A model node as its capture tree: Hashes keyed by capture name,
-      # Arrays for repetitions, and the captured text.
-      def captures(node)
-        case node
-        when Array then repetition(node.map { |v| captures(v) })
-        when Lutaml::Model::Serializable then node_captures(node)
-        else node
+      # A model value (node, repetition or captured text) as the Math object
+      # it builds: a node's value, a list of values, or the text as a
+      # Parsanol::Slice.
+      def value(model)
+        unwrap(captures(model))
+      end
+
+      # A model value as its capture tree: { built: value } for a node with
+      # attributes set, a wrapper's value, Arrays for repetitions, and the
+      # captured text.
+      def captures(model)
+        case model
+        when Array then repetition(model.map { |v| captures(v) })
+        when Lutaml::Model::Serializable then node_captures(model)
+        else model
         end
       end
 
@@ -323,20 +325,25 @@ module Plurimath
         list.empty? ? [] : +""
       end
 
-      # The node's capture tree: a wrapper's value, or a hash of its set
-      # attributes in declared order (nil when none is set).
+      # A capture tree as the value it stands for.
+      def unwrap(tree)
+        case tree
+        when Hash then tree.fetch(:built)
+        when Array then tree.map { |v| unwrap(v) }
+        when String then slice(tree)
+        else tree
+        end
+      end
+
+      # A wrapper's value, nil for a node with nothing set, or the node's
+      # built value.
       def node_captures(node)
         set = node.class.attributes.each_key.reject { |n| node.public_send(n).nil? }
         wrapper = set.find { |n| WRAPPERS.key?(n) }
         return wrapper_captures(node, set, wrapper) if wrapper
-
-        leaf = leaf(node, set)
-        return leaf.captures if leaf.is_a?(Untyped)
-        return { spliced: leaf } if leaf.is_a?(Array)
-        return { built: leaf } if leaf
         return if set.empty?
 
-        set.to_h { |n| [RENAMES.fetch(n, n), captures(node.public_send(n))] }
+        { built: build(node, set) }
       end
 
       def wrapper_captures(node, set, wrapper)
@@ -347,42 +354,27 @@ module Plurimath
         wrapped(WRAPPERS[wrapper], captures(node.public_send(wrapper)))
       end
 
-      # The Math object for a leaf, pass-through or composite node, or nil
-      # when the node is none of these.
-      def leaf(node, set)
-        typed = typed(node, set)
-        return typed if typed
-        return unless set.size == 1
+      # The node built from its children's values by its TYPED entry or its
+      # SINGLE or SEQUENCES builder. A node that none fits keeps the values,
+      # keyed by capture name.
+      def build(node, set)
+        values = set.to_h { |n| [n, value(node.public_send(n))] }
+        entries = TYPED_BY_KEYS[set.sort]
+        return typed(node, entries, values) if entries
 
         name = set.first
-        value = node.public_send(name)
-        value = captures(value) if value.is_a?(Lutaml::Model::Serializable)
-        if value.is_a?(String)
-          build = LEAVES[name]
-          build ? build.call(slice(value)) : (slice(value) if PASS_THROUGH.include?(name))
-        elsif PASS_THROUGH.include?(name) && value.is_a?(Hash) && value.keys == [:built]
-          value[:built]
-        elsif SEQUENCES.include?(name) && sequence?(value)
-          Math::Formula.new(value.map { |v| v[:built] })
-        elsif SEQUENCES.include?(name) && value.is_a?(Hash) && value.keys == [:spliced]
-          Math::Formula.new(value[:spliced])
+        if set.size == 1
+          single = SINGLE[name]
+          return single.call(values[name]) if single && SHAPES[:simple].call(values[name])
+          return Math::Formula.new(values[name]) if SEQUENCES.include?(name) && SHAPES[:sequence].call(values[name])
         end
+        unbuilt(values)
       end
 
-      # A node with TYPED keys whose children fit no entry. Its captures are
-      # its children as already built, which the rule table reads as it read
-      # their capture trees, so no child is built twice. No rule in the rule
-      # table matches them: each rule with TYPED keys had a TYPED entry of the
-      # same shapes, so the node keeps its captures, as it did there.
-      Untyped = Struct.new(:captures)
-
-      # The node built by the first TYPED entry its children fit, or Untyped.
-      # A flat list (a non-nary sequence, see Build.nary) is returned as is;
-      # its capture is { spliced: list }, which the parent reads as the list
-      # itself, as it read the rule table's list result.
-      def typed(node, set)
-        entries = TYPED_BY_KEYS[set.sort] or return
-        values = set.to_h { |n| [n, built(node.public_send(n))] }
+      # The node built by the first TYPED entry its children fit. A flat list
+      # (a non-nary sequence, see Build.nary) is returned as is, and the
+      # parent reads it as a list.
+      def typed(node, entries, values)
         entries.each do |shapes, build|
           next unless shapes.all? { |n, shape| SHAPES[shape].call(values[n]) }
 
@@ -391,17 +383,11 @@ module Plurimath
 
           raise ArgumentError, "#{node.class} built #{result.class} that is neither a node nor a flat list"
         end
-        Untyped.new(values.transform_keys { |n| RENAMES.fetch(n, n) })
+        unbuilt(values)
       end
 
-      def sequence?(value)
-        value.is_a?(Array) && !value.empty? &&
-          value.all? { |v| v.is_a?(Hash) && v.keys == [:built] }
-      end
-
-      # A child node as the rule table would build it.
-      def built(node)
-        Rules.new.apply(slices(captures(node)))
+      def unbuilt(values)
+        values.transform_keys { |n| RENAMES.fetch(n, n) }
       end
 
       def slice(text)
@@ -414,18 +400,6 @@ module Plurimath
         when :text_list then [[], ""].include?(value) ? [] : value
         when :items then value
         when :absent then nil
-        end
-      end
-
-      # The grammar's captured text is Parsanol::Slice text, which the rule
-      # table tells apart from values it has already built. Its encoding is
-      # UTF-8, as the native engine gives it.
-      def slices(tree)
-        case tree
-        when Hash then tree.transform_values { |v| slices(v) }
-        when Array then tree.map { |v| slices(v) }
-        when String then slice(tree)
-        else tree
         end
       end
     end
