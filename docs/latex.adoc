@@ -1,0 +1,339 @@
+= LaTeX in Plurimath
+:toc:
+
+This page specifies the LaTeX math that Plurimath reads and writes: how input
+reaches the latexmath gem, the output, what is lost when a measurement result
+is written as LaTeX, the errors, and the corpora that check all of this. It
+is part of the specification set tracked in
+https://github.com/plurimath/plurimath/issues/525[#525].
+
+The notation the grammar accepts, construct by construct, is specified in
+https://github.com/plurimath/latexmath/blob/main/docs/latex.adoc[latexmath's
+`docs/latex.adoc`]. Its grammar is generated from Plurimath's former LaTeX
+grammar, so it reads what Plurimath read before the grammar moved. This page
+covers what Plurimath does around the grammar, and shows in <<constructs>>
+what Plurimath makes of the common constructs.
+
+The examples, the construct table and the corpus counts on this page are
+generated (see <<regenerating>>). Each example is Ruby code that the generator runs; the
+block after it is what that code returned.
+
+== Status
+
+[cols="3,1,3"]
+|===
+|Part |Status |Where
+
+|Reading LaTeX with the latexmath gem and mapping its typed model
+|implemented
+|https://github.com/plurimath/plurimath/pull/552[#552],
+https://github.com/plurimath/plurimath/pull/553[#553],
+https://github.com/plurimath/plurimath/pull/556[#556],
+https://github.com/plurimath/plurimath/pull/559[#559],
+https://github.com/plurimath/plurimath/pull/564[#564],
+https://github.com/plurimath/plurimath/pull/565[#565],
+https://github.com/plurimath/plurimath/pull/567[#567],
+https://github.com/plurimath/plurimath/pull/568[#568]; issue
+https://github.com/plurimath/plurimath/issues/531[#531]
+
+|Writing LaTeX
+|implemented
+|
+
+|Measurement results written as plain LaTeX
+|implemented
+|https://github.com/plurimath/plurimath/pull/496[#496]
+
+|Reading measurement results from LaTeX (for example `siunitx`)
+|proposed
+|https://github.com/plurimath/plurimath/issues/524[#524]
+|===
+
+[[reading]]
+== Reading
+
+`Plurimath::Math.parse(text, :latex)` creates a `Plurimath::Latex::Parser`,
+which calls `Latexmath.parse(text, decimal: Plurimath.configuration.decimal)`
+and maps the returned `Latexmath::Model::Document` to a
+`Plurimath::Math::Formula` with `Plurimath::Latex::Mapper`. latexmath
+prepares the text before its grammar runs (spaces and newlines removed,
+non-ASCII characters written as character references, `\text{...}` and
+`\mbox{...}` kept as written); the steps are in
+https://github.com/plurimath/latexmath/blob/main/docs/parser-contract.adoc[latexmath's
+`docs/parser-contract.adoc`].
+
+// BEGIN GENERATED example read
+[source,ruby]
+----
+Plurimath::Math.parse("\\frac{a}{b} + \\sqrt{x}", :latex).to_asciimath
+----
+
+[source]
+----
+frac(a)(b) + sqrt(x)
+----
+// END GENERATED example read
+
+LaTeX takes the `locale:` parse option. It sets the decimal marker that
+latexmath is called with, so `1,5` is one number under a comma locale and
+two numbers with a comma between them otherwise:
+
+// BEGIN GENERATED example read-decimal-default
+[source,ruby]
+----
+Plurimath::Math.parse("1,5", :latex).value.map(&:class)
+----
+
+[source]
+----
+[Plurimath::Math::Number, Plurimath::Math::Symbols::Comma, Plurimath::Math::Number]
+----
+// END GENERATED example read-decimal-default
+
+// BEGIN GENERATED example read-decimal-locale
+[source,ruby]
+----
+Plurimath::Math.parse("1,5", :latex, locale: :de).value.map(&:class)
+----
+
+[source]
+----
+[Plurimath::Math::Number]
+----
+// END GENERATED example read-decimal-locale
+
+latexmath is a runtime dependency. If it cannot be loaded, the parser raises
+`Plurimath::Math::MissingDependencyError` with the Gemfile line to add.
+
+[[writing]]
+== Writing
+
+`Formula#to_latex` joins the output of each node with a space. It needs no
+LaTeX package beyond what the output commands themselves need.
+
+// BEGIN GENERATED writer-options
+`Plurimath::Math::Formula#to_latex` in `lib/plurimath/math/formula.rb` takes these keyword options:
+
+[cols="1,1"]
+|===
+|Option |Default
+
+|`formatter:` |`nil`
+|`unitsml:` |`{}`
+|`options:` |`nil`
+|===
+// END GENERATED writer-options
+
+`formatter:` and `unitsml:` work as for MathML (see
+link:mathml.adoc#writing[MathML in Plurimath]). `options:` is a prepared
+options hash and takes the place of the other two.
+
+// BEGIN GENERATED example write
+[source,ruby]
+----
+Plurimath::Math.parse("frac(a)(b) + sqrt(x) + sum_(i=1)^n i", :asciimath).to_latex
+----
+
+[source]
+----
+\frac{a}{b} + \sqrt{x} + \sum_{i = 1}^{n} i
+----
+// END GENERATED example write
+
+// BEGIN GENERATED example write-text
+[source,ruby]
+----
+Plurimath::Math.parse(%q("speed" = d/t), :asciimath).to_latex
+----
+
+[source]
+----
+\text{speed} = \frac{d}{t}
+----
+// END GENERATED example write-text
+
+// BEGIN GENERATED example write-symbols
+[source,ruby]
+----
+Plurimath::Math.parse("alpha + oo", :asciimath).to_latex
+----
+
+[source]
+----
+\alpha + \infty
+----
+// END GENERATED example write-symbols
+
+// BEGIN GENERATED example write-colour
+[source,ruby]
+----
+Plurimath::Math.parse("color(red)(x)", :asciimath).to_latex
+----
+
+[source]
+----
+{\color{red} x}
+----
+// END GENERATED example write-colour
+
+[[constructs]]
+== Constructs
+
+Each row below is read as LaTeX, written as AsciiMath, and written back as
+LaTeX from the same formula. The "Written back" column is what
+`Formula#to_latex` gives, so a difference from the input shows what is
+normalised or lost:
+
+* spaces are put around operators and between terms, and `\left` and
+  `\right` are followed by a space;
+* `\binom` becomes a matrix between braces, and `\operatorname` is dropped;
+* `\sin x` is written as `\sin{x}`.
+
+Two rows fail. latexmath's grammar has no `cases` environment, so
+`\begin{cases}` is refused. `\overbrace` with only a label above it is read,
+but the mapper builds no node for it, so writing the formula raises
+`Plurimath::Math::ParseError`; `\overbrace` reads when it has both a
+subscript and a superscript.
+
+// BEGIN GENERATED constructs
+[cols="2,3l,3l,3l",options="header"]
+|===
+|Construct |Input |AsciiMath |Written back
+|Number |12.5 |12.5 |12.5
+|Letter |x |x |x
+|Superscript |x^{2} |x^(2) |x^{2}
+|Subscript |x_{i} |x_(i) |x_{i}
+|Both scripts |x_{i}^{2} |x_(i)^(2) |x_{i}^{2}
+|Fraction |\frac{a}{b} |frac(a)(b) |\frac{a}{b}
+|Binomial |\binom{n}{k} |{[n], [k]} |\left \{\begin{matrix}n \\ k\end{matrix}\right \}
+|Square root |\sqrt{x} |sqrt(x) |\sqrt{x}
+|Root with index |\sqrt[3]{x} |root(3)(x) |\sqrt[3]{x}
+|Sum with limits |\sum_{i=1}^{n} i |sum_(i = 1)^(n) i |\sum_{i = 1}^{n} i
+|Integral |\int_{0}^{1} f(x) dx |int_(0)^(1) f (x) d x |\int_{0}^{1} f ( x ) d x
+|Limit |\lim_{x \to 0} x |lim_(x to 0) x |\lim_{x \to 0} x
+|Function name |\sin x |sinx |\sin{x}
+|Operator name |\operatorname{sgn} x |sgn x |sgn x
+|Symbols |\alpha + \infty |alpha + oo |\alpha + \infty
+|Relation |x \le y |x le y |x \le y
+|Brackets |\left( x \right) |left( x right) |\left ( x \right )
+|Bracket on one side |\left\{ x \right. |left{ x right |\left \{ x \right .
+|Matrix |\begin{matrix} a & b \\ c & d \end{matrix} |{:[a, b], [c, d]:} |\begin{matrix}a & b \\ c & d\end{matrix}
+|Matrix in brackets |\begin{pmatrix} a & b \end{pmatrix} |([a, b]) |\begin{pmatrix}a & b\end{pmatrix}
+|Cases |\begin{cases} a & b \end{cases} |refused: Plurimath::Math::ParseError |-
+|Text |\text{if} |"if" |\text{if}
+|Font |\mathbf{x} |mathbf(x) |\mathbf{x}
+|Upright font |\mathrm{d}x |rm(d) x |\mathrm{d} x
+|Accent |\hat{x} |hat(x) |\hat{x}
+|Overline |\overline{x} |bar(x) |\overline{x}
+|Brace with label |\overbrace{x}^{n} |raises Plurimath::Math::ParseError |raises Plurimath::Math::ParseError
+|Colour |\color{red}{x} |color(red)(x) |{\color{red} x}
+|===
+// END GENERATED constructs
+
+[[uncertainty]]
+== Measurement uncertainty
+
+LaTeX has no marker for a measurement result. Plurimath writes the visible
+form only, in plain math with no package, and reads it back as ordinary
+numbers, brackets and text, never as an uncertainty. LaTeX is therefore an
+output-only format for measurement results. The full table of forms is in
+link:uncertainty.adoc#markers[Measurement uncertainty].
+
+// BEGIN GENERATED example uncertainty-standard
+[source,ruby]
+----
+Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_latex
+----
+
+[source]
+----
+1.230(0.004)
+----
+// END GENERATED example uncertainty-standard
+
+// BEGIN GENERATED example uncertainty-interval
+[source,ruby]
+----
+Plurimath::Math.parse("ucov(1.024, 0.983, 1.088, 0.95, shortest)", :asciimath).to_latex
+----
+
+[source]
+----
+1.024,\ [0.983, 1.088],\ p = 0.95
+----
+// END GENERATED example uncertainty-interval
+
+// BEGIN GENERATED example uncertainty-readback
+[source,ruby]
+----
+Plurimath::Math.parse("1.024,\\ [0.983, 1.088],\\ p = 0.95", :latex).to_asciimath
+----
+
+[source]
+----
+1.024 , " " [0.983 , 1.088] , " " p = 0.95
+----
+// END GENERATED example uncertainty-readback
+
+[[lossiness]]
+== What LaTeX output loses
+
+* *The interval kind.* A coverage interval written as LaTeX does not say
+  whether it is the shortest or the probabilistically symmetric interval.
+* *The category.* Standard, expanded and coverage-interval results are told
+  apart only by their layout; reading the LaTeX back gives no uncertainty
+  node.
+* *The unit as a unit.* A UnitsML unit is written as its rendered symbols,
+  such as `\mathrm{m}`; it cannot be read back as a unit (see
+  link:unitsml.adoc[UnitsML in Plurimath]).
+
+[[errors]]
+== Errors
+
+`Plurimath::Math.parse(text, :latex)` raises `Plurimath::Math::ParseError`
+when latexmath refuses the text, including text with no formula (empty, or
+only spaces and newlines). The parser first turns latexmath's
+`Latexmath::ParseError` into a `Parsanol::ParseFailed` at the position the
+grammar reports; the error the caller gets has no `cause`.
+
+// BEGIN GENERATED example read-refused
+[source,ruby]
+----
+Plurimath::Math.parse("\\frac{a}{", :latex)
+----
+
+[source]
+----
+raises Plurimath::Math::ParseError
+----
+// END GENERATED example read-refused
+
+[[conformance]]
+== Conformance
+
+// BEGIN GENERATED conformance
+Shared testsuite at `337262eda0483ceaa43a02cc52362c5b721e5eb3` (the `submodules/plurimath-testsuite` commit):
+
+[cols="3,1,3"]
+|===
+|Rows |Cases |Groups
+
+|`corpus/latex/`, inputs read |125 |`accents`, `colour`, `fences`, `fonts`, `frac`, `left-right`, `matrices`, `mod`, `nary`, `numbers`, `operators`, `over-under`, `powers`, `quoted-text`, `roots`, `symbols`, `unary-functions`, `whitespace`
+|`corpus/latex/rejections.yaml`, inputs refused |14 |`rejections`
+|`corpus/*/`, cases with `latex` output |780 |74 payloads
+|===
+// END GENERATED conformance
+
+* `spec/conformance/shared_corpus_spec.rb` replays every `corpus/` case
+  above, comparing each target byte for byte.
+* The roundtrip generation has no LaTeX targets, because LaTeX output is not
+  read back as an uncertainty.
+* The `stages/latex/` generations of plurimath-testsuite are replayed by the
+  latexmath gem, not by Plurimath.
+
+[[regenerating]]
+== Regenerating this page
+
+The generated regions are written by `scripts/docs/format_specs.rb`, as
+described in link:mathml.adoc#regenerating[MathML in Plurimath]. Do not edit
+them by hand.

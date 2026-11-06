@@ -1,0 +1,620 @@
+= MathML in Plurimath
+:toc:
+
+This page specifies the MathML that Plurimath reads and writes: how input is
+parsed, the shape of the output and its options, the `intent` attributes it
+writes, how measurement results and units are carried, what does not survive
+a round trip, the errors, and the corpora that check all of this. It is part
+of the specification set tracked in
+https://github.com/plurimath/plurimath/issues/525[#525].
+
+The option table, the element tables, the examples and the corpus counts on
+this page are generated (see <<regenerating>>). Each example is Ruby code that the generator
+runs; the block after it is what that code returned.
+
+== Status
+
+Each part is either *implemented* (merged and released, or merged on `main`)
+or *proposed* (described in an open issue, not built).
+
+[cols="3,1,3"]
+|===
+|Part |Status |Where
+
+|Reading MathML through the mml gem's MathML 4 model
+|implemented
+|https://github.com/plurimath/plurimath/pull/412[#412],
+https://github.com/plurimath/plurimath/pull/438[#438]
+
+|Writing MathML, with `intent` attributes on request
+|implemented
+|link:../intent_supported_classes.adoc[intent supported classes]
+
+|Measurement results as an `intent` marker, read and written
+|implemented
+|https://github.com/plurimath/plurimath/pull/496[#496],
+https://github.com/plurimath/plurimath/pull/497[#497],
+https://github.com/plurimath/plurimath/pull/504[#504]
+
+|UnitsML XML embedded in the output (`unitsml: { xml: true }`)
+|implemented
+|see link:unitsml.adoc[UnitsML in Plurimath]
+
+|Loading mml only when MathML, OMML or UnitsML is used
+|implemented
+|https://github.com/plurimath/plurimath/pull/561[#561]
+
+|Checking the uncertainty marker with a MathML 4 validator or screen reader
+|proposed
+|https://github.com/plurimath/plurimath/issues/524[#524]
+|===
+
+[[reading]]
+== Reading
+
+`Plurimath::Math.parse(text, :mathml)` hands the text to
+`Plurimath::Mathml::Parser`, which calls
+`Mml.parse(text, version: 4, namespace_exist: ...)` from the mml gem and
+turns the resulting MathML 4 model into a `Plurimath::Math::Formula` with
+`Plurimath::Mathml::Translator`. `namespace_exist` is true when the first tag
+of the text carries an `xmlns=` attribute. The XML itself is parsed by the
+selected XML engine (see the "XML engines" section of the README).
+
+Input without a namespace declaration, and input with a prefixed MathML
+namespace, are both accepted:
+
+// BEGIN GENERATED example read-no-namespace
+[source,ruby]
+----
+Plurimath::Math.parse('<math><mi>x</mi><mo>+</mo><mn>1</mn></math>', :mathml).to_asciimath
+----
+
+[source]
+----
+x + 1
+----
+// END GENERATED example read-no-namespace
+
+// BEGIN GENERATED example read-prefixed
+[source,ruby]
+----
+Plurimath::Math.parse('<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math>', :mathml).to_asciimath
+----
+
+[source]
+----
+x
+----
+// END GENERATED example read-prefixed
+
+The mml model keeps elements that MathML 4 deprecates, so `mfenced` is still
+read, as its brackets:
+
+// BEGIN GENERATED example read-mfenced
+[source,ruby]
+----
+Plurimath::Math.parse('<math><mfenced><mi>x</mi></mfenced></math>', :mathml).to_asciimath
+----
+
+[source]
+----
+(x)
+----
+// END GENERATED example read-mfenced
+
+The `display` attribute of the input is not kept. The output is always a
+block (see <<writing>>):
+
+// BEGIN GENERATED example read-inline
+[source,ruby]
+----
+Plurimath::Math.parse('<math display="inline"><mi>x</mi></math>', :mathml).to_mathml
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mi>x</mi>
+  </mstyle>
+</math>
+----
+// END GENERATED example read-inline
+
+An element that the mml model does not know is dropped without an error, so
+it can disappear from the output. An element that the model knows but the
+translator has no rule for, such as `maction` or any Content MathML element,
+is refused (see <<elements>>):
+
+// BEGIN GENERATED example read-unknown
+[source,ruby]
+----
+Plurimath::Math.parse('<math><foo>x</foo></math>', :mathml).to_asciimath.inspect
+----
+
+[source]
+----
+""
+----
+// END GENERATED example read-unknown
+
+// BEGIN GENERATED example read-no-rule
+[source,ruby]
+----
+Plurimath::Math.parse('<math><maction><mi>x</mi></maction></math>', :mathml)
+----
+
+[source]
+----
+raises Plurimath::Math::ParseError
+----
+// END GENERATED example read-no-rule
+
+The `intent` attributes of the input are not kept either. Intent output is
+regenerated from the node classes, so it can differ from what was read:
+
+// BEGIN GENERATED example intent-read
+[source,ruby]
+----
+Plurimath::Math.parse('<math><mrow intent="absolute-value(x)"><mo>|</mo><mi>x</mi><mo>|</mo></mrow></math>', :mathml).to_mathml(intent: true)
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mrow intent=":fenced">
+      <mo>|</mo>
+      <mi>x</mi>
+      <mo>|</mo>
+    </mrow>
+  </mstyle>
+</math>
+----
+// END GENERATED example intent-read
+
+An `intent` attribute that holds an uncertainty marker is the exception; it is
+read as described in <<uncertainty>>.
+
+[[writing]]
+== Writing
+
+`Formula#to_mathml` returns one `math` element in the MathML namespace with
+`display="block"`, holding one `mstyle` whose `displaystyle` attribute is set
+from the `display_style:` option. The output is indented by two spaces.
+
+// BEGIN GENERATED writer-options
+`Plurimath::Math::Formula#to_mathml` in `lib/plurimath/math/formula.rb` takes these keyword options:
+
+[cols="1,1"]
+|===
+|Option |Default
+
+|`intent:` |`false`
+|`formatter:` |`nil`
+|`unitsml:` |`{}`
+|`split_on_linebreak:` |`false`
+|`display_style:` |`displaystyle`
+|`unary_function_spacing:` |`true`
+|===
+// END GENERATED writer-options
+
+* `display_style:` defaults to the display style the formula was read with;
+  it only changes the `mstyle` attribute.
+* `intent:` adds `intent` attributes (see <<intent>>).
+* `split_on_linebreak:` writes one `math` element per line of the formula
+  instead of one element with a line break, joined with no separator. The
+  `unitsml:` option is not passed on to the lines.
+* `formatter:` is a number formatter (see "Number formatting" in the README).
+* `unitsml:` is passed to the UnitsML renderer (see
+  link:unitsml.adoc[UnitsML in Plurimath]).
+* `unary_function_spacing:` set to false leaves out the empty
+  `<mo rspace="thickmathspace"/>` that is otherwise written before a unary
+  function such as `sin` when it follows another term (see the last two
+  examples).
+
+// BEGIN GENERATED example write
+[source,ruby]
+----
+Plurimath::Math.parse("x^2", :asciimath).to_mathml
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <msup>
+      <mi>x</mi>
+      <mn>2</mn>
+    </msup>
+  </mstyle>
+</math>
+----
+// END GENERATED example write
+
+// BEGIN GENERATED example write-inline
+[source,ruby]
+----
+Plurimath::Math.parse("x^2", :asciimath).to_mathml(display_style: false)
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="false">
+    <msup>
+      <mi>x</mi>
+      <mn>2</mn>
+    </msup>
+  </mstyle>
+</math>
+----
+// END GENERATED example write-inline
+
+// BEGIN GENERATED example linebreak
+[source,ruby]
+----
+Plurimath::Math.parse("a = b \\\\ c = d", :latex).to_mathml(split_on_linebreak: true)
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mi>a</mi>
+    <mo>=</mo>
+    <mi>b</mi>
+  </mstyle>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mi>c</mi>
+    <mo>=</mo>
+    <mi>d</mi>
+  </mstyle>
+</math>
+----
+// END GENERATED example linebreak
+
+// BEGIN GENERATED example unary-spacing
+[source,ruby]
+----
+Plurimath::Math.parse("2 sin x", :asciimath).to_mathml
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mn>2</mn>
+    <mrow>
+      <mo rspace="thickmathspace"/>
+      <mrow>
+        <mi>sin</mi>
+        <mi>x</mi>
+      </mrow>
+    </mrow>
+  </mstyle>
+</math>
+----
+// END GENERATED example unary-spacing
+
+// BEGIN GENERATED example unary-spacing-off
+[source,ruby]
+----
+Plurimath::Math.parse("2 sin x", :asciimath).to_mathml(unary_function_spacing: false)
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mn>2</mn>
+    <mrow>
+      <mi>sin</mi>
+      <mi>x</mi>
+    </mrow>
+  </mstyle>
+</math>
+----
+// END GENERATED example unary-spacing-off
+
+[[intent]]
+=== Intent
+
+With `intent: true` Plurimath adds MathML 4 `intent` attributes to the node
+classes listed in link:../intent_supported_classes.adoc[intent supported
+classes], which `rake intent_supported_classes.adoc` generates from the code.
+An intent can name its arguments, and the elements that hold them get a
+matching `arg` attribute:
+
+// BEGIN GENERATED example intent-abs
+[source,ruby]
+----
+Plurimath::Math.parse("abs(x)", :asciimath).to_mathml(intent: true)
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mrow intent="absolute-value(x)">
+      <mo>|</mo>
+      <mi>x</mi>
+      <mo>|</mo>
+    </mrow>
+  </mstyle>
+</math>
+----
+// END GENERATED example intent-abs
+
+// BEGIN GENERATED example intent-sum
+[source,ruby]
+----
+Plurimath::Math.parse("sum_(i=1)^n i", :asciimath).to_mathml(intent: true)
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mrow intent=":sum($l,n,$naryand)">
+      <munderover>
+        <mo>&#x2211;</mo>
+        <mrow arg="l">
+          <mi>i</mi>
+          <mo>=</mo>
+          <mn>1</mn>
+        </mrow>
+        <mi>n</mi>
+      </munderover>
+      <mrow arg="naryand">
+        <mi>i</mi>
+      </mrow>
+    </mrow>
+  </mstyle>
+</math>
+----
+// END GENERATED example intent-sum
+
+[[elements]]
+== Elements
+
+The first table lists, for each MathML element that the mml model reads into
+a class, the translator method that turns it into a Plurimath node. It is
+read from the `case` statement of the translator, so it lists exactly what
+the code dispatches on. An element marked "ignored" gives no node when the
+translator reaches it through this dispatch. `semantics` reads its
+`annotation` and `annotation-xml` children itself, so those are kept there.
+
+// BEGIN GENERATED elements-read
+`mml_to_plurimath` in `lib/plurimath/mathml/translator.rb` handles these model classes:
+
+[cols="2,2,3",options="header"]
+|===
+|Element |Model class |Read by
+|`annotation` |`Annotation` |ignored, no node
+|`annotation-xml` |`AnnotationXml` |ignored, no node
+|`maligngroup` |`Maligngroup` |ignored, no node
+|`malignmark` |`Malignmark` |ignored, no node
+|`math` |`Math` |`math_to_formula`
+|`menclose` |`Menclose` |`menclose_to_menclose`
+|`merror` |`Merror` |`merror_to_merror`
+|`mfenced` |`Mfenced` |`mfenced_to_fenced`
+|`mfrac` |`Mfrac` |`mfrac_to_frac`
+|`mfraction` |`Mfraction` |`mfrac_to_frac`
+|`mglyph` |`Mglyph` |`mglyph_to_mglyph`
+|`mi` |`Mi` |`mi_to_symbol`
+|`mlabeledtr` |`Mlabeledtr` |`mlabeledtr_to_mlabeledtr`
+|`mlongdiv` |`Mlongdiv` |`mlongdiv_to_longdiv`
+|`mmultiscripts` |`Mmultiscripts` |`mmultiscripts_to_multiscript`
+|`mn` |`Mn` |`mn_to_number`
+|`mo` |`Mo` |`mo_to_symbol`
+|`mover` |`Mover` |`mover_to_overset`
+|`mpadded` |`Mpadded` |`mpadded_to_mpadded`
+|`mphantom` |`Mphantom` |`mphantom_to_phantom`
+|`mprescripts` |`Mprescripts` |`mprescripts_to_prescripts`
+|`mroot` |`Mroot` |`mroot_to_root`
+|`mrow` |`Mrow` |`mrow_to_mrow`
+|`ms` |`Ms` |`ms_to_ms`
+|`mscarries` |`Mscarries` |`mscarries_to_scarries`
+|`mscarry` |`Mscarry` |`mscarry_to_mscarry`
+|`msgroup` |`Msgroup` |`msgroup_to_msgroup`
+|`msline` |`Msline` |`msline_to_msline`
+|`mspace` |`Mspace` |`mspace_to_space`
+|`msqrt` |`Msqrt` |`msqrt_to_sqrt`
+|`msrow` |`Msrow` |`msrow_to_formula`
+|`mstack` |`Mstack` |`mstack_to_stackrel`
+|`mstyle` |`Mstyle` |`mstyle_to_mstyle`
+|`msub` |`Msub` |`msub_to_base`
+|`msubsup` |`Msubsup` |`msubsup_to_powerbase`
+|`msup` |`Msup` |`msup_to_power`
+|`mtable` |`Mtable` |`mtable_to_table`
+|`mtd` |`Mtd` |`mtd_to_td`
+|`mtext` |`Mtext` |`mtext_to_text`
+|`mtr` |`Mtr` |`mtr_to_tr`
+|`munder` |`Munder` |`munder_to_underset`
+|`munderover` |`Munderover` |`munderover_to_underover`
+|`none` |`None` |`none_to_none`
+|`semantics` |`Semantics` |`semantics_to_semantics`
+|===
+
+The mml model has 151 more element classes, which the translator has no rule for: `a`, `abs`, `and`, `apply`, `approx`, `arccos`, `arccosh`, `arccot`, `arccoth`, `arccsc`, `arccsch`, `arcsec`, `arcsech`, `arcsin`, `arcsinh`, `arctan`, `arctanh`, `arg`, `bind`, `bvar`, `card`, `cartesianproduct`, `cbytes`, `ceiling`, `cerror`, `ci`, `cn`, `codomain`, `complexes`, `compose`, `condition`, `conjugate`, `cos`, `cosh`, `cot`, `coth`, `cs`, `csc`, `csch`, `csymbol`, `curl`, `declare`, `degree`, `determinant`, `diff`, `divergence`, `divide`, `domain`, `domainofapplication`, `emptyset`, `eq`, `equivalent`, `eulergamma`, `exists`, `exp`, `exponentiale`, `factorial`, `factorof`, `false`, `floor`, `fn`, `forall`, `gcd`, `geq`, `grad`, `gt`, `ident`, `image`, `imaginary`, `imaginaryi`, `implies`, `in`, `infinity`, `int`, `integers`, `intersect`, `interval`, `inverse`, `lambda`, `laplacian`, `lcm`, `leq`, `limit`, `list`, `ln`, `log`, `logbase`, `lowlimit`, `lt`, `maction`, `matrix`, `matrixrow`, `max`, `mean`, `median`, `min`, `minus`, `mode`, `moment`, `momentabout`, `naturalnumbers`, `neq`, `not`, `notanumber`, `notin`, `notprsubset`, `notsubset`, `or`, `otherwise`, `outerproduct`, `partialdiff`, `pi`, `piece`, `piecewise`, `plus`, `power`, `primes`, `product`, `prsubset`, `quotient`, `rationals`, `real`, `reals`, `reln`, `rem`, `root`, `scalarproduct`, `sdev`, `sec`, `sech`, `selector`, `sep`, `set`, `setdiff`, `share`, `sin`, `sinh`, `subset`, `sum`, `tan`, `tanh`, `tendsto`, `times`, `transpose`, `true`, `union`, `uplimit`, `variance`, `vector`, `vectorproduct`, `xor`.
+// END GENERATED elements-read
+
+The second table lists the elements that `Formula#to_mathml` writes for
+each construct, in document order and without repeats. The `math` element
+and its `mstyle` are left out, since every output has them.
+
+// BEGIN GENERATED elements-written
+[cols="2,2l,4l",options="header"]
+|===
+|Construct |AsciiMath |Elements
+|Number and letter |2x |mn mi
+|Operator |a + b |mi mo
+|Superscript |x^2 |msup mi mn
+|Both scripts |x_i^2 |msubsup mi mn
+|Fraction |frac(a)(b) |mfrac mi
+|Square root |sqrt(x) |msqrt mi
+|Root with index |root(3)(x) |mroot mi mn
+|Sum with limits |sum_(i=1)^n i |mrow munderover mo mi mn
+|Integral |int_0^1 f(x) dx |mrow msubsup mo mn mi
+|Limit |lim_(x->0) x |munder mo mrow mi mn
+|Function name |sin x |mrow mo mi
+|Brackets |(x) |mrow mo mi
+|Absolute value |abs(x) |mrow mo mi
+|Matrix |[[a, b], [c, d]] |mrow mo mtable mtr mtd mi
+|Text |"if" |mtext
+|Font |bb(x) |mstyle mi
+|Accent |hat(x) |mover mi mo
+|Overline |bar(x) |mover mi mo
+|Brace with label |overbrace(x)(n) |mover mi mo mrow
+|Colour |color(red)(x) |mstyle mi
+|Line break |a \\ b |mi mo
+|===
+// END GENERATED elements-written
+
+[[uncertainty]]
+== Measurement uncertainty
+
+A measurement result is written as an `mrow` whose `intent` is the
+uncertainty marker, whatever the `intent:` option is, because the marker
+carries data and not only a speech hint. Its unit is an `mrow arg="unit"`
+inside it. The marker grammar, the three categories and the reading rules are
+specified in link:uncertainty.adoc#markers[Measurement uncertainty].
+
+// BEGIN GENERATED example uncertainty
+[source,ruby]
+----
+Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_mathml
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mrow intent="standard-uncertainty(1.230,0.004)">
+      <mn>1.230</mn>
+      <mrow>
+        <mo>(</mo>
+        <mn>0.004</mn>
+        <mo>)</mo>
+      </mrow>
+    </mrow>
+  </mstyle>
+</math>
+----
+// END GENERATED example uncertainty
+
+On reading, the marker and the unit are used and the visible content is
+regenerated. A text that starts with one of the three marker names but does
+not match the grammar raises `Plurimath::Errors::InvalidUncertainty` in the
+reader, which reaches the caller of `Plurimath::Math.parse` as a
+`Plurimath::Math::ParseError`.
+
+=== MathML 4 conformance notes
+
+* The writer emits presentation elements, with `intent` and `arg`
+  attributes from MathML 4 when asked. `semantics` is written only when the
+  formula was read from MathML that had one.
+* The uncertainty marker follows our reading of the MathML 4 intent grammar
+  (section 5.1). It has not been checked with a MathML 4 validator or a
+  screen reader (#524).
+* The output always has `display="block"` and an `mstyle` with
+  `displaystyle`; inline layout is expressed only through `displaystyle`.
+
+[[round-trip]]
+== Round trips
+
+Reading Plurimath's own MathML gives back the formula that was written,
+except for what the reader drops: the input `display` attribute, unknown
+elements, and `intent` attributes other than an uncertainty marker. Units read
+from MathML come back as their rendered formula, not as a UnitsML node (see
+link:uncertainty.adoc#round-trip[the round-trip matrix]).
+
+[[errors]]
+== Errors
+
+`Plurimath::Math.parse(text, :mathml)` raises
+`Plurimath::Math::ParseError` when the XML cannot be parsed or the model
+cannot be translated; the original error is not kept as the `cause`:
+
+// BEGIN GENERATED example read-malformed
+[source,ruby]
+----
+Plurimath::Math.parse('<math><mi>x</math>', :mathml)
+----
+
+[source]
+----
+raises Plurimath::Math::ParseError
+----
+// END GENERATED example read-malformed
+
+MathML takes no parse options. Passing `locale:` raises
+`Plurimath::Math::ParseOptionError`:
+
+// BEGIN GENERATED example read-locale
+[source,ruby]
+----
+Plurimath::Math.parse('<math><mn>1</mn></math>', :mathml, locale: :de)
+----
+
+[source]
+----
+raises Plurimath::Math::ParseOptionError
+----
+// END GENERATED example read-locale
+
+[[conformance]]
+== Conformance
+
+// BEGIN GENERATED conformance
+Shared testsuite at `337262eda0483ceaa43a02cc52362c5b721e5eb3` (the `submodules/plurimath-testsuite` commit):
+
+[cols="3,1,3"]
+|===
+|Rows |Cases |Groups
+
+|`corpus/mathml/`, inputs read |287 |`elementary-math`, `enclose`, `fences`, `fractions`, `layout`, `over-under`, `partial-render`, `roots`, `scripts`, `tables`, `text`, `tokens`
+|`corpus/mathml/rejections.yaml`, inputs refused |14 |`rejections`
+|`corpus/*/`, cases with `mathml` output |782 |75 payloads
+|`stages/roundtrip/generations/000001/payloads/`, written as `mathml` and read back |46 |35 lossless, 7 lossy, 4 refused
+|===
+// END GENERATED conformance
+
+* `spec/conformance/shared_corpus_spec.rb` replays every `corpus/` case
+  above: the input is parsed and each target is written and compared byte for
+  byte, with the Ox engine.
+* `spec/conformance/stage_roundtrips_spec.rb` replays the roundtrip
+  generation pinned in `spec/fixtures/roundtrip-pin.yml`.
+* `spec/plurimath/mathml/uncertainty_spec.rb` and
+  `spec/plurimath/fixtures/uncertainty/contract.yml` check the marker.
+* The mml gem has its own conformance suite for the MathML model.
+
+[[regenerating]]
+== Regenerating this page
+
+The regions between `// BEGIN GENERATED` and `// END GENERATED` comments are
+written by `scripts/docs/format_specs.rb`, which also writes the other format
+pages. Do not edit them by hand. From the Plurimath checkout, with the
+testsuite submodule checked out:
+
+[source,sh]
+----
+bundle exec ruby scripts/docs/format_specs.rb
+----
+
+The script runs each example and each row of the construct tables with the
+code and bundle of the checkout, reads the option table from the source of
+`Formula#to_mathml` and the element tables from the translators and the mml
+and omml models, and counts corpus
+cases at the testsuite commit recorded for `submodules/plurimath-testsuite`.
+`--testsuite PATH` reads that commit from another clone of
+plurimath-testsuite instead. Add `--check` to verify the pages without
+changing them; the script then exits 1 when a page is out of date.
+
+The `docs` workflow (`.github/workflows/docs.yml`) runs the script with
+`--check` on every pull request. The bundle is resolved afresh there, so a
+new release of mml, omml, latexmath or unitsml that changes an output makes
+the check fail until the pages are regenerated.

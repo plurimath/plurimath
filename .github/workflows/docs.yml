@@ -1,0 +1,24 @@
+name: docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  format-specs:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check out the shared testsuite
+        run: git submodule update --init submodules/plurimath-testsuite
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0.1"
+          bundler-cache: true
+      - name: Check the generated regions of the format pages
+        run: bundle exec ruby scripts/docs/format_specs.rb --check
