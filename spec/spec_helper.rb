@@ -1,7 +1,13 @@
 if RUBY_ENGINE != "opal"
-  require "simplecov"
-  SimpleCov.start do
-    add_filter "/spec/"
+  # Coverage instrumentation slows the CPU-bound parser specs, and the
+  # Windows runners are already ~30% slower per example than ubuntu. The
+  # ubuntu and macOS legs report coverage, so Windows skips it to stay
+  # under the CI leg time limit.
+  unless Gem.win_platform?
+    require "simplecov"
+    SimpleCov.start do
+      add_filter "/spec/"
+    end
   end
 
   require "bundler/setup"
