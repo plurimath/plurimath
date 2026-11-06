@@ -42,6 +42,18 @@ RSpec.describe Plurimath, ".load_mml", if: RUBY_ENGINE != "opal" do
     expect(default).not_to eq("nil")
   end
 
+  it "does not load mml on a non-MathML parse" do
+    lines = run_ruby('f = Plurimath::Math.parse("x", :asciimath); ' \
+                     "p #{mml_loaded}; p f.to_asciimath")
+    expect(lines).to eq(["false", '"x"'])
+  end
+
+  it "loads mml when an AsciiMath unit is parsed" do
+    lines = run_ruby('Plurimath::Math.parse(\'"unitsml(m)"\', :asciimath); ' \
+                     "p #{mml_loaded}")
+    expect(lines).to eq(["true"])
+  end
+
   it "resolves Mml through the autoload" do
     expect(run_ruby("p Mml.is_a?(Module); p #{mml_loaded}"))
       .to eq(%w[true true])
