@@ -7,7 +7,7 @@ module Plurimath
   module Math
     module Function
       class Unitsml < Core
-        attr_accessor :text
+        attr_accessor :text, :input_string
 
         def initialize(text)
           @text = text
