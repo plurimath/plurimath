@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+Plurimath.load_mml
 require "omml"
 module Plurimath
   class Omml

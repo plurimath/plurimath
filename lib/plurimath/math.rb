@@ -17,6 +17,8 @@ module Plurimath
     autoload :Renderer, "#{__dir__}/math/renderer"
     autoload :AmbiguousDecimalError, "#{__dir__}/errors/ambiguous_decimal_error"
     autoload :Symbols, "#{__dir__}/math/symbols"
+    autoload :SymbolIndex, "#{__dir__}/math/symbol_index"
+    autoload :SymbolTable, "#{__dir__}/math/symbol_table"
 
     VALID_TYPES = {
       omml: Omml,
