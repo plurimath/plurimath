@@ -12,12 +12,16 @@ module Plurimath
     # a model node as the capture tree it stands for (#captures), then builds
     # the Formula with the LaTeX rule table (Mapper::Rules).
     #
+    # A wrapper is always the only capture of its node: the grammar adds it
+    # around a whole alternative (`((x) as literal) as c`, `(x / "" as
+    # absent) as c`). So a node is either one wrapper, which stands for its
+    # value, or ordinary captures, which form one hash; no node's parts need
+    # folding together.
+    #
     # Leaf nodes (see LEAVES) are built from the model directly: their Math
     # object takes the place of their capture hash, and the rule table only
     # unwraps it.
     class Mapper
-      extend Parsanol::Atoms::CanFlatten
-
       autoload :Rules, "#{__dir__}/mapper/rules"
 
       # The captures latexmath's shape normalization adds, and the value each
@@ -63,6 +67,7 @@ module Plurimath
       PASS_THROUGH = %i[
         binary unary_functions ternary_class power_base under_over limits
         left_right expression environment table_data intermediate_exp
+        base power over
       ].freeze
 
       # A node whose only set attribute is one of these, holding a sequence
@@ -298,50 +303,49 @@ module Plurimath
       # Arrays for repetitions, and the captured text.
       def captures(node)
         case node
-        when Array then self.class.send(:flatten_repetition, node.map { |v| captures(v) }, true)
+        when Array then repetition(node.map { |v| captures(v) })
         when Lutaml::Model::Serializable then node_captures(node)
         else node
         end
       end
 
-      # The node's set attributes, in declared order. Ordinary captures form
-      # hash parts; each wrapper is the value it stands for. The parts fold
-      # as the grammar's sequence folded them.
+      # The only repetitions in the model are +items+ lists, whose elements
+      # are hashes, or nil for an element with nothing set. A named
+      # repetition keeps its hashes; one with none left is the empty list
+      # when nothing repeated and empty text otherwise.
+      def repetition(list)
+        hashes = list.grep(Hash)
+        return hashes unless hashes.empty?
+
+        list.empty? ? [] : +""
+      end
+
+      # The node's capture tree: a wrapper's value, or a hash of its set
+      # attributes in declared order (nil when none is set).
       def node_captures(node)
-        leaf = leaf(node)
+        set = node.class.attributes.each_key.reject { |n| node.public_send(n).nil? }
+        wrapper = set.find { |n| WRAPPERS.key?(n) }
+        return wrapper_captures(node, set, wrapper) if wrapper
+
+        leaf = leaf(node, set)
         return leaf.captures if leaf.is_a?(Untyped)
         return { built: leaf } if leaf
+        return if set.empty?
 
-        parts = []
-        run = nil
-        only_absent = true
-        node.class.attributes.each_key do |name|
-          value = node.public_send(name)
-          next if value.nil?
+        set.to_h { |n| [RENAMES.fetch(n, n), captures(node.public_send(n))] }
+      end
 
-          kind = WRAPPERS[name]
-          if kind
-            parts << run if run
-            run = nil
-            only_absent &&= kind == :absent
-            parts << wrapped(kind, captures(value))
-          else
-            only_absent = false
-            (run ||= {})[RENAMES.fetch(name, name)] = captures(value)
-          end
+      def wrapper_captures(node, set, wrapper)
+        unless set.size == 1
+          raise ArgumentError, "#{node.class} sets the wrapper #{wrapper} with #{set - [wrapper]}"
         end
-        parts << run if run
-        return nil if only_absent
 
-        self.class.send(:foldl, parts) { |l, r| self.class.send(:merge_fold, l, r) }
+        wrapped(WRAPPERS[wrapper], captures(node.public_send(wrapper)))
       end
 
       # The Math object for a leaf, pass-through or composite node, or nil
       # when the node is none of these.
-      def leaf(node)
-        set = node.class.attributes.each_key.reject { |n| node.public_send(n).nil? }
-        return if set.any? { |n| WRAPPERS.key?(n) }
-
+      def leaf(node, set)
         typed = typed(node, set)
         return typed if typed
         return unless set.size == 1
