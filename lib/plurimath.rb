@@ -11,6 +11,7 @@ require "plurimath/xml_engine"
 
 module Plurimath
   autoload :Asciimath, "plurimath/asciimath"
+  autoload :Pma, "plurimath/pma"
   autoload :BaseNumberPrefix, "plurimath/base_number_prefix"
   autoload :Catalog, "plurimath/catalog"
   autoload :Cli, "plurimath/cli" unless RUBY_ENGINE == "opal"

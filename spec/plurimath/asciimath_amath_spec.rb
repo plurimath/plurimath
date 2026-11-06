@@ -152,7 +152,7 @@ RSpec.describe Plurimath::Asciimath do
       ].each do |raw|
         it "gives Symbol keys and Parslet slices at their input offsets for #{raw.inspect}" do
           text = Plurimath::Asciimath::Parser.new(raw).text
-          converted = described_class.convert(Amath.parse(text), text)
+          converted = described_class.convert(Amath::Parser.raw(text), text)
 
           expect(keys(converted)).to all(be_a(Symbol))
           leaves(converted).each do |leaf|
@@ -192,7 +192,7 @@ RSpec.describe Plurimath::Asciimath do
 
       described_class.new("1,5").parse
 
-      expect(amath_calls.last.last).to eq(decimal: ",")
+      expect(amath_calls.last.last).to include(decimal: ",", dialect: :legacy)
     ensure
       Plurimath.configuration.locale = locale
     end

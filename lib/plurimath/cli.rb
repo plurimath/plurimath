@@ -30,7 +30,8 @@ module Plurimath
     option :output_format,
            aliases: "-t",
            default: "mathml",
-           desc: "Output format: #{Plurimath::Math::VALID_TYPES.keys.sort.join(', ')} (default: mathml)"
+           desc: "Output format: #{(Plurimath::Math::VALID_TYPES.keys - Plurimath::Math::INPUT_ONLY_TYPES).sort.join(', ')} " \
+                 "(default: mathml)"
 
     option :math_rendering,
            aliases: "-m",

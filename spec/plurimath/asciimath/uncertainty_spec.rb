@@ -51,7 +51,7 @@ module AsciimathUncertaintyTrees
   end.to_h { |example| [example["id"], example] }.freeze
 end
 
-RSpec.describe Plurimath::Asciimath::Transform do
+RSpec.describe Plurimath::Asciimath::Mapper::Rules do
   def slice(text)
     Parslet::Slice.new(Parslet::Position.new(text, 0), text)
   end
@@ -82,7 +82,7 @@ RSpec.describe Plurimath::Asciimath::Transform do
   end
 
   def amath_tree(input)
-    tree = Amath.parse(input, decimal: Plurimath.configuration.decimal)
+    tree = Amath::Parser.raw(input, decimal: Plurimath.configuration.decimal)
     Plurimath::Asciimath::SliceAdapter.convert(tree, input)
   end
 

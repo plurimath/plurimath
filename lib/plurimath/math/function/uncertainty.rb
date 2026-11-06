@@ -15,6 +15,8 @@ module Plurimath
         CATEGORIES = %i[standard expanded coverage_interval].freeze
         NOTATIONS = %i[absolute concise].freeze
         INTERVAL_KINDS = %i[shortest probabilistically_symmetric].freeze
+        # pma distribution tags (docs/pma.adoc); metadata no writer shows.
+        DISTRIBUTIONS = %i[rect triang arcsine].freeze
 
         SIGNED_DECIMAL = /\A-?[0-9]+(\.[0-9]+)?\z/
         UNSIGNED_DECIMAL = /\A[0-9]+(\.[0-9]+)?\z/
@@ -49,7 +51,7 @@ module Plurimath
 
         attr_reader :value, :category, :magnitude, :coverage_factor,
                     :coverage_probability, :lower, :upper, :interval_kind,
-                    :notation, :unit
+                    :notation, :unit, :distribution
 
         # The keyword list is the documented model (docs/uncertainty.adoc).
         def initialize( # rubocop:disable Metrics/ParameterLists
@@ -62,7 +64,8 @@ module Plurimath
           upper: nil,
           interval_kind: nil,
           notation: :absolute,
-          unit: nil
+          unit: nil,
+          distribution: nil
         )
           @value = value
           @category = category
@@ -74,6 +77,7 @@ module Plurimath
           @interval_kind = interval_kind
           @notation = category == :standard ? notation : nil
           @unit = unit
+          @distribution = distribution
           super()
           validate!(notation)
         end
@@ -89,7 +93,8 @@ module Plurimath
             other.upper == upper &&
             other.interval_kind == interval_kind &&
             other.notation == notation &&
-            other.unit == unit
+            other.unit == unit &&
+            other.distribution == distribution
         end
 
         # Core#cloned_objects builds `self.class.new(nil)`, which the
@@ -106,6 +111,7 @@ module Plurimath
             interval_kind: interval_kind,
             notation: notation || :absolute,
             unit: unit&.cloned_objects,
+            distribution: distribution,
           )
         end
 
@@ -508,6 +514,9 @@ module Plurimath
         end
 
         def validate_standard(notation)
+          unless distribution.nil? || DISTRIBUTIONS.include?(distribution)
+            invalid!("unknown distribution #{distribution.inspect}")
+          end
           forbid(:coverage_factor, :coverage_probability, :lower, :upper,
                  :interval_kind)
           require_fields(:magnitude)
@@ -524,7 +533,7 @@ module Plurimath
         end
 
         def validate_expanded(notation)
-          forbid(:lower, :upper, :interval_kind)
+          forbid(:lower, :upper, :interval_kind, :distribution)
           validate_unqualified_notation(notation)
           require_fields(:magnitude, :coverage_factor)
           validate_coverage_factor
@@ -532,7 +541,7 @@ module Plurimath
         end
 
         def validate_coverage_interval(notation)
-          forbid(:magnitude, :coverage_factor)
+          forbid(:magnitude, :coverage_factor, :distribution)
           validate_unqualified_notation(notation)
           require_fields(:lower, :upper, :coverage_probability)
           unless interval_kind.nil? || INTERVAL_KINDS.include?(interval_kind)
