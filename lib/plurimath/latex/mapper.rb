@@ -63,7 +63,8 @@ module Plurimath
       }.freeze
 
       # A node whose only set attribute is one of these, holding a node the
-      # mapper built, stands for that built node.
+      # mapper built, stands for that built node; holding text that is not a
+      # LEAVES entry, it stands for the text.
       PASS_THROUGH = %i[
         binary unary_functions ternary_class power_base under_over limits
         left_right expression environment table_data intermediate_exp
@@ -71,7 +72,8 @@ module Plurimath
       ].freeze
 
       # A node whose only set attribute is one of these, holding a sequence
-      # of nodes the mapper built, stands for a Formula of them.
+      # of nodes the mapper built or one spliced list, stands for a Formula
+      # of them.
       SEQUENCES = %i[expression].freeze
 
       # The capture a typed rule needs from a child: :simple is one value
@@ -193,6 +195,7 @@ module Plurimath
         [{ left_paren: s, expression: s, right_paren: s },
          ->(l, x, r) { Math::Function::Fenced.new(Build.symbol(l), [x], Build.symbol(r)) }],
         [{ lparen: s, expression: q, rparen: s }, ->(_, x, _) { Math::Formula.new(x) }],
+        [{ lparen: s, rparen: s }, ->(_, _) { [] }],
         [{ first_value: s, base: s, power: s }, ->(f, b, p) { Math::Function::Limits.new(f, b, p) }],
         [{ root: s, first_value: q, second_value: s },
          ->(_, f, v) { Math::Function::Root.new(Utility.filter_values(f) || Math::Formula.new, v) }],
@@ -329,6 +332,7 @@ module Plurimath
 
         leaf = leaf(node, set)
         return leaf.captures if leaf.is_a?(Untyped)
+        return { spliced: leaf } if leaf.is_a?(Array)
         return { built: leaf } if leaf
         return if set.empty?
 
@@ -355,23 +359,27 @@ module Plurimath
         value = captures(value) if value.is_a?(Lutaml::Model::Serializable)
         if value.is_a?(String)
           build = LEAVES[name]
-          build&.call(slice(value))
+          build ? build.call(slice(value)) : (slice(value) if PASS_THROUGH.include?(name))
         elsif PASS_THROUGH.include?(name) && value.is_a?(Hash) && value.keys == [:built]
           value[:built]
         elsif SEQUENCES.include?(name) && sequence?(value)
           Math::Formula.new(value.map { |v| v[:built] })
+        elsif SEQUENCES.include?(name) && value.is_a?(Hash) && value.keys == [:spliced]
+          Math::Formula.new(value[:spliced])
         end
       end
 
-      # A node with TYPED keys whose children fit no entry, or whose entry
-      # gives a list. Its captures are its children as already built, which
-      # the rule table reads as it read their capture trees, so no child is
-      # built twice.
+      # A node with TYPED keys whose children fit no entry. Its captures are
+      # its children as already built, which the rule table reads as it read
+      # their capture trees, so no child is built twice. No rule in the rule
+      # table matches them: each rule with TYPED keys had a TYPED entry of the
+      # same shapes, so the node keeps its captures, as it did there.
       Untyped = Struct.new(:captures)
 
       # The node built by the first TYPED entry its children fit, or Untyped.
-      # A result that is a list stays with the rule table, which splices it
-      # into the parent.
+      # A flat list (a non-nary sequence, see Build.nary) is returned as is;
+      # its capture is { spliced: list }, which the parent reads as the list
+      # itself, as it read the rule table's list result.
       def typed(node, set)
         entries = TYPED_BY_KEYS[set.sort] or return
         values = set.to_h { |n| [n, built(node.public_send(n))] }
@@ -379,9 +387,9 @@ module Plurimath
           next unless shapes.all? { |n, shape| SHAPES[shape].call(values[n]) }
 
           result = build.call(*shapes.keys.map { |n| values[n] })
-          return result unless result.is_a?(Array) || result.is_a?(Hash)
+          return result unless result.is_a?(Hash) || (result.is_a?(Array) && !SHAPES[:sequence].call(result))
 
-          break
+          raise ArgumentError, "#{node.class} built #{result.class} that is neither a node nor a flat list"
         end
         Untyped.new(values.transform_keys { |n| RENAMES.fetch(n, n) })
       end
