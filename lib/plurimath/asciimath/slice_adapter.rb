@@ -3,7 +3,7 @@
 module Plurimath
   class Asciimath
     # Turns a parse tree produced by amath (Parsanol) into a Parslet-shaped
-    # tree (Symbol keys, Parslet::Slice leaves), so Asciimath::Transform and
+    # tree (Symbol keys, Parslet::Slice leaves), so Asciimath::Mapper::Rules and
     # the other Parslet::Slice consumers keep working unchanged.
     #
     # - Every leaf becomes a real Parslet::Slice. Parsanol slices carry a byte
