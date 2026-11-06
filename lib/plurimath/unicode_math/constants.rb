@@ -766,12 +766,6 @@ module Plurimath
         matrix: nil,
         cases: nil,
       }.freeze
-
-      class << self
-        def wrapper_symbols
-          @@wrapper_symbols ||= Utility.symbols_hash(:unicodemath).keys.grep(/"P\{[^\}]+\}/)
-        end
-      end
     end
   end
 end
