@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
+
 module Plurimath
   class Asciimath
     # Maps the typed AsciiMath model that the amath gem returns
@@ -33,6 +35,8 @@ module Plurimath
       }.freeze
 
       def call(document, text)
+        return pma_formula(document.term) if document.is_a?(::Amath::Model::PmaDocument)
+
         expression = document.expression
         tree = expression.nil? ? +"" : ::Amath::Renester.call(captures(expression))
         formula = Rules.new.apply(SliceAdapter.convert(tree, text))
@@ -42,6 +46,42 @@ module Plurimath
       end
 
       private
+
+      # A pma document holds one term: a measured value (with its unit), a
+      # unit, or diff(q). The measured value takes the same path as the
+      # dialect L uncertainty calls (Rules::UncertaintyTree).
+      def pma_formula(term)
+        node = if term.uncertainty
+                 Rules::UncertaintyTree.node(pma_uncertainty(term.uncertainty))
+               elsif term.unit
+                 Math::Function::Unitsml.new(term.unit.literal.to_s)
+               else
+                 raise ArgumentError,
+                       "diff(q) has no Plurimath node yet (docs/pma.adoc, open decision 9)"
+               end
+        Math::Formula.new([node])
+      end
+
+      # The uncertainty fields as dialect L names them. A measured literal
+      # (v +/- u) is a standard uncertainty; a relative one (v +/- p%) stores
+      # the absolute magnitude v * p / 100, exact on the decimal text.
+      def pma_uncertainty(model)
+        fields = {}
+        model.class.attributes.each_key do |name|
+          value = model.public_send(name)
+          fields[name] = value unless value.nil?
+        end
+        fields[:uncertainty_class] = "ustd" if fields.delete(:plus_minus)
+        fields[:unit] = fields[:unit].literal.to_s if fields.key?(:unit)
+        relative = fields.delete(:relative_magnitude)
+        fields[:magnitude] = relative_magnitude(fields[:value], relative) if relative
+        fields.transform_values(&:to_s)
+      end
+
+      def relative_magnitude(value, percent)
+        product = BigDecimal(value.to_s).abs * BigDecimal(percent.to_s) / 100
+        product.to_s("F").delete_suffix(".0")
+      end
 
       # A model node as its capture tree: Hashes keyed by capture name,
       # Arrays for repetitions, and the captured text.

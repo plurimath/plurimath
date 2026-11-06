@@ -7,31 +7,41 @@ module Plurimath
       # followed by ustd(1,5): a preceding letter does not exempt it.
       UNCERTAINTY_CALL = /u(?:std|exp|cov)\(/
 
-      attr_accessor :text
+      attr_accessor :text, :dialect
 
-      def initialize(text)
-        @text = text
+      # pma text goes to amath unchanged; the substitutions below are
+      # dialect L spellings only.
+      def initialize(text, dialect: :legacy)
+        @dialect = dialect
+        @text = dialect == :pma ? text : legacy_text(text)
+      end
+
+      def legacy_text(text)
+        text
           &.gsub(/(\|:|:\|)/, "|")
           &.gsub(/(\{:)/, "ℒ")
           &.gsub(/(:\})/, "ℛ")
           &.gsub(/(\(:)/, "ᑕ")
           &.gsub(/(:\))/, "ᑐ")
       end
+      private :legacy_text
 
       # The amath gem parses #text (dialect L, the Ruby engine) into its
       # typed model, which Mapper turns into a Formula. A grammar refusal
       # raises Parslet::ParseFailed at the position amath reports in #text.
       def parse
-        ambiguous_uncertainty_comma!
+        ambiguous_uncertainty_comma! unless dialect == :pma
         Parse.new.load_amath
         parse_with_amath
       end
 
       private
 
+      # pma numbers always use the full stop, whatever the locale.
       def parse_with_amath
-        document = ::Amath.parse(text, dialect: :legacy, engine: :ruby,
-                                       decimal: Plurimath.configuration.decimal)
+        decimal = dialect == :pma ? "." : Plurimath.configuration.decimal
+        document = ::Amath.parse(text, dialect: dialect, engine: :ruby,
+                                       decimal: decimal)
         Mapper.new.call(document, text)
       rescue ::Amath::ParseError => e
         raise Parse.parse_failed(e, text)

@@ -90,6 +90,7 @@ Plurimath::Math::Function::Uncertainty.new(
   interval_kind: nil,          # :shortest, :probabilistically_symmetric or nil
   notation: :absolute,         # :absolute or :concise (standard only)
   unit: nil,                   # Math::Function::Unitsml, or Math::Formula when read from markup
+  distribution: nil,           # :rect, :triang, :arcsine or nil (standard only; pma input)
 )
 ----
 
