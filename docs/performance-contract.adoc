@@ -2,9 +2,9 @@
 
 This document records what plurimath measures about its own cost, how it
 measures it, the baseline taken on 2026-11-03, and the targets set in
-https://github.com/plurimath/plurimath/issues/537[#537]. The measurements do
-not gate merges yet. Gating starts once the staged-library work in #537 lands,
-and the thresholds will be the targets below.
+https://github.com/plurimath/plurimath/issues/537[#537], and the gates that
+hold them. The `performance` jobs fail when a figure goes past its gate (see
+<<gates>>).
 
 == What is measured
 
@@ -45,24 +45,31 @@ and the thresholds will be the targets below.
 The `performance` workflow (`.github/workflows/performance.yml`) runs on
 `ubuntu-22.04` with Ruby 4.0.1. It runs on pushes to `main`, on pull requests
 that change `lib/`, `spec/`, the `Gemfile`, the gemspec or these scripts, and on
-demand. Each job uploads its JSON as an artifact kept for 90 days.
+demand. The `performance-ci-legs` workflow
+(`.github/workflows/performance-ci-legs.yml`) runs after each `rake` run on
+`main`, and on demand. Each job uploads its JSON as an artifact kept for 90
+days.
 
 `require-footprint`:: Runs `scripts/measure_require.rb --samples 5` once with
 the Ox engine and once with the Oga engine. Each sample is a new Ruby process,
 so every require is cold. Bundler is set up before the clock starts. Time,
 allocation and memory values are medians over the samples; the counts must be
-equal in every sample or the script fails.
+equal in every sample or the script fails. Each engine's result is compared
+with `scripts/require_baseline.json`.
 
 `suite-timing`:: Runs `bundle exec rspec` once under
 `scripts/check_suite_budget.rb suite`, with the progress and JSON formatters.
-The examples, the spec helper and its engine loop are unchanged, so this is the
-same suite `rake` runs. The runner is a proxy for "local": it is the fixed
+The examples, the spec helper and its engine loop are the ones `rake` runs, so
+this is the same suite. The spec helper writes the engine-loop counts to
+`ENGINE_LOOP_REPORT`, and the report includes them. The runner is a proxy for "local": it is the fixed
 machine on which #537's local-suite target is checked. It is not a measurement
 of any developer's machine.
 
 `ci-legs`:: After each `rake` run on `main` completes, reads that run through
-the GitHub API and records each leg. On other events it reads the newest
-completed `rake` run on `main`.
+the GitHub API and records each leg. On demand it reads the newest completed
+`rake` run on `main`. It lives in its own workflow so that every `performance`
+run measures the require footprint and the suite; before, the run started by
+each `rake` run skipped both jobs.
 
 Both scripts print JSON with sorted keys and no timestamps. Their usage and
 exit statuses are in the comment at the top of each script. Both can be run
@@ -76,8 +83,31 @@ ruby scripts/check_suite_budget.rb suite --rspec-json rspec.json -- \
   bundle exec rspec --format progress --format json --out rspec.json
 ----
 
-`--enforce` makes `check_suite_budget.rb` exit 1 when a budget is exceeded. The
-workflow does not pass it yet.
+`--enforce` makes `check_suite_budget.rb` exit 1 when a budget is exceeded, and
+`measure_require.rb --baseline FILE --enforce` exit 1 when a gate check fails.
+The workflows pass both.
+
+== The engine loop
+
+Every example used to run twice, once with the Ox engine and once with the Oga
+engine. Since #537, the spec helper runs the Oga pass only when the Ox pass
+reached the XML layer (`spec/support/engine_loop.rb`). While an example runs
+under Ox, the loop records any read of `Plurimath.xml_engine` or of mml's
+adapter setting, and any call into Ox, plurimath's Ox engine, or the Ox
+adapters of lutaml-model and moxml. The engine switch changes only those two
+settings, so an example that reached none of them does the same work under
+Oga, and running it again proves nothing. A class that is first loaded during
+an example makes that example count as XML-touching.
+
+Tag a group or example with `engine_loop: :always` to force the Oga pass. Set
+`ENGINE_LOOP_TRACE=1` to print where each example first reached the XML layer.
+Shared-corpus examples still run on Ox only.
+
+Parsing-only specs make up most of the saving. The 1,350 UnicodeMath
+expectation examples took 674 s of the 1,621 s of example time in performance
+run https://github.com/plurimath/plurimath/actions/runs/42176576146[42176576146]
+on `main` at `c511801b`. They only parse and compare trees, so they now run
+once.
 
 == Baseline (2026-11-03)
 
@@ -189,7 +219,7 @@ the gate will use a run on the measured commit, never an older one.
 
 == Targets
 
-These come from #537 and become the gates once the staged libraries land.
+These come from #537.
 
 [cols="2,1,1",options="header"]
 |===
@@ -208,7 +238,32 @@ These come from #537 and become the gates once the staged libraries land.
 | see the require baseline
 |===
 
-The require footprint has no absolute number in #537. The gate will compare a
-change against the last measurement on `main`, using the loaded-feature and
-own-file counts (which are exact) and the medians of time and memory (which
-vary between runs).
+The require footprint has no absolute number in #537.
+
+[[gates]]
+== Gates
+
+[cols="2,3",options="header"]
+|===
+| Job | Fails when
+
+| `require-footprint`
+| plurimath loads more of its own `lib/` files on `require` or on first use
+  than the baseline, fewer autoloads are pending after `require`, more than
+  1.25 times the baseline's loaded features are loaded, or a median wall time
+  is over twice the baseline plus 50 ms. The baseline is
+  `scripts/require_baseline.json`, taken from performance run 42176576146 on
+  `main` at `c511801b`. The own-file counts are exact; the feature count also
+  depends on the resolved gem versions, and the times on the runner, so they
+  have a margin. A change that loads more on purpose updates the baseline in
+  the same pull request.
+
+| `suite-timing`
+| an example fails, or the suite takes longer than 1500 s. The target stays
+  600 s. Before the engine-loop change, `main` took 1100 s to 1755 s on this
+  runner for the same code, so the ceiling leaves room for that spread. It
+  moves down as the staged libraries land.
+
+| `ci-legs`
+| a leg of the `rake` run on `main` took longer than 1800 s, or has no time.
+|===

@@ -9,7 +9,8 @@
 #     [--test-step TEXT] [--budget-seconds N] [--output FILE] [--enforce]
 #
 #   ruby scripts/check_suite_budget.rb suite [--rspec-json FILE]
-#     [--budget-seconds N] [--output FILE] [--enforce] -- COMMAND...
+#     [--engine-loop-json FILE] [--budget-seconds N] [--output FILE]
+#     [--enforce] -- COMMAND...
 #
 # ci     Reads one GitHub Actions run of the rake workflow through `gh api`
 #        and reports, per matrix leg, the job's wall time and the time of the
@@ -23,6 +24,8 @@
 # suite  Runs COMMAND once, measures its wall time with a monotonic clock and,
 #        when --rspec-json names the file written by RSpec's JSON formatter,
 #        adds example counts and the summed example time per spec area.
+#        --engine-loop-json reads the counts the spec helper writes to
+#        ENGINE_LOOP_REPORT (examples run on both XML engines, and on Ox only).
 #        Default budget: 600 s. The command's exit status is recorded; the
 #        wrapper's own exit status follows the rules below.
 #
@@ -207,6 +210,7 @@ module CheckSuiteBudget
 
     OptionParser.new do |opts|
       opts.on("--rspec-json FILE") { |v| options[:rspec_json] = v }
+      opts.on("--engine-loop-json FILE") { |v| options[:engine_loop_json] = v }
       opts.on("--budget-seconds N", Integer) { |v| options[:budget] = v }
       opts.on("--output FILE") { |v| options[:output] = v }
       opts.on("--enforce") { options[:enforce] = true }
@@ -225,11 +229,14 @@ module CheckSuiteBudget
       over_budget: wall > options[:budget],
       source: { commit: ENV.fetch("GITHUB_SHA", nil), runner_image: runner_image, ruby: RUBY_DESCRIPTION },
       rspec: options[:rspec_json] && rspec_summary(options[:rspec_json]),
+      engine_loop: options[:engine_loop_json] && engine_loop_summary(options[:engine_loop_json]),
     }
     write(report, options[:output])
     areas = report.dig(:rspec, :areas) || {}
+    loop_counts = report[:engine_loop]
+    loop_note = loop_counts && !loop_counts.key?(:error) ? "; engine loop: #{loop_counts['both'].to_i} on Ox and Oga, #{loop_counts['ox_only'].to_i} on Ox only" : ""
     summary_markdown(
-      "Suite wall time #{wall} s (budget #{options[:budget]} s, exit #{status})",
+      "Suite wall time #{wall} s (budget #{options[:budget]} s, exit #{status}#{loop_note})",
       %w[Spec\ area Examples Example\ s],
       areas.sort_by { |_, a| -a[:example_seconds] }.map { |k, a| [k, a[:examples], a[:example_seconds]] },
     )
@@ -259,6 +266,12 @@ module CheckSuiteBudget
       areas: areas.sort.to_h,
     }
   rescue SystemCallError, JSON::ParserError, KeyError => e
+    { error: "cannot read #{path}: #{e.message}" }
+  end
+
+  def engine_loop_summary(path)
+    JSON.parse(File.read(path))
+  rescue SystemCallError, JSON::ParserError => e
     { error: "cannot read #{path}: #{e.message}" }
   end
 

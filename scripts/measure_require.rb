@@ -5,7 +5,7 @@
 #
 # Usage:
 #   bundle exec ruby scripts/measure_require.rb [--output FILE]
-#     [--samples N] [--engine ox|oga|leptris]
+#     [--samples N] [--engine ox|oga|leptris] [--baseline FILE [--enforce]]
 #
 #   --output FILE   write the JSON to FILE instead of standard output.
 #   --samples N     number of cold child processes to measure (default 5).
@@ -13,6 +13,10 @@
 #                   the samples; counts must agree across samples.
 #   --engine NAME   XML engine selected at require time through the same
 #                   environment variables lib/plurimath.rb reads (default ox).
+#   --baseline FILE compare the result with the entry for --engine in FILE
+#                   (scripts/require_baseline.json) and add a `gate` section
+#                   to the report. See GATE below for the limits.
+#   --enforce       exit 1 when a gate check fails.
 #
 # Each sample is a fresh Ruby process, so every require is cold. Bundler is
 # set up before the clock starts (bundle exec loads it through RUBYOPT), so
@@ -31,8 +35,19 @@
 # no timestamps are recorded. Time and memory values vary between runs; the
 # counts do not, unless the code or its dependencies change.
 #
-# Exit status: 0 on success; 1 when samples disagree on a count; 2 on a usage
-# error or a failed child process.
+# The gate compares figures that belong to plurimath itself exactly, and
+# figures that also depend on the resolved gem versions (there is no committed
+# lockfile) or on the runner with a margin:
+#   own lib files loaded by require and by first use   at most the baseline
+#   pending autoloads after require                    at least the baseline
+#   loaded features after require                      at most baseline * 1.25
+#   require and first-use wall time (median)           at most baseline * 2 + 50 ms
+# A change that loads more on purpose updates the baseline file in the same
+# pull request, which makes the growth visible in review.
+#
+# Exit status: 0 on success (gate failures included, unless --enforce); 1 when
+# samples disagree on a count or, with --enforce, when a gate check fails; 2 on
+# a usage error, a failed child process or an unreadable baseline.
 
 require "json"
 require "open3"
@@ -157,13 +172,16 @@ module MeasureRequire
   module_function
 
   def parse_options(argv)
-    options = { samples: 5, engine: "ox", output: nil }
+    options = { samples: 5, engine: "ox", output: nil, baseline: nil, enforce: false }
     OptionParser.new do |opts|
       opts.on("--output FILE") { |v| options[:output] = v }
+      opts.on("--baseline FILE") { |v| options[:baseline] = v }
+      opts.on("--enforce") { options[:enforce] = true }
       opts.on("--samples N", Integer) { |v| options[:samples] = v }
       opts.on("--engine NAME", ENGINES.keys) { |v| options[:engine] = v }
     end.parse!(argv)
     raise OptionParser::InvalidArgument, "--samples must be >= 1" if options[:samples] < 1
+    raise OptionParser::InvalidArgument, "--enforce needs --baseline" if options[:enforce] && !options[:baseline]
 
     options
   rescue OptionParser::ParseError => e
@@ -254,6 +272,47 @@ module MeasureRequire
     end
   end
 
+  # [name, path into the report, comparison, allowance]
+  GATE = [
+    ["require own lib files", %w[require plurimath_lib_files], :at_most, :exact],
+    ["first use own lib files", %w[first_use plurimath_lib_files], :at_most, :exact],
+    ["pending autoloads after require", %w[autoload pending_after_require], :at_least, :exact],
+    ["require loaded features", %w[require loaded_features], :at_most, :features],
+    ["require wall ms", %w[require wall_ms], :at_most, :time],
+    ["first use wall ms", %w[first_use wall_ms], :at_most, :time],
+  ].freeze
+
+  def load_baseline(path, engine)
+    data = JSON.parse(File.read(path))
+    data.fetch("engines").fetch(engine)
+  rescue SystemCallError, JSON::ParserError, KeyError => e
+    warn "measure_require: cannot read baseline #{engine.inspect} from #{path}: #{e.message}"
+    exit 2
+  end
+
+  def limit_for(base, allowance)
+    case allowance
+    when :exact then base
+    when :features then (base * 1.25).floor
+    when :time then ((base * 2) + 50).round(1)
+    end
+  end
+
+  def gate(report, baseline)
+    checks = GATE.map do |name, path, comparison, allowance|
+      value = report.dig(*path)
+      base = baseline.dig(*path)
+      if base.nil?
+        warn "measure_require: baseline has no #{path.join('.')}"
+        exit 2
+      end
+      limit = limit_for(base, allowance)
+      ok = comparison == :at_most ? value <= limit : value >= limit
+      { name: name, value: value, baseline: base, limit: limit, comparison: comparison.to_s, ok: ok }
+    end
+    { checks: checks, failed: checks.count { |c| !c[:ok] } }
+  end
+
   def call(argv)
     options = parse_options(argv)
     samples = Array.new(options[:samples]) { run_child(options[:engine]) }
@@ -279,13 +338,22 @@ module MeasureRequire
         pending_after_require_names: first[:pending_after_require],
       },
     )
+    gate_result = nil
+    if options[:baseline]
+      gate_result = gate(report, load_baseline(options[:baseline], options[:engine]))
+      report = deep_sort(report.merge("gate" => gate_result))
+      gate_result[:checks].reject { |c| c[:ok] }.each do |c|
+        warn "measure_require: #{options[:engine]}: #{c[:name]} is #{c[:value]}, " \
+             "limit #{c[:comparison].tr('_', ' ')} #{c[:limit]} (baseline #{c[:baseline]})"
+      end
+    end
     json = "#{JSON.pretty_generate(report)}\n"
     if options[:output]
       File.write(options[:output], json)
     else
       $stdout.write(json)
     end
-    0
+    options[:enforce] && gate_result[:failed].positive? ? 1 : 0
   rescue CountMismatch => e
     warn "measure_require: #{e.message}"
     1
