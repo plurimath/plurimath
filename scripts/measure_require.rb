@@ -35,13 +35,13 @@
 # no timestamps are recorded. Time and memory values vary between runs; the
 # counts do not, unless the code or its dependencies change.
 #
-# The gate compares figures that belong to plurimath itself exactly, and
-# figures that also depend on the resolved gem versions (there is no committed
-# lockfile) or on the runner with a margin:
+# The gate compares the counts exactly. Wall time on a shared runner varies
+# about twofold between runs of the same code, so it only has a loose bound
+# that catches a gross slowdown:
 #   own lib files loaded by require and by first use   at most the baseline
 #   pending autoloads after require                    at least the baseline
-#   loaded features after require                      at most baseline * 1.25
-#   require and first-use wall time (median)           at most baseline * 2 + 50 ms
+#   loaded features after require                      at most the baseline
+#   require and first-use wall time (median)           at most baseline * 3 + 500 ms
 # A change that loads more on purpose updates the baseline file in the same
 # pull request, which makes the growth visible in review.
 #
@@ -277,7 +277,7 @@ module MeasureRequire
     ["require own lib files", %w[require plurimath_lib_files], :at_most, :exact],
     ["first use own lib files", %w[first_use plurimath_lib_files], :at_most, :exact],
     ["pending autoloads after require", %w[autoload pending_after_require], :at_least, :exact],
-    ["require loaded features", %w[require loaded_features], :at_most, :features],
+    ["require loaded features", %w[require loaded_features], :at_most, :exact],
     ["require wall ms", %w[require wall_ms], :at_most, :time],
     ["first use wall ms", %w[first_use wall_ms], :at_most, :time],
   ].freeze
@@ -293,8 +293,7 @@ module MeasureRequire
   def limit_for(base, allowance)
     case allowance
     when :exact then base
-    when :features then (base * 1.25).floor
-    when :time then ((base * 2) + 50).round(1)
+    when :time then ((base * 3) + 500).round(1)
     end
   end
 

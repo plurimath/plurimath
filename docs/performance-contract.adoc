@@ -248,16 +248,22 @@ The require footprint has no absolute number in #537.
 | Job | Fails when
 
 | `require-footprint`
-| plurimath loads more of its own `lib/` files on `require` or on first use
-  than the baseline, fewer autoloads are pending after `require`, more than
-  1.25 times the baseline's loaded features are loaded, or a median wall time
-  is over twice the baseline plus 50 ms. The baseline is
+| plurimath loads more of its own `lib/` files or more features on
+  `require`, loads more of its own files on first use, has fewer autoloads
+  pending after `require` than the baseline, or a median wall time is over
+  three times the baseline plus 500 ms. The baseline is
   `scripts/require_baseline.json`. Its counts were measured on `main` at
   `85fd8deb` with the UnicodeMath change (#555) merged, so they match `main`
   once that lands; its wall times come from performance run 42176576146 on
-  `main` at `c511801b`. The own-file counts are exact; the feature count also
-  depends on the resolved gem versions, and the times on the runner, so they
-  have a margin. A change that loads more on purpose updates the baseline in
+  `main` at `c511801b`, before first use loaded amath. The counts are exact:
+  the `require` feature count was 73 (ox) and 112 (oga) in each of the 12
+  performance runs from 34eb4dbe to 5d9ab96b. The wall time has only a loose
+  bound because it varies about twofold between runs. The five samples in
+  one run stay within about 10% of each other, but the median moves with the
+  runner: first use took 537 ms to 1056 ms in six runs before amath loaded
+  on first use, and 1305 ms to 2369 ms in six runs after it. The bound
+  (3253 ms for ox, 3301 ms for oga) is above all of those and still catches a
+  gross slowdown. A change that loads more on purpose updates the baseline in
   the same pull request.
 
 | `suite-timing`
