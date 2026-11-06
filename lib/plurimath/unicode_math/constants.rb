@@ -3,45 +3,6 @@
 module Plurimath
   class UnicodeMath
     class Constants
-      UNARY_FUNCTIONS = %w[
-        arccos
-        arcsin
-        arctan
-        csch
-        sech
-        sinh
-        tanh
-        cosh
-        cos
-        cot
-        csc
-        sec
-        sin
-        tan
-        arg
-        def
-        deg
-        det
-        dim
-        erf
-        exp
-        gcd
-        hom
-        inf
-        ker
-        lim
-        log
-        max
-        min
-        mod
-        sup
-        Im
-        Pr
-        Re
-        ln
-        tg
-      ].freeze
-
       UNDEF_UNARY_FUNCTIONS = %w[
         arg
         def
@@ -172,32 +133,6 @@ module Plurimath
         oint: "&#x222e;",
         prod: "&#x220f;",
         sum: "&#x2211;",
-      }.freeze
-
-      OPEN_SYMBOLS = {
-        begin: "&#x3016;",
-        bra: "&#x27e8;",
-        Langle: "&#x27ea;",
-        langle: "&#x27e8;",
-        lbbrack: "&#x27e6;",
-        lbrace: "&#x7b;",
-        Lbrack: "&#x27e6;",
-        lbrack: "&#x5b;",
-        lceil: "&#x2308;",
-        lfloor: "&#x230a;",
-      }.freeze
-
-      CLOSE_SYMBOLS = {
-        end: "&#x3017;",
-        ket: "&#x27e9;",
-        Rangle: "&#x27eb;",
-        rangle: "&#x27e9;",
-        rbbrack: "&#x27e7;",
-        rbace: "&#x7d;",
-        Rbrack: "&#x27e7;",
-        rbrack: "&#x5d;",
-        rceil: "&#x2309;",
-        rfloor: "&#x230b;",
       }.freeze
 
       RELATIONAL_SYMBOLS = {
@@ -417,105 +352,6 @@ module Plurimath
         underbrace: "&#x23df;",
       }.freeze
 
-      ORDINARY_SYMBOLS = {
-        backepsilon: "&#x3f6;",
-        diamondsuit: "&#x2664;",
-        varepsilon: "&#x3b5;",
-        rightangle: "&#x2220;",
-        complement: "&#x2201;",
-        spadesuit: "&#x2660;",
-        emptyset: "&#x2205;",
-        vartheta: "&#x3d1;",
-        varsigma: "&#x3c2;",
-        varkappa: "&#x3f0;",
-        hearsuit: "&#x2661;",
-        clubsuit: "&#x2663;",
-        partial: "&#x2202;",
-        nexists: "&#x2204;",
-        upsilon: "&#x3c5;",
-        Upsilon: "&#x3a5;",
-        epsilon: "&#x3f5;",
-        Deltaeq: "&#x225c;",
-        varrho: "&#x3f1;",
-        forall: "&#x2200;",
-        exists: "&#x2203;",
-        varphi: "&#x3c6;",
-        lambda: "&#x3bb;",
-        Lambda: "&#x39b;",
-        frown: "&#x2322;",
-        nabla: "&#x2207;",
-        angle: "&#x2220;",
-        daleth: "&#x2138;",
-        varpi: "&#x3d6;",
-        theta: "&#x3b8;",
-        Theta: "&#x398;",
-        sigma: "&#x3c3;",
-        Sigma: "&#x3a3;",
-        omega: "&#x3c9;",
-        Omega: "&#x3A9;",
-        medsp: "&#x205f;",
-        ldots: "&#x2026;",
-        kappa: "&#x3ba;",
-        jmath: "&#x237;",
-        infty: "&#x221e;",
-        imath: "&#x131;",
-        gimel: "&#x2137;",
-        gamma: "&#x3b3;",
-        Gamma: "&#x393;",
-        cdots: "&#x23ef;",
-        alpha: "&#x3b1;",
-        aleph: "&#x2135;",
-        "...": "&#x2026;",
-        Vert: "&#x2016;",
-        norm: "&#x2016;",
-        zwsp: "&#x200b;",
-        zwnj: "&#x200c;",
-        zeta: "&#x3b6;",
-        vbar: "&#x2502;",
-        ldsh: "&#x21b2;",
-        iota: "&#x3b9;",
-        hbar: "&#x210f;",
-        gets: "&#x2190;",
-        degree: "&#xb0;",
-        epar: "&#x22e5;",
-        dots: "&#x2026;",
-        degf: "&#x2109;",
-        degc: "&#x2103;",
-        ddag: "&#x2021;",
-        beth: "&#x2136;",
-        beta: "&#x2b2;",
-        inc: "&#x2206;",
-        tau: "&#x3c4;",
-        rho: "&#x3c1;",
-        qed: "&#x220e;",
-        psi: "&#x3c8;",
-        Psi: "&#x3a8;",
-        phi: "&#x3d5;",
-        Phi: "&#x3a6;",
-        eta: "&#x3b7;",
-        ell: "&#x2113;",
-        dag: "&#x2020;",
-        chi: "&#x3c7;",
-        box: "&#x25a1;",
-        vert: "&#x7c;",
-        eqno: "&#x23;",
-        mp: "&#x2213;",
-        xi: "&#x3be;",
-        wp: "&#x2118;",
-        Re: "&#x211c;",
-        pi: "&#x3c0;",
-        Pi: "&#x3a0;",
-        oo: "&#x3c9;",
-        nu: "&#x3bd;",
-        mu: "&#x3bc;",
-        jj: "&#x2149;",
-        Im: "&#x2111;",
-        ii: "&#x2148;",
-        ee: "&#x2147;",
-        neg: "&#xac;",
-        pm: "&#xb1;",
-      }.freeze
-
       SKIP_SYMBOLS = {
         vthicksp: "&#x2004;",
         thicksp: "&#x2005;",
@@ -527,85 +363,6 @@ module Plurimath
         emsp: "&#x2003;",
         nbsp: "&#xa0;",
       }.freeze
-
-      OPEN_PARENTHESIS = [
-        "[",
-        "(",
-        "{",
-      ].freeze
-
-      CLOSE_PARENTHESIS = [
-        "]",
-        ")",
-        "}",
-      ].freeze
-
-      NEGATABLE_SYMBOLS = %w[
-        "&#x2292;"
-        "&#x2291;"
-        "&#x2287;"
-        "&#x2286;"
-        "&#x2283;"
-        "&#x2282;"
-        "&#x227c;"
-        "&#x227b;"
-        "&#x227a;"
-        "&#x227d;"
-        "&#x2277;"
-        "&#x2276;"
-        "&#x2265;"
-        "&#x2264;"
-        "&#x2261;"
-        "&#x224d;"
-        "&#x2248;"
-        "&#x2245;"
-        "&#x2243;"
-        "&#x223c;"
-        "&#x220b;"
-        "&#x2208;"
-        "&#x2203;"
-        "&#x3e;"
-        "&#x3c;"
-        "&#xac;"
-        ~
-        =
-        +
-        -
-      ].freeze
-
-      PREFIXED_NEGATABLE_SYMBOLS = %w[
-        sqsupseteq
-        sqsubseteq
-        supseteq
-        subseteq
-        emptyset
-        gtrless
-        lessgtr
-        nexists
-        approx
-        exists
-        supset
-        subset
-        forall
-        preceq
-        succeq
-        simeq
-        equiv
-        frown
-        nabla
-        angle
-        asymp
-        succ
-        prec
-        cong
-        neg
-        inc
-        sim
-        ge
-        le
-        ni
-        in
-      ].freeze
 
       ACCENT_SYMBOLS = {
         widetilde: "&#x303;",
@@ -656,15 +413,6 @@ module Plurimath
         mbf
         mit
         mtt
-      ].freeze
-
-      ALPHANUMERIC_FONTS_CLASSES = %w[
-        mbfsans
-        msans
-        Bbb
-        mtt
-        mbf
-        mup
       ].freeze
 
       SIZE_OVERRIDES_SYMBOLS = {

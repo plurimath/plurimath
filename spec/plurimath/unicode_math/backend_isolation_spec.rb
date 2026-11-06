@@ -1,18 +1,16 @@
 require "spec_helper"
+require "umath"
 
 RSpec.describe Plurimath::UnicodeMath::Parse do
-  it "keeps UnicodeMath grammar rules off unrelated parser classes" do
-    described_class.new
+  it "parses through the umath gem, with no in-tree grammar or transform" do
+    expect(described_class.ancestors).not_to include(Parsanol::Parser)
+    expect(Plurimath::UnicodeMath.const_defined?(:Transform, false)).to be(false)
+    expect(Plurimath::UnicodeMath.const_defined?(:ParsingRules, false)).to be(false)
 
-    [Parsanol::Parser, Parslet::Parser].each do |parser_class|
-      expect(parser_class.method_defined?(:atoms)).to be(false)
-      expect(parser_class.method_defined?(:op_unary)).to be(false)
-    end
-  end
+    allow(Umath).to receive(:parse).and_call_original
+    Plurimath::Math.parse("a/b", :unicode)
 
-  it "defines reusable rules on the module that declares them" do
-    expect(described_class.instance_method(:atoms).owner)
-      .to eq(Plurimath::UnicodeMath::ParsingRules::CommonRules)
+    expect(Umath).to have_received(:parse).once
   end
 
   modes = %i[ruby native].freeze
@@ -32,7 +30,7 @@ RSpec.describe Plurimath::UnicodeMath::Parse do
             config.locale = locale
             text = Plurimath::UnicodeMath::Parser.new(input).text
             tree = described_class.new.parse(text, mode: mode)
-            nodes = Plurimath::UnicodeMath::Transform.new.apply(tree)
+            nodes = Plurimath::UnicodeMath::Mapper::Rules.new.apply(tree)
             formula = Plurimath::Math::Formula.new(Array(nodes))
             expected = Plurimath::Math::Number.new(value, base: base)
 

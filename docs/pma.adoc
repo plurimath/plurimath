@@ -49,8 +49,8 @@ Plurimath), *proposed* (described in an open issue, not built), or *open*
 |amath#16 task 2
 
 |`Amath.parse(input, dialect: :pma)` and the Plurimath `:pma` input type
-|proposed
-|amath#16; selection decided in
+|implemented
+|amath#16 (amath `6e91de8`); selection decided in
 https://github.com/plurimath/plurimath/issues/541[#541]
 
 |Constructors `ustd`, `uexp`, `ucov`
@@ -211,9 +211,16 @@ positions (`byte_offset`, `char_offset`, `input`). This keeps the single
 link:https://github.com/plurimath/amath/blob/main/docs/stage-contract.adoc[shared
 stage contract]: the dialect is an option, not a second entry point.
 
-In Plurimath, `:pma` is a new input type next to `:asciimath`.
-`Plurimath::Math.parse(text, :pma)` parses with `dialect: :pma` and maps the
-typed model to the formula tree. `:asciimath` keeps meaning dialect L.
+In Plurimath, `:pma` is an input type next to `:asciimath`.
+`Plurimath::Math.parse(text, :pma)` calls `Amath.parse(text, dialect: :pma,
+engine: :ruby, decimal: ".")`, and the AsciiMath mapper builds the formula
+from the returned `Amath::Model::PmaDocument`. A measured value becomes the
+same `Uncertainty` node that the `ustd`, `uexp` and `ucov` calls of dialect L
+build (<<mapping>>). `:asciimath` keeps meaning dialect L. `:pma` is an input
+type only: there is no pma writer, so the command line refuses it as an
+output format. It takes no `locale:` option, because pma numbers always use
+the full stop. A `diff(q)` term parses in amath but has no Plurimath node
+yet, so `Plurimath::Math.parse` raises `Plurimath::Math::ParseError` for it.
 
 Not decided yet, and listed in <<open-decisions>>: whether `decimal:` means
 anything for pma, whether pma results use the same `Amath::Model::Document`
@@ -804,11 +811,15 @@ the same node as `ustd(v, u)`
 for the dialect L shared exponent; the exponent itself is not stored
 
 |`+(v +/- p%)+`
-|`value: v`, `magnitude: v * p / 100` as exact decimal text; digits kept and
-output spelling open (item 4)
+|`value: v`, `magnitude: v * p / 100` as exact decimal text (`0.206` for
+`+(10.3 +/- 2%)+`), the magnitude of the value's absolute amount; whether
+digits are cut and whether the relative spelling is kept for output stays
+open (item 4)
 
 |distribution tag
-|`distribution:` the name without `~`: `rect`, `triang` or `arcsine`
+|`distribution:` the name without `~` as a symbol: `:rect`, `:triang` or
+`:arcsine`. No writer shows it yet, so it does not survive a round trip
+through another format.
 
 |trailing `+unit(...)+`
 |`unit:` a `Math::Function::Unitsml` holding the unit expression text, as the

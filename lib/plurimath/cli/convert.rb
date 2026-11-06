@@ -24,8 +24,9 @@ module Plurimath
 
       def convert_formula(formula, output_format)
         format = output_format.to_sym
-        unless Plurimath::Math::VALID_TYPES.key?(format)
-          supported = Plurimath::Math::VALID_TYPES.keys.sort.join(", ")
+        writable = Plurimath::Math::VALID_TYPES.keys - Plurimath::Math::INPUT_ONLY_TYPES
+        unless writable.include?(format)
+          supported = writable.sort.join(", ")
           warn_and_exit("Invalid output format: #{output_format} (supported: #{supported})")
         end
 

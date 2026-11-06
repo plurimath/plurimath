@@ -109,7 +109,7 @@ RSpec.describe Plurimath::Asciimath do
     end
   end
 
-  describe Plurimath::Asciimath::Transform do
+  describe Plurimath::Asciimath::Mapper::Rules do
     it "rejects an uncertainty tree that no rule takes" do
       tree = {
         expr: {
@@ -131,13 +131,10 @@ RSpec.describe Plurimath::Asciimath do
     end
 
     it "surfaces through Math.parse as a ParseError" do
-      allow(Plurimath::Asciimath::Parse).to receive(:new).and_return(
-        instance_double(
-          Plurimath::Asciimath::Parse,
-          parse: { unknown_class: "sqrt",
-                   uncertainty: { uncertainty_class: "ustd", value: "1",
-                                  magnitude: "2" } },
-        ),
+      allow(Amath::Renester).to receive(:call).and_return(
+        { unknown_class: "sqrt",
+          uncertainty: { uncertainty_class: "ustd", value: "1",
+                         magnitude: "2" } },
       )
       expect { parse("sqrt #{uncertainty}") }
         .to raise_error(Plurimath::Math::ParseError)

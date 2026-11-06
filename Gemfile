@@ -3,6 +3,12 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in plurimath.gemspec
 gemspec
 
+# amath's typed model (Amath.parse returning Amath::Model::Document) ships in
+# amath 0.2.0, which is not on RubyGems yet. Until it is, amath comes from this
+# main commit (its version file still says 0.1.0). Drop this line once 0.2.0
+# is published, and do not release plurimath before then.
+gem "amath", git: "https://github.com/plurimath/amath",
+             ref: "43b59f4a3cd70691508d7297e4d7a8a03df34740"
 gem "canon"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # Optional native image-rendering backend for `Formula#render` / `plurimath
@@ -19,6 +25,8 @@ gem "nokogiri"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 gem "parsanol"
+# umath is unpublished; pinned until its first release.
+gem "umath", github: "plurimath/umath", ref: "3fa31a16c9df4b375f3af7ccc4c103c0f46bd57f"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"

@@ -5,7 +5,7 @@ require "yaml"
 
 RSpec.describe "AsciiMath shared-exponent uncertainty" do
   let(:math) { Plurimath::Math }
-  let(:transform) { Plurimath::Asciimath::Transform.new }
+  let(:transform) { Plurimath::Asciimath::Mapper::Rules.new }
   let(:invalid) { Plurimath::Errors::InvalidUncertainty }
 
   def read(source)
