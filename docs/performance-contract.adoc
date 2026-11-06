@@ -252,16 +252,20 @@ The require footprint has no absolute number in #537.
   than the baseline, fewer autoloads are pending after `require`, more than
   1.25 times the baseline's loaded features are loaded, or a median wall time
   is over twice the baseline plus 50 ms. The baseline is
-  `scripts/require_baseline.json`, taken from performance run 42176576146 on
+  `scripts/require_baseline.json`. Its counts were measured on `main` at
+  `85fd8deb` with the UnicodeMath change (#555) merged, so they match `main`
+  once that lands; its wall times come from performance run 42176576146 on
   `main` at `c511801b`. The own-file counts are exact; the feature count also
   depends on the resolved gem versions, and the times on the runner, so they
   have a margin. A change that loads more on purpose updates the baseline in
   the same pull request.
 
 | `suite-timing`
-| an example fails, or the suite takes longer than 1500 s. The target stays
-  600 s. Before the engine-loop change, `main` took 1100 s to 1755 s on this
-  runner for the same code, so the ceiling leaves room for that spread. It
+| an example fails, or the suite takes longer than 1850 s. The target stays
+  600 s. The ceiling is 1.25 times the 1442 s measured in performance run
+  42230833245 at `71c0bc02`, rounded up to the next 50 s. Before the
+  engine-loop change, `main` took 1100 s to 1755 s on this runner for the
+  same code, so the ceiling leaves room for that spread. It
   moves down as the staged libraries land.
 
 | `ci-legs`

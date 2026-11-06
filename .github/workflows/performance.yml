@@ -85,7 +85,7 @@ jobs:
           ENGINE_LOOP_REPORT: tmp/performance/engine-loop.json
         run: |
           mkdir -p tmp/performance
-          ruby scripts/check_suite_budget.rb suite --budget-seconds 1500 --enforce \
+          ruby scripts/check_suite_budget.rb suite --budget-seconds 1850 --enforce \
             --rspec-json tmp/performance/rspec.json \
             --engine-loop-json tmp/performance/engine-loop.json \
             --output tmp/performance/suite.json \
