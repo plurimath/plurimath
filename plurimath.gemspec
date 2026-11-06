@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-  spec.add_dependency "amath", "~> 0.1.0"
+  spec.add_dependency "amath", ">= 0.1.0", "< 0.3"
   spec.add_dependency "bigdecimal"
   spec.add_dependency "htmlentities"
   spec.add_dependency "latexmath", "~> 1.0"
