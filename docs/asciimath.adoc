@@ -114,7 +114,7 @@ bindings, which amath removes before returning the tree.
 |===
 |Item |Value
 
-|amath revision documented |`3cbf3f8d0c789dff0542ad8b412d088659423d06`
+|amath revision documented |`a4ed231057aeb98022f5c825807e888946a9e71c`
 |`grammars/asciimath.parg` |`sha256:8fc391577745dec67f31913a54de1060c6856f5514ed3c11300724a462ae8cfb`
 |`data/vocabulary.json` |`sha256:768016984baee3ea142b69f0f31f4b9e9255ddedea078d6c7fb1728dc718695c`
 |vocabulary format |`amath-vocabulary/v2`
