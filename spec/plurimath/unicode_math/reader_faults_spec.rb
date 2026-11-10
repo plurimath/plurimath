@@ -32,6 +32,20 @@ RSpec.describe "UnicodeMath reader" do
     end
   end
 
+  describe "a matrix with a bracket on one side" do
+    it "is written back with the matrix and the invisible close" do
+      expect(read("{■(a&b)┤").to_unicodemath).to eq("{■(a&b)┤")
+    end
+
+    it "is not written as the matrix character Ⓢ" do
+      expect(read("{■(a&b)┤").to_unicodemath).not_to include("Ⓢ")
+    end
+
+    it "still writes a matrix with both brackets as its matrix character" do
+      expect(read("{■(a&b)}").to_unicodemath).to eq("Ⓢ(a&b)")
+    end
+  end
+
   describe "the stack a¦b" do
     it "is a fraction without a bar" do
       fraction = read("a¦b").value.first

@@ -291,9 +291,8 @@ as UnicodeMath from the same formula. A difference between the input and the
   `linethickness="0"` and UnicodeMath writes it back with `¦`; AsciiMath and
   LaTeX have no stack and write a fraction;
 * a matrix in round brackets is written with `⒨`; a matrix with a bracket on
-  one side, such as `{■(a&b)┤`, is written with `Ⓢ` and its `┤` is read as an
-  unknown character. The testsuite records this output, so changing it needs a
-  new testsuite generation;
+  one side, such as `{■(a&b)┤`, is written back as it was read, because `┤` is
+  UTN 28's invisible close;
 * a bold letter such as `𝐱` is kept as its character, as UTN 28 encodes the
   math alphanumerics (U+1D400 to U+1D7FF) as characters; AsciiMath can only
   write it as a character reference.
@@ -323,7 +322,7 @@ as UnicodeMath from the same formula. A difference between the input and the
 |Matrix |■(a&b@c&d) |[[a, b], [c, d]] |■(a&b@c&d)
 |Matrix in brackets |(■(a&b@c&d)) |([a, b], [c, d]) |⒨(a&b@c&d)
 |Matrix in brackets, short form |⒨(a&b) |([a, b]) |⒨(a&b)
-|Bracket on one side |{■(a&b)┤ |{[a, b]&#x2524; |Ⓢ(a&b)
+|Bracket on one side |{■(a&b)┤ |{[a, b]&#x2524; |{■(a&b)┤
 |Text |"if" |"if" |"if"
 |Bold letter |𝐱 |&#x1d431; |𝐱
 |Combining accent |x̂ |overset(^)(x) |(x)̂
