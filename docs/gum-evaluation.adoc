@@ -109,3 +109,6 @@ and integer powers. Other functions raise an evaluator unsupported-expression
 error. Dimension mismatches, conversion failures and invalid scale operations
 preserve UnitsML's named error types. This does not attach units to GUM
 sensitivities automatically; callers of Gum still supply one coherent system.
+
+Quantity results expose `accuracy`; limited Float or BigDecimal sources remain
+limited even when UnitsML conversion returns a Rational magnitude.

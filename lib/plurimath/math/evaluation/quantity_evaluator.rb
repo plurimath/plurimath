@@ -9,17 +9,30 @@ module Plurimath
       # dimension checks, conversion, composition and scale legality.
       class QuantityEvaluator < Evaluator
         class QuantityResult < Result
+          attr_reader :accuracy
+
+          def initialize(value:, accuracy:)
+            super(value: value)
+            @accuracy = accuracy
+          end
+
           def exact?
-            Accuracy.exact?(value.value)
+            accuracy == Accuracy::EXACT && Accuracy.exact?(value.value)
+          end
+
+          def ==(other)
+            other.is_a?(QuantityResult) && super && accuracy == other.accuracy
           end
         end
 
         def initialize(formula, bindings)
+          @magnitudes = []
           super(formula, bindings, mode: :strict)
         end
 
         def evaluate
-          QuantityResult.new(value: evaluate_formula(@formula))
+          value = evaluate_formula(@formula)
+          QuantityResult.new(value: value, accuracy: Accuracy.combine(*@magnitudes))
         rescue ::ZeroDivisionError
           raise Errors::Evaluation::DivisionByZeroError
         end
@@ -87,6 +100,9 @@ module Plurimath
           unless magnitude.is_a?(Numeric) && magnitude.real? && magnitude.finite?
             raise Errors::Evaluation::InvalidBindingError.new("quantity magnitude", magnitude)
           end
+          # Conversion may rationalize a limited magnitude. Preserve the
+          # least source accuracy independently of that representation.
+          @magnitudes << magnitude
           magnitude = magnitude.to_r if magnitude.is_a?(Integer)
           result = ::Unitsml::Quantity.new(value: magnitude,
                                           unit: original&.formula,

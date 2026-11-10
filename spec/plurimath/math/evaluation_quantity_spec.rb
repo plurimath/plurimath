@@ -39,4 +39,11 @@ RSpec.describe "quantity-aware evaluation" do
   it "refuses unsupported function semantics explicitly" do
     expect { result("sin(x)", x: quantity(1, "m")) }.to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
   end
+  it "retains limited source accuracy when conversion rationalizes a magnitude" do
+    outcome = result("x+y", x: quantity(1, "m"), y: quantity(50.0, "cm"))
+    expect(outcome.value.value).to eq(3r / 2)
+    expect(outcome.accuracy).to eq(:limited_float)
+    expect(outcome).not_to be_exact
+  end
+
 end
