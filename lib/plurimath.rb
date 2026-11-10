@@ -1,7 +1,15 @@
 # mml (and lutaml-model, moxml, leptris under it) is loaded on first
 # MathML, OMML or UnitsML use; see Plurimath.load_mml.
 autoload :Mml, "mml"
-autoload :Lutaml, "lutaml/model"
+# Bundler evaluates a path or git lutaml-model gemspec, which requires
+# lutaml/model/version and so defines Lutaml before this file runs. An
+# autoload cannot replace a constant that already exists, and the rest of
+# lutaml-model would then never load, so require it in that case.
+if Object.const_defined?(:Lutaml)
+  require "lutaml/model"
+else
+  autoload :Lutaml, "lutaml/model"
+end
 require "parslet"
 require "parsanol"
 require "htmlentities"
