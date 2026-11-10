@@ -57,11 +57,20 @@ module Plurimath
           (lower + upper) / 2
         end
 
+        # Compensate the rounding in 1+x; Math.log1p is unavailable on
+        # supported Ruby 3.x. The density supplies nonnegative x.
+        def log_one_plus(value)
+          sum = 1.0 + value
+          return value if sum == 1.0
+
+          ::Math.log(sum) * (value / (sum - 1.0))
+        end
+
         def student_cdf(value, nu)
           return 0.5 if value.zero?
           return 1 - student_cdf(-value, nu) if value.negative?
           log_constant = ::Math.lgamma((nu + 1) / 2).first - ::Math.lgamma(nu / 2).first - 0.5 * ::Math.log(nu * ::Math::PI)
-          density = ->(x) { ::Math.exp(log_constant - (nu + 1) / 2 * ::Math.log1p(x*x / nu)) }
+          density = ->(x) { ::Math.exp(log_constant - (nu + 1) / 2 * log_one_plus(x*x / nu)) }
           a = density.call(0.0)
           b = density.call(value / 2)
           c = density.call(value)

@@ -5,6 +5,7 @@ RSpec.describe Plurimath::Math::Evaluation::Statistics do
   let(:reference) { JSON.parse(File.read(File.expand_path("../../fixtures/evaluation/gum_statistics.json", __dir__))) }
 
   it "matches independent80-digit normal and Student-t quantiles, including fractional dof" do
+    expect(::Math).not_to receive(:log1p)
     reference.fetch("coverage").each do |vector|
       result = gum.coverage(standard_uncertainty: 2, probability: vector.fetch("probability"),
                             degrees_of_freedom: vector.fetch("degrees_of_freedom"), guard_digits: 8)
