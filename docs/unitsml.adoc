@@ -268,7 +268,7 @@ table lists the keys the gem reads from that hash, found in its source, and
 the one key that Plurimath reads itself:
 
 // BEGIN GENERATED unitsml-options
-unitsml 0.6.13, the version the bundle loads:
+unitsml 0.6.14, the version the bundle loads:
 
 [cols="1,2"]
 |===
