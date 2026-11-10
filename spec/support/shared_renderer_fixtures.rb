@@ -287,7 +287,19 @@ module SharedRendererFixtures
     definitions
   end
 
-  def run_program(row, context: nil, example_memo: {})
+  # Identifies a step by what it computes: its own fields, minus the slot names,
+  # plus the identity of the step that produced its source.
+  def step_identity(step, steps, identities)
+    identities[step.fetch("save")] ||= begin
+      source = step["source"] && step_identity(steps.find { |entry| entry["save"] == step.fetch("source") }, steps, identities)
+      [step.reject { |field, _| %w[save source expected_slot assertion_line].include?(field) }, source]
+    end
+  end
+
+  # With dedupe, a step whose identity was already computed in this program
+  # reuses that value. Assertions still run each time, so every distinct
+  # (input, writer, options) is rendered or parsed once and checked as before.
+  def run_program(row, context: nil, example_memo: {}, dedupe: false)
     program = row.fetch("program")
     validate_program!(program)
     memo = model_memo(example_memo)
@@ -297,6 +309,9 @@ module SharedRendererFixtures
     previous_formatter = Plurimath.configuration.number_formatter if configured_formatter
     cached_slots = {}
     skipped = []
+    dedupe &&= steps.none? { |step| step["memo"] || step.fetch("kind") == "configure_number_formatter" }
+    identities = {}
+    computed = {}
     steps.select { |step| step["memo"] }.each do |step|
       ids = step.fetch("memo").fetch("ids")
       next unless ids.any? { |id| example_memo.fetch("calls", {}).key?(id) }
@@ -314,6 +329,11 @@ module SharedRendererFixtures
         if step.fetch("kind") == "build" && recipe["kind"] == "memo" && recipe.fetch("id").start_with?("let:") && memo.key?(recipe.fetch("id"))
           slots[step.fetch("save")] = SharedModelRecipes.build(recipe, memo)
         end
+        next
+      end
+      identity = dedupe && step.key?("save") ? step_identity(step, steps, identities) : nil
+      if identity && computed.key?(identity)
+        slots[step.fetch("save")] = computed.fetch(identity)
         next
       end
       ids = step["memo"] && step.fetch("memo").fetch("ids")
@@ -341,6 +361,7 @@ module SharedRendererFixtures
         raise Error, "renderer sequence slot reused" if slots.key?(step.fetch("save"))
 
         slots[step.fetch("save")] = actual
+        computed[identity] = actual if identity
       end
     end
   ensure

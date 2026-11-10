@@ -18,7 +18,10 @@ module Plurimath
       Deprecation
     end
 
+    # Without a locale the formatter's locale table is not loaded.
     def decimal
+      return DEFAULT_DECIMAL if locale.nil?
+
       Formatter::SupportedLocales.decimal_for(locale, default: DEFAULT_DECIMAL)
     end
   end
