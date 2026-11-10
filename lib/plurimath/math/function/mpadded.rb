@@ -4,7 +4,8 @@ module Plurimath
   module Math
     module Function
       class Mpadded < UnaryFunction
-        attr_accessor :options
+        node_fields :parameter_one, scalars: { hide_function_name: :boolean },
+                                    hashes: %i[options]
 
         ZERO_TAGS = {
           height: "zeroAsc",

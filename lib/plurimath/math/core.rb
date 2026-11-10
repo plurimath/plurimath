@@ -2,7 +2,7 @@
 
 module Plurimath
   module Math
-    class Core
+    class Core < Lutaml::Model::Serializable
       REPLACABLES = {
         /&amp;/ => "&",
         /^\n/ => "",
@@ -14,6 +14,264 @@ module Plurimath
         parameter_three
         parameter_four
       ].freeze
+
+      # Discriminator for polymorphic node fields. It is computed from the
+      # class name and never stored, so writers and == do not see it.
+      attribute :__class, :string, polymorphic_class: true
+
+      # Resolves a "__class" value to a node class. The map is built from
+      # the class tree on demand instead of listing every node class.
+      NODE_CLASS_MAP = Hash.new do |map, name|
+        klass = name.is_a?(String) && name.start_with?("Plurimath::Math::") &&
+          Object.const_get(name)
+        map[name] = name if klass.is_a?(Class) && klass <= Core
+      rescue NameError
+        nil
+      end
+
+      # from_hash must not call the hand-written constructors, because some
+      # of them take required arguments. lutaml-model then allocates the
+      # node and sets the mapped fields only.
+      def self.constructs_through_initialize?
+        false
+      end
+
+      # Declares node-holding fields. Each field keeps its storage in the
+      # existing instance variable. lutaml-model sees a Core-typed view of
+      # it, plus a "<field>_text" key for String values and a
+      # "<field>_value" key for an attribute Hash or an empty array. A field
+      # that is not a collection also gets a "<field>_list" key, for the
+      # nodes that keep an array of nodes in a single-node field. Every
+      # mapped key must be listed here, because a key_value block replaces
+      # the automatic mapping. A subclass keeps the rules it inherits and
+      # adds its own.
+      #
+      # Fields that hold no nodes are mapped through plain methods: hashes
+      # (keys keep their Symbol or String type), symbols (a Symbol is stored
+      # as its name, a String as { "string" => string }, so the two stay
+      # apart) and values (stored as they are).
+      def self.node_fields(*fields, collections: [], scalars: {}, hashes: [],
+                           symbols: [], values: [])
+        fields.each { |field| declare_node_field(field, collections.include?(field)) }
+        hashes.each { |field| declare_plain_field(field, :hash) }
+        symbols.each { |field| declare_plain_field(field, :symbol) }
+        values.each { |field| declare_plain_field(field, :value) }
+        scalars.each { |name, type| attribute(name, type) }
+        rules = { fields: fields, lists: fields - collections,
+                  scalars: scalars.keys, plain: hashes + symbols + values }
+        key_value { Core.node_field_rules(self, **rules) }
+      end
+
+      def self.node_field_rules(mapping, fields:, lists:, scalars:, plain:)
+        mapping.map "__class", to: :__class
+        scalars.each { |name| mapping.map name.to_s, to: name }
+        plain.each do |name|
+          mapping.map name.to_s, with: { to: :"#{name}_to_kv", from: :"#{name}_from_kv" }
+        end
+        polymorphic = { attribute: "__class", class_map: NODE_CLASS_MAP }
+        fields.each do |name|
+          mapping.map name.to_s, to: :"__#{name}_node", polymorphic: polymorphic
+          if lists.include?(name)
+            mapping.map "#{name}_list", to: :"__#{name}_nodes", polymorphic: polymorphic
+          end
+          mapping.map "#{name}_text", with: { to: :"#{name}_text_to_kv",
+                                              from: :"#{name}_text_from_kv" }
+          mapping.map "#{name}_value", with: { to: :"#{name}_value_to_kv",
+                                               from: :"#{name}_value_from_kv" }
+          mapping.map "#{name}_mixed", with: { to: :"#{name}_mixed_to_kv",
+                                               from: :"#{name}_mixed_from_kv" }
+        end
+      end
+
+      def self.declare_node_field(name, collection)
+        attribute :"__#{name}_node", Core, polymorphic: true, collection: collection
+        if collection
+          hide_node_list(name)
+        else
+          declare_node_list(name)
+        end
+        attr_accessor name
+
+        ivar = :"@#{name}"
+        define_method(:"__#{name}_node") do
+          value = instance_variable_get(ivar)
+          if value.is_a?(::Array)
+            value if collection && value.all?(Core)
+          elsif value.is_a?(Core)
+            value
+          end
+        end
+        define_method(:"__#{name}_node=") do |value|
+          instance_variable_set(ivar, value) unless value.nil?
+        end
+        define_method(:"#{name}_text_to_kv") do |model, doc|
+          value = model.instance_variable_get(ivar)
+          doc["#{name}_text"] = value if value.is_a?(String)
+        end
+        define_method(:"#{name}_text_from_kv") do |model, value|
+          model.instance_variable_set(ivar, value)
+        end
+        # Some node fields hold an attribute Hash (Td's parameter_two) or an
+        # empty array, which neither node view keeps.
+        define_method(:"#{name}_value_to_kv") do |model, doc|
+          value = model.instance_variable_get(ivar)
+          if value.is_a?(::Hash)
+            doc["#{name}_value"] = Core.dump_keys(value)
+          elsif value == []
+            doc["#{name}_value"] = []
+          end
+        end
+        define_method(:"#{name}_value_from_kv") do |model, value|
+          model.instance_variable_set(ivar, Core.load_keys(value))
+        end
+        declare_mixed_list(name)
+      end
+
+      # An array that mixes Strings and nodes fits neither node view nor the
+      # text key, so it goes in "<field>_mixed" as a tagged list: a String
+      # becomes { "text" => string } and a node { "class" => name,
+      # "node" => hash }. Writers never read these keys.
+      def self.declare_mixed_list(name)
+        ivar = :"@#{name}"
+        define_method(:"#{name}_mixed_to_kv") do |model, doc|
+          value = model.instance_variable_get(ivar)
+          doc["#{name}_mixed"] = Core.dump_mixed(value) if Core.mixed?(value)
+        end
+        define_method(:"#{name}_mixed_from_kv") do |model, value|
+          model.instance_variable_set(ivar, Core.load_mixed(value)) if value.is_a?(::Array)
+        end
+      end
+
+      def self.mixed?(value)
+        value.is_a?(::Array) && !value.all?(Core) &&
+          value.all? { |item| item.is_a?(::String) || item.is_a?(Core) }
+      end
+
+      def self.dump_mixed(value)
+        value.map do |item|
+          next { "text" => item } if item.is_a?(::String)
+
+          { "class" => item.class.name, "node" => item.to_hash }
+        end
+      end
+
+      def self.load_mixed(value)
+        value.map do |item|
+          item = item.transform_keys(&:to_s)
+          next item["text"] unless item.key?("node")
+
+          name = NODE_CLASS_MAP[item["class"]]
+          raise ArgumentError, "unknown node class #{item['class'].inspect}" unless name
+
+          Object.const_get(name).from_hash(item["node"])
+        end
+      end
+
+      # The array view of a single-node field. It is empty unless the field
+      # holds a non-empty array of nodes, so it never replaces a single node.
+      def self.declare_node_list(name)
+        attribute :"__#{name}_nodes", Core, polymorphic: true, collection: true
+        ivar = :"@#{name}"
+        define_method(:"__#{name}_nodes") do
+          value = instance_variable_get(ivar)
+          value if value.is_a?(::Array) && !value.empty? && value.all?(Core)
+        end
+        define_method(:"__#{name}_nodes=") do |value|
+          instance_variable_set(ivar, value) if value.is_a?(::Array) && !value.empty?
+        end
+      end
+
+      # A subclass that turns an inherited single-node field into a
+      # collection still inherits the array view, so keep that view empty.
+      def self.hide_node_list(name)
+        return unless method_defined?(:"__#{name}_nodes")
+
+        define_method(:"__#{name}_nodes") { nil }
+        define_method(:"__#{name}_nodes=") { |_value| nil }
+      end
+
+      PLAIN_DUMP = {
+        hash: ->(value) { Core.dump_keys(value) if value.is_a?(::Hash) },
+        symbol: lambda { |value|
+          case value
+          when ::Symbol then value.to_s
+          when ::String then { "string" => value }
+          end
+        },
+        value: ->(value) { value },
+      }.freeze
+
+      PLAIN_LOAD = {
+        hash: ->(value) { Core.load_keys(value) },
+        symbol: lambda { |value|
+          value.is_a?(::Hash) ? value.transform_keys(&:to_s)["string"] : value&.to_sym
+        },
+        value: ->(value) { value },
+      }.freeze
+
+      def self.declare_plain_field(name, kind)
+        attr_accessor name
+
+        ivar = :"@#{name}"
+        dump = PLAIN_DUMP.fetch(kind)
+        load = PLAIN_LOAD.fetch(kind)
+        define_method(:"#{name}_to_kv") do |model, doc|
+          value = dump.call(model.instance_variable_get(ivar))
+          doc[name.to_s] = value unless value.nil?
+        end
+        define_method(:"#{name}_from_kv") do |model, value|
+          model.instance_variable_set(ivar, load.call(value))
+        end
+      end
+
+      # Hashes held by nodes mostly have Symbol keys. Keys are stored as
+      # Strings, and the keys that were Strings are listed under
+      # STRING_KEYS, so load_keys gives each key its original type back. A
+      # hash with Symbol keys only is stored as before.
+      STRING_KEYS = "__string_keys"
+
+      # With stringify: false the keys are kept as they are, and only the
+      # STRING_KEYS list is added, which JSON needs.
+      def self.dump_keys(value, stringify: true)
+        case value
+        when ::Hash
+          dumped = value.to_h do |key, item|
+            [stringify ? key.to_s : key, dump_keys(item, stringify: stringify)]
+          end
+          strings = value.keys.grep(::String)
+          dumped[STRING_KEYS] = strings unless strings.empty?
+          dumped
+        when ::Array then value.map { |item| dump_keys(item, stringify: stringify) }
+        else value
+        end
+      end
+
+      def self.load_keys(value)
+        case value
+        when ::Hash
+          strings = Array(value[STRING_KEYS] || value[STRING_KEYS.to_sym]).map(&:to_s)
+          value.each_with_object({}) do |(key, item), loaded|
+            next if key.to_s == STRING_KEYS
+
+            key = key.to_s
+            loaded[strings.include?(key) ? key : key.to_sym] = load_keys(item)
+          end
+        when ::Array then value.map { |item| load_keys(item) }
+        else value
+        end
+      end
+
+      def __class
+        self.class.name
+      end
+
+      def __class=(_value); end
+
+      # Hand-written constructors set fields directly, so lutaml-model never
+      # learns which fields were given. Treat every field as given.
+      def using_default?(_attribute_name)
+        false
+      end
 
       def self.inherited(subclass)
         @descendants ||= []

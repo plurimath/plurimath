@@ -10,6 +10,9 @@ module Plurimath
         EXAMPLE = -> { new(sym("x")) }
         # --- end catalog documentation ---
 
+        node_fields :parameter_one, collections: %i[parameter_one],
+                                    scalars: { hide_function_name: :boolean }
+
         def to_asciimath(options:)
           asciimath_value(options: options)
         end

@@ -11,7 +11,7 @@ module Plurimath
           EXAMPLE = -> { new([Tr.new([Td.new([sym("x")])])]) }
           # --- end catalog documentation ---
 
-          def initialize(value,
+          def initialize(value = nil,
                          open_paren = "[",
                          close_paren = "]",
                          options = {})

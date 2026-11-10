@@ -12,7 +12,9 @@ module Plurimath
 
         include Mathml::FormulaTransformation
 
-        attr_accessor :options
+        node_fields :parameter_one, :parameter_two, :parameter_three,
+                    collections: %i[parameter_two],
+                    scalars: { hide_function_name: :boolean }, hashes: %i[options]
 
         def initialize(
           parameter_one = nil,
@@ -59,8 +61,8 @@ module Plurimath
 
         def to_html(options:)
           if parameter_one
-            first_value  = "<i>#{symbol_or_paren(parameter_one, lang: :html,
-                                                                options: options)}</i>"
+            first_value = "<i>#{symbol_or_paren(parameter_one, lang: :html,
+                                                               options: options)}</i>"
           end
           if parameter_two
             second_value = parameter_two.map do |param|

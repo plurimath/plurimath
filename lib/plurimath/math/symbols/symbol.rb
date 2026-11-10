@@ -6,8 +6,32 @@ module Plurimath
       class Symbol < Core
         extend SymbolDocumentation
 
-        attr_accessor :value, :slashed, :mini_sub_sized, :mini_sup_sized,
-                      :options
+        attribute :value, :string
+        attribute :slashed, :boolean
+        attribute :mini_sub_sized, :boolean
+        attribute :mini_sup_sized, :boolean
+        attribute :options, :hash
+
+        # Options keep their key types, which JSON would turn into strings,
+        # so they are written and read back through Core.dump_keys and
+        # Core.load_keys.
+        key_value do
+          map "__class", to: :__class
+          map "value", to: :value
+          map "slashed", to: :slashed
+          map "mini_sub_sized", to: :mini_sub_sized
+          map "mini_sup_sized", to: :mini_sup_sized
+          map "options", with: { to: :options_to_kv, from: :options_from_kv }
+        end
+
+        def options_to_kv(model, doc)
+          options = model.instance_variable_get(:@options)
+          doc["options"] = Core.dump_keys(options, stringify: false) if options.is_a?(::Hash)
+        end
+
+        def options_from_kv(model, value)
+          model.instance_variable_set(:@options, Core.load_keys(value))
+        end
 
         INPUT = {}.freeze
 
@@ -15,7 +39,10 @@ module Plurimath
                        slashed = nil,
                        mini_sub_sized: false,
                        mini_sup_sized: false,
-                       options: {})
+                       options: {},
+                       lutaml_register: nil)
+          @lutaml_register = lutaml_register if lutaml_register
+          @using_default = {}
           @value = sym.is_a?(Array) ? sym.join : sym&.to_s
           @slashed = slashed if slashed
           @mini_sub_sized = mini_sub_sized if mini_sub_sized

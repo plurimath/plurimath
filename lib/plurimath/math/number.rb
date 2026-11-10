@@ -3,10 +3,15 @@
 module Plurimath
   module Math
     class Number < Core
-      attr_accessor :value, :mini_sub_sized, :mini_sup_sized, :base
+      attribute :value, :string
+      attribute :mini_sub_sized, :boolean, default: -> { false }
+      attribute :mini_sup_sized, :boolean, default: -> { false }
+      attribute :base, :integer
 
       def initialize(value = nil, mini_sub_sized: false, mini_sup_sized: false,
-                     base: nil)
+                     base: nil, lutaml_register: nil)
+        @lutaml_register = lutaml_register if lutaml_register
+        @using_default = {}
         @value = Utility.parser_slice?(value) ? value.to_s : value
         @mini_sub_sized = mini_sub_sized
         @mini_sup_sized = mini_sup_sized

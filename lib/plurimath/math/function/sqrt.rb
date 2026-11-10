@@ -10,7 +10,8 @@ module Plurimath
         EXAMPLE = -> { new(sym("x")) }
         # --- end catalog documentation ---
 
-        attr_accessor :options
+        node_fields :parameter_one, scalars: { hide_function_name: :boolean },
+                                    hashes: %i[options]
 
         def to_mathml_without_math_tag(intent, options:)
           XmlHelper.update_nodes(

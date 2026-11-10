@@ -7,11 +7,13 @@ module Plurimath
   module Math
     module Function
       class Unitsml < Core
-        attr_accessor :text, :input_string
+        # The parsed form is derived from the text, so only the text and the
+        # input string are mapped.
+        node_fields scalars: { text: :string, input_string: :string }
 
-        def initialize(text)
+        def initialize(text = nil)
           @text = text
-          @unitsml = ::Unitsml.parse(text)
+          @unitsml = ::Unitsml.parse(text) if text
         end
 
         def cloned_objects
@@ -49,7 +51,7 @@ module Plurimath
           mathml["unitsml"] = true
           if options&.dig(:unitsml,
                           :xml)
-            wrapped_unitsml_xml(mathml, @unitsml,
+            wrapped_unitsml_xml(mathml, unitsml,
                                 options)
           else
             mathml
@@ -94,7 +96,12 @@ options:)
         private
 
         def formula(options)
-          @unitsml.to_plurimath(options.fetch(:unitsml, {}))
+          unitsml.to_plurimath(options.fetch(:unitsml, {}))
+        end
+
+        # A node built by from_hash has only its text, so parse it on first use.
+        def unitsml
+          @unitsml ||= ::Unitsml.parse(text)
         end
 
         def wrapped_unitsml_xml(mathml, unitsml, options)

@@ -16,7 +16,8 @@ module Plurimath
         }.freeze
         # --- end catalog documentation ---
 
-        attr_accessor :options
+        node_fields :parameter_one, :parameter_two,
+                    scalars: { hide_function_name: :boolean }, hashes: %i[options]
 
         FUNCTION = {
           name: "color",
