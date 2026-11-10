@@ -68,7 +68,8 @@ module FormatSpecs
       "read-mfenced" => "Plurimath::Math.parse('<math><mfenced><mi>x</mi></mfenced></math>', :mathml).to_asciimath",
       "read-inline" => "Plurimath::Math.parse('<math display=\"inline\"><mi>x</mi></math>', :mathml).to_mathml",
       "read-unknown" => "Plurimath::Math.parse('<math><foo>x</foo></math>', :mathml).to_asciimath.inspect",
-      "read-no-rule" => "Plurimath::Math.parse('<math><maction><mi>x</mi></maction></math>', :mathml)",
+      "read-no-rule" => "Plurimath::Math.parse('<math><apply><ci>x</ci></apply></math>', :mathml)",
+      "read-maction" => "Plurimath::Math.parse('<math><maction actiontype=\"toggle\" selection=\"2\"><mi>x</mi><mi>y</mi></maction></math>', :mathml).to_asciimath",
       "read-malformed" => "Plurimath::Math.parse('<math><mi>x</math>', :mathml)",
       "read-locale" => "Plurimath::Math.parse('<math><mn>1</mn></math>', :mathml, locale: :de)",
     },
@@ -80,6 +81,7 @@ module FormatSpecs
       "readback" => 'Plurimath::Math.parse(Plurimath::Math.parse("x^2 + 2", :asciimath).to_omml, :omml).to_asciimath',
       "read-styled" => "Plurimath::Math.parse('<m:oMath xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\"><m:r><m:rPr><m:sty m:val=\"i\"/></m:rPr><m:t>x</m:t></m:r></m:oMath>', :omml).to_asciimath",
       "read-unknown" => "Plurimath::Math.parse('<m:oMath xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\"><m:foo/></m:oMath>', :omml).to_asciimath.inspect",
+      "read-nested-para" => "Plurimath::Math.parse('<m:oMath xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\"><m:sSup><m:e><m:oMathPara><m:oMath><m:r><m:t>x</m:t></m:r></m:oMath></m:oMathPara></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:oMath>', :omml).to_asciimath",
       "uncertainty" => 'Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_omml',
     },
     "unicodemath" => {

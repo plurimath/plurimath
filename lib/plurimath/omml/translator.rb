@@ -31,7 +31,8 @@ module Plurimath
         # Use class names here so unsupported non-OMML inputs do not force
         # early OMML model autoload before the parser context is populated.
         case Lutaml::Model::Utils.base_class_name(node.class.name)
-        when "OMathPara" then flattened_formula_from_omml_children(node)
+        when "OMathPara", "CTOMathPara"
+          flattened_formula_from_omml_children(node)
         when "OMath", "CTOMath" then formula_from_omml_children(node)
         when "CTOMathArg" then wrapped_omml_children(node)
         when "CTR" then run_to_plurimath(node)

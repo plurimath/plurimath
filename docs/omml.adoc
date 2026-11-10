@@ -88,9 +88,38 @@ Plurimath::Math.parse('<m:oMath xmlns:m="http://schemas.openxmlformats.org/offic
 ----
 // END GENERATED example read-unknown
 
+An `m:oMathPara` inside an `m:oMath` or inside an argument is read as its
+content, the same way as the outer `m:oMathPara`:
+
+// BEGIN GENERATED example read-nested-para
+[source,ruby]
+----
+Plurimath::Math.parse('<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><m:sSup><m:e><m:oMathPara><m:oMath><m:r><m:t>x</m:t></m:r></m:oMath></m:oMathPara></m:e><m:sup><m:r><m:t>2</m:t></m:r></m:sup></m:sSup></m:oMath>', :omml).to_asciimath
+----
+
+[source]
+----
+"x"^(2)
+----
+// END GENERATED example read-nested-para
+
 The translator raises `Plurimath::Omml::UnsupportedNodeError` for a model
 node it has no rule for; `Plurimath::Math.parse` reports it as a
-`ParseError` (see <<errors>>).
+`ParseError` (see <<errors>>). The omml model reads the WordprocessingML
+elements below in the `m:` namespace, and Plurimath has no node for them, so
+they are refused there. Written with the `w:` prefix, the model does not
+know them, and they are dropped like any unknown element.
+
+* Inside `m:oMath` or an argument: the revision containers `m:ins`,
+  `m:del`, `m:moveFrom` and `m:moveTo`, and the range markers
+  `m:bookmarkStart`, `m:bookmarkEnd`, `m:commentRangeStart`,
+  `m:commentRangeEnd`, `m:moveFromRangeStart`, `m:moveFromRangeEnd`,
+  `m:moveToRangeStart`, `m:moveToRangeEnd`, `m:permStart`, `m:permEnd`,
+  `m:proofErr`, and the `m:customXml...RangeStart` and
+  `m:customXml...RangeEnd` elements.
+* Inside `m:r`: `m:sym`, `m:ptab`, `m:fldChar`, `m:footnoteReference`,
+  `m:endnoteReference`, `m:commentReference`, `m:object`, `m:pict`,
+  `m:drawing` and `m:ruby`.
 
 [[writing]]
 == Writing
@@ -376,6 +405,7 @@ WordprocessingML elements, and the `m:` elements with Word names such as
 |`m:oMath` |`OMath` |`formula_from_omml_children`
 |`m:oMath` |`CTOMath` |`formula_from_omml_children`
 |`m:oMathPara` |`OMathPara` |`flattened_formula_from_omml_children`
+|`m:oMathPara` |`CTOMathPara` |`flattened_formula_from_omml_children`
 |`m:oMathParaPr` |`CTOMathParaPr` |ignored, no node
 |`m:phant` |`CTPhant` |`phantom_to_plurimath`
 |`m:r` |`CTR` |`run_to_plurimath`
