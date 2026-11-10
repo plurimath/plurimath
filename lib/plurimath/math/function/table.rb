@@ -118,7 +118,7 @@ module Plurimath
           if unicodemath_table_class?
             "#{unicodemath_class_name}(#{table_values})"
           else
-            "#{open_paren&.to_unicodemath(options: options)}■(#{table_values})#{unicodemath_close_paren(options: options)}"
+            "#{open_paren&.to_unicodemath(options: options)}■(#{table_values})#{close_paren&.to_unicodemath(options: options)}"
           end
         end
 
@@ -416,26 +416,10 @@ options:)
         def unicodemath_table_class?
           return false unless class_name == "table"
           return false if open_paren.nil? && close_paren.nil?
-          return false if invisible_close_paren?
 
           (!open_paren.nil? && !close_paren.nil?) ||
             Utility::PARENTHESIS[unicodemath_field_value(open_paren)] == close_paren ||
             [open_paren, close_paren].all?(Math::Symbols::Paren::Vert)
-        end
-
-        # A bracket on one side: the close is the invisible ┤ (U+2524), which
-        # stands in the table for a close that is not written, so no matrix
-        # character names the pair.
-        def invisible_close_paren?
-          close_paren.is_a?(Math::Symbols::Paren::CloseParen) ||
-            (close_paren.is_a?(Math::Symbols::Symbol) &&
-              close_paren.value == "&#x2524;")
-        end
-
-        def unicodemath_close_paren(options:)
-          return "┤" if invisible_close_paren?
-
-          close_paren&.to_unicodemath(options: options)
         end
 
         def unicodemath_class_name

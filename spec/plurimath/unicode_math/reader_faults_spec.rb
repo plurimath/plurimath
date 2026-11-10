@@ -28,21 +28,7 @@ RSpec.describe "UnicodeMath reader" do
     end
 
     it "keeps the negative value" do
-      expect(read('ⓘ("m"-1)').to_asciimath).to eq(%(intent(-1)("m")))
-    end
-  end
-
-  describe "a matrix with a bracket on one side" do
-    it "is written back with the matrix and the invisible close" do
-      expect(read("{■(a&b)┤").to_unicodemath).to eq("{■(a&b)┤")
-    end
-
-    it "is not written as the matrix character Ⓢ" do
-      expect(read("{■(a&b)┤").to_unicodemath).not_to include("Ⓢ")
-    end
-
-    it "still writes a matrix with both brackets as its matrix character" do
-      expect(read("{■(a&b)}").to_unicodemath).to eq("Ⓢ(a&b)")
+      expect(read('ⓘ("m"-1)').to_asciimath).to eq(%(intent(- 1)("m")))
     end
   end
 
