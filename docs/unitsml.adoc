@@ -70,25 +70,13 @@ Plurimath::Math.parse("m*s^-2", :unitsml).class
 
 [source]
 ----
-Plurimath::Math::Function::Unitsml
+Plurimath::Math::Formula
 ----
 // END GENERATED example type
 
-`Plurimath::Math.parse(text, :unitsml)` returns that node, not a
-`Plurimath::Math::Formula`. Its writers need the `options:` argument that a
-formula passes to its nodes, so the node has to be put in a formula first:
-
-// BEGIN GENERATED example type-write
-[source,ruby]
-----
-Plurimath::Math::Formula.new(Plurimath::Math.parse("m*s^-2", :unitsml)).to_asciimath
-----
-
-[source]
-----
-rm(m) * rm(s)^(- 2)
-----
-// END GENERATED example type-write
+`Plurimath::Math.parse(text, :unitsml)` returns a `Plurimath::Math::Formula`,
+as every other format does. The formula holds that node, so its writers work
+directly:
 
 // BEGIN GENERATED example type-write-direct
 [source,ruby]
@@ -98,7 +86,7 @@ Plurimath::Math.parse("m*s^-2", :unitsml).to_asciimath
 
 [source]
 ----
-raises ArgumentError
+rm(m) * rm(s)^(- 2)
 ----
 // END GENERATED example type-write-direct
 
@@ -136,11 +124,11 @@ The table writes each unit after the number 9.8:
 |===
 |Unit |AsciiMath |LaTeX |UnicodeMath |HTML
 |m |9.8 rm(m) |9.8 \mathrm{m} |9.8 \mupm |9.8 m
-|m*s^-2 |9.8 rm(m) * rm(s)^(- 2) |9.8 \mathrm{m} \cdot \mathrm{s}^{- 2} |9.8 \mupm ⋅ \mups^(− 2) |9.8 m &#x22c5; <i>s</i><sup>&#x2212; 2</sup>
-|kg*m^2*s^-3 |9.8 rm(kg) * rm(m)^(2) * rm(s)^(- 3) |9.8 \mathrm{kg} \cdot \mathrm{m}^{2} \cdot \mathrm{s}^{- 3} |9.8 \mup"kg" ⋅ \mupm^(2) ⋅ \mups^(− 3) |9.8 kg &#x22c5; <i>m</i><sup>2</sup> &#x22c5; <i>s</i><sup>&#x2212; 3</sup>
-|J/kg |9.8 rm(J) * rm(kg)^(- 1) |9.8 \mathrm{J} \cdot \mathrm{kg}^{- 1} |9.8 \mupJ ⋅ \mup"kg"^(− 1) |9.8 J &#x22c5; <i>kg</i><sup>&#x2212; 1</sup>
+|m*s^-2 |9.8 rm(m) * rm(s)^(- 2) |9.8 \mathrm{m} \cdot \mathrm{s}^{- 2} |9.8 \mupm ⋅ \mups^(− 2) |9.8 m &#x22c5; s<sup>&#x2212; 2</sup>
+|kg*m^2*s^-3 |9.8 rm(kg) * rm(m)^(2) * rm(s)^(- 3) |9.8 \mathrm{kg} \cdot \mathrm{m}^{2} \cdot \mathrm{s}^{- 3} |9.8 \mup"kg" ⋅ \mupm^(2) ⋅ \mups^(− 3) |9.8 kg &#x22c5; m<sup>2</sup> &#x22c5; s<sup>&#x2212; 3</sup>
+|J/kg |9.8 rm(J) * rm(kg)^(- 1) |9.8 \mathrm{J} \cdot \mathrm{kg}^{- 1} |9.8 \mupJ ⋅ \mup"kg"^(− 1) |9.8 J &#x22c5; kg<sup>&#x2212; 1</sup>
 |N*m |9.8 rm(N) * rm(m) |9.8 \mathrm{N} \cdot \mathrm{m} |9.8 \mupN ⋅ \mupm |9.8 N &#x22c5; m
-|mm^2 |9.8 rm(mm)^(2) |9.8 \mathrm{mm}^{2} |9.8 \mup"mm"^(2) |9.8 <i>mm</i><sup>2</sup>
+|mm^2 |9.8 rm(mm)^(2) |9.8 \mathrm{mm}^{2} |9.8 \mup"mm"^(2) |9.8 mm<sup>2</sup>
 |um |9.8 rm(&#xb5;m) |9.8 \mathrm{&#xb5;m} |9.8 \mup"µm" |9.8 &#xb5;m
 |degC |9.8 rm(&#xb0;C) |9.8 \mathrm{&#xb0;C} |9.8 \mup"°C" |9.8 &#xb0;C
 |dim_L |9.8 mathsf(L) |9.8 \mathsf{L} |9.8 \msansL |9.8 L
@@ -156,8 +144,7 @@ The format pages say how each writer treats the result:
 * UnicodeMath writes `\mup` before each symbol, and quotes a symbol of more
   than one character, as in `\mup"kg"`, so that it reads back as one run
   (link:unicodemath.adoc#uncertainty[UnicodeMath in Plurimath]).
-* HTML writes the symbols as text. A symbol with an exponent is in `<i>`, one
-  without is not.
+* HTML writes the symbols as upright text, with or without an exponent.
 * MathML writes each symbol in an `mstyle` with `mathvariant="normal"`. When
   the formula holds more than the unit, an
   `<mo rspace="thickmathspace">&#x2062;</mo>` (invisible times) is put
@@ -210,7 +197,7 @@ Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_html
 
 [source]
 ----
-9.8 m &#x22c5; <i>s</i><sup>&#x2212; 2</sup>
+9.8 m &#x22c5; s<sup>&#x2212; 2</sup>
 ----
 // END GENERATED example html
 
@@ -400,7 +387,7 @@ In AsciiMath the same errors make the whole formula fail to parse.
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `337262eda0483ceaa43a02cc52362c5b721e5eb3` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `51d64ea4006f29df085445e469e74190aa6758c5` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===

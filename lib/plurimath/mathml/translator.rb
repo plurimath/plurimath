@@ -52,12 +52,12 @@ module Plurimath
         when Mml::V4::Mmultiscripts then mmultiscripts_to_multiscript(mml_node)
         when Mml::V4::Mlabeledtr then mlabeledtr_to_mlabeledtr(mml_node)
         when Mml::V4::Semantics then semantics_to_semantics(mml_node)
+        when Mml::V4::Maction then maction_to_selected_child(mml_node)
         when Mml::V4::None then none_to_none
         when Mml::V4::Ms then ms_to_ms(mml_node)
         when Mml::V4::Mscarries then mscarries_to_scarries(mml_node)
         when Mml::V4::Mscarry then mscarry_to_mscarry(mml_node)
-        when Mml::V4::Annotation then nil
-        when Mml::V4::AnnotationXml then nil
+        when Mml::V4::Annotation, Mml::V4::AnnotationXml then nil
         when Mml::V4::Malignmark then nil
         when Mml::V4::Maligngroup then nil
         when Mml::V4::Mspace then mspace_to_space(mml_node)
@@ -597,6 +597,20 @@ module Plurimath
                                                 :"annotation-xml")
         Plurimath::Math::Function::Semantics.new(content,
                                                  annotations.empty? ? nil : annotations)
+      end
+
+      # MathML element: <maction> - read as the child it renders.
+      # MathML 3 section 3.7.1: `selection` (default 1) is the 1-based index
+      # of the child shown. An index that is not a valid child number falls
+      # back to the first child, as MathML Core specifies.
+      def maction_to_selected_child(action)
+        children = content_children(action)
+        return nil if children.empty?
+
+        index = action.selection.to_s.strip
+        index = index.match?(/\A\d+\z/) ? index.to_i : 1
+        index = 1 unless index.between?(1, children.length)
+        mml_to_plurimath(children[index - 1])
       end
 
       # MathML element: <mscarries> - carries

@@ -123,8 +123,8 @@ Plurimath::Math.parse('<math display="inline"><mi>x</mi></math>', :mathml).to_ma
 
 An element that the mml model does not know is dropped without an error, so
 it can disappear from the output. An element that the model knows but the
-translator has no rule for, such as `maction` or any Content MathML element,
-is refused (see <<elements>>):
+translator has no rule for, such as any Content MathML element, is refused
+(see <<elements>>):
 
 // BEGIN GENERATED example read-unknown
 [source,ruby]
@@ -141,7 +141,7 @@ Plurimath::Math.parse('<math><foo>x</foo></math>', :mathml).to_asciimath.inspect
 // BEGIN GENERATED example read-no-rule
 [source,ruby]
 ----
-Plurimath::Math.parse('<math><maction><mi>x</mi></maction></math>', :mathml)
+Plurimath::Math.parse('<math><apply><ci>x</ci></apply></math>', :mathml)
 ----
 
 [source]
@@ -149,6 +149,23 @@ Plurimath::Math.parse('<math><maction><mi>x</mi></maction></math>', :mathml)
 raises Plurimath::Math::ParseError
 ----
 // END GENERATED example read-no-rule
+
+An `maction` element is read as the one child it shows, following MathML 3
+section 3.7.1. That is the child that `selection` numbers, counting from 1.
+When `selection` is missing or does not name a child, the first child is
+read. The other children and the action itself are not kept:
+
+// BEGIN GENERATED example read-maction
+[source,ruby]
+----
+Plurimath::Math.parse('<math><maction actiontype="toggle" selection="2"><mi>x</mi><mi>y</mi></maction></math>', :mathml).to_asciimath
+----
+
+[source]
+----
+y
+----
+// END GENERATED example read-maction
 
 The `intent` attributes of the input are not kept either. Intent output is
 regenerated from the node classes, so it can differ from what was read:
@@ -395,6 +412,7 @@ translator reaches it through this dispatch. `semantics` reads its
 |Element |Model class |Read by
 |`annotation` |`Annotation` |ignored, no node
 |`annotation-xml` |`AnnotationXml` |ignored, no node
+|`maction` |`Maction` |`maction_to_selected_child`
 |`maligngroup` |`Maligngroup` |ignored, no node
 |`malignmark` |`Malignmark` |ignored, no node
 |`math` |`Math` |`math_to_formula`
@@ -439,7 +457,7 @@ translator reaches it through this dispatch. `semantics` reads its
 |`semantics` |`Semantics` |`semantics_to_semantics`
 |===
 
-The mml model has 151 more element classes, which the translator has no rule for: `a`, `abs`, `and`, `apply`, `approx`, `arccos`, `arccosh`, `arccot`, `arccoth`, `arccsc`, `arccsch`, `arcsec`, `arcsech`, `arcsin`, `arcsinh`, `arctan`, `arctanh`, `arg`, `bind`, `bvar`, `card`, `cartesianproduct`, `cbytes`, `ceiling`, `cerror`, `ci`, `cn`, `codomain`, `complexes`, `compose`, `condition`, `conjugate`, `cos`, `cosh`, `cot`, `coth`, `cs`, `csc`, `csch`, `csymbol`, `curl`, `declare`, `degree`, `determinant`, `diff`, `divergence`, `divide`, `domain`, `domainofapplication`, `emptyset`, `eq`, `equivalent`, `eulergamma`, `exists`, `exp`, `exponentiale`, `factorial`, `factorof`, `false`, `floor`, `fn`, `forall`, `gcd`, `geq`, `grad`, `gt`, `ident`, `image`, `imaginary`, `imaginaryi`, `implies`, `in`, `infinity`, `int`, `integers`, `intersect`, `interval`, `inverse`, `lambda`, `laplacian`, `lcm`, `leq`, `limit`, `list`, `ln`, `log`, `logbase`, `lowlimit`, `lt`, `maction`, `matrix`, `matrixrow`, `max`, `mean`, `median`, `min`, `minus`, `mode`, `moment`, `momentabout`, `naturalnumbers`, `neq`, `not`, `notanumber`, `notin`, `notprsubset`, `notsubset`, `or`, `otherwise`, `outerproduct`, `partialdiff`, `pi`, `piece`, `piecewise`, `plus`, `power`, `primes`, `product`, `prsubset`, `quotient`, `rationals`, `real`, `reals`, `reln`, `rem`, `root`, `scalarproduct`, `sdev`, `sec`, `sech`, `selector`, `sep`, `set`, `setdiff`, `share`, `sin`, `sinh`, `subset`, `sum`, `tan`, `tanh`, `tendsto`, `times`, `transpose`, `true`, `union`, `uplimit`, `variance`, `vector`, `vectorproduct`, `xor`.
+The mml model has 150 more element classes, which the translator has no rule for: `a`, `abs`, `and`, `apply`, `approx`, `arccos`, `arccosh`, `arccot`, `arccoth`, `arccsc`, `arccsch`, `arcsec`, `arcsech`, `arcsin`, `arcsinh`, `arctan`, `arctanh`, `arg`, `bind`, `bvar`, `card`, `cartesianproduct`, `cbytes`, `ceiling`, `cerror`, `ci`, `cn`, `codomain`, `complexes`, `compose`, `condition`, `conjugate`, `cos`, `cosh`, `cot`, `coth`, `cs`, `csc`, `csch`, `csymbol`, `curl`, `declare`, `degree`, `determinant`, `diff`, `divergence`, `divide`, `domain`, `domainofapplication`, `emptyset`, `eq`, `equivalent`, `eulergamma`, `exists`, `exp`, `exponentiale`, `factorial`, `factorof`, `false`, `floor`, `fn`, `forall`, `gcd`, `geq`, `grad`, `gt`, `ident`, `image`, `imaginary`, `imaginaryi`, `implies`, `in`, `infinity`, `int`, `integers`, `intersect`, `interval`, `inverse`, `lambda`, `laplacian`, `lcm`, `leq`, `limit`, `list`, `ln`, `log`, `logbase`, `lowlimit`, `lt`, `matrix`, `matrixrow`, `max`, `mean`, `median`, `min`, `minus`, `mode`, `moment`, `momentabout`, `naturalnumbers`, `neq`, `not`, `notanumber`, `notin`, `notprsubset`, `notsubset`, `or`, `otherwise`, `outerproduct`, `partialdiff`, `pi`, `piece`, `piecewise`, `plus`, `power`, `primes`, `product`, `prsubset`, `quotient`, `rationals`, `real`, `reals`, `reln`, `rem`, `root`, `scalarproduct`, `sdev`, `sec`, `sech`, `selector`, `sep`, `set`, `setdiff`, `share`, `sin`, `sinh`, `subset`, `sum`, `tan`, `tanh`, `tendsto`, `times`, `transpose`, `true`, `union`, `uplimit`, `variance`, `vector`, `vectorproduct`, `xor`.
 // END GENERATED elements-read
 
 The second table lists the elements that `Formula#to_mathml` writes for
@@ -570,7 +588,7 @@ raises Plurimath::Math::ParseOptionError
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `337262eda0483ceaa43a02cc52362c5b721e5eb3` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `51d64ea4006f29df085445e469e74190aa6758c5` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===

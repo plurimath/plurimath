@@ -8,8 +8,10 @@ gemspec
 # main commit (its version file still says 0.1.0). Drop this line once 0.2.0
 # is published, and do not release plurimath before then.
 gem "amath", git: "https://github.com/plurimath/amath",
-             ref: "43b59f4a3cd70691508d7297e4d7a8a03df34740"
+             ref: "3cbf3f8d0c789dff0542ad8b412d088659423d06"
 gem "canon"
+# latexmath 1.0.0 lacks \begin{cases}; pinned to main until latexmath 1.0.1 is published.
+gem "latexmath", github: "plurimath/latexmath", ref: "8eb16f6d931ef35817f0188fe25a4f170f3da645"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # Optional native image-rendering backend for `Formula#render` / `plurimath
 # render`. Git-pinned until `lasem` ships to RubyGems; intentionally NOT a
@@ -25,8 +27,7 @@ gem "nokogiri"
 gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 gem "parsanol"
-# umath is unpublished; pinned until its first release.
-gem "umath", github: "plurimath/umath", ref: "3fa31a16c9df4b375f3af7ccc4c103c0f46bd57f"
+gem "umath", "~> 0.1"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"

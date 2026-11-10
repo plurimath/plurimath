@@ -18,6 +18,10 @@ module Plurimath
             super
           end
 
+          def to_latex(options:)
+            "\\begin{cases}#{latex_content(options: options)}\\end{cases}"
+          end
+
           def to_unicodemath(options:)
             unicode_value = value.map do |val|
               val.to_unicodemath(options: options)
