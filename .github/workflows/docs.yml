@@ -22,3 +22,5 @@ jobs:
           bundler-cache: true
       - name: Check the generated regions of the format pages
         run: bundle exec ruby scripts/docs/format_specs.rb --check
+      - name: Check the generated regions of the AsciiMath specification
+        run: bundle exec ruby scripts/docs/asciimath_tables.rb --amath "$(bundle info amath --path)" --check

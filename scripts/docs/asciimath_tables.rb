@@ -11,7 +11,9 @@
 # PATH is an amath checkout (git) at the revision being documented. The
 # script verifies grammars/asciimath.parg and data/vocabulary.json against
 # artifacts/asciimath.checksums.txt in that checkout and stops on any
-# mismatch. It also reads the artifact of the amath gem Plurimath loads at
+# mismatch. The vocabulary is read as registry v2 (format
+# amath-vocabulary/v2): the tables document the dialect L (legacy) part, the
+# entries tagged "legacy" or "both"; entries tagged "pma" are not listed. It also reads the artifact of the amath gem Plurimath loads at
 # run time (found through RubyGems, or given with --runtime-artifact) and
 # requires its uncertainty rules to be byte-identical to the checkout's.
 #
@@ -155,14 +157,16 @@ module AsciimathDocTables
     text.each_line.with_object({}) do |line, map|
       next if line.start_with?("#")
 
-      key, value, *rest = line.split
-      map[key] = rest.empty? ? value : [value, *rest].join(" ") if key
+      key, *rest = line.split
+      map[key] = rest.join(" ") if key
     end
   end
 
   def verified(root, relative, checksums)
     bytes = read(root, relative)
-    expected = checksums[relative]
+    # A line is "<path> sha256:<hex>", or "<path> <schema> sha256:<hex>" for
+    # the registry; the digest is always the last field.
+    expected = checksums[relative]&.split&.last
     actual = "sha256:#{Digest::SHA256.hexdigest(bytes)}"
     raise Error, "#{relative} is not listed in artifacts/asciimath.checksums.txt" unless expected
     raise Error, "#{relative}: #{actual} does not match the recorded #{expected}" unless actual == expected
@@ -220,8 +224,9 @@ module AsciimathDocTables
     rows = [
       ["amath revision documented", sources[:revision]],
       ["`grammars/asciimath.parg`", sums["grammars/asciimath.parg"]],
-      ["`data/vocabulary.json`", sums["data/vocabulary.json"]],
+      ["`data/vocabulary.json`", sums["data/vocabulary.json"].split.last],
       ["vocabulary format", vocabulary.fetch("format")],
+      ["vocabulary registry edition", vocabulary.fetch("edition")],
       ["vocabulary oracle (Plurimath revision)", vocabulary.dig("oracle", "revision")],
       ["artifact checksum (`artifacts/asciimath.json`)", sums["artifact_checksum"]],
       ["artifact compiler (Parsanol)", sums["compiler_version"]],
@@ -241,10 +246,27 @@ module AsciimathDocTables
     ["[source]", "----", *lines, "----"]
   end
 
-  def symbols(vocabulary)
-    vocabulary.fetch("precompile_constants").filter_map do |word, category|
-      word if category == "symbol"
+  # An entry of the "precompile_constants" category has the value
+  # [spelling, kind], where kind is symbol, unary_class, fonts or
+  # special_fonts. Its binding (symbol, unary_class, fonts_class, bold_fonts)
+  # is the model type of the leaf and does not enter the tables.
+  LEGACY_DIALECTS = %w[legacy both].freeze
+
+  # Values of the dialect L entries of one registry category, in file order.
+  def entry_values(vocabulary, category)
+    vocabulary.fetch("entries").filter_map do |entry|
+      entry.fetch("value") if entry.fetch("category") == category &&
+        LEGACY_DIALECTS.include?(entry.fetch("dialect"))
     end
+  end
+
+  # [word, kind] for each precompile constant.
+  def constants(vocabulary)
+    entry_values(vocabulary, "precompile_constants")
+  end
+
+  def symbols(vocabulary)
+    constants(vocabulary).filter_map { |word, category| word if category == "symbol" }
   end
 
   def symbol_shape(word)
@@ -260,7 +282,7 @@ module AsciimathDocTables
   end
 
   def vocabulary_summary(vocabulary)
-    categories = vocabulary.fetch("precompile_constants").map(&:last).tally
+    categories = constants(vocabulary).map(&:last).tally
     shapes = symbols(vocabulary).map { |word| symbol_shape(word) }.tally
     rows = categories.sort.map { |name, count| "|`#{name}` |all |#{count}" }
     rows += SYMBOL_SHAPES.map do |shape, text|
@@ -270,20 +292,20 @@ module AsciimathDocTables
   end
 
   def vocabulary_classes(vocabulary)
-    constants = vocabulary.fetch("precompile_constants")
+    all = constants(vocabulary)
     lines = []
     %w[unary_class fonts special_fonts].each do |category|
-      words = constants.filter_map { |word, kind| word if kind == category }
+      words = all.filter_map { |word, kind| word if kind == category }
       lines.concat(wrapped("#{category} (#{words.length})", words.sort))
     end
     %w[binary_classes ternary_classes sub_sup_classes unary_underscore_words].each do |key|
-      words = vocabulary.fetch(key)
+      words = entry_values(vocabulary, key)
       lines.concat(wrapped("#{key} (#{words.length})", words.sort))
     end
-    lines.concat(wrapped("parenthesis", pairs(vocabulary.fetch("parenthesis"))))
-    lines.concat(wrapped("table_parenthesis", pairs(vocabulary.fetch("table_parenthesis"))))
-    lines.concat(wrapped("decimal_markers", vocabulary.fetch("decimal_markers").map { |m| codepoint(m) }))
-    lines.concat(wrapped("base_number_prefix", vocabulary.fetch("base_number_prefix").keys))
+    lines.concat(wrapped("parenthesis", pairs(entry_values(vocabulary, "parenthesis"))))
+    lines.concat(wrapped("table_parenthesis", pairs(entry_values(vocabulary, "table_parenthesis"))))
+    lines.concat(wrapped("decimal_markers", entry_values(vocabulary, "decimal_markers").map { |m| codepoint(m) }))
+    lines.concat(wrapped("base_number_prefix", entry_values(vocabulary, "base_number_prefix").map(&:first)))
     ["....", *lines, "...."]
   end
 
