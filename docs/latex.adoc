@@ -189,8 +189,7 @@ normalised or lost:
 * `\binom` becomes a matrix between braces, and `\operatorname` is dropped;
 * `\sin x` is written as `\sin{x}`.
 
-Two rows fail. latexmath's grammar has no `cases` environment, so
-`\begin{cases}` is refused. `\overbrace` with only a label above it is read,
+One row fails. `\overbrace` with only a label above it is read,
 but the mapper builds no node for it, so writing the formula raises
 `Plurimath::Math::ParseError`; `\overbrace` reads when it has both a
 subscript and a superscript.
@@ -219,7 +218,7 @@ subscript and a superscript.
 |Bracket on one side |\left\{ x \right. |left{ x right |\left \{ x \right .
 |Matrix |\begin{matrix} a & b \\ c & d \end{matrix} |{:[a, b], [c, d]:} |\begin{matrix}a & b \\ c & d\end{matrix}
 |Matrix in brackets |\begin{pmatrix} a & b \end{pmatrix} |([a, b]) |\begin{pmatrix}a & b\end{pmatrix}
-|Cases |\begin{cases} a & b \end{cases} |refused: Plurimath::Math::ParseError |-
+|Cases |\begin{cases} a & b \end{cases} |{[a, b]:} |\begin{cases}a & b\end{cases}
 |Text |\text{if} |"if" |\text{if}
 |Font |\mathbf{x} |mathbf(x) |\mathbf{x}
 |Upright font |\mathrm{d}x |rm(d) x |\mathrm{d} x
