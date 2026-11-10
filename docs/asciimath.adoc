@@ -114,18 +114,19 @@ bindings, which amath removes before returning the tree.
 |===
 |Item |Value
 
-|amath revision documented |`075eebddf9eda6d3ccdcbe63ce0fb554eb76b2a2`
-|`grammars/asciimath.parg` |`sha256:a305f3c0d7783e334b0fb8d5e323d4a9fc330348f340176ee1a8792a26384556`
-|`data/vocabulary.json` |`sha256:965b1f5c4e2d14ba7d045ba79c09097b42c311b737175c2199faca0cc87cf2a6`
-|vocabulary format |`amath-vocabulary/v1`
+|amath revision documented |`43b59f4a3cd70691508d7297e4d7a8a03df34740`
+|`grammars/asciimath.parg` |`sha256:8fc391577745dec67f31913a54de1060c6856f5514ed3c11300724a462ae8cfb`
+|`data/vocabulary.json` |`sha256:768016984baee3ea142b69f0f31f4b9e9255ddedea078d6c7fb1728dc718695c`
+|vocabulary format |`amath-vocabulary/v2`
+|vocabulary registry edition |`1`
 |vocabulary oracle (Plurimath revision) |`ae20be111a26fdd988c58be0bfb2b7f6fe6e352f`
-|artifact checksum (`artifacts/asciimath.json`) |`sha256:6638174039925962b221cbedeec24bb616130670003d177b3a92911309c397c5`
-|artifact compiler (Parsanol) |`1.3.131`
+|artifact checksum (`artifacts/asciimath.json`) |`sha256:38d3d04d938de7a1989dd7779e725c1c19d6f6fb38a3a65feb4bcc5c8395f369`
+|artifact compiler (Parsanol) |`1.3.134`
 |artifact entries |`dot comma arabic`
 |runtime amath gem |`0.1.0`
-|runtime artifact checksum |`sha256:e90f836c851504dfcbd5b3d97c9224f2f1c8cb4d2167c10fc6f1d02a62646d43`
-|runtime grammar source hash |`sha256:566f8ba866e921308b3b947b2443a1278ffc1125e2b20a4afb5c14132f91f975`
-|runtime artifact compiler (Parsanol) |`1.3.109`
+|runtime artifact checksum |`sha256:38d3d04d938de7a1989dd7779e725c1c19d6f6fb38a3a65feb4bcc5c8395f369`
+|runtime grammar source hash |`sha256:8fc391577745dec67f31913a54de1060c6856f5514ed3c11300724a462ae8cfb`
+|runtime artifact compiler (Parsanol) |`1.3.134`
 |uncertainty rules, runtime vs documented revision |`byte-identical`
 |===
 // END GENERATED provenance
@@ -144,7 +145,7 @@ comma = "," space_opt
 digit = %x30-39
 decimal_marker__dot = "."
 decimal_number__dot = (1*digit decimal_marker__dot 1*digit) / 1*digit
-number__dot = hex_number / binary_number / octal_number / (decimal_number__dot) as number / (".") as symbol
+number__dot = hex_number / binary_number / octal_number / (decimal_number__dot) as number / ((".") as spelling) as symbol
 signed_number__dot = ("-" decimal_operand__dot) as number
 hex_number = ("0x" / "0X") ((1*(%x30-39 / %x41-46 / %x61-66)) as hex_number)
 binary_number = ("0b" / "0B") ((1*(%x30-31)) as binary_number)
@@ -152,7 +153,7 @@ octal_number = ("0o" / "0O") ((1*(%x30-37)) as octal_number)
 base = !"__|" "_"
 power = "^"
 frac_slash = "/" !"/"
-quoted_text = ("\"" "unitsml(" (*(!")\"" any_char)) as unitsml ")\"") / ("\"" (*(!"\"" any_char)) as text "\"") / ("\"" "" as text)
+quoted_text = "\"" "unitsml(" ((1*(!(")\"") any_char)) as literal / "" as empty_list) as unitsml ")\"" / "\"" ((1*(!("\"") any_char)) as literal / "" as empty_list) as text "\"" / "\"" ("" as literal) as text
 ----
 // END GENERATED lexical-grammar
 
@@ -378,7 +379,7 @@ from the grammar:
 unc_number = 1*digit ["." 1*digit]
 unc_value = (["-"] unc_number) as value
 unc_sep = *space "," *space
-unc_unit = unc_sep "\"unitsml(" (*(!")\"" any_char)) as unit ")\""
+unc_unit = unc_sep "\"unitsml(" ((1*(!(")\"") any_char)) as literal / "" as empty_list) as unit ")\""
 unc_open = "(" *space
 unc_close = *space ")"
 unc_shared_exponent = "e" (["+" / "-"] 1*digit) as shared_exponent
@@ -393,7 +394,7 @@ uncertainty_exp = ("uexp") as uncertainty_class unc_open (unc_scaled_pair / unc_
 uncertainty_cov = ("ucov") as uncertainty_class unc_open (unc_scaled_interval / unc_measured_interval) unc_sep (unc_number) as coverage_probability [unc_sep ("shortest" / "symmetric") as interval_kind] [unc_unit] unc_close
 ----
 
-Checksum of the excerpt (lines joined by line feeds): `sha256:4ff5df3b0613419404fdfc9db0949439c4600cd392f0773b958f9800d349d0d9`.
+Checksum of the excerpt (lines joined by line feeds): `sha256:5b0145491639cb5e5d10e9ac0a9df6d8ae3a2dd3a360d4f4fc8ad2a80a128027`.
 // END GENERATED uncertainty-grammar
 
 The forms they accept:
