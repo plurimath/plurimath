@@ -88,8 +88,8 @@ module Plurimath
             scale = number(definition.fetch(:scale))
             nu = number(definition.fetch(:degrees_of_freedom))
             raise Gum::InvalidInput, "Student-t needs positive scale and nu > 2" unless scale.positive? && nu > 2
-            if nu <= 4 * degree
-              raise Gum::UnsupportedModel, "adaptive uncertainty stability requires finite fourth output moment; Student-t nu must exceed 4 times its polynomial degree"
+            if nu <= 2 * degree
+              raise Gum::UnsupportedModel, "finite polynomial output variance requires Student-t nu greater than twice its variable degree"
             end
             -> { mean + scale * student(nu) }
           when :rectangular, :triangular, :arcsine, :curvilinear_trapezoid

@@ -55,7 +55,11 @@ RSpec.describe Plurimath::Math::Evaluation::MonteCarlo do
 
   it "refuses unsupported moments and reports failure to stabilize within the cap" do
     formula = Plurimath::Math.parse("x", :asciimath)
-    expect { request(formula, inputs: { x: { distribution: :student_t, location: 0, scale: 1, degrees_of_freedom: 3 } }) }.to raise_error(gum::UnsupportedModel, /fourth/)
+    expect { request(Plurimath::Math.parse("x^2", :asciimath), inputs: { x: { distribution: :student_t, location: 0, scale: 1, degrees_of_freedom: 3 } }) }.to raise_error(gum::UnsupportedModel, /variance/)
+    linear = Plurimath::Math::Evaluation::DistributionSampler.new(
+      [{ distribution: :student_t, location: 0, scale: 1, degrees_of_freedom: 3 }],
+      Plurimath::Math::Evaluation::WichmannHill.new(seeds), degrees: [1])
+    expect(linear.draw.first).to be_finite
     expect { request(formula, significant_digits: 12, max_samples: 20_000) }.to raise_error(gum::ConvergenceError)
     expect { request(Plurimath::Math.parse("1/x", :asciimath)) }.to raise_error(gum::UnsupportedModel, /finite output moments/)
   end

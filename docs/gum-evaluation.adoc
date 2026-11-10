@@ -165,11 +165,12 @@ The existing Formula parser compiles exact polynomials about the exact PDF
 centers. Large offset cancellation is simplified before sampling. The current
 sampling domain has at most 128 intermediate terms and total degree 32;
 nonconstant divisors are refused because finite output moments are not
-established. Adaptive uncertainty stability additionally requires finite
-fourth output moments: a Student-t input needs degrees of freedom greater
-than four times its polynomial degree. This is a restriction of this
-implemented adaptive capability; it does not say that Student-t variance
-fails to exist for degrees of freedom between2 and4.
+established. Finite output variance is checked before sampling: a Student-t input needs
+degrees of freedom greater than twice its polynomial degree. A linear
+Student-t input with three degrees of freedom is supported; its square is
+refused because that output has infinite variance. The batch standard
+deviation has a finite second moment whenever output variance is finite;
+no unnecessary fourth-moment condition is imposed.
 
 The batch size, significant-digit tolerance and stopping statistics follow
 7.9.4 and equation 18. Both probabilistically symmetric and shortest intervals
