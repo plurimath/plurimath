@@ -35,7 +35,7 @@ module Plurimath
         GUARD_DIGIT_FUNCTIONS = %w[sin cos exp log log_base log10 sqrt atan].freeze
 
         def initialize(formula, bindings = {}, mode: :approximate,
-                       guard_digits: nil)
+                       guard_digits: nil, unevaluated: nil)
           unless MODES.include?(mode)
             raise ArgumentError, "mode must be one of #{MODES.inspect}"
           end
@@ -43,6 +43,11 @@ module Plurimath
             raise ArgumentError, "guard_digits must be a positive Integer"
           end
 
+          unless unevaluated.nil? || unevaluated.is_a?(Array)
+            raise ArgumentError, "unevaluated must be an Array or nil"
+          end
+
+          @deferred_representation = unevaluated&.dup&.freeze
           @formula = formula
           @mode = mode
           @guard_digits = guard_digits
@@ -60,7 +65,7 @@ module Plurimath
                      unevaluated: @unevaluated)
         rescue BoundaryReached
           Result.new(value: nil, boundaries: @boundaries,
-                     unevaluated: [@formula.to_asciimath])
+                     unevaluated: @deferred_representation || [@formula.to_asciimath])
         rescue ::Math::DomainError => e
           raise Errors::Evaluation::MathDomainError, e.message
         rescue ::FloatDomainError
