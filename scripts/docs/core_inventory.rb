@@ -39,7 +39,8 @@ module CoreInventory
     to_omml_without_math_tag to_unicodemath to_html
   ].freeze
 
-  # Directories (under lib/plurimath) that #531 removes.
+  # Directories (under lib/plurimath) that hold the LaTeX and UnicodeMath
+  # layers #531 reduced to mappers from the stage-gem models.
   PARSER_LAYERS = %w[latex unicode_math].freeze
 
   FAMILY_ORDER = %w[
@@ -49,6 +50,10 @@ module CoreInventory
   ].freeze
 
   MARKS = %w[stays-core removed-by-531 support].freeze
+
+  # Subclasses of Core that are not tree nodes. Semantics::Annotation is the
+  # entry type of the Semantics annotation list; no writer reaches it.
+  NON_NODES = %w[Plurimath::Math::Function::Semantics::Annotation].freeze
   SYMBOL_FAMILIES = %w[symbols-symbol symbols-paren].freeze
   BASE_SYMBOLS = %w[Plurimath::Math::Symbols::Symbol Plurimath::Math::Symbols::Paren].freeze
 
@@ -91,7 +96,7 @@ module CoreInventory
   end
 
   def node?(klass)
-    klass <= m::Core
+    klass <= m::Core && !NON_NODES.include?(klass.name)
   end
 
   def family(klass)

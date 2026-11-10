@@ -8,17 +8,12 @@ migrate, the order the migration follows, how each step proves it changed
 nothing, and the risks and dependencies. Its roadmap position and definition
 of done are in https://github.com/plurimath/plurimath/issues/541[#541].
 
-[WARNING]
-====
-*Pre-#531 snapshot; refresh after #531.* The inventory below was taken on
-`main` at `70c3384d`, before
-https://github.com/plurimath/plurimath/issues/531[#531] replaces the in-tree
+The inventory below was taken on `main` at `7c81e9d4`, after
+https://github.com/plurimath/plurimath/issues/531[#531] replaced the in-tree
 LaTeX and UnicodeMath parsers with the `latexmath` and `unicodemath` gems.
-The shared corpus figures come from `plurimath-testsuite` at `281059b2`, the
+The shared corpus figures come from `plurimath-testsuite` at `337262ed`, the
 revision the submodule pins, and the lutaml-model figures from 0.8.164, the
-version in `Gemfile.lock`. The list of what to refresh is in
-<<refresh-after-531>>.
-====
+version in `Gemfile.lock`.
 
 == Scope
 
@@ -91,15 +86,16 @@ removed-by-531:: A tree node with no writer at all. It cannot reach any
 output, so it would only exist for the in-tree LaTeX and UnicodeMath
 parsers, and #531 removes it.
 support:: A class under `Plurimath::Math` that is not a tree node. It is not
-migrated.
+migrated. `Function::Semantics::Annotation` subclasses `Core` but is only the
+entry type of the `Semantics` annotation list and no writer reaches it, so
+the script lists it as support.
 
-On this snapshot no class is marked removed-by-531. The in-tree LaTeX and
-UnicodeMath parsers live outside `Plurimath::Math`, under
-`lib/plurimath/latex/` and `lib/plurimath/unicode_math/`, and every class
-they build is also written by the writers. #531 keeps all of these classes,
-because the stage-gem mappings must build the same trees for the writer
-output to stay byte-identical. What #531 can remove inside `Plurimath::Math`
-is listed in <<parser-only>>.
+No class is marked removed-by-531. After #531, `lib/plurimath/latex/` and
+`lib/plurimath/unicode_math/` hold the mappers from the stage-gem models to
+the core tree, outside `Plurimath::Math`, and every class they build is also
+written by the writers. #531 kept all of these classes, because the mappers
+must build the same trees for the writer output to stay byte-identical. The
+remaining surfaces that only these layers use are listed in <<parser-only>>.
 
 === Counts
 
@@ -108,7 +104,7 @@ is listed in <<parser-only>>.
 |===
 ¦ Family ¦ Classes ¦ stays-core ¦ removed-by-531 ¦ support
 
-¦ Core and Number ¦ 3 ¦ 2 ¦ 1 ¦ 0
+¦ Core and Number ¦ 2 ¦ 2 ¦ 0 ¦ 0
 ¦ Formula ¦ 3 ¦ 3 ¦ 0 ¦ 0
 ¦ Function, unary ¦ 67 ¦ 67 ¦ 0 ¦ 0
 ¦ Function, binary ¦ 35 ¦ 35 ¦ 0 ¦ 0
@@ -118,8 +114,8 @@ is listed in <<parser-only>>.
 ¦ Uncertainty and UnitsML nodes ¦ 2 ¦ 2 ¦ 0 ¦ 0
 ¦ Symbols ¦ 1436 ¦ 1436 ¦ 0 ¦ 0
 ¦ Symbols, parentheses ¦ 25 ¦ 25 ¦ 0 ¦ 0
-¦ Support (not tree nodes) ¦ 10 ¦ 0 ¦ 0 ¦ 10
-¦ *Total* ¦ 1604 ¦ 1593 ¦ 1 ¦ 10
+¦ Support (not tree nodes) ¦ 11 ¦ 0 ¦ 0 ¦ 11
+¦ *Total* ¦ 1604 ¦ 1593 ¦ 0 ¦ 11
 |===
 // END GENERATED counts
 
@@ -171,7 +167,6 @@ replaces. The leaf classes below them only add writer behaviour.
 ¦ `+Function::Overleftrightarrow+` ¦ `+attributes+`, `+parameter_one+` ¦ `+(parameter_one = nil, attributes = {})+` ¦ 1
 ¦ `+Function::Overset+` ¦ `+options+`, `+parameter_one+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, options = {})+` ¦ 1
 ¦ `+Function::Prod+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ 1
-¦ `+Function::Semantics::Annotation+` ¦ `+content+`, `+tag+` ¦ inherited ¦ 1
 ¦ `+Function::Sqrt+` ¦ `+options+`, `+parameter_one+` ¦ inherited ¦ 1
 ¦ `+Function::Sum+` ¦ `+options+`, `+parameter_one+`, `+parameter_three+`, `+parameter_two+` ¦ `+(parameter_one = nil, parameter_two = nil, parameter_three = nil, options = {})+` ¦ 1
 ¦ `+Function::Table+` ¦ `+close_paren+`, `+open_paren+`, `+options+`, `+value+` ¦ `+(value = nil, open_paren = nil, close_paren = nil, options = {})+` ¦ 11
@@ -331,7 +326,7 @@ classes. The migration keeps them as they are and does not fill them.
 ¦ `+Function::Sec+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
 ¦ `+Function::Sech+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
 ¦ `+Function::Semantics+` ¦ Function, binary ¦ `+Function::BinaryFunction+` ¦ `+Function::BinaryFunction+` ¦ - ¦ from `+Function::BinaryFunction+` ¦ `+__parameter_two_nodes+`, `+__parameter_two_nodes=+`, `+line_breaking+`, `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+` ¦ `+to_unicodemath+` ¦ stays-core
-¦ `+Function::Semantics::Annotation+` ¦ Core and Number ¦ `+Core+` ¦ `+Function::Semantics::Annotation+` ¦ `+content+`, `+tag+` ¦ - ¦ `+==+`, `+__assign_parsed___content_node=+`, `+__attribute_definition___content_node+`, `+__content_node+`, `+__content_node=+`, `+__lutaml_raw___content_node+`, `+content_mixed_from_kv+`, `+content_mixed_to_kv+`, `+content_text_from_kv+`, `+content_text_to_kv+`, `+content_value_from_kv+`, `+content_value_to_kv+`, `+tag_from_kv+`, `+tag_to_kv+` ¦ `+to_asciimath+`, `+to_latex+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+`, `+to_html+` ¦ removed-by-531
+¦ `+Function::Semantics::Annotation+` ¦ Support (not tree nodes) ¦ `+Core+` ¦ `+Function::Semantics::Annotation+` ¦ `+content+`, `+tag+` ¦ - ¦ `+==+`, `+__assign_parsed___content_node=+`, `+__attribute_definition___content_node+`, `+__content_node+`, `+__content_node=+`, `+__lutaml_raw___content_node+`, `+content_mixed_from_kv+`, `+content_mixed_to_kv+`, `+content_text_from_kv+`, `+content_text_to_kv+`, `+content_value_from_kv+`, `+content_value_to_kv+`, `+tag_from_kv+`, `+tag_to_kv+` ¦ - ¦ support
 ¦ `+Function::Sin+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
 ¦ `+Function::Sinh+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::UnaryFunction+` ¦ - ¦ from `+Function::UnaryFunction+` ¦ `+evaluate+`, `+validate_function_formula+` ¦ - ¦ stays-core
 ¦ `+Function::Sqrt+` ¦ Function, unary ¦ `+Function::UnaryFunction+` ¦ `+Function::Sqrt+` ¦ `+options+`, `+parameter_one+` ¦ from `+Function::UnaryFunction+` ¦ `+__assign_parsed___parameter_one_node=+`, `+__assign_parsed___parameter_one_nodes=+`, `+__assign_parsed_hide_function_name=+`, `+__attribute_definition___parameter_one_node+`, `+__attribute_definition___parameter_one_nodes+`, `+__attribute_definition_hide_function_name+`, `+__lutaml_raw___parameter_one_node+`, `+__lutaml_raw___parameter_one_nodes+`, `+__lutaml_raw_hide_function_name+`, `+__parameter_one_node+`, `+__parameter_one_node=+`, `+__parameter_one_nodes+`, `+__parameter_one_nodes=+`, `+evaluate+`, `+hide_function_name+`, `+hide_function_name=+`, `+line_breaking+`, `+options_from_kv+`, `+options_to_kv+`, `+parameter_one_mixed_from_kv+`, `+parameter_one_mixed_to_kv+`, `+parameter_one_text_from_kv+`, `+parameter_one_text_to_kv+`, `+parameter_one_value_from_kv+`, `+parameter_one_value_to_kv+`, `+to_mathml_without_math_tag+`, `+to_omml_without_math_tag+`, `+to_unicodemath+` ¦ - ¦ stays-core
@@ -543,11 +538,17 @@ Classes: Pi.
 === Parser-only surfaces
 
 These are the public methods on tree nodes whose only call sites in `lib/`
-are in the parser layers #531 removes, and the size of the symbol spelling
-tables. #531 decides whether to remove them. The `latex` and `unicodemath`
-spelling tables stay if the #531 mapping uses them to find the Plurimath
-class for a stage-gem symbol. The `unicodemath` table is also read by the
-UnicodeMath writer (`Core#unicodemath_field_value`).
+are in the LaTeX and UnicodeMath mapping layers, and the size of the symbol
+spelling tables.
+
+The mappers find the Plurimath class for a stage-gem symbol through
+`Utility.symbols_class(text, lang:)`. It looks the spelling up in the merged
+symbol and parenthesis table for that language (`Utility.all_symbols_classes`,
+built from each class's `INPUT` entry) and falls back to a plain
+`Symbols::Symbol` when no class matches. The LaTeX mapper calls it with
+`lang: :latex` and the UnicodeMath mapper with `lang: :unicodemath`, so both
+spelling tables stay. The `unicodemath` table is also read by the UnicodeMath
+writer (`Core#unicodemath_field_value`).
 
 // BEGIN GENERATED parser-only
 [cols="2,3,2",options="header",separator=¦]
@@ -643,7 +644,7 @@ Before F2 starts, on the `main` revision it branches from, the following are
 recorded. Every later step compares against them at its exact head.
 
 * *Writer bytes:* for every input in the shared corpus at the pinned
-  testsuite generation (922 cases in the snapshot above, 780 to 782 per
+  testsuite generation (922 cases at `337262ed`, 780 to 782 per
   target), parse it with its reader and write it with all six writers, with
   the call options the corpus records. This runs once per XML engine (Ox, Oga
   and Leptris, as `spec_helper` does). The result is one digest per engine
@@ -719,7 +720,7 @@ For this migration that means:
 
 === Symbol catalog size
 
-The symbol classes are 1,461 of the 1,602 classes. They are declared through
+The symbol classes are 1,461 of the 1,604 classes. They are declared through
 their two base classes, so the migration does not touch each one. Their
 spelling tables, per-symbol writer bodies and load cost are #537's staged
 symbol catalog. If #537 moves the catalog to data before F2, the symbol rows
@@ -737,31 +738,11 @@ reason.
 
 === Order relative to #531
 
-* This scope is finalised only after #531 lands. #531 removes
-  `lib/plurimath/latex/` and `lib/plurimath/unicode_math/` and may remove the
-  parser-only surfaces listed above. F2 then branches from post-#531 `main`.
-* The byte baseline is taken after #531 and after any open change to writer
+* #531 has landed and this inventory is taken after it. F2 branches from
+  post-#531 `main`.
+* The byte baseline is taken after any open change to writer
   output, such as the UnicodeMath writer fix for multi-letter units, so that
   it records the bytes the migration must keep.
 * F2 also waits for the model-ownership decision the plan records as O2.
 * lutaml-model#1033 (the declaration exporter) is a dependency for
   exporting and checking the migrated declarations, not for declaring them.
-
-[[refresh-after-531]]
-== Refresh after #531
-
-When #531 is merged:
-
-. Run `scripts/docs/core_inventory.rb` on the new `main` and update the
-  revision in the warning at the top.
-. Check the counts. If #531 removed parser-only methods or spelling tables,
-  the parser-only section and the symbol shapes change. If it removed
-  classes, they disappear from the tables.
-. Update the testsuite revision and the corpus figures in the byte baseline
-  section to the generation #531 pins.
-. Recheck the lutaml-model version in `Gemfile.lock` and rerun the
-  serialization probe on it.
-. Record how the #531 mapping finds the Plurimath class for a stage-gem
-  symbol, and whether the `latex` and `unicodemath` spelling tables are
-  still used.
-. Remove the warning when the refreshed figures are in.
