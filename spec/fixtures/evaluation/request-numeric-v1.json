@@ -1,0 +1,850 @@
+{
+  "schema": "plurimath.numeric-request-vectors/1",
+  "source_requirements": [
+    "plurimath/plurimath#513 R-B3/R-B4",
+    "plurimath/plurimath#514 R-C5"
+  ],
+  "profile": "Closed numeric AST only; not the full quantity/GUM vector corpus",
+  "cases": [
+    {
+      "id": "decimal-significance",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "number",
+          "text": "2.10"
+        }
+      },
+      "expect": {
+        "exact": "21/10"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"denominator\":\"10\",\"kind\":\"rational\",\"numerator\":\"21\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "addition",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "+",
+          "left": {
+            "type": "number",
+            "text": "2"
+          },
+          "right": {
+            "type": "number",
+            "text": "3"
+          }
+        }
+      },
+      "expect": {
+        "exact": "5/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"kind\":\"integer\",\"value\":\"5\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "subtraction",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "-",
+          "left": {
+            "type": "number",
+            "text": "10"
+          },
+          "right": {
+            "type": "number",
+            "text": "3"
+          }
+        }
+      },
+      "expect": {
+        "exact": "7/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"kind\":\"integer\",\"value\":\"7\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "explicit-group",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "*",
+          "left": {
+            "type": "binary",
+            "operator": "+",
+            "left": {
+              "type": "number",
+              "text": "2"
+            },
+            "right": {
+              "type": "number",
+              "text": "3"
+            }
+          },
+          "right": {
+            "type": "number",
+            "text": "4"
+          }
+        }
+      },
+      "expect": {
+        "exact": "20/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"kind\":\"integer\",\"value\":\"20\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "division-right",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "/",
+          "left": {
+            "type": "number",
+            "text": "20"
+          },
+          "right": {
+            "type": "binary",
+            "operator": "/",
+            "left": {
+              "type": "number",
+              "text": "5"
+            },
+            "right": {
+              "type": "number",
+              "text": "2"
+            }
+          }
+        }
+      },
+      "expect": {
+        "exact": "8/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"denominator\":\"1\",\"kind\":\"rational\",\"numerator\":\"8\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "division-left",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "/",
+          "left": {
+            "type": "binary",
+            "operator": "/",
+            "left": {
+              "type": "number",
+              "text": "20"
+            },
+            "right": {
+              "type": "number",
+              "text": "5"
+            }
+          },
+          "right": {
+            "type": "number",
+            "text": "2"
+          }
+        }
+      },
+      "expect": {
+        "exact": "2/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"denominator\":\"1\",\"kind\":\"rational\",\"numerator\":\"2\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "power-left",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "^",
+          "left": {
+            "type": "binary",
+            "operator": "^",
+            "left": {
+              "type": "number",
+              "text": "2"
+            },
+            "right": {
+              "type": "number",
+              "text": "3"
+            }
+          },
+          "right": {
+            "type": "number",
+            "text": "2"
+          }
+        }
+      },
+      "expect": {
+        "exact": "64/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"kind\":\"integer\",\"value\":\"64\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "power-right",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "^",
+          "left": {
+            "type": "number",
+            "text": "2"
+          },
+          "right": {
+            "type": "binary",
+            "operator": "^",
+            "left": {
+              "type": "number",
+              "text": "3"
+            },
+            "right": {
+              "type": "number",
+              "text": "2"
+            }
+          }
+        }
+      },
+      "expect": {
+        "exact": "512/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"kind\":\"integer\",\"value\":\"512\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "bound-exact",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "/",
+          "left": {
+            "type": "variable",
+            "name": "x"
+          },
+          "right": {
+            "type": "number",
+            "text": "3"
+          }
+        },
+        "bindings": {
+          "x": "0.30"
+        }
+      },
+      "expect": {
+        "exact": "1/10"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"denominator\":\"10\",\"kind\":\"rational\",\"numerator\":\"1\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "unary",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "unary",
+          "operator": "-",
+          "operand": {
+            "type": "binary",
+            "operator": "^",
+            "left": {
+              "type": "number",
+              "text": "2"
+            },
+            "right": {
+              "type": "number",
+              "text": "2"
+            }
+          }
+        }
+      },
+      "expect": {
+        "exact": "-4/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"kind\":\"integer\",\"value\":\"-4\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "sqrt-exact",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "call",
+          "name": "sqrt",
+          "argument": {
+            "type": "number",
+            "text": "9"
+          }
+        }
+      },
+      "expect": {
+        "exact": "3/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"denominator\":\"1\",\"kind\":\"rational\",\"numerator\":\"3\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "abs",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "call",
+          "name": "abs",
+          "argument": {
+            "type": "number",
+            "text": "-2.10"
+          }
+        }
+      },
+      "expect": {
+        "exact": "21/10"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"denominator\":\"10\",\"kind\":\"rational\",\"numerator\":\"21\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "sqrt-deferred",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "call",
+          "name": "sqrt",
+          "argument": {
+            "type": "number",
+            "text": "2"
+          }
+        }
+      },
+      "expect": {
+        "deferred": true,
+        "action": "deferred"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[{\"action\":\"deferred\",\"operand_accuracy\":\"exact\",\"operands\":[{\"kind\":\"integer\",\"value\":\"2\"}],\"operation\":\"sqrt\",\"result\":null}],\"deferred\":true,\"unevaluated_ast\":{\"argument\":{\"text\":\"2\",\"type\":\"number\"},\"name\":\"sqrt\",\"type\":\"call\"},\"value\":null},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "sqrt-guarded",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "call",
+          "name": "sqrt",
+          "argument": {
+            "type": "number",
+            "text": "2"
+          }
+        },
+        "guard_digits": 12
+      },
+      "expect": {
+        "decimal_reference": "1.4142135623730950488016887242096980785696718753769",
+        "absolute_tolerance": "0.00000000001",
+        "action": "guarded"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[{\"action\":\"guarded\",\"operand_accuracy\":\"exact\",\"operands\":[{\"kind\":\"integer\",\"value\":\"2\"}],\"operation\":\"sqrt\",\"result\":{\"kind\":\"decimal\",\"precision\":12,\"value\":\"0.141421356237e1\"}}],\"deferred\":false,\"value\":{\"kind\":\"decimal\",\"precision\":12,\"value\":\"0.141421356237e1\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "sqrt-approximate",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "call",
+          "name": "sqrt",
+          "argument": {
+            "type": "number",
+            "text": "2"
+          }
+        },
+        "mode": "approximate"
+      },
+      "expect": {
+        "float_bits": "3ff6a09e667f3bcd",
+        "action": "approximated"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[{\"action\":\"approximated\",\"operand_accuracy\":\"exact\",\"operands\":[{\"kind\":\"integer\",\"value\":\"2\"}],\"operation\":\"sqrt\",\"result\":{\"bits\":\"3ff6a09e667f3bcd\",\"kind\":\"float\"}}],\"deferred\":false,\"value\":{\"bits\":\"3ff6a09e667f3bcd\",\"kind\":\"float\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "missing-variable",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "variable",
+          "name": "x"
+        }
+      },
+      "expect": {
+        "error": "MissingVariableError"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"MissingVariableError\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "zero-divisor",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "binary",
+          "operator": "/",
+          "left": {
+            "type": "number",
+            "text": "1"
+          },
+          "right": {
+            "type": "number",
+            "text": "0"
+          }
+        }
+      },
+      "expect": {
+        "error": "DivisionByZeroError"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"DivisionByZeroError\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "negative-sqrt",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "call",
+          "name": "sqrt",
+          "argument": {
+            "type": "number",
+            "text": "-1"
+          }
+        },
+        "mode": "approximate"
+      },
+      "expect": {
+        "error": "MathDomainError"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"MathDomainError\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "unknown-field",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "number",
+          "text": "2",
+          "extra": true
+        }
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "unknown-type",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "quantity",
+          "value": "1",
+          "unit": "m"
+        }
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "numeric-binding",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "variable",
+          "name": "x"
+        },
+        "bindings": {
+          "x": 1
+        }
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "newline-binding-name",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "variable",
+          "name": "x"
+        },
+        "bindings": {
+          "x\n": "1"
+        }
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "newline-number",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "number",
+          "text": "1\n"
+        }
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "null-mode",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "number",
+          "text": "1"
+        },
+        "mode": null
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "integral-json-guard",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "number",
+          "text": "2"
+        },
+        "guard_digits": 1.0
+      },
+      "expect": {
+        "exact": "2/1"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"boundaries\":[],\"deferred\":false,\"value\":{\"kind\":\"integer\",\"value\":\"2\"}},\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "excess-guard",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "number",
+          "text": "2"
+        },
+        "guard_digits": 1001
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "fractional-guard",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "number",
+          "text": "2"
+        },
+        "guard_digits": 1.5
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "deep-ast-refusal",
+      "request": {
+        "schema": "plurimath.evaluate.numeric/1",
+        "ast": {
+          "type": "unary",
+          "operator": "+",
+          "operand": {
+            "type": "unary",
+            "operator": "+",
+            "operand": {
+              "type": "unary",
+              "operator": "+",
+              "operand": {
+                "type": "unary",
+                "operator": "+",
+                "operand": {
+                  "type": "unary",
+                  "operator": "+",
+                  "operand": {
+                    "type": "unary",
+                    "operator": "+",
+                    "operand": {
+                      "type": "unary",
+                      "operator": "+",
+                      "operand": {
+                        "type": "unary",
+                        "operator": "+",
+                        "operand": {
+                          "type": "unary",
+                          "operator": "+",
+                          "operand": {
+                            "type": "unary",
+                            "operator": "+",
+                            "operand": {
+                              "type": "unary",
+                              "operator": "+",
+                              "operand": {
+                                "type": "unary",
+                                "operator": "+",
+                                "operand": {
+                                  "type": "unary",
+                                  "operator": "+",
+                                  "operand": {
+                                    "type": "unary",
+                                    "operator": "+",
+                                    "operand": {
+                                      "type": "unary",
+                                      "operator": "+",
+                                      "operand": {
+                                        "type": "unary",
+                                        "operator": "+",
+                                        "operand": {
+                                          "type": "unary",
+                                          "operator": "+",
+                                          "operand": {
+                                            "type": "unary",
+                                            "operator": "+",
+                                            "operand": {
+                                              "type": "unary",
+                                              "operator": "+",
+                                              "operand": {
+                                                "type": "unary",
+                                                "operator": "+",
+                                                "operand": {
+                                                  "type": "unary",
+                                                  "operator": "+",
+                                                  "operand": {
+                                                    "type": "unary",
+                                                    "operator": "+",
+                                                    "operand": {
+                                                      "type": "unary",
+                                                      "operator": "+",
+                                                      "operand": {
+                                                        "type": "unary",
+                                                        "operator": "+",
+                                                        "operand": {
+                                                          "type": "unary",
+                                                          "operator": "+",
+                                                          "operand": {
+                                                            "type": "unary",
+                                                            "operator": "+",
+                                                            "operand": {
+                                                              "type": "unary",
+                                                              "operator": "+",
+                                                              "operand": {
+                                                                "type": "unary",
+                                                                "operator": "+",
+                                                                "operand": {
+                                                                  "type": "unary",
+                                                                  "operator": "+",
+                                                                  "operand": {
+                                                                    "type": "unary",
+                                                                    "operator": "+",
+                                                                    "operand": {
+                                                                      "type": "unary",
+                                                                      "operator": "+",
+                                                                      "operand": {
+                                                                        "type": "unary",
+                                                                        "operator": "+",
+                                                                        "operand": {
+                                                                          "type": "unary",
+                                                                          "operator": "+",
+                                                                          "operand": {
+                                                                            "type": "unary",
+                                                                            "operator": "+",
+                                                                            "operand": {
+                                                                              "type": "unary",
+                                                                              "operator": "+",
+                                                                              "operand": {
+                                                                                "type": "unary",
+                                                                                "operator": "+",
+                                                                                "operand": {
+                                                                                  "type": "unary",
+                                                                                  "operator": "+",
+                                                                                  "operand": {
+                                                                                    "type": "unary",
+                                                                                    "operator": "+",
+                                                                                    "operand": {
+                                                                                      "type": "unary",
+                                                                                      "operator": "+",
+                                                                                      "operand": {
+                                                                                        "type": "unary",
+                                                                                        "operator": "+",
+                                                                                        "operand": {
+                                                                                          "type": "unary",
+                                                                                          "operator": "+",
+                                                                                          "operand": {
+                                                                                            "type": "unary",
+                                                                                            "operator": "+",
+                                                                                            "operand": {
+                                                                                              "type": "unary",
+                                                                                              "operator": "+",
+                                                                                              "operand": {
+                                                                                                "type": "unary",
+                                                                                                "operator": "+",
+                                                                                                "operand": {
+                                                                                                  "type": "unary",
+                                                                                                  "operator": "+",
+                                                                                                  "operand": {
+                                                                                                    "type": "unary",
+                                                                                                    "operator": "+",
+                                                                                                    "operand": {
+                                                                                                      "type": "unary",
+                                                                                                      "operator": "+",
+                                                                                                      "operand": {
+                                                                                                        "type": "unary",
+                                                                                                        "operator": "+",
+                                                                                                        "operand": {
+                                                                                                          "type": "unary",
+                                                                                                          "operator": "+",
+                                                                                                          "operand": {
+                                                                                                            "type": "unary",
+                                                                                                            "operator": "+",
+                                                                                                            "operand": {
+                                                                                                              "type": "unary",
+                                                                                                              "operator": "+",
+                                                                                                              "operand": {
+                                                                                                                "type": "unary",
+                                                                                                                "operator": "+",
+                                                                                                                "operand": {
+                                                                                                                  "type": "unary",
+                                                                                                                  "operator": "+",
+                                                                                                                  "operand": {
+                                                                                                                    "type": "unary",
+                                                                                                                    "operator": "+",
+                                                                                                                    "operand": {
+                                                                                                                      "type": "unary",
+                                                                                                                      "operator": "+",
+                                                                                                                      "operand": {
+                                                                                                                        "type": "unary",
+                                                                                                                        "operator": "+",
+                                                                                                                        "operand": {
+                                                                                                                          "type": "unary",
+                                                                                                                          "operator": "+",
+                                                                                                                          "operand": {
+                                                                                                                            "type": "unary",
+                                                                                                                            "operator": "+",
+                                                                                                                            "operand": {
+                                                                                                                              "type": "unary",
+                                                                                                                              "operator": "+",
+                                                                                                                              "operand": {
+                                                                                                                                "type": "unary",
+                                                                                                                                "operator": "+",
+                                                                                                                                "operand": {
+                                                                                                                                  "type": "unary",
+                                                                                                                                  "operator": "+",
+                                                                                                                                  "operand": {
+                                                                                                                                    "type": "unary",
+                                                                                                                                    "operator": "+",
+                                                                                                                                    "operand": {
+                                                                                                                                      "type": "unary",
+                                                                                                                                      "operator": "+",
+                                                                                                                                      "operand": {
+                                                                                                                                        "type": "unary",
+                                                                                                                                        "operator": "+",
+                                                                                                                                        "operand": {
+                                                                                                                                          "type": "unary",
+                                                                                                                                          "operator": "+",
+                                                                                                                                          "operand": {
+                                                                                                                                            "type": "unary",
+                                                                                                                                            "operator": "+",
+                                                                                                                                            "operand": {
+                                                                                                                                              "type": "number",
+                                                                                                                                              "text": "1"
+                                                                                                                                            }
+                                                                                                                                          }
+                                                                                                                                        }
+                                                                                                                                      }
+                                                                                                                                    }
+                                                                                                                                  }
+                                                                                                                                }
+                                                                                                                              }
+                                                                                                                            }
+                                                                                                                          }
+                                                                                                                        }
+                                                                                                                      }
+                                                                                                                    }
+                                                                                                                  }
+                                                                                                                }
+                                                                                                              }
+                                                                                                            }
+                                                                                                          }
+                                                                                                        }
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    },
+    {
+      "id": "invalid-json",
+      "request_json": "{oops",
+      "expect": {
+        "error": "InvalidRequest"
+      },
+      "expected_wire": "{\"engine\":\"plurimath.numeric/1\",\"error\":{\"code\":\"InvalidRequest\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.numeric/1\"}"
+    }
+  ],
+  "wire_reference": {
+    "host_repository": "https://github.com/plurimath/plurimath",
+    "host_commit": "a4e2fd732451599cf8dd2ecec8fced5fc25acdc7",
+    "profile_source_sha256": "8daad834488794d23583ff3b5dfb06064cd21d31cb0734839dbf73bd97f0e8cb",
+    "independent_checks": "Exact values checked with Python Fraction; guarded square root checked against independent decimal reference and declared tolerance; approximate sqrt checked against fixed IEEE bits. Refusals and grouping are explicit cases."
+  }
+}
