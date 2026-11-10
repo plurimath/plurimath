@@ -850,6 +850,13 @@ namespace: "m")
       def mo_tag(str)
         ox_element("mo") << str
       end
+
+      # HTML for the base of a script: italic, except an upright (FontStyle::Normal)
+      # base, which is how units are written in the other formats.
+      def html_base(base, options)
+        html = base.to_html(options: options)
+        base.is_a?(Function::FontStyle::Normal) ? html : "<i>#{html}</i>"
+      end
     end
   end
 end

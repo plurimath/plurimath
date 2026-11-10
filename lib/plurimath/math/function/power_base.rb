@@ -36,7 +36,7 @@ module Plurimath
         end
 
         def to_html(options:)
-          first_value  = "<i>#{parameter_one.to_html(options: options)}</i>" if parameter_one
+          first_value  = html_base(parameter_one, options) if parameter_one
           second_value = "<sub>#{parameter_two.to_html(options: options)}</sub>" if parameter_two
           third_value  = "<sup>#{parameter_three.to_html(options: options)}</sup>" if parameter_three
           "#{first_value}#{second_value}#{third_value}"
