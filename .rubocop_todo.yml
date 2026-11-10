@@ -32,15 +32,7 @@ Layout/ArgumentAlignment:
 Layout/ArrayAlignment:
   Exclude:
     - 'lib/plurimath/formatter/numbers/notation_renderer.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
-
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: IndentationWidth.
-Layout/AssignmentIndentation:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 15
 # This cop supports safe autocorrection (--autocorrect).
@@ -49,7 +41,6 @@ Layout/AssignmentIndentation:
 Layout/BlockAlignment:
   Exclude:
     - 'lib/plurimath/math/evaluation/evaluator.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
 
 # Offense count: 12
@@ -57,7 +48,6 @@ Layout/BlockAlignment:
 Layout/BlockEndNewline:
   Exclude:
     - 'lib/plurimath/math/evaluation/evaluator.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
 
 # Offense count: 35
@@ -66,28 +56,7 @@ Layout/ClosingParenthesisIndentation:
   Exclude:
     - 'lib/plurimath/formatter/numbers/notation_renderer.rb'
     - 'lib/plurimath/math/number.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
-
-# Offense count: 18
-# This cop supports safe autocorrection (--autocorrect).
-Layout/ElseAlignment:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLines:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
-
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyleAlignWith.
-# SupportedStylesAlignWith: keyword, variable, start_of_line
-Layout/EndAlignment:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 35
 # This cop supports safe autocorrection (--autocorrect).
@@ -97,16 +66,7 @@ Layout/FirstArgumentIndentation:
   Exclude:
     - 'lib/plurimath/formatter/numbers/notation_renderer.rb'
     - 'lib/plurimath/math/number.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
-
-# Offense count: 14
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/FirstArrayElementIndentation:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 22
 # This cop supports safe autocorrection (--autocorrect).
@@ -116,18 +76,9 @@ Layout/FirstArrayElementIndentation:
 # SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
 Layout/HashAlignment:
   Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/formatter/numbers/base_notation_spec.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
     - 'spec/plurimath/math/number_spec.rb'
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: normal, indented_internal_methods
-Layout/IndentationConsistency:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 60
 # This cop supports safe autocorrection (--autocorrect).
@@ -136,7 +87,6 @@ Layout/IndentationConsistency:
 Layout/IndentationWidth:
   Exclude:
     - 'lib/plurimath/math/evaluation/evaluator.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
 
 # Offense count: 29707
@@ -154,28 +104,13 @@ Layout/MultilineMethodCallBraceLayout:
   Exclude:
     - 'lib/plurimath/formatter/numbers/notation_renderer.rb'
     - 'lib/plurimath/math/number.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: aligned, indented
-Layout/MultilineOperationIndentation:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 266
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowInHeredoc.
 Layout/TrailingWhitespace:
   Enabled: false
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Lint/AmbiguousOperatorPrecedence:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 1
 # Configuration parameters: AllowedMethods.
@@ -193,7 +128,6 @@ Lint/DuplicateBranch:
     - 'lib/plurimath/math/function/power_base.rb'
     - 'lib/plurimath/mathml/formula_transformation.rb'
     - 'lib/plurimath/mathml/translator.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'lib/plurimath/xml_engine/oga/dumper.rb'
 
 # Offense count: 6
@@ -269,12 +203,6 @@ Lint/UnusedMethodArgument:
     - 'lib/plurimath/number_formatter.rb'
     - 'lib/plurimath/utility.rb'
     - 'spec/plurimath/math/number_spec.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Lint/UselessAssignment:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 161
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes, Max.
@@ -485,36 +413,7 @@ RSpec/SpecFilePathFormat:
 Style/BlockDelimiters:
   Exclude:
     - 'lib/plurimath/math/evaluation/evaluator.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/math/evaluation_spec.rb'
-
-# Offense count: 3
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: MinBranchesCount.
-Style/CaseLikeIf:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/ConcatArrayLiterals:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
-# SupportedStyles: assign_to_condition, assign_inside_condition
-Style/ConditionalAssignment:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
-
-# Offense count: 24
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowIfModifier.
-Style/IfInsideElse:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 43
 # This cop supports safe autocorrection (--autocorrect).
@@ -523,13 +422,6 @@ Style/MultilineIfModifier:
     - 'lib/plurimath/formatter/numbers/notation_renderer.rb'
     - 'lib/plurimath/math/evaluation/evaluator.rb'
     - 'lib/plurimath/math/function/log.rb'
-    - 'lib/plurimath/unicode_math/transform.rb'
-
-# Offense count: 30
-# This cop supports safe autocorrection (--autocorrect).
-Style/MultilineTernaryOperator:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 39
 Style/OptionalArguments:
@@ -551,13 +443,6 @@ Style/OptionalArguments:
 Style/OptionalBooleanParameter:
   Enabled: false
 
-# Offense count: 5
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowSafeAssignment, AllowInMultilineConditions.
-Style/ParenthesesAroundCondition:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
-
 # Offense count: 78
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
@@ -565,12 +450,6 @@ Style/ParenthesesAroundCondition:
 Style/QuotedSymbols:
   Exclude:
     - 'lib/plurimath/unicode_math/constants.rb'
-
-# Offense count: 77
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantParentheses:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
@@ -613,17 +492,8 @@ Style/SymbolArray:
 # SupportedStylesForMultiline: comma, consistent_comma, diff_comma, no_comma
 Style/TrailingCommaInArguments:
   Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
     - 'spec/plurimath/formatter/numbers/formatted_notation_spec.rb'
     - 'spec/plurimath/formatter/numbers/formatted_number_spec.rb'
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, diff_comma, no_comma
-Style/TrailingCommaInArrayLiteral:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
 
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
@@ -632,11 +502,3 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   Exclude:
     - 'lib/plurimath/unicode_math/constants.rb'
-
-# Offense count: 15
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: forbid_for_all_comparison_operators, forbid_for_equality_operators_only, require_for_all_comparison_operators, require_for_equality_operators_only
-Style/YodaCondition:
-  Exclude:
-    - 'lib/plurimath/unicode_math/transform.rb'
