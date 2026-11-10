@@ -1,0 +1,208 @@
+{
+  "schema": "gum-h1-mcm-reference/1",
+  "model": "s+d+e+f-s*(b*(t+v)+a*c)-50000000",
+  "dependence": "independent inputs; no implicit normal substitution",
+  "input_units": [
+    "nm",
+    "nm",
+    "nm",
+    "nm",
+    "K^-1",
+    "K",
+    "K",
+    "K^-1",
+    "K"
+  ],
+  "cases": [
+    {
+      "id": "jcgm101_table10_pdf",
+      "source_section": "JCGM101:2008 Table10, PDF59/printed51; Eq37 and Table11",
+      "source_url": "https://www.bipm.org/documents/20126/2071204/JCGM_101_2008_E.pdf/325dcaad-c15a-407c-1105-8b7f322d651c?download=true&version=1.22",
+      "source_pdf_sha256": "6d8548af875df112dfc5cf14eb974f5544341f4a31cbbdfc19fc5ed155d8fa20",
+      "inputs": [
+        [
+          "s",
+          {
+            "distribution": "student_t",
+            "location": "50000623",
+            "scale": "25",
+            "degrees_of_freedom": 18
+          }
+        ],
+        [
+          "d",
+          {
+            "distribution": "student_t",
+            "location": "215",
+            "scale": "6",
+            "degrees_of_freedom": 24
+          }
+        ],
+        [
+          "e",
+          {
+            "distribution": "student_t",
+            "location": "0",
+            "scale": "4",
+            "degrees_of_freedom": 5
+          }
+        ],
+        [
+          "f",
+          {
+            "distribution": "student_t",
+            "location": "0",
+            "scale": "7",
+            "degrees_of_freedom": 8
+          }
+        ],
+        [
+          "a",
+          {
+            "distribution": "rectangular",
+            "lower": "0.0000095",
+            "upper": "0.0000135"
+          }
+        ],
+        [
+          "t",
+          {
+            "distribution": "normal",
+            "location": "-0.1",
+            "sd": "0.2"
+          }
+        ],
+        [
+          "v",
+          {
+            "distribution": "arcsine",
+            "lower": "-0.5",
+            "upper": "0.5"
+          }
+        ],
+        [
+          "b",
+          {
+            "distribution": "curvilinear_trapezoid",
+            "lower": "-0.000001",
+            "upper": "0.000001",
+            "boundary_half_width": "0.0000001"
+          }
+        ],
+        [
+          "c",
+          {
+            "distribution": "curvilinear_trapezoid",
+            "lower": "-0.05",
+            "upper": "0.05",
+            "boundary_half_width": "0.025"
+          }
+        ]
+      ],
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "expected_mean_nm": "838",
+      "expected_standard_uncertainty_nm": "35.808078603008726319535943772251103187324751578681074957923957312425607560432470",
+      "reference_check_tolerance_nm": "1.0"
+    },
+    {
+      "id": "gum5_table8_1_pdf",
+      "source_section": "GUM5:2026 Table8.1, Eq8.8 and Table8.2",
+      "source_url": "https://www.bipm.org/documents/20126/2071204/JCGM_GUM_5_2026.pdf/2e054735-c82c-828a-5adc-dfe5d2c1a1fe?download=true&version=1.4",
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "inputs": [
+        [
+          "s",
+          {
+            "distribution": "student_t",
+            "location": "50000623",
+            "scale": "25",
+            "degrees_of_freedom": 18
+          }
+        ],
+        [
+          "d",
+          {
+            "distribution": "student_t",
+            "location": "215",
+            "scale": "5.8",
+            "degrees_of_freedom": 24
+          }
+        ],
+        [
+          "e",
+          {
+            "distribution": "student_t",
+            "location": "0",
+            "scale": "3.9",
+            "degrees_of_freedom": 5
+          }
+        ],
+        [
+          "f",
+          {
+            "distribution": "student_t",
+            "location": "0",
+            "scale": "6.7",
+            "degrees_of_freedom": 8
+          }
+        ],
+        [
+          "a",
+          {
+            "distribution": "rectangular",
+            "lower": "0.0000095",
+            "upper": "0.0000135"
+          }
+        ],
+        [
+          "t",
+          {
+            "distribution": "normal",
+            "location": "-0.1",
+            "sd": "0.2"
+          }
+        ],
+        [
+          "v",
+          {
+            "distribution": "arcsine",
+            "lower": "-0.5",
+            "upper": "0.5"
+          }
+        ],
+        [
+          "b",
+          {
+            "distribution": "curvilinear_trapezoid",
+            "lower": "-0.000001",
+            "upper": "0.000001",
+            "boundary_half_width": "0.0000001"
+          }
+        ],
+        [
+          "c",
+          {
+            "distribution": "curvilinear_trapezoid",
+            "lower": "-0.05",
+            "upper": "0.05",
+            "boundary_half_width": "0.025"
+          }
+        ]
+      ],
+      "seeds": [
+        56789,
+        67890,
+        78901,
+        89012
+      ],
+      "expected_mean_nm": "838",
+      "expected_standard_uncertainty_nm": "35.676985314317677868140934299354876536201306851889944226697002330124398835657706",
+      "reference_check_tolerance_nm": "1.0"
+    }
+  ]
+}

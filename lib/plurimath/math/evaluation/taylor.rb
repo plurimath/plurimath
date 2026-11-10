@@ -6,11 +6,17 @@ module Plurimath
       # Exact truncated Taylor algebra. Coefficients include the factorial
       # divisor; derivative() restores it. No finite differences or floats.
       class Taylor < Numeric
+        DEGREE_LIMIT = 3
+        MAX_TERMS = nil
         attr_reader :terms, :size
 
         def initialize(terms, size)
           @size = size
-          @terms = terms.reject { |powers, value| powers.sum > 3 || value.zero? }.freeze
+          limit = self.class::DEGREE_LIMIT
+          @terms = terms.reject { |powers, value| (limit && powers.sum > limit) || value.zero? }.freeze
+          if self.class::MAX_TERMS && @terms.length > self.class::MAX_TERMS
+            raise Gum::UnsupportedModel, "polynomial exceeds the bounded term domain"
+          end
         end
 
         def self.constant(value, size)
@@ -37,7 +43,11 @@ module Plurimath
           terms.each do |a, x|
             other.terms.each do |b, y|
               powers = a.zip(b).map { |i, j| i + j }.freeze
-              product[powers] += x * y if powers.sum <= 3
+              limit = self.class::DEGREE_LIMIT
+              product[powers] += x * y if limit.nil? || powers.sum <= limit
+              if self.class::MAX_TERMS && product.length > self.class::MAX_TERMS
+                raise Gum::UnsupportedModel, "polynomial exceeds the bounded term domain"
+              end
             end
           end
           self.class.new(product, size)

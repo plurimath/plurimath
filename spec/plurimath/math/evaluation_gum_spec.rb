@@ -137,4 +137,30 @@ RSpec.describe Plurimath::Math::Evaluation::Gum do
                         derivatives_complete: true) }.to raise_error(described_class::InvalidInput)
   end
 
+  it "isolates explicit decimal computation from ambient rounding and restores it" do
+    options = { estimate: 0, components: [normal(2)], gradient: [1] }
+    baseline = propagate(**options)[:standard_uncertainty]
+    BigDecimal.save_limit do
+      BigDecimal.save_rounding_mode do
+        BigDecimal.limit(1)
+        BigDecimal.mode(BigDecimal::ROUND_MODE, BigDecimal::ROUND_DOWN)
+        expect(propagate(**options)[:standard_uncertainty]).to eq(baseline)
+        expect(BigDecimal.limit).to eq(1)
+        expect(BigDecimal.mode(BigDecimal::ROUND_MODE)).to eq(BigDecimal::ROUND_DOWN)
+      end
+    end
+  end
+
+  it "selects series windows and axes without confusing dispersion and mean uncertainty" do
+    result = gum.series([1, 2, 3, 4], axis: 0, window: [1, 2], guard_digits: 12)
+    expect(result[:mean]).to eq(5r / 2)
+    expect(result[:sample_variance]).to eq(1r / 2)
+    expect(result[:variance]).to eq(1r / 4)
+    expect(BigDecimal(result[:standard_uncertainty_of_mean])).to eq(BigDecimal("0.5"))
+    matrix = [[1, 10], [2, 20], [3, 30]]
+    expect(gum.series(matrix, axis: 0, window: nil, guard_digits: 12).map { |row| row[:mean] }).to eq([2, 20])
+    expect(gum.series(matrix, axis: 1, window: nil, guard_digits: 12).map { |row| row[:mean] }).to eq([11r / 2, 11, 33r / 2])
+    expect { gum.series(matrix, axis: 0, window: [2, 3], guard_digits: 12) }.to raise_error(described_class::InvalidInput)
+  end
+
 end

@@ -14,6 +14,18 @@ module Plurimath
 
         module_function
 
+        # Explicit guard-digit computations own their decimal policy and
+        # restore the caller's thread-local settings, including on failure.
+        def with_decimal_context
+          BigDecimal.save_limit do
+            BigDecimal.save_rounding_mode do
+              BigDecimal.limit(0)
+              BigDecimal.mode(BigDecimal::ROUND_MODE, BigDecimal::ROUND_HALF_UP)
+              yield
+            end
+          end
+        end
+
         def of(value)
           case value
           when Integer, Rational then EXACT

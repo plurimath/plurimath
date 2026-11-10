@@ -12,6 +12,8 @@ module Plurimath
       module Gum
         class InvalidInput < ArgumentError; end
         class UnsupportedModel < InvalidInput; end
+        class NumericalFailure < StandardError; end
+        class ConvergenceError < StandardError; end
 
         module_function
 
@@ -29,6 +31,97 @@ module Plurimath
         rescue ArgumentError, ZeroDivisionError
           raise InvalidInput, "invalid exact numeric input"
         end
+
+        # JCGM101 8.1/8.2: validation is specific to this interval and p.
+        # The MC tolerance must be at least five times tighter than the
+        # target tolerance; coarse/still-running calculations cannot validate.
+        def validate_coverage(guf_interval:, guf_standard_uncertainty:,
+                              significant_digits:, probability:, interval:,
+                              monte_carlo:)
+          unless guf_interval.is_a?(Array) && guf_interval.length == 2 &&
+              significant_digits.is_a?(Integer) && significant_digits.positive?
+            raise InvalidInput, "validation needs two endpoints and positive significant_digits"
+          end
+          unless %i[symmetric shortest].include?(interval) && monte_carlo.is_a?(Hash) &&
+              monte_carlo[:stabilized] == true && monte_carlo[:method] == :adaptive_mcm
+            raise UnsupportedModel, "validation requires stabilized adaptive MCM of the requested interval kind"
+          end
+          p = exact(probability)
+          raise InvalidInput, "coverage probability mismatch" unless p == exact(monte_carlo.fetch(:probability))
+          target = MonteCarlo.numerical_tolerance(exact(guf_standard_uncertainty), significant_digits).to_r
+          mc_tolerance = exact(monte_carlo.fetch(:numerical_tolerance))
+          if mc_tolerance > target / 5
+            raise UnsupportedModel, "MCM tolerance must be at least five times tighter for validation"
+          end
+          bounds = monte_carlo.fetch(:intervals).fetch(interval)
+          left, right = guf_interval.map { |value| exact(value) }
+          raise InvalidInput, "GUF interval endpoints must increase" unless left < right
+          differences = [left, right].zip(bounds).map { |a, b| (a - exact(b)).abs }
+          { adequacy: differences.all? { |difference| difference <= target } ? :validated : :not_validated,
+            probability: p.to_s, interval: interval, tolerance: target.to_s,
+            monte_carlo_tolerance: mc_tolerance.to_s,
+            endpoint_differences: differences.map(&:to_s),
+            engine: { name: "plurimath", version: Plurimath::VERSION,
+                      method: "JCGM101-2008-8.1-8.2-v1" } }.freeze
+        rescue KeyError => error
+          raise InvalidInput, "missing validation result field: #{error.key}"
+        end
+
+        def coverage(**options)
+          Statistics.coverage(**options)
+        end
+
+        def conformity(**options)
+          Conformity.new(**options).evaluate
+        end
+
+        def monte_carlo(formula, **options)
+          MonteCarlo.new(formula, **options).evaluate
+        end
+
+        # Explicit half-up decimal wire rounding, independent of BigDecimal
+        # global limits/modes and printf's platform rounding conventions.
+        def decimal_output(value, guard_digits)
+          unless guard_digits.is_a?(Integer) && (1..12).cover?(guard_digits)
+            raise InvalidInput, "binary64 statistical outputs support 1..12 declared digits"
+          end
+          number = output_rational(value)
+          return "0" if number.zero?
+          n, d = number.numerator.abs, number.denominator
+          exponent = n.to_s.length - d.to_s.length
+          too_large = exponent >= 0 ? n < d * 10**exponent : n * 10**(-exponent) < d
+          exponent -= 1 if too_large
+          places = guard_digits - 1 - exponent
+          numerator, denominator = places >= 0 ? [n * 10**places, d] : [n, d * 10**(-places)]
+          q, remainder = numerator.divmod(denominator)
+          q += 1 if 2 * remainder >= denominator
+          text = if places.positive?
+                   digits = q.to_s.rjust(places + 1, "0")
+                   (digits[0...-places] + "." + digits[-places..]).sub(/0+\z/, "").delete_suffix(".")
+                 else
+                   (q * 10**(-places)).to_s
+                 end
+          number.negative? ? "-#{text}" : text
+        end
+
+        def decimal_places_output(value, places)
+          number = output_rational(value)
+          q, remainder = (number.numerator.abs * 10**places).divmod(number.denominator)
+          q += 1 if 2 * remainder >= number.denominator
+          digits = q.to_s.rjust(places + 1, "0")
+          text = digits[0...-places] + "." + digits[-places..]
+          number.negative? ? "-#{text}" : text
+        end
+
+        def output_rational(value)
+          if value.is_a?(Float)
+            raise NumericalFailure, "non-finite statistical result" unless value.finite?
+            value.to_r
+          else
+            exact(value)
+          end
+        end
+        private_class_method :output_rational
 
         # Differentiate an existing Formula using its canonical parser. The
         # supplied estimate/component hash order defines the derivative axes.
@@ -72,6 +165,43 @@ module Plurimath
           { count: n, mean: mean, minimum: values.min, maximum: values.max,
             sample_variance: variance, variance: variance.quo(n),
             degrees_of_freedom: n - 1, distribution: :unspecified }.freeze
+        end
+
+        # Axis0 treats matrix rows as observations; axis1 treats columns as
+        # observations. Windows are zero-based [start,length] on that axis.
+        def series(observations, axis:, window:, guard_digits:)
+          decimal_output(1, guard_digits)
+          unless observations.is_a?(Array) && [0, 1].include?(axis)
+            raise InvalidInput, "series needs an Array and an explicit axis0 or1"
+          end
+          matrix = observations.first.is_a?(Array)
+          if matrix
+            width = observations.first.length
+            unless width.positive? && observations.all? { |row| row.is_a?(Array) && row.length == width }
+              raise InvalidInput, "matrix series must be nonempty and rectangular"
+            end
+            samples = axis.zero? ? observations : observations.transpose
+          else
+            raise InvalidInput, "a vector has only axis0" unless axis.zero?
+            samples = observations
+          end
+          unless window.nil?
+            unless window.is_a?(Array) && window.length == 2 && window.all? { |v| v.is_a?(Integer) } &&
+                window[0] >= 0 && window[1] >= 2 && window.sum <= samples.length
+              raise InvalidInput, "window must select at least two existing observations"
+            end
+            samples = samples.slice(*window)
+          end
+          vectors = matrix ? samples.transpose : [samples]
+          results = vectors.map do |vector|
+            statistics = type_a(vector)
+            statistics.merge(
+              sample_standard_deviation: decimal_output(decimal_sqrt(statistics[:sample_variance], guard_digits + 4), guard_digits),
+              standard_uncertainty_of_mean: decimal_output(decimal_sqrt(statistics[:variance], guard_digits + 4), guard_digits),
+              axis: axis, window: window, guard_digits: guard_digits,
+              engine: { name: "plurimath", version: Plurimath::VERSION, method: "sample-series-v1" })
+          end
+          matrix ? results : results.first
         end
 
         # Half-width a about the estimate. Normal uses standard uncertainty,
@@ -186,7 +316,9 @@ module Plurimath
         end
 
         def decimal_sqrt(value, digits)
-          BigDecimal(value.numerator, digits).div(value.denominator, digits).sqrt(digits)
+          Accuracy.with_decimal_context do
+            BigDecimal(value.numerator, digits).div(value.denominator, digits).sqrt(digits)
+          end
         end
 
         def tensor(values, n, rank)

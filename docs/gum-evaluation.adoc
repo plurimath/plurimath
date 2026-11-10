@@ -79,9 +79,10 @@ https://www.bipm.org/documents/20126/2071204/JCGM_101_2008_E.pdf[JCGM 101:2008],
 and the BIPM JCGM publications for GUM 100:2008/Amd.1:2026 and GUM 5:2026.
 
 This entrypoint supplies numerical propagation, not a complete JCGM engine.
-Unsupported function derivatives, unit-aware formula propagation, correlated inputs,
-coverage intervals, adaptive Monte Carlo and conformance decisions remain
-outside this API. `adequacy: :not_assessed` is always explicit.
+Unsupported function derivatives, automatic unit-aware GUM propagation,
+correlated inputs, global risks and Ruby/TS wire conformance remain outside
+this capability. An LPU/GUF2 result retains `adequacy: :not_assessed`; producing
+a coverage factor alone does not validate the approximation.
 
 == Quantity arithmetic
 
@@ -115,3 +116,131 @@ sensitivities automatically; callers of Gum still supply one coherent system.
 
 Quantity results expose `accuracy`; limited Float or BigDecimal sources remain
 limited even when UnitsML conversion returns a Rational magnitude.
+
+== Series and coverage factors
+
+`Gum.series(observations, axis:, window:, guard_digits:)` reports exact mean,
+extrema, count and sample variance, plus decimal strings for sample standard
+deviation and standard uncertainty of the mean. For a matrix, axis 0 treats
+rows as observations and axis 1 treats columns as observations. A window is
+nil (all observations) or zero-based `[start, length]` on the observation
+axis; out-of-range, ragged or insufficient samples are refused.
+
+`Gum.coverage(standard_uncertainty:, probability:, degrees_of_freedom:,
+guard_digits:)` returns a coverage factor and expanded uncertainty as decimal
+strings. Nil degrees of freedom selects a normal distribution; finite values
+select Student-t. The verified domain is central probability 0.5 through 0.999,
+Student-t degrees of freedom 1 through 10000, and at most 8 output significant
+digits. Other requests receive a typed refusal. Student-t factors come from
+integrating the normalized density and bracketing its CDF, independently
+checked against 80-digit incomplete-beta references. They are not interpolated
+from a table.
+
+Explicit guard-digit calculations select half-up decimal rounding and restore
+the caller's decimal context. Statistical wire rounding uses integer/rational
+arithmetic and does not depend on ambient BigDecimal limits or modes.
+
+== Deterministic adaptive Monte Carlo
+
+[source,ruby]
+----
+result = gum.monte_carlo(formula,
+  inputs: { x: { distribution: :normal, location: "0", sd: "1" } },
+  independent: true, seeds: [12345,23456,34567,45678], probability: "0.95",
+  interval: :both, significant_digits: 2, guard_digits: 12,
+  max_samples: 200000
+)
+----
+
+The sampler uses the enhanced four-state Wichmann-Hill recurrence from
+JCGM 101:2008 C.3.3.3. Four nonzero seeds below their respective moduli are
+required; they, the final state, draw count, method revision and variable
+order are included in the result. No process-global random source is used.
+Normal and Student-t sampling follow C.4 and C.6. Rectangular, symmetric
+triangular, arcsine and fixed-midpoint curvilinear trapezoid PDFs are also
+supported. Every input must declare its PDF and parameters; Student-t `scale`
+is not its standard deviation.
+
+The existing Formula parser compiles exact polynomials about the exact PDF
+centers. Large offset cancellation is simplified before sampling. The current
+sampling domain has at most 128 intermediate terms and total degree 32;
+nonconstant divisors are refused because finite output moments are not
+established. Adaptive uncertainty stability additionally requires finite
+fourth output moments: a Student-t input needs degrees of freedom greater
+than four times its polynomial degree. This is a restriction of this
+implemented adaptive capability; it does not say that Student-t variance
+fails to exist for degrees of freedom between2 and4.
+
+The batch size, significant-digit tolerance and stopping statistics follow
+7.9.4 and equation 18. Both probabilistically symmetric and shortest intervals
+use the one-based endpoint convention of 7.7.2. With `interval: :both`, every
+endpoint is included in the stabilization test. Exhausting the explicit
+sample cap raises `ConvergenceError`; it never reports an unstabilized
+calculation as complete. This statistical stopping procedure is not a
+mathematical guarantee of a particular realization's error.
+
+Sampling and centered evaluation use declared binary64 arithmetic; the exact
+polynomial coefficients and center expansion precede that computation.
+Non-exact result fields are decimal strings with at most 12 significant
+digits. `significant_digits` controls statistical stabilization independently
+of the wire's `guard_digits`. Cross-runtime byte identity is not asserted.
+
+The separate `GUM mathematical references` Actions job runs both actual
+nonnormal H.1 PDF conventions at two meaningful uncertainty digits and both
+interval kinds. Its artifact includes the actual sample counts, tolerance,
+seed states and comparison with independently factored population moments.
+The bounded local one-digit run is a coarser check, not a substitute for that
+job. Reproduce the stronger check with:
+
+[source,shell]
+----
+bundle exec ruby scripts/check_gum_references.rb --output /tmp/gum-reference.json \
+  --significant-digits 2 --max-samples 2000000 \
+  spec/fixtures/evaluation/gum_h1_mcm.json
+----
+
+== Normal conformity decisions
+
+`Gum.conformity` implements the normal, measurement-only knowledge case of
+JCGM 106:2012. Both `distribution: :normal` and
+`knowledge: :measurement_only` are explicit. This identifies the posterior
+estimate/uncertainty with the measurement estimate/uncertainty for the
+capability index and guard geometry; informative priors are refused.
+
+Supply `estimate:`, `standard_uncertainty:`, two `tolerance:` limits (nil for
+an unbounded side), `rule:`, `coverage_factor:`, `guard_ratio:` and
+`guard_digits:`. Rules are simple acceptance, guarded acceptance, guarded
+rejection, and `iso14253_style` (the k=2,r=1 geometry described in JCGM 106).
+The separately named `three_zone` policy reports conditional outcomes when
+the expanded interval overlaps a tolerance boundary. It is not substituted
+for a requested binary decision rule. Limits are closed, and boundary status
+and signed residuals are explicit.
+
+The returned specific consumer risk applies only to acceptance; specific
+producer risk applies only to rejection. Conditional decisions report neither
+as an actual decision risk. Global risks need a process/measurement joint PDF
+and receive a typed refusal. Conformance probabilities use both normal tails;
+probability fields declare 1 through 12 decimal places and their resolution.
+
+A 2.3 percent one-sided tail ceiling must not be assumed for every two-sided
+geometry. For example, with tolerance width 4u and w=2u, Cm=1 and the accepted
+midpoint has nonconformance probability 2*Phi(-2), about 4.55 percent.
+The engine returns the exact two-tail normal probability for the declared
+geometry. A requested `consumer_risk_ceiling:` is refused if the guard band
+does not establish it at the declared numerical resolution. The
+`iso14253_style` name denotes the geometry documented in JCGM 106:2012 and does
+not claim compliance with an unprovided later ISO edition.
+
+Reference regeneration: `spec/support/gum_statistics_reference.py` uses
+mpmath 1.3.0 at 80 decimal digits; `spec/support/wichmann_hill_reference.py` uses
+the independent 32-bit recurrence and exact rational arithmetic. Runtime Ruby
+uses different quadrature/recurrence paths. Normative publications remain at
+their official source; no PDF is bundled with this implementation.
+
+`Gum.validate_coverage` explicitly compares a proposed GUM interval against a
+stabilized MCM interval at the same probability. It derives the target tolerance
+from the proposed GUM standard uncertainty and meaningful digits, and requires
+MCM to be at least five times tighter (JCGM 101 clauses 8.1/8.2). It returns
+`validated` or `not_validated` for that specified probability and interval;
+coarser, mismatched or incomplete MCM receives a typed refusal. This does not
+turn `adequacy: :not_assessed` into an unconditional model-validity claim.

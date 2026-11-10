@@ -274,20 +274,22 @@ module Plurimath
         end
 
         def guard_digit_value(label, operands)
-          x, y = operands.map do |value|
-            if value.is_a?(Rational)
-              BigDecimal(value.numerator, guard_digits).div(value.denominator, guard_digits)
-            else
-              BigDecimal(value.to_s)
+          Accuracy.with_decimal_context do
+            x, y = operands.map do |value|
+              if value.is_a?(Rational)
+                BigDecimal(value.numerator, guard_digits).div(value.denominator, guard_digits)
+              else
+                BigDecimal(value.to_s)
+              end
             end
-          end
-          case label
-          when "sqrt" then x.sqrt(guard_digits)
-          when "log" then BigMath.log(x, guard_digits)
-          when "log_base" then BigMath.log(x, guard_digits) / BigMath.log(y, guard_digits)
-          when "log10" then BigMath.log(x, guard_digits) / BigMath.log(BigDecimal("10"), guard_digits)
-          when "atan" then BigMath.atan(x, guard_digits)
-          else BigMath.public_send(label, x, guard_digits)
+            case label
+            when "sqrt" then x.sqrt(guard_digits)
+            when "log" then BigMath.log(x, guard_digits)
+            when "log_base" then BigMath.log(x, guard_digits) / BigMath.log(y, guard_digits)
+            when "log10" then BigMath.log(x, guard_digits) / BigMath.log(BigDecimal("10"), guard_digits)
+            when "atan" then BigMath.atan(x, guard_digits)
+            else BigMath.public_send(label, x, guard_digits)
+            end
           end
         end
 

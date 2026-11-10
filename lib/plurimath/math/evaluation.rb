@@ -5,6 +5,14 @@ require "plurimath/errors/evaluation"
 module Plurimath
   module Math
     module Evaluation
+      autoload :WichmannHill, "#{__dir__}/evaluation/wichmann_hill"
+      autoload :DistributionSampler, "#{__dir__}/evaluation/distribution_sampler"
+      autoload :SamplingPolynomial, "#{__dir__}/evaluation/compiled_polynomial"
+      autoload :CompiledPolynomial, "#{__dir__}/evaluation/compiled_polynomial"
+      autoload :SamplingCompiler, "#{__dir__}/evaluation/compiled_polynomial"
+      autoload :MonteCarlo, "#{__dir__}/evaluation/monte_carlo"
+      autoload :Statistics, "#{__dir__}/evaluation/statistics"
+      autoload :Conformity, "#{__dir__}/evaluation/conformity"
       autoload :Accuracy, "#{__dir__}/evaluation/accuracy"
       autoload :Evaluator, "#{__dir__}/evaluation/evaluator"
       autoload :ExpressionParser, "#{__dir__}/evaluation/expression_parser"
