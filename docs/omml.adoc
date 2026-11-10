@@ -1,0 +1,559 @@
+= OMML in Plurimath
+:toc:
+
+This page specifies the Office Math Markup Language (OMML) that Plurimath
+reads and writes: how input is parsed, the shape of the output and its
+options, how measurement results are hidden in a phantom, what does not
+survive a round trip through Word or through Plurimath itself, the errors,
+and the corpora that check all of this. It is part of the specification set
+tracked in https://github.com/plurimath/plurimath/issues/525[#525].
+
+The option table, the namespace table, the element tables, the examples and
+the corpus counts on this page are generated (see <<regenerating>>). Each example is Ruby code that
+the generator runs; the block after it is what that code returned. In OMML
+examples the namespace declarations on `m:oMathPara`, which are the same for
+every output and listed in <<writing>>, are shown as `xmlns:m="..." ...`.
+
+== Status
+
+[cols="3,1,3"]
+|===
+|Part |Status |Where
+
+|Reading OMML through the omml gem's typed model
+|implemented
+|https://github.com/plurimath/plurimath/pull/414[#414],
+https://github.com/plurimath/plurimath/pull/463[#463]
+
+|Writing OMML
+|implemented
+|
+
+|Measurement results as a hidden phantom marker, read and written
+|implemented
+|https://github.com/plurimath/plurimath/pull/496[#496],
+https://github.com/plurimath/plurimath/pull/497[#497],
+https://github.com/plurimath/plurimath/pull/504[#504],
+https://github.com/plurimath/plurimath/pull/505[#505]
+
+|Decimal runs read as numbers
+|implemented
+|https://github.com/plurimath/plurimath/pull/503[#503]
+
+|Explicit unit spacing kept in Word output
+|implemented
+|https://github.com/plurimath/plurimath/pull/518[#518]
+
+|Checking that Word keeps the hidden phantom when an equation is edited
+|proposed
+|https://github.com/plurimath/plurimath/issues/524[#524]
+|===
+
+[[reading]]
+== Reading
+
+`Plurimath::Math.parse(text, :omml)` hands the text to
+`Plurimath::Omml::Parser`, which calls `::Omml.parse(text)` from the omml gem
+and turns the typed model into a `Plurimath::Math::Formula` with
+`Plurimath::Omml::Translator`. Both an `m:oMathPara` and a bare `m:oMath` are
+accepted.
+
+The text of an `m:r` run is read as text, except for numbers and function
+names. A run that Word writes for a variable is therefore not an identifier
+after reading. An `m:sty` style is kept as a font:
+
+// BEGIN GENERATED example read-styled
+[source,ruby]
+----
+Plurimath::Math.parse('<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>x</m:t></m:r></m:oMath>', :omml).to_asciimath
+----
+
+[source]
+----
+ii("x")
+----
+// END GENERATED example read-styled
+
+An element that the omml model does not know is dropped without an error:
+
+// BEGIN GENERATED example read-unknown
+[source,ruby]
+----
+Plurimath::Math.parse('<m:oMath xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><m:foo/></m:oMath>', :omml).to_asciimath.inspect
+----
+
+[source]
+----
+""
+----
+// END GENERATED example read-unknown
+
+The translator raises `Plurimath::Omml::UnsupportedNodeError` for a model
+node it has no rule for; `Plurimath::Math.parse` reports it as a
+`ParseError` (see <<errors>>).
+
+[[writing]]
+== Writing
+
+`Formula#to_omml` returns one `m:oMathPara` holding one `m:oMath`, indented
+by two spaces. The `m:oMathPara` element always declares these namespaces,
+taken from `Plurimath::Math::Formula::OMML_NAMESPACES`:
+
+// BEGIN GENERATED omml-namespaces
+[cols="1,3"]
+|===
+|Declaration |Namespace
+
+|`xmlns:m` |`http://schemas.openxmlformats.org/officeDocument/2006/math`
+|`xmlns:mc` |`http://schemas.openxmlformats.org/markup-compatibility/2006`
+|`xmlns:mo` |`http://schemas.microsoft.com/office/mac/office/2008/main`
+|`xmlns:mv` |`urn:schemas-microsoft-com:mac:vml`
+|`xmlns:o` |`urn:schemas-microsoft-com:office:office`
+|`xmlns:r` |`http://schemas.openxmlformats.org/officeDocument/2006/relationships`
+|`xmlns:v` |`urn:schemas-microsoft-com:vml`
+|`xmlns:w` |`http://schemas.openxmlformats.org/wordprocessingml/2006/main`
+|`xmlns:w10` |`urn:schemas-microsoft-com:office:word`
+|`xmlns:w14` |`http://schemas.microsoft.com/office/word/2010/wordml`
+|`xmlns:w15` |`http://schemas.microsoft.com/office/word/2012/wordml`
+|`xmlns:wne` |`http://schemas.microsoft.com/office/word/2006/wordml`
+|`xmlns:wp` |`http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing`
+|`xmlns:wp14` |`http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing`
+|`xmlns:wpc` |`http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas`
+|`xmlns:wpg` |`http://schemas.microsoft.com/office/word/2010/wordprocessingGroup`
+|`xmlns:wpi` |`http://schemas.microsoft.com/office/word/2010/wordprocessingInk`
+|`xmlns:wps` |`http://schemas.microsoft.com/office/word/2010/wordprocessingShape`
+|===
+// END GENERATED omml-namespaces
+
+// BEGIN GENERATED writer-options
+`Plurimath::Math::Formula#to_omml` in `lib/plurimath/math/formula.rb` takes these keyword options:
+
+[cols="1,1"]
+|===
+|Option |Default
+
+|`display_style:` |`displaystyle`
+|`split_on_linebreak:` |`false`
+|`formatter:` |`nil`
+|`unitsml:` |`{}`
+|===
+// END GENERATED writer-options
+
+* `display_style:` defaults to the display style the formula was read with.
+  It decides how limits are placed: under and over the operator in display
+  style, as scripts otherwise (see the two `lim` examples).
+* `split_on_linebreak:` writes one `m:oMath` per line of the formula, with an
+  `m:r` holding a `br` element between them, inside the same `m:oMathPara`.
+  The `br` has no namespace prefix (it is not `w:br`), as the example
+  shows.
+* `formatter:` and `unitsml:` work as for MathML (see
+  link:mathml.adoc#writing[MathML in Plurimath]).
+
+Script elements such as `m:sSup` carry an `m:ctrlPr` with Cambria Math run
+properties:
+
+// BEGIN GENERATED example write
+[source,ruby]
+----
+Plurimath::Math.parse("x^2", :asciimath).to_omml
+----
+
+[source,xml]
+----
+<m:oMathPara xmlns:m="..." ...>
+  <m:oMath>
+    <m:sSup>
+      <m:sSupPr>
+        <m:ctrlPr>
+          <w:rPr>
+            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+            <w:i/>
+          </w:rPr>
+        </m:ctrlPr>
+      </m:sSupPr>
+      <m:e>
+        <m:r>
+          <m:t>x</m:t>
+        </m:r>
+      </m:e>
+      <m:sup>
+        <m:r>
+          <m:t>2</m:t>
+        </m:r>
+      </m:sup>
+    </m:sSup>
+  </m:oMath>
+</m:oMathPara>
+----
+// END GENERATED example write
+
+// BEGIN GENERATED example limits-display
+[source,ruby]
+----
+Plurimath::Math.parse("lim_(x->0) x", :asciimath).to_omml
+----
+
+[source,xml]
+----
+<m:oMathPara xmlns:m="..." ...>
+  <m:oMath>
+    <m:limLow>
+      <m:limLowPr>
+        <m:ctrlPr>
+          <w:rPr>
+            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+            <w:i/>
+          </w:rPr>
+        </m:ctrlPr>
+      </m:limLowPr>
+      <m:e>
+        <m:limUpp>
+          <m:limUppPr>
+            <m:ctrlPr>
+              <w:rPr>
+                <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+                <w:i/>
+              </w:rPr>
+            </m:ctrlPr>
+          </m:limUppPr>
+          <m:e>
+            <m:r>
+              <m:t>lim</m:t>
+            </m:r>
+          </m:e>
+          <m:lim>
+            <m:r>
+              <m:t>&#8203;</m:t>
+            </m:r>
+          </m:lim>
+        </m:limUpp>
+      </m:e>
+      <m:lim>
+        <m:r>
+          <m:t>x</m:t>
+        </m:r>
+        <m:r>
+          <m:t>&#x2192;</m:t>
+        </m:r>
+        <m:r>
+          <m:t>0</m:t>
+        </m:r>
+      </m:lim>
+    </m:limLow>
+    <m:r>
+      <m:t>x</m:t>
+    </m:r>
+  </m:oMath>
+</m:oMathPara>
+----
+// END GENERATED example limits-display
+
+// BEGIN GENERATED example limits-inline
+[source,ruby]
+----
+Plurimath::Math.parse("lim_(x->0) x", :asciimath).to_omml(display_style: false)
+----
+
+[source,xml]
+----
+<m:oMathPara xmlns:m="..." ...>
+  <m:oMath>
+    <m:sSubSup>
+      <m:sSubSupPr>
+        <m:ctrlPr>
+          <w:rPr>
+            <w:rFonts w:ascii="Cambria Math" w:hAnsi="Cambria Math"/>
+            <w:i/>
+          </w:rPr>
+        </m:ctrlPr>
+      </m:sSubSupPr>
+      <m:e>
+        <m:r>
+          <m:t>lim</m:t>
+        </m:r>
+      </m:e>
+      <m:sub>
+        <m:r>
+          <m:t>x</m:t>
+        </m:r>
+        <m:r>
+          <m:t>&#x2192;</m:t>
+        </m:r>
+        <m:r>
+          <m:t>0</m:t>
+        </m:r>
+      </m:sub>
+      <m:sup>
+        <m:r>
+          <m:t>&#8203;</m:t>
+        </m:r>
+      </m:sup>
+    </m:sSubSup>
+    <m:r>
+      <m:t>x</m:t>
+    </m:r>
+  </m:oMath>
+</m:oMathPara>
+----
+// END GENERATED example limits-inline
+
+// BEGIN GENERATED example linebreak
+[source,ruby]
+----
+Plurimath::Math.parse("a = b \\\\ c = d", :latex).to_omml(split_on_linebreak: true)
+----
+
+[source,xml]
+----
+<m:oMathPara xmlns:m="..." ...>
+  <m:oMath>
+    <m:r>
+      <m:t>a</m:t>
+    </m:r>
+    <m:r>
+      <m:t>=</m:t>
+    </m:r>
+    <m:r>
+      <m:t>b</m:t>
+    </m:r>
+  </m:oMath>
+  <m:r>
+    <br/>
+  </m:r>
+  <m:oMath>
+    <m:r>
+      <m:t>c</m:t>
+    </m:r>
+    <m:r>
+      <m:t>=</m:t>
+    </m:r>
+    <m:r>
+      <m:t>d</m:t>
+    </m:r>
+  </m:oMath>
+</m:oMathPara>
+----
+// END GENERATED example linebreak
+
+[[elements]]
+== Elements
+
+The first table lists, for each OMML element that the omml model reads into
+a class, the translator method that turns it into a Plurimath node. It is
+read from the `case` statement of the translator, and the element names are
+found by following the omml model's XML mappings from `m:oMathPara` and
+`m:oMath`. An element marked "ignored" is read but gives no node. The
+WordprocessingML elements, and the `m:` elements with Word names such as
+`m:bibliography`, are listed because the model reaches them from a run.
+
+// BEGIN GENERATED elements-read
+`translate_omml_node` in `lib/plurimath/omml/translator.rb` handles these model classes:
+
+[cols="2,2,3",options="header"]
+|===
+|Element |Model class |Read by
+|`m:acc` |`CTAcc` |`accent_to_plurimath`
+|`m:argPr` |`CTOMathArgPr` |ignored, no node
+|`m:bar` |`CTBar` |`bar_to_plurimath`
+|`m:bibliography, m:citation, m:equation, m:group, m:picture, m:richText` |`CTEmpty` |ignored, no node
+|`m:borderBox` |`CTBorderBox` |`border_box_to_plurimath`
+|`m:box` |`CTBox` |`box_to_plurimath`
+|`m:boxPr` |`CTBoxPr` |ignored, no node
+|`m:ctrlPr` |`CTCtrlPr` |ignored, no node
+|`m:d` |`CTD` |`delimiter_to_plurimath`
+|`m:deg, m:den, m:e, m:fName, m:lim, m:num, m:sub, m:sup` |`CTOMathArg` |`wrapped_omml_children`
+|`m:eqArr` |`CTEqArr` |`equation_array_to_plurimath`
+|`m:f` |`CTF` |`fraction_to_plurimath`
+|`m:fPr` |`CTFPr` |ignored, no node
+|`m:fldData, m:t` |`CTText` |`typed_text_to_plurimath`
+|`m:func` |`CTFunc` |`function_to_plurimath`
+|`m:groupChr` |`CTGroupChr` |`group_character_to_plurimath`
+|`m:limLow` |`CTLimLow` |`lower_limit_to_plurimath`
+|`m:limUpp` |`CTLimUpp` |`upper_limit_to_plurimath`
+|`m:m` |`CTM` |`matrix_to_plurimath`
+|`m:mr` |`CTMR` |`matrix_row_to_plurimath`
+|`m:nary` |`CTNary` |`nary_to_plurimath`
+|`m:oMath` |`OMath` |`formula_from_omml_children`
+|`m:oMath` |`CTOMath` |`formula_from_omml_children`
+|`m:oMathPara` |`OMathPara` |`flattened_formula_from_omml_children`
+|`m:oMathParaPr` |`CTOMathParaPr` |ignored, no node
+|`m:phant` |`CTPhant` |`phantom_to_plurimath`
+|`m:r` |`CTR` |`run_to_plurimath`
+|`m:rPr` |`CTRPR` |`math_run_properties_to_plurimath`
+|`m:rPr, w:rPr` |`CTRPr` |`word_run_properties_to_plurimath`
+|`m:rad` |`CTRad` |`radical_to_plurimath`
+|`m:sPre` |`CTSPre` |`prescript_to_plurimath`
+|`m:sSub` |`CTSSub` |`subscript_to_plurimath`
+|`m:sSubSup` |`CTSSubSup` |`sub_sup_to_plurimath`
+|`m:sSup` |`CTSSup` |`superscript_to_plurimath`
+|`w:annotationRef, w:continuationSeparator, w:cr, w:dayLong, w:dayShort, w:endnoteRef, w:footnoteRef, w:lastRenderedPageBreak, w:monthLong, w:monthShort, w:noBreakHyphen, w:pgNum, w:separator, w:softHyphen, w:tab, w:yearLong, w:yearShort` |`CTWordprocessingEmpty` |ignored, no node
+|`w:br` |`CTBr` |`Math::Function::Linebreak.new`
+|`w:delInstrText, w:delText, w:instrText` |`CTWordprocessingText` |ignored, no node
+|===
+// END GENERATED elements-read
+
+The second table lists the elements that `Formula#to_omml` writes for each
+construct, in document order and without repeats. `m:oMathPara`, `m:oMath`
+and the property elements (names ending in `Pr`, with their content) are
+left out.
+
+// BEGIN GENERATED elements-written
+[cols="2,2l,4l",options="header"]
+|===
+|Construct |AsciiMath |Elements
+|Number and letter |2x |m:r m:t
+|Operator |a + b |m:r m:t
+|Superscript |x^2 |m:sSup m:e m:r m:t m:sup
+|Both scripts |x_i^2 |m:sSubSup m:e m:r m:t m:sub m:sup
+|Fraction |frac(a)(b) |m:f m:num m:r m:t m:den
+|Square root |sqrt(x) |m:rad m:deg m:e m:r m:t
+|Root with index |root(3)(x) |m:rad m:deg m:r m:t m:e
+|Sum with limits |sum_(i=1)^n i |m:nary m:sub m:r m:t m:sup m:e
+|Integral |int_0^1 f(x) dx |m:nary m:sub m:r m:t m:sup m:e m:d
+|Limit |lim_(x->0) x |m:limLow m:e m:limUpp m:r m:t m:lim
+|Function name |sin x |m:func m:fName m:r m:t m:e
+|Brackets |(x) |m:d m:e m:r m:t
+|Absolute value |abs(x) |m:d m:e m:r m:t
+|Matrix |[[a, b], [c, d]] |m:d m:e m:m m:mr m:r m:t
+|Text |"if" |m:r m:t
+|Font |bb(x) |m:r m:t
+|Accent |hat(x) |m:limUpp m:e m:r m:t m:lim
+|Overline |bar(x) |m:bar m:e m:r m:t
+|Brace with label |overbrace(x)(n) |m:limUpp m:e m:r m:t m:lim m:d
+|Colour |color(red)(x) |m:r m:t
+|Line break |a \\ b |m:r m:t
+|===
+// END GENERATED elements-written
+
+[[uncertainty]]
+== Measurement uncertainty
+
+OMML has no attribute for meaning, so a measurement result is an `m:box`
+whose `m:e` starts with a hidden, zero-size `m:phant` holding the marker
+text. The visible content follows in the same `m:e`, and a unit is the one
+inner `m:box` after the phantom. The
+marker grammar and the reading rules are in
+link:uncertainty.adoc#markers[Measurement uncertainty].
+
+// BEGIN GENERATED example uncertainty
+[source,ruby]
+----
+Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_omml
+----
+
+[source,xml]
+----
+<m:oMathPara xmlns:m="..." ...>
+  <m:oMath>
+    <m:box>
+      <m:e>
+        <m:phant>
+          <m:phantPr>
+            <m:show m:val="off"/>
+            <m:zeroWid m:val="on"/>
+            <m:zeroAsc m:val="on"/>
+            <m:zeroDesc m:val="on"/>
+          </m:phantPr>
+          <m:e>
+            <m:r>
+              <m:rPr>
+                <m:sty m:val="p"/>
+              </m:rPr>
+              <m:t>standard-uncertainty(1.230,0.004)</m:t>
+            </m:r>
+          </m:e>
+        </m:phant>
+        <m:r>
+          <m:t>1.230</m:t>
+        </m:r>
+        <m:d>
+          <m:dPr>
+            <m:begChr m:val="("/>
+            <m:sepChr m:val=""/>
+            <m:endChr m:val=")"/>
+          </m:dPr>
+          <m:e>
+            <m:r>
+              <m:t>0.004</m:t>
+            </m:r>
+          </m:e>
+        </m:d>
+      </m:e>
+    </m:box>
+  </m:oMath>
+</m:oMathPara>
+----
+// END GENERATED example uncertainty
+
+A phantom counts as a marker only when its `m:show` value is `off`, `0` or
+`false`. A hidden phantom whose runs spell a marker but that also holds
+anything other than `m:r` runs, or a box with more than one inner `m:box`,
+raises `Plurimath::Errors::InvalidUncertainty` in the reader, which reaches
+the caller of `Plurimath::Math.parse` as a `Plurimath::Math::ParseError`.
+
+[[round-trip]]
+== Round trips and Word
+
+* Plurimath writes identifiers as plain `m:r` runs and reads plain runs as
+  text, so a formula written to OMML and read back is not `==` to the
+  original: its identifiers have become text. Numbers and function names come
+  back unchanged.
++
+// BEGIN GENERATED example readback
+[source,ruby]
+----
+Plurimath::Math.parse(Plurimath::Math.parse("x^2 + 2", :asciimath).to_omml, :omml).to_asciimath
+----
+
+[source]
+----
+"x"^(2) + 2
+----
+// END GENERATED example readback
+* The uncertainty marker is the exception. A result written and read back is
+  `==` to the original, except that its unit comes back as the rendered
+  formula (see link:uncertainty.adoc#round-trip[the round-trip matrix]).
+* An OMML consumer that ignores hidden phantoms shows the marker text as
+  ordinary text. Whether Word keeps the phantom when the equation is edited,
+  and how it displays it, has not been tested (#524).
+
+[[errors]]
+== Errors
+
+`Plurimath::Math.parse(text, :omml)` raises `Plurimath::Math::ParseError`
+when the XML cannot be parsed, the omml model rejects it, or the translator
+meets a node it does not support. The original error is not kept as the
+`cause`. OMML takes no parse options; passing `locale:` raises
+`Plurimath::Math::ParseOptionError`.
+
+[[conformance]]
+== Conformance
+
+// BEGIN GENERATED conformance
+Shared testsuite at `337262eda0483ceaa43a02cc52362c5b721e5eb3` (the `submodules/plurimath-testsuite` commit):
+
+[cols="3,1,3"]
+|===
+|Rows |Cases |Groups
+
+|`corpus/omml/`, inputs read |190 |`accents`, `boxes`, `delimiters`, `equation-arrays`, `fractions`, `functions`, `group-characters`, `limits`, `matrices`, `nary`, `partial-render`, `roots`, `runs`, `scripts`
+|`corpus/omml/rejections.yaml`, inputs refused |9 |`rejections`
+|`corpus/*/`, cases with `omml` output |780 |74 payloads
+|`stages/roundtrip/generations/000001/payloads/`, written as `omml` and read back |46 |28 lossless, 14 lossy, 4 refused
+|===
+// END GENERATED conformance
+
+* `spec/conformance/shared_corpus_spec.rb` replays every `corpus/` case
+  above with the Ox engine, comparing each target byte for byte.
+* `spec/conformance/stage_roundtrips_spec.rb` replays the roundtrip
+  generation pinned in `spec/fixtures/roundtrip-pin.yml`.
+* `spec/plurimath/omml/uncertainty_spec.rb` and
+  `spec/plurimath/fixtures/uncertainty/contract.yml` check the marker.
+* The omml gem has its own specs for the OMML model.
+
+[[regenerating]]
+== Regenerating this page
+
+The generated regions are written by `scripts/docs/format_specs.rb`, as
+described in link:mathml.adoc#regenerating[MathML in Plurimath]. Do not edit
+them by hand.

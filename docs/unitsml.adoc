@@ -1,0 +1,427 @@
+= UnitsML in Plurimath
+:toc:
+
+This page specifies how Plurimath handles units of measure through the
+unitsml gem: how a unit gets into a formula, how each output format writes
+it, the options, what does not survive a round trip, the errors, and the
+corpora that check all of this. It is part of the specification set tracked
+in https://github.com/plurimath/plurimath/issues/525[#525].
+
+The unit notation itself, such as `m*s^-2` or `dim_L`, belongs to the
+https://github.com/unitsml/unitsml-ruby[unitsml gem]. Plurimath passes the
+text to the gem unchanged and does not define any part of it.
+
+The option table, the unit table, the examples and the corpus counts on this
+page are generated (see <<regenerating>>). Each example is Ruby code that the
+generator runs; the block after it is what that code returned.
+
+== Status
+
+[cols="3,1,3"]
+|===
+|Part |Status |Where
+
+|Units in AsciiMath as `"unitsml(...)"`, and the `:unitsml` input format
+|implemented
+|
+
+|Units written in every output format
+|implemented
+|
+
+|UnitsML XML embedded in MathML output (`unitsml: { xml: true }`)
+|implemented
+|
+
+|Units inside measurement results
+|implemented
+|https://github.com/plurimath/plurimath/pull/496[#496],
+https://github.com/plurimath/plurimath/pull/507[#507],
+https://github.com/plurimath/plurimath/pull/549[#549]; see
+link:uncertainty.adoc#units[Measurement uncertainty]
+
+|Loading mml only when MathML, OMML or UnitsML is used
+|implemented
+|https://github.com/plurimath/plurimath/pull/561[#561]
+|===
+
+[[reading]]
+== Getting a unit into a formula
+
+There are three ways in:
+
+* In AsciiMath, a quoted text that starts with `unitsml(` and ends with `)`,
+  such as `"unitsml(m*s^-2)"`, is read as a unit. This is the only input
+  format with a unit notation.
+* `Plurimath::Math.parse(text, :unitsml)` reads `text` as a unit on its own.
+* The unit field of a measurement result, as in
+  `ustd(1.2, 0.1, "unitsml(kg)")`.
+
+In each case Plurimath makes a `Plurimath::Math::Function::Unitsml` node,
+which keeps the text and calls `Unitsml.parse(text)` at once, so a unit the
+gem cannot read is refused while the formula is parsed, not when it is
+written.
+
+// BEGIN GENERATED example type
+[source,ruby]
+----
+Plurimath::Math.parse("m*s^-2", :unitsml).class
+----
+
+[source]
+----
+Plurimath::Math::Function::Unitsml
+----
+// END GENERATED example type
+
+`Plurimath::Math.parse(text, :unitsml)` returns that node, not a
+`Plurimath::Math::Formula`. Its writers need the `options:` argument that a
+formula passes to its nodes, so the node has to be put in a formula first:
+
+// BEGIN GENERATED example type-write
+[source,ruby]
+----
+Plurimath::Math::Formula.new(Plurimath::Math.parse("m*s^-2", :unitsml)).to_asciimath
+----
+
+[source]
+----
+rm(m) * rm(s)^(- 2)
+----
+// END GENERATED example type-write
+
+// BEGIN GENERATED example type-write-direct
+[source,ruby]
+----
+Plurimath::Math.parse("m*s^-2", :unitsml).to_asciimath
+----
+
+[source]
+----
+raises ArgumentError
+----
+// END GENERATED example type-write-direct
+
+The `:unitsml` format takes no parse options.
+
+LaTeX, UnicodeMath, MathML and OMML have no unit notation that Plurimath
+reads. In LaTeX, `\unitsml` is not a command:
+
+// BEGIN GENERATED example latex-input
+[source,ruby]
+----
+Plurimath::Math.parse("9.8 \\unitsml{m}", :latex)
+----
+
+[source]
+----
+raises Plurimath::Math::ParseError
+----
+// END GENERATED example latex-input
+
+[[writing]]
+== Writing
+
+To write a unit, Plurimath asks the unitsml gem for a Plurimath formula
+(`to_plurimath`) with the `unitsml:` option of the writer, and writes that
+formula like any other. The gem builds the formula by rendering the unit as
+MathML and reading it back with Plurimath's MathML reader, so a unit is
+written as upright identifiers joined by `⋅`, with exponents as
+superscripts.
+
+The table writes each unit after the number 9.8:
+
+// BEGIN GENERATED units
+[cols="1l,2l,2l,2l,2l",options="header"]
+|===
+|Unit |AsciiMath |LaTeX |UnicodeMath |HTML
+|m |9.8 rm(m) |9.8 \mathrm{m} |9.8 \mupm |9.8 m
+|m*s^-2 |9.8 rm(m) * rm(s)^(- 2) |9.8 \mathrm{m} \cdot \mathrm{s}^{- 2} |9.8 \mupm ⋅ \mups^(− 2) |9.8 m &#x22c5; <i>s</i><sup>&#x2212; 2</sup>
+|kg*m^2*s^-3 |9.8 rm(kg) * rm(m)^(2) * rm(s)^(- 3) |9.8 \mathrm{kg} \cdot \mathrm{m}^{2} \cdot \mathrm{s}^{- 3} |9.8 \mup"kg" ⋅ \mupm^(2) ⋅ \mups^(− 3) |9.8 kg &#x22c5; <i>m</i><sup>2</sup> &#x22c5; <i>s</i><sup>&#x2212; 3</sup>
+|J/kg |9.8 rm(J) * rm(kg)^(- 1) |9.8 \mathrm{J} \cdot \mathrm{kg}^{- 1} |9.8 \mupJ ⋅ \mup"kg"^(− 1) |9.8 J &#x22c5; <i>kg</i><sup>&#x2212; 1</sup>
+|N*m |9.8 rm(N) * rm(m) |9.8 \mathrm{N} \cdot \mathrm{m} |9.8 \mupN ⋅ \mupm |9.8 N &#x22c5; m
+|mm^2 |9.8 rm(mm)^(2) |9.8 \mathrm{mm}^{2} |9.8 \mup"mm"^(2) |9.8 <i>mm</i><sup>2</sup>
+|um |9.8 rm(&#xb5;m) |9.8 \mathrm{&#xb5;m} |9.8 \mup"µm" |9.8 &#xb5;m
+|degC |9.8 rm(&#xb0;C) |9.8 \mathrm{&#xb0;C} |9.8 \mup"°C" |9.8 &#xb0;C
+|dim_L |9.8 mathsf(L) |9.8 \mathsf{L} |9.8 \msansL |9.8 L
+|===
+// END GENERATED units
+
+The format pages say how each writer treats the result:
+
+* AsciiMath writes the symbols with `rm(...)`, and a dimension with
+  `mathsf(...)`. The output is not `"unitsml(...)"` again.
+* LaTeX writes `\mathrm{...}` and `\mathsf{...}`
+  (link:latex.adoc[LaTeX in Plurimath]).
+* UnicodeMath writes `\mup` before each symbol, and quotes a symbol of more
+  than one character, as in `\mup"kg"`, so that it reads back as one run
+  (link:unicodemath.adoc#uncertainty[UnicodeMath in Plurimath]).
+* HTML writes the symbols as text. A symbol with an exponent is in `<i>`, one
+  without is not.
+* MathML writes each symbol in an `mstyle` with `mathvariant="normal"`. When
+  the formula holds more than the unit, an
+  `<mo rspace="thickmathspace">&#x2062;</mo>` (invisible times) is put
+  before each unit (link:mathml.adoc[MathML in Plurimath]).
+* OMML writes each symbol as a run with `m:sty` set to `p` (plain), and puts
+  nothing between the number and the unit (link:omml.adoc[OMML in
+  Plurimath]).
+
+// BEGIN GENERATED example asciimath
+[source,ruby]
+----
+Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_asciimath
+----
+
+[source]
+----
+9.8 rm(m) * rm(s)^(- 2)
+----
+// END GENERATED example asciimath
+
+// BEGIN GENERATED example latex
+[source,ruby]
+----
+Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_latex
+----
+
+[source]
+----
+9.8 \mathrm{m} \cdot \mathrm{s}^{- 2}
+----
+// END GENERATED example latex
+
+// BEGIN GENERATED example unicodemath
+[source,ruby]
+----
+Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_unicodemath
+----
+
+[source]
+----
+9.8 \mupm ⋅ \mups^(− 2)
+----
+// END GENERATED example unicodemath
+
+// BEGIN GENERATED example html
+[source,ruby]
+----
+Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_html
+----
+
+[source]
+----
+9.8 m &#x22c5; <i>s</i><sup>&#x2212; 2</sup>
+----
+// END GENERATED example html
+
+// BEGIN GENERATED example mathml
+[source,ruby]
+----
+Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_mathml
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mn>9.8</mn>
+    <mo rspace="thickmathspace">&#x2062;</mo>
+    <mrow>
+      <mstyle mathvariant="normal">
+        <mi>m</mi>
+      </mstyle>
+      <mo>&#x22c5;</mo>
+      <msup>
+        <mstyle mathvariant="normal">
+          <mi>s</mi>
+        </mstyle>
+        <mrow>
+          <mo>&#x2212;</mo>
+          <mn>2</mn>
+        </mrow>
+      </msup>
+    </mrow>
+  </mstyle>
+</math>
+----
+// END GENERATED example mathml
+
+A dimension is written in sans-serif:
+
+// BEGIN GENERATED example dimension
+[source,ruby]
+----
+Plurimath::Math.parse(%q("unitsml(dim_L)"), :asciimath).to_asciimath
+----
+
+[source]
+----
+mathsf(L)
+----
+// END GENERATED example dimension
+
+[[options]]
+== Options
+
+Every writer takes a `unitsml:` hash and hands it to the unitsml gem. The
+table lists the keys the gem reads from that hash, found in its source, and
+the one key that Plurimath reads itself:
+
+// BEGIN GENERATED unitsml-options
+unitsml 0.6.14, the version the bundle loads:
+
+[cols="1,2"]
+|===
+|Key |Read in
+
+|`explicit_parenthesis` |fenced.rb, formula.rb
+|`multiplier` |extender.rb, formula.rb
+|`name` |formula.rb
+|`quantity` |formula.rb
+|`xml` |Plurimath unitsml.rb
+|===
+// END GENERATED unitsml-options
+
+* `multiplier:` replaces the `⋅` between symbols. It is a string, or
+  `:space` or `:nospace`; any other value raises an error from the gem.
+* `explicit_parenthesis:` is read where the gem writes a bracketed group of
+  units (`fenced.rb`). The gem sets it to true when it is not given.
+* `name:` and `quantity:` set the unit name and the quantity in the UnitsML
+  XML.
+* `xml:` is read by Plurimath's MathML writer only. When it is true, the
+  UnitsML XML for the unit is put inside the unit's `mrow`, after the
+  rendered symbols, and the `mrow` gets an `xref` attribute naming the
+  `Unit` element's `id`.
+
+// BEGIN GENERATED example multiplier
+[source,ruby]
+----
+Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_asciimath(unitsml: { multiplier: :space })
+----
+
+[source]
+----
+9.8 rm(m) &#x2062; rm(s)^(- 2)
+----
+// END GENERATED example multiplier
+
+// BEGIN GENERATED example unitsml-xml
+[source,ruby]
+----
+Plurimath::Math.parse(%q("unitsml(m)"), :asciimath).to_mathml(unitsml: { xml: true })
+----
+
+[source,xml]
+----
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mstyle displaystyle="true">
+    <mrow xref="U_NISTu1">
+      <mstyle mathvariant="normal">
+        <mi>m</mi>
+      </mstyle>
+      <Unit xmlns="https://schema.unitsml.org/unitsml/1.0" dimensionURL="#NISTd1" id="U_NISTu1">
+        <UnitSystem name="SI" type="SI_base" lang="en"/>
+        <UnitName lang="en">metre</UnitName>
+        <UnitSymbol type="HTML">m</UnitSymbol>
+        <UnitSymbol type="MathMl">
+          <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+            <mi mathvariant="normal">m</mi>
+          </math>
+        </UnitSymbol>
+      </Unit>
+      <Dimension xmlns="https://schema.unitsml.org/unitsml/1.0" id="NISTd1">
+        <Length symbol="L" powerNumerator="1"/>
+      </Dimension>
+    </mrow>
+  </mstyle>
+</math>
+----
+// END GENERATED example unitsml-xml
+
+[[round-trip]]
+== Round trips
+
+A unit is written as its rendered formula and nothing in that formula marks
+it as a unit. Reading any output back, AsciiMath included, gives upright
+identifiers and operators, not a `Unitsml` node. MathML read back also keeps
+the invisible times as an operator:
+
+// BEGIN GENERATED example readback-mathml
+[source,ruby]
+----
+Plurimath::Math.parse(Plurimath::Math.parse(%q(9.8 "unitsml(m)"), :asciimath).to_mathml, :mathml).to_asciimath
+----
+
+[source]
+----
+9.8 &#x2062; rm(m)
+----
+// END GENERATED example readback-mathml
+
+The unit of a measurement result comes back in the result's unit position,
+because the marker refers to it, but also as its rendered formula. Written
+on to AsciiMath it becomes `"unitsml(...)"` again when its symbols are ASCII
+letters (see link:uncertainty.adoc#round-trip[the round-trip matrix]).
+
+[[errors]]
+== Errors
+
+Plurimath refuses a unit with a letter in an exponent, such as `m^x`, before
+calling the gem. Both that and a unit the gem cannot read raise
+`Plurimath::Math::ParseError`, with no `cause`:
+
+// BEGIN GENERATED example type-variable-exponent
+[source,ruby]
+----
+Plurimath::Math.parse("m^x", :unitsml)
+----
+
+[source]
+----
+raises Plurimath::Math::ParseError
+----
+// END GENERATED example type-variable-exponent
+
+// BEGIN GENERATED example type-unknown
+[source,ruby]
+----
+Plurimath::Math.parse("foo", :unitsml)
+----
+
+[source]
+----
+raises Plurimath::Math::ParseError
+----
+// END GENERATED example type-unknown
+
+In AsciiMath the same errors make the whole formula fail to parse.
+
+[[conformance]]
+== Conformance
+
+// BEGIN GENERATED conformance
+Shared testsuite at `337262eda0483ceaa43a02cc52362c5b721e5eb3` (the `submodules/plurimath-testsuite` commit):
+
+[cols="3,1,3"]
+|===
+|Rows |Cases |Groups
+
+|`corpus/*/`, cases whose input embeds `unitsml(...)` |3 |`quoted-text`, `unitsml-xml`
+|`corpus/*/`, cases rendered with `unitsml:` options |2 |`unitsml-xml`
+|`stages/roundtrip/generations/000001/payloads/`, cases whose input embeds `unitsml(...)` |7 |-
+|===
+// END GENERATED conformance
+
+* `spec/conformance/shared_corpus_spec.rb` replays the `corpus/` cases above
+  with the Ox engine, comparing each target byte for byte.
+* `spec/conformance/stage_roundtrips_spec.rb` replays the roundtrip cases.
+* The unitsml gem has its own specs for the unit notation and the UnitsML
+  XML.
+
+[[regenerating]]
+== Regenerating this page
+
+The generated regions are written by `scripts/docs/format_specs.rb`, as
+described in link:mathml.adoc#regenerating[MathML in Plurimath]. Do not edit
+them by hand. The unit table and the option table depend on the unitsml
+version in the bundle.
