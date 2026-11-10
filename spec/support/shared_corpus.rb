@@ -23,7 +23,31 @@ module SharedCorpus
   # portable projections and parser adapters without generating any fixtures.
   require File.join(ROOT, "scripts/generate-corpus")
 
+  # Unicode rejection rows whose legacy corpus index (Plurimath 0.11.12) no
+  # longer matches, because UnicodeMath is now parsed by umath. The corpus is
+  # frozen (#531), so these rows are checked against the umath stage raw row.
+  UNICODE_STAGE_RAW_REJECTIONS = File.join(
+    ROOT, "stages/unicode/generations/000003/payloads/raw-rejections.yaml"
+  )
+  LEGACY_REJECTION_DIVERGENCES = {
+    "unicode-trailing-broken-bar" => {
+      legacy_index: 2, umath_index: 7,
+      reason: "umath reports the end of the entity, f3c975b3; stage raw row records 7",
+    },
+    "unicode-greek-broken-bar" => {
+      legacy_index: 8, umath_index: 13,
+      reason: "umath reports the end of the entity, f3c975b3; stage raw row records 13",
+    },
+  }.freeze
+  LEGACY_REJECTION_DIVERGENCE_COUNT = 2
+
   module_function
+
+  def stage_raw_byte_offset(id)
+    @stage_raw_rejections ||= YAML.safe_load_file(UNICODE_STAGE_RAW_REJECTIONS, aliases: false)
+      .fetch("cases").to_h { |kase| [kase.fetch("id"), kase] }
+    @stage_raw_rejections.fetch("#{id}.raw").fetch("expected").fetch("refusal").fetch("byte_offset")
+  end
 
   def validate!(corpus_root)
     output = StringIO.new
