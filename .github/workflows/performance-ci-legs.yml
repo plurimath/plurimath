@@ -1,0 +1,54 @@
+name: performance-ci-legs
+
+# Records the wall time of each leg of a rake run on main and fails when a leg
+# took longer than the 30-minute budget in docs/performance-contract.adoc.
+# After each rake run on main it reads that run; on demand it reads the newest
+# completed rake run on main.
+
+on:
+  workflow_run:
+    workflows: [rake]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: performance-ci-legs-${{ github.event.workflow_run.id || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci-legs:
+    # A cancelled rake run has legs without times; there is nothing to gate.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion != 'cancelled'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0.1"
+      - name: Record rake leg timings against the 1800 s budget
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          mkdir -p tmp/performance
+          if [ -n "$RUN_ID" ]; then
+            ruby scripts/check_suite_budget.rb ci --run-id "$RUN_ID" \
+              --budget-seconds 1800 --enforce --output tmp/performance/ci-legs.json
+          else
+            ruby scripts/check_suite_budget.rb ci --workflow rake.yml --branch main \
+              --budget-seconds 1800 --enforce --output tmp/performance/ci-legs.json
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-ci-legs
+          path: tmp/performance/
+          retention-days: 90
