@@ -9,7 +9,7 @@ require "spec_helper"
 # production-code change.
 #
 # Input shapes mirror the real call sites in
-# lib/plurimath/unicode_math/transform.rb (and, for unfenced_value,
+# lib/plurimath/unicode_math/mapper/rules.rb (and, for unfenced_value,
 # lib/plurimath/asciimath/mapper/rules.rb). The parser passes Parslet slices
 # where these specs pass plain Strings; the methods only call
 # to_s/to_sym/scan/decode on them, so behavior is identical (verified by
