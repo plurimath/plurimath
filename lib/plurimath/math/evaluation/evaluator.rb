@@ -146,7 +146,11 @@ module Plurimath
           raise Errors::Evaluation::DivisionByZeroError if divisor.zero?
 
           if mode == :strict
-            exact_division(dividend, divisor)
+            if Accuracy.exact?(dividend) && Accuracy.exact?(divisor)
+              exact_division(dividend, divisor)
+            else
+              dividend / divisor
+            end
           else
             record_crossing("divide", [dividend, divisor], dividend / divisor.to_f)
           end

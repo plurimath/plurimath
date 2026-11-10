@@ -36,8 +36,8 @@ module Plurimath
         def combine(*values)
           values.map { |value| of(value) }.min_by do |label|
             case label
-            when EXACT then 0
-            when FLOAT then Float::INFINITY
+            when EXACT then Float::INFINITY
+            when FLOAT then -Float::INFINITY
             else label.to_s.split("_").last.to_i
             end
           end
