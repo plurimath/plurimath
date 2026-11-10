@@ -344,7 +344,12 @@ module Plurimath
       # A wrapper's value, nil for a node with nothing set, or the node's
       # built value.
       def node_captures(node)
-        set = node.class.attributes.reject { |n, a| a.method_name || node.public_send(n).nil? }.keys
+        set = node.class.attributes.reject do |name, attribute|
+          attribute.method_name ||
+            (::Latexmath::Model.respond_to?(:catalog_field?) &&
+             ::Latexmath::Model.catalog_field?(node.class, name)) ||
+            node.public_send(name).nil?
+        end.keys
         wrapper = set.find { |n| WRAPPERS.key?(n) }
         return wrapper_captures(node, set, wrapper) if wrapper
         return if set.empty?

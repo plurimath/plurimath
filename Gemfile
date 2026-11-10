@@ -8,10 +8,10 @@ gemspec
 # main commit (its version file still says 0.1.0). Drop this line once 0.2.0
 # is published, and do not release plurimath before then.
 gem "amath", git: "https://github.com/plurimath/amath",
-             ref: "3cbf3f8d0c789dff0542ad8b412d088659423d06"
+             ref: "a4ed231057aeb98022f5c825807e888946a9e71c"
 gem "canon"
-# latexmath 1.0.0 lacks \begin{cases}; pinned to main until latexmath 1.0.1 is published.
-gem "latexmath", github: "plurimath/latexmath", ref: "8eb16f6d931ef35817f0188fe25a4f170f3da645"
+# Candidate includes typed symbol portability; retain its exact pin until published.
+gem "latexmath", github: "plurimath/latexmath", ref: "372e377261c82e801ce755ebca7abfae1336ec39"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # Optional native image-rendering backend for `Formula#render` / `plurimath
 # render`. Git-pinned until `lasem` ships to RubyGems; intentionally NOT a

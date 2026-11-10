@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "amath"
 
 # AsciiMath parsing reads amath's typed model; the raw tree stays a separate,
 # tree-level entry point (Asciimath::Parse) that parsing does not use.

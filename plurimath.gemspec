@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "parsanol", "~> 1.3", ">= 1.3.116"
   spec.add_dependency "parslet"
   spec.add_dependency "thor"
-  spec.add_dependency "unitsml", "~> 0.6.4"
+  spec.add_dependency "unitsml", "~> 0.6.14"
 
   # nokogiri is used by the MathML specs only (spec/spec_helper.rb,
   # mathml_spec.rb); declared here so the suite resolves standalone —

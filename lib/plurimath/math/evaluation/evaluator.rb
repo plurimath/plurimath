@@ -274,7 +274,13 @@ module Plurimath
         end
 
         def guard_digit_value(label, operands)
-          x, y = operands.map { |value| value.is_a?(BigDecimal) ? value : BigDecimal(value.to_s) }
+          x, y = operands.map do |value|
+            if value.is_a?(Rational)
+              BigDecimal(value.numerator, guard_digits).div(value.denominator, guard_digits)
+            else
+              BigDecimal(value.to_s)
+            end
+          end
           case label
           when "sqrt" then x.sqrt(guard_digits)
           when "log" then BigMath.log(x, guard_digits)

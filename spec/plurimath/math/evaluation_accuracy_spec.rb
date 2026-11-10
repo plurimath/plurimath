@@ -20,6 +20,13 @@ RSpec.describe "accuracy-aware evaluation" do # rubocop:disable RSpec/DescribeCl
     expect(outcome).not_to be_deferred
   end
 
+  it "computes guard digits for exact rational transcendental operands" do
+    outcome = result("sin(x)", { x: Rational(1, 2) }, mode: :strict, guard_digits: 40)
+    expected = BigDecimal("0.4794255386042030002732879352155713880818")
+    expect(outcome.value).to be_a(BigDecimal)
+    expect((outcome.value - expected).abs).to be < BigDecimal("1e-38")
+  end
+
   it "keeps rational division exact in strict mode" do
     expect(value("1/3", mode: :strict)).to eq(Rational(1, 3))
   end
