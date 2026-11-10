@@ -29,34 +29,47 @@ module Plurimath
       def element_order=(*); end
 
       def to_asciimath(options:)
+        return value.to_s unless number_formatter(options)
+
         Formatter::Numbers::TextRenderer.render(
           format_value_with_options(options), :asciimath
         )
       end
 
       def to_mathml_without_math_tag(_, options:)
+        return XmlHelper.ox_element("mn") << value.to_s unless number_formatter(options)
+
         Formatter::Numbers::MathmlRenderer.render(format_value_with_options(options))
       end
 
       def to_latex(options:)
+        return value.to_s unless number_formatter(options)
+
         Formatter::Numbers::TextRenderer.render(
           format_value_with_options(options), :latex
         )
       end
 
       def to_html(options:)
+        return value.to_s unless number_formatter(options)
+
         Formatter::Numbers::TextRenderer.render(
           format_value_with_options(options), :html
         )
       end
 
       def to_omml_without_math_tag(_, options:)
+        unless number_formatter(options)
+          return [XmlHelper.ox_element("t", namespace: "m") << value.to_s]
+        end
+
         [Formatter::Numbers::OmmlRenderer.render(format_value_with_options(options))]
       end
 
       def to_unicodemath(options:)
         return mini_sub if mini_sub_sized
         return mini_sup if mini_sup_sized
+        return value.to_s unless number_formatter(options)
 
         Formatter::Numbers::TextRenderer.render(
           format_value_with_options(options), :unicodemath
@@ -112,10 +125,15 @@ module Plurimath
         UnicodeMath::Constants.const_get(const)
       end
 
+      # Without a formatter a number is written as its value, so the writers
+      # above skip Formatter::Numbers and the formatter is loaded only when
+      # one is used.
+      def number_formatter(options)
+        options.fetch(:formatter) { Plurimath.configuration.number_formatter }
+      end
+
       def format_value_with_options(options)
-        formatter = options.fetch(:formatter) do
-          Plurimath.configuration.number_formatter
-        end
+        formatter = number_formatter(options)
         return value unless formatter
 
         format = options[:format] || {}
