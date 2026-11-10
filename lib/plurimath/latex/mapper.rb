@@ -118,9 +118,11 @@ module Plurimath
         end
 
         def table(env, rows, options = nil, **organize)
-          open_paren = Constants::MATRICES[env.to_sym]
+          cases = env.to_s == "cases"
+          open_paren = cases ? "{" : Constants::MATRICES[env.to_sym]
           table = Utility.organize_table(rows, **organize)
           close_paren = Constants::MATRICES_PARENTHESIS[open_paren&.to_sym]&.to_s
+          close_paren = ":}" if cases # the open-ended brace of Table::Cases
           args = [
             table,
             Utility.symbols_class(open_paren, lang: :latex, table: true),
@@ -338,7 +340,7 @@ module Plurimath
       # A wrapper's value, nil for a node with nothing set, or the node's
       # built value.
       def node_captures(node)
-        set = node.class.attributes.each_key.reject { |n| node.public_send(n).nil? }
+        set = node.class.attributes.reject { |n, a| a.method_name || node.public_send(n).nil? }.keys
         wrapper = set.find { |n| WRAPPERS.key?(n) }
         return wrapper_captures(node, set, wrapper) if wrapper
         return if set.empty?
