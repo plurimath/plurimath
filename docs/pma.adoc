@@ -63,7 +63,7 @@ https://github.com/plurimath/plurimath/issues/541[#541]
 |amath#16 task 3
 
 |Quantity assertion `+unit(J::energy)+`
-|proposed, partly open
+|proposed
 |amath#16 task 3, https://github.com/unitsml/unitsml-ruby/issues/136[unitsml-ruby#136]
 
 |Constructor `diff(q)` for difference quantities
@@ -101,7 +101,7 @@ https://github.com/plurimath/amath/issues/13[amath#13]
 https://github.com/plurimath/plurimath/issues/523[#523]
 
 |The pma corpus
-|proposed, location open
+|proposed, in unitsml-testsuite
 |amath#16 task 4, see <<conformance>>
 |===
 
@@ -629,9 +629,12 @@ pma itself.
 |`+unit((N::force)*m)+` |the assertion binds the whole unit expression only
 |===
 
-The asciiunits grammar has no `::` today, and the exact form of
-`quantity_ref` (a unitsdb identifier or a name) is not stated in amath#16.
-Both are open (<<open-decisions>>, item 8).
+The asciiunits grammar has no `::`, so pma wraps the asciiunits expression and
+adds the `::` itself. `quantity_ref` is the English name of a unitsdb
+quantity, resolved to its unitsml identifier: `energy` resolves to
+`q:energy`. The typed model holds the result in a `quantity` field on the unit
+node (<<open-decisions>>, item 8). amath implements this from the commit
+pinned in the Gemfile.
 
 === Concise input is refused
 
@@ -829,7 +832,7 @@ dialect L `+"unitsml(...)"+` argument gives today
 |a `Math::Function::Unitsml`
 
 |`::` assertion
-|no field exists (item 8)
+|the `quantity` field of the unit node (item 8)
 
 |`diff(q)`
 |no node exists (item 9)
@@ -844,7 +847,8 @@ page] applies unchanged.
 [[open-decisions]]
 == Open decisions
 
-These are not decided. Each links the issue where the decision belongs.
+These are not decided, except items 8 and 17, which are settled and kept here
+so that item numbers stay stable. Each links the issue where the decision belongs.
 Where a form is open, version 1 refuses it, so a later decision to accept it
 does not break any input that version 1 accepts.
 
@@ -878,11 +882,11 @@ does not break any input that version 1 accepts.
   (amath#16).
 . *Attachment targets.* Whether a plain number (`+9.81 unit(m/s^2)+`) or any
   other term may carry a trailing unit (amath#16).
-. *Quantity assertion.* The asciiunits grammar has no `::`, so either pma
-  wraps the asciiunits expression or asciiunits gains the operator. The form
-  of the quantity reference (unitsdb identifier or name) is not stated, and
-  no model field holds the assertion (amath#16,
-  https://github.com/unitsml/unitsml-ruby/issues/136[unitsml-ruby#136]).
+. *Quantity assertion.* Settled. pma wraps the asciiunits expression, so
+  asciiunits does not gain the `::` operator. `quantity_ref` is the English
+  name of a unitsdb quantity, resolved to its unitsml identifier, for example
+  `energy` to `q:energy`. The typed model holds it in a `quantity` field on
+  the unit node. amath implements this (amath#16, https://github.com/unitsml/unitsml-ruby/issues/136[unitsml-ruby#136]).
 . *`diff(q)`.* What `q` may be (a number with a unit, a measured value, a
   unit alone) and which node represents a difference quantity. The name
   `diff` is decided (amath#16, #524 "Unit scoping",
@@ -907,8 +911,8 @@ does not break any input that version 1 accepts.
   results share `Amath::Model::Document` with dialect L (amath#16).
 . *The `+a/−b` layout.* Unchanged from the uncertainty page: neither JCGM 100
   nor JCGM 101 defines its meaning, so pma has no form for it (#524).
-. *Corpus placement.* See <<conformance>> (amath#16,
-  https://github.com/plurimath/plurimath/issues/540[#540],
+. *Corpus placement.* Settled. The pma corpus lands in unitsml-testsuite
+  (see <<conformance>>; amath#16,
   https://github.com/unitsml/unitsml-testsuite/issues/1[unitsml-testsuite#1]).
 
 [[conformance]]
@@ -921,21 +925,16 @@ least one refused row with its position and category. amath#16 also asks
 that the pma grammar artifact record its registry edition and that the
 reserved-word collision check run in CI.
 
-Where the corpus lives is not decided:
-
-* plurimath-testsuite, as a stage generation under `stages/pma/`. Stage layout
-  revision 1
-  (https://github.com/plurimath/plurimath-testsuite/blob/6f8bc12602e6016290179f0939b6afd518ef44df/docs/stage-corpus-contract.adoc[plurimath-testsuite
-  `6f8bc12`]) admits only the languages `asciimath`, `latex`, `unicode`,
-  `mathml`, `omml`, `html` and `roundtrip`. A `pma` language needs a layout
-  revision first; a stage data pull request cannot add it.
-* unitsml-testsuite, which amath#16 names for the pma corpus ("render + parse
-  vectors"), and whose
-  https://github.com/unitsml/unitsml-testsuite/issues/1[issue #1] plans
-  `corpora/uncertainty/` for the uncertainty forms. This placement is
-  undecided.
-* amath's own `corpora/`, where the dialect L shared-exponent corpus lives
-  today, as staging until one of the above is decided.
+The pma corpus lands in unitsml-testsuite, as amath#16's acceptance states
+(it names "render + parse vectors"). unitsml-testsuite
+https://github.com/unitsml/unitsml-testsuite/issues/1[issue #1] plans
+`corpora/uncertainty/` for the uncertainty forms. It does not go in
+plurimath-testsuite: stage layout revision 1
+(https://github.com/plurimath/plurimath-testsuite/blob/6f8bc12602e6016290179f0939b6afd518ef44df/docs/stage-corpus-contract.adoc[plurimath-testsuite
+`6f8bc12`]) admits only the languages `asciimath`, `latex`, `unicode`,
+`mathml`, `omml`, `html` and `roundtrip`. amath's own `corpora/`, where the
+dialect L shared-exponent corpus lives today, serves as staging until the
+pma corpus is in unitsml-testsuite.
 
 Until the corpus exists, nothing checks this page.
 

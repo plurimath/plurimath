@@ -159,6 +159,10 @@ module Plurimath
         [{ environment: s, table_data: q, ending: s }, ->(e, d, _) { Build.table(e, d, {}) }],
         [{ underover: s, first_value: s, subscript: s, supscript: s },
          ->(f, v, b, p) { Math::Function::PowerBase.new(Utility.get_class(f).new(v), b, p) }],
+        [{ underover: s, first_value: s, supscript: s },
+         ->(f, v, p) { Math::Function::Power.new(Utility.get_class(f).new(v), p) }],
+        [{ underover: s, first_value: s, subscript: s },
+         ->(f, v, b) { Math::Function::Base.new(Utility.get_class(f).new(v), b) }],
         [{ binary: s, first_value: s, second_value: q },
          lambda do |b, f, v|
            Utility.get_class(b.to_s.include?("mod") ? "mod" : b).new(f, Utility.filter_values(v))
