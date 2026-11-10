@@ -6,12 +6,14 @@ module Plurimath
       # Full exact polynomial compilation reuses Taylor's rational algebra.
       # Unlike derivative jets it retains every term (within an explicit cap).
       class SamplingPolynomial < Taylor
+        class NonConstant < Gum::UnsupportedModel; end
+
         DEGREE_LIMIT = nil
         MAX_TERMS = 128
 
         def constant_value
           unless terms.keys.all? { |powers| powers.sum.zero? }
-            raise Gum::UnsupportedModel, "finite output moments are not established for non-polynomial sampling models"
+            raise NonConstant, "finite output moments are not established for non-polynomial sampling models"
           end
           primal
         end
@@ -39,6 +41,8 @@ module Plurimath
             [number, factors]
           end
         end
+
+        def numeric_backend = "binary64-centered-exact-polynomial"
 
         def call(deviations)
           sum = 0.0

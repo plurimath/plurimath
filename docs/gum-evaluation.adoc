@@ -1,4 +1,4 @@
-= Independent-input uncertainty propagation
+= Uncertainty propagation and measurement statistics
 
 `Plurimath::Math::Evaluation::Gum` accepts explicit estimates, component
 variances and analytic sensitivity coefficients in one coherent unit system.
@@ -317,7 +317,14 @@ section6. The actual mass-calibration PDFs of section7 are used for LPU;
 normal-only GUF2 is refused for that mixed-PDF profile. An independent exact
 population-moment calculation uses reciprocal-uniform integrals. Its
 reference-density half-width is0.05kg/m3, as specified in Table7.1.
-Nonconstant-denominator MCM and correlated-normal MCM remain unsupported.
+MCM supports the mass model through exact rational compilation and an
+explicit denominator-support certificate. Correlated normal MCM requires
+`independent: false`, `joint_distribution: :multivariate_normal` and
+`joint_covariance:` in the ordered input mapping. Marginal normal variances
+must agree with the covariance diagonal. Exact LDL factorization supports
+singular positive-semidefinite covariance without jitter; final factor roots
+and samples use binary64. The result records the joint law, covariance and
+factor policy.
 Normal-equivalent local Taylor derivatives must not be interpreted as finite
 population moments of reciprocals of unbounded Gaussian variables.
 
@@ -327,3 +334,25 @@ quadratic variance, and the corrected mean. Neither unrequested truncation
 nor a different physical PDF is inferred from the example. Source digests,
 inputs, independent numerical reference generators and declared tolerances
 are included in the fixtures and focused specs.
+
+
+The rational sampler retains exact numerator/denominator polynomials and
+centers the output before binary64 evaluation. Conservative exact interval
+bounds must prove the denominator is separated from zero using explicitly
+bounded rectangular input supports. Other denominator PDFs, zero-crossing
+support and unsupported coefficient ranges receive typed refusals. A finite
+normal-input reciprocal is not inferred from a small standard deviation.
+Finite-output-variance checks use numerator polynomial degrees together with
+the bounded reciprocal certificate. Result metadata identifies this backend
+and records the exact denominator interval; it is distinct from the original
+polynomial backend.
+
+`spec/fixtures/evaluation/gum_mcm_profiles.json` supplies eleven explicit
+source profiles: three linear sums, six correlated quadratic cases, the
+actual mixed-PDF mass calibration, and the normal bromine example. The
+mathematical-reference Actions job runs these at two meaningful uncertainty
+digits and requires both interval kinds to stabilize. Independent population
+means/uncertainties are checked within two predeclared adaptive tolerances.
+This moment check does not establish population coverage of every returned
+interval. The bounded local three-profile run uses one meaningful digit;
+stronger full-profile execution is reported separately from Actions.

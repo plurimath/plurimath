@@ -9,8 +9,16 @@ module Plurimath
       # Both interval kinds may be monitored simultaneously (a stronger stop).
       class MonteCarlo
         def initialize(formula, inputs:, independent:, seeds:, probability:,
-                       interval:, significant_digits:, guard_digits:, max_samples:)
-          raise Gum::UnsupportedModel, "joint dependence is unsupported" unless independent == true
+                       interval:, significant_digits:, guard_digits:, max_samples:,
+                       joint_covariance: nil, joint_distribution: nil)
+          if independent == true
+            unless joint_covariance.nil? && joint_distribution.nil?
+              raise Gum::InvalidInput, "independent sampling cannot also declare a joint covariance or law"
+            end
+          elsif independent != false || joint_distribution != :multivariate_normal || joint_covariance.nil?
+            raise Gum::UnsupportedModel, "joint sampling requires explicit multivariate_normal knowledge and covariance"
+          end
+          @joint_distribution = joint_distribution
           unless inputs.is_a?(Hash) && !inputs.empty? && inputs.keys.all? { |key| key.is_a?(String) || key.is_a?(::Symbol) }
             raise Gum::InvalidInput, "inputs must be a nonempty ordered PDF mapping"
           end
@@ -36,11 +44,19 @@ module Plurimath
           @interval = interval
           @generator = WichmannHill.new(seeds)
           centers = DistributionSampler.centers(inputs.values)
-          @model = SamplingCompiler.new(formula, @names, centers).compile(formula)
+          @model = begin
+            SamplingCompiler.new(formula, @names, centers).compile(formula)
+          rescue SamplingPolynomial::NonConstant
+            RationalSamplingCompiler.new(formula, @names, centers, inputs.values).compile(formula)
+          end
           unless @model.is_a?(CompiledPolynomial) && @model.degrees.any?(&:positive?)
             raise Gum::UnsupportedModel, "constant models need exact analysis rather than adaptive uncertainty tolerance"
           end
-          @sampler = DistributionSampler.new(inputs.values, @generator, degrees: @model.degrees, centered: true)
+          @sampler = if independent
+                       DistributionSampler.new(inputs.values, @generator, degrees: @model.degrees, centered: true)
+                     else
+                       CorrelatedNormalSampler.new(inputs.values, joint_covariance, @generator)
+                     end
         end
 
         def evaluate
@@ -143,6 +159,7 @@ module Plurimath
             next unless statistics.key?("#{kind}_lower".to_sym)
             intervals[kind] = %w[lower upper].map { |bound| decimal(@model.offset + statistics.fetch("#{kind}_#{bound}".to_sym).to_r) }
           end
+          certificate = @model.is_a?(CompiledRational) ? { denominator_interval: @model.denominator_interval.map(&:to_s), certificate: "exact-rectangular-support-interval-v1" } : {}
           { estimate: decimal(@model.offset + statistics.fetch(:estimate).to_r),
             standard_uncertainty: decimal(statistics.fetch(:standard_uncertainty)),
             intervals: intervals, probability: @probability.to_s,
@@ -152,10 +169,13 @@ module Plurimath
             significant_digits: @significant_digits, guard_digits: @guard_digits, precision_convention: :significant_digits,
             stabilized: true, method: :adaptive_mcm, variables: @names,
             engine: { name: "plurimath", version: Plurimath::VERSION,
-                      method: "JCGM101-2008-7.9.4-v1", numeric_backend: "binary64-centered-exact-polynomial",
+                      method: "JCGM101-2008-7.9.4-v1", numeric_backend: @model.numeric_backend,
                       generator: "enhanced-Wichmann-Hill-C.3.3.3",
                       initial_seeds: @generator.initial_seeds,
-                      final_state: @generator.state, uniform_draws: @generator.draws } }.freeze
+                      final_state: @generator.state, uniform_draws: @generator.draws }.merge(certificate).merge(
+                        @joint_distribution ? { joint_distribution: @joint_distribution,
+                          covariance: @sampler.covariance.map { |row| row.map(&:to_s) },
+                          joint_sampler: "exact-LDL-binary64-normal-v1" } : {}) }.freeze
         end
 
         def decimal(value) = Gum.decimal_output(value, @guard_digits)

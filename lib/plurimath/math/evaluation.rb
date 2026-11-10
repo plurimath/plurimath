@@ -7,8 +7,12 @@ module Plurimath
     module Evaluation
       autoload :WichmannHill, "#{__dir__}/evaluation/wichmann_hill"
       autoload :DistributionSampler, "#{__dir__}/evaluation/distribution_sampler"
+      autoload :CorrelatedNormalSampler, "#{__dir__}/evaluation/correlated_normal_sampler"
       autoload :SamplingPolynomial, "#{__dir__}/evaluation/compiled_polynomial"
       autoload :CompiledPolynomial, "#{__dir__}/evaluation/compiled_polynomial"
+      autoload :SamplingFraction, "#{__dir__}/evaluation/compiled_rational"
+      autoload :CompiledRational, "#{__dir__}/evaluation/compiled_rational"
+      autoload :RationalSamplingCompiler, "#{__dir__}/evaluation/compiled_rational"
       autoload :SamplingCompiler, "#{__dir__}/evaluation/compiled_polynomial"
       autoload :MonteCarlo, "#{__dir__}/evaluation/monte_carlo"
       autoload :Statistics, "#{__dir__}/evaluation/statistics"
