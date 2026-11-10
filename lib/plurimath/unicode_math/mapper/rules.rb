@@ -3601,6 +3601,30 @@ module Plurimath
           )
         end
 
+        # A text followed directly by an operator, as in ⓘ("marker"-1): the
+        # grammar reads the operator and what follows it as `exp`.
+        rule(open_paren: simple(:open_paren),
+             text: simple(:text),
+             exp: simple(:exp),
+             close_paren: simple(:close_paren)) do
+          Math::Function::Fenced.new(
+            open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+            [Math::Function::Text.new(text), exp],
+            close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          )
+        end
+
+        rule(open_paren: simple(:open_paren),
+             text: simple(:text),
+             exp: sequence(:exp),
+             close_paren: simple(:close_paren)) do
+          Math::Function::Fenced.new(
+            open_paren.is_a?(Slice) ? Utility.symbols_class(open_paren, lang: :unicodemath) : open_paren,
+            [Math::Function::Text.new(text)] + exp,
+            close_paren.is_a?(Slice) ? Utility.symbols_class(close_paren, lang: :unicodemath) : close_paren,
+          )
+        end
+
         rule(open_paren: simple(:open_paren),
              text: simple(:text),
              operand: simple(:operand),
