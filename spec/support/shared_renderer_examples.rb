@@ -2,7 +2,7 @@
 
 require "support/shared_renderer_fixtures"
 
-RSpec.shared_examples "shared renderer fixture" do |id|
+RSpec.shared_examples "shared renderer fixture" do |id, dedupe: false|
   row = SharedRendererFixtures.row(id)
   let(:__shared_renderer_example_memo) { {} }
   it "#{id}: #{row.fetch('description')}" do
@@ -34,7 +34,7 @@ RSpec.shared_examples "shared renderer fixture" do |id|
     end
     if row["program"]
       execute = lambda do
-        SharedRendererFixtures.run_program(row, context: self, example_memo: __shared_renderer_example_memo) { |actual, expected, comparison| check.call(actual, expected, comparison) }
+        SharedRendererFixtures.run_program(row, context: self, example_memo: __shared_renderer_example_memo, dedupe: dedupe) { |actual, expected, comparison| check.call(actual, expected, comparison) }
       end
       if row.fetch("program")["no_error"]
         expect { execute.call }.not_to raise_error
