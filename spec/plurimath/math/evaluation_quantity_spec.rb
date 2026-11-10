@@ -46,4 +46,10 @@ RSpec.describe "quantity-aware evaluation" do
     expect(outcome).not_to be_exact
   end
 
+  it "reports unavailable quantity support without breaking older numeric hosts" do
+    allow(Unitsml).to receive(:const_defined?).with(:Quantity).and_return(false)
+    expect { result("1+2", {}) }.to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError, /requires UnitsML Quantity/)
+    expect(Plurimath::Math.parse("1+2", :asciimath).evaluate.value).to eq(3)
+  end
+
 end

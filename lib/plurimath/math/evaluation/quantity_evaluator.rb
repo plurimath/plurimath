@@ -26,6 +26,9 @@ module Plurimath
         end
 
         def initialize(formula, bindings)
+          unless ::Unitsml.const_defined?(:Quantity) && ::Unitsml::Quantity.method_defined?(:convert_to)
+            unsupported("quantity evaluation requires UnitsML Quantity/conversion support (0.6.14 or later)")
+          end
           @magnitudes = []
           super(formula, bindings, mode: :strict)
         end

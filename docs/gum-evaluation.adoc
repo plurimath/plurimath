@@ -86,6 +86,9 @@ outside this API. `adequacy: :not_assessed` is always explicit.
 == Quantity arithmetic
 
 `Formula#evaluate_quantity(bindings)` is an explicit arithmetic entrypoint.
+It needs UnitsML Quantity/conversion support (available in 0.6.14). Older
+UnitsML versions retain the ordinary numeric evaluator; a quantity request
+receives a named unsupported-expression error when that engine is absent.
 Construct bindings with `Unitsml::Quantity.new(value: ..., unit: ...)`.
 Numeric bindings and literals are dimensionless; integer division retains
 rational magnitudes. Unit parsing, dimensions, composition, conversion and
