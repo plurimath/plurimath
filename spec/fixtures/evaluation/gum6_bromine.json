@@ -1,0 +1,18 @@
+{
+  "schema": "GUM6-bromine-inputs/1",
+  "source": {
+    "title": "JCGM GUM-6:2020",
+    "source_url": "https://www.bipm.org/documents/20126/2071204/JCGM_GUM_6_2020.pdf/d4e77d99-3870-0908-ff37-c1b6a230a337?download=true&t=1740559165145&version=1.11",
+    "pdf_sha256": "5abfd9c6791c41857c46d84807ec51b189e4b4068f4688936cd6f495c27f8e93",
+    "bytes": 2302463,
+    "pdftotext_exit": 0
+  },
+  "section": "13.1.4 example, pages60-61",
+  "model": "2*x*(1-x)",
+  "estimate": "0.500",
+  "standard_uncertainty": "0.005",
+  "pdf": "normal",
+  "pdf_scope": "explicit example assumption; physical abundance bounds are not a truncation instruction",
+  "published_estimate": "0.49995",
+  "published_standard_uncertainty": "0.00007"
+}

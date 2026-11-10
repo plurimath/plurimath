@@ -14,6 +14,7 @@ module Plurimath
       autoload :Statistics, "#{__dir__}/evaluation/statistics"
       autoload :Conformity, "#{__dir__}/evaluation/conformity"
       autoload :Covariance, "#{__dir__}/evaluation/covariance"
+      autoload :ImplicitModel, "#{__dir__}/evaluation/implicit_model"
       autoload :Calibration, "#{__dir__}/evaluation/calibration"
       autoload :GroupedStatistics, "#{__dir__}/evaluation/grouped_statistics"
       autoload :Accuracy, "#{__dir__}/evaluation/accuracy"

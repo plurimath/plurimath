@@ -67,6 +67,10 @@ module Plurimath
           raise InvalidInput, "missing validation result field: #{error.key}"
         end
 
+        def propagate_implicit(**options)
+          ImplicitModel.propagate(**options)
+        end
+
         def grouped_type_a(**options)
           GroupedStatistics.evaluate(**options)
         end

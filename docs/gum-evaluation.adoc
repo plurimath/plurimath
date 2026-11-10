@@ -297,3 +297,33 @@ published uncertainty to its last digit. Unrounded source observations or
 the publication's calculation/rounding convention are needed to close that
 separate boundary. Missing certificate or pooled-variance degrees of freedom
 remain unknown. These examples do not establish general model adequacy.
+
+
+== Implicit measurements and additional source profiles
+
+`Gum.propagate_implicit` linearizes a caller-supplied root of `h(y,x)=0`.
+Supply output estimates, `output_jacobian:`, `input_jacobian:`, input
+`covariance:`, `residuals:`, `residual_tolerance:` and `guard_digits:`.
+Exact pivoted elimination solves the sensitivity system, and the result
+retains the complete output covariance. Singular output Jacobians and
+residuals beyond the declared tolerance receive typed refusals. This is not
+a root finder; the residual tolerance has the units of the supplied equations.
+It does not establish the adequacy of the linearization.
+
+The GUM5 profiles include all ten thermometer outputs in section13, with
+shared calibration uncertainty; all six correlated Gaussian quadratic
+comparison-loss moment cases in section16; and the linear-sum variances of
+section6. The actual mass-calibration PDFs of section7 are used for LPU;
+normal-only GUF2 is refused for that mixed-PDF profile. An independent exact
+population-moment calculation uses reciprocal-uniform integrals. Its
+reference-density half-width is0.05kg/m3, as specified in Table7.1.
+Nonconstant-denominator MCM and correlated-normal MCM remain unsupported.
+Normal-equivalent local Taylor derivatives must not be interpreted as finite
+population moments of reciprocals of unbounded Gaussian variables.
+
+The GUM6:2020 section13.1.4 bromine profile uses the source's explicit normal
+PDF example. It demonstrates vanishing first-order sensitivity, nonzero
+quadratic variance, and the corrected mean. Neither unrequested truncation
+nor a different physical PDF is inferred from the example. Source digests,
+inputs, independent numerical reference generators and declared tolerances
+are included in the fixtures and focused specs.
