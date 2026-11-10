@@ -93,6 +93,9 @@ module Plurimath
     def parse_formula(text, type)
       klass = klass_from_type(type)
       formula = klass.new(text).to_formula
+      # A unit on its own parses to a bare Unitsml node; wrap it so every
+      # format returns a Formula.
+      formula = Formula.new([formula]) unless formula.is_a?(Formula)
       formula.input_string = text
       formula
     end

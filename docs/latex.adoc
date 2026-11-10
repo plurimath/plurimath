@@ -189,10 +189,7 @@ normalised or lost:
 * `\binom` becomes a matrix between braces, and `\operatorname` is dropped;
 * `\sin x` is written as `\sin{x}`.
 
-One row fails. `\overbrace` with only a label above it is read,
-but the mapper builds no node for it, so writing the formula raises
-`Plurimath::Math::ParseError`; `\overbrace` reads when it has both a
-subscript and a superscript.
+Every row reads and writes back.
 
 // BEGIN GENERATED constructs
 [cols="2,3l,3l,3l",options="header"]
@@ -224,7 +221,7 @@ subscript and a superscript.
 |Upright font |\mathrm{d}x |rm(d) x |\mathrm{d} x
 |Accent |\hat{x} |hat(x) |\hat{x}
 |Overline |\overline{x} |bar(x) |\overline{x}
-|Brace with label |\overbrace{x}^{n} |raises Plurimath::Math::ParseError |raises Plurimath::Math::ParseError
+|Brace with label |\overbrace{x}^{n} |obrace(x)^(n) |\overbrace{x}^{n}
 |Colour |\color{red}{x} |color(red)(x) |{\color{red} x}
 |===
 // END GENERATED constructs

@@ -122,7 +122,6 @@ module FormatSpecs
       "multiplier" => 'Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_asciimath(unitsml: { multiplier: :space })',
       "dimension" => 'Plurimath::Math.parse(%q("unitsml(dim_L)"), :asciimath).to_asciimath',
       "type" => 'Plurimath::Math.parse("m*s^-2", :unitsml).class',
-      "type-write" => 'Plurimath::Math::Formula.new(Plurimath::Math.parse("m*s^-2", :unitsml)).to_asciimath',
       "type-write-direct" => 'Plurimath::Math.parse("m*s^-2", :unitsml).to_asciimath',
       "type-variable-exponent" => 'Plurimath::Math.parse("m^x", :unitsml)',
       "type-unknown" => 'Plurimath::Math.parse("foo", :unitsml)',
