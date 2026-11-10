@@ -89,11 +89,14 @@ frac(a)(b) + sqrt(x)
 ----
 // END GENERATED example read
 
-A `\u` escape takes up to five hexadecimal digits, which are copied into the
-reference as written, and drops up to five letters or digits that follow
-them. The symbol table only knows references without leading zeros, so
-`\u3b1` is read as α but `\u03B1` stays an unknown character, and in
-`\u03B1x` the `x` is lost:
+A `\u` escape takes up to five hexadecimal digits. Plurimath writes the
+escape of a non-ASCII character out as the character before umath reads the
+text, so `\u3b1` and `\u03B1` are both α, and the characters that follow an
+escape are kept, as in `\u03B1x`. An escape of an ASCII character, one of the
+comment brackets `⫷` and `⫸`, a surrogate, and a `\u` after a backslash are
+left to umath, which copies the digits into a reference as written and drops
+up to five letters or digits that follow; its symbol table only knows
+references without leading zeros:
 
 // BEGIN GENERATED example read-escape-short
 [source,ruby]
@@ -115,7 +118,7 @@ Plurimath::Math.parse("\\u03B1+1", :unicode).to_latex
 
 [source]
 ----
-&#x03B1; + 1
+\alpha + 1
 ----
 // END GENERATED example read-escape
 
@@ -127,7 +130,7 @@ Plurimath::Math.parse("\\u03B1x+1", :unicode).to_latex
 
 [source]
 ----
-&#x03B1; + 1
+\alpha x + 1
 ----
 // END GENERATED example read-escape-trailing
 
@@ -283,13 +286,16 @@ as UnicodeMath from the same formula. A difference between the input and the
 * a function name is followed by U+2061 FUNCTION APPLICATION, which is
   invisible;
 * a combining accent or overline is written after its base in brackets;
-* `a¦b`, which UTN 28 defines as a stack without a bar, is read as a fraction,
-  and written back with `¦`;
+* `a¦b`, which UTN 28 defines as a stack without a bar, is read as a
+  fraction whose line thickness is `0`. MathML writes it with
+  `linethickness="0"` and UnicodeMath writes it back with `¦`; AsciiMath and
+  LaTeX have no stack and write a fraction;
 * a matrix in round brackets is written with `⒨`; a matrix with a bracket on
-  one side is read with the right bracket as an unknown character, and
-  written back as `Ⓢ`;
-* a bold letter such as `𝐱` is kept as its character, which AsciiMath can
-  only write as a character reference.
+  one side, such as `{■(a&b)┤`, is written back as it was read, because `┤` is
+  UTN 28's invisible close;
+* a bold letter such as `𝐱` is kept as its character, as UTN 28 encodes the
+  math alphanumerics (U+1D400 to U+1D7FF) as characters; AsciiMath can only
+  write it as a character reference.
 
 // BEGIN GENERATED constructs
 [cols="2,3l,3l,3l",options="header"]
@@ -316,7 +322,7 @@ as UnicodeMath from the same formula. A difference between the input and the
 |Matrix |■(a&b@c&d) |[[a, b], [c, d]] |■(a&b@c&d)
 |Matrix in brackets |(■(a&b@c&d)) |([a, b], [c, d]) |⒨(a&b@c&d)
 |Matrix in brackets, short form |⒨(a&b) |([a, b]) |⒨(a&b)
-|Bracket on one side |{■(a&b)┤ |{[a, b]&#x2524; |Ⓢ(a&b)
+|Bracket on one side |{■(a&b)┤ |{[a, b]&#x2524; |{■(a&b)┤
 |Text |"if" |"if" |"if"
 |Bold letter |𝐱 |&#x1d431; |𝐱
 |Combining accent |x̂ |overset(^)(x) |(x)̂
@@ -345,9 +351,9 @@ Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_unicodemath
 ----
 // END GENERATED example uncertainty
 
-The reader cannot take a marker string followed directly by `-`, so a negative
-value that would start the visible content is put in the invisible `〖〗`
-group. The marker is unchanged:
+The reader takes a marker string followed directly by `-`, as in
+`ⓘ("m"-1)`. The writer still puts a negative value that would start the
+visible content in the invisible `〖〗` group. The marker is unchanged:
 
 // BEGIN GENERATED example uncertainty-negative
 [source,ruby]
@@ -404,7 +410,9 @@ link:uncertainty.adoc#round-trip[the round-trip matrix].
 
 `Plurimath::Math.parse(text, :unicode)` raises
 `Plurimath::Math::ParseError` when the grammar rejects the text or the
-transform cannot build a node; the original error is not kept as the `cause`.
+transform cannot build a node. The original error is deliberately not kept as
+the `cause`: public parsing hides the parser's error behind `ParseError` for
+every format.
 A marker that does not match the marker grammar raises
 `Plurimath::Errors::InvalidUncertainty` inside, which also reaches the caller
 as a `ParseError`.
@@ -413,7 +421,7 @@ as a `ParseError`.
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `337262eda0483ceaa43a02cc52362c5b721e5eb3` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `51d64ea4006f29df085445e469e74190aa6758c5` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===
