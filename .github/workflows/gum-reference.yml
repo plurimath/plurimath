@@ -32,7 +32,7 @@ jobs:
         run: >-
           bundle exec ruby scripts/check_gum_references.rb
           --output "$RUNNER_TEMP/gum-profiles-reference.json"
-          --significant-digits 2 --max-samples 2000000
+          --significant-digits 2 --max-samples 8000000
           spec/fixtures/evaluation/gum_mcm_profiles.json
       - uses: actions/upload-artifact@v4
         if: always()

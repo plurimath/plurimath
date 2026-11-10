@@ -57,6 +57,7 @@ fixture.fetch("cases").each do |profile|
     end
   rescue StandardError => error
     row.merge!(passed: false, error: { class: error.class.name, message: error.message })
+    row[:error][:details] = error.details if error.respond_to?(:details) && error.details
     raise
   ensure
     row[:elapsed_seconds] = format("%.3f", Process.clock_gettime(Process::CLOCK_MONOTONIC) - started)

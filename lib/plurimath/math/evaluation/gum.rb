@@ -13,7 +13,14 @@ module Plurimath
         class InvalidInput < ArgumentError; end
         class UnsupportedModel < InvalidInput; end
         class NumericalFailure < StandardError; end
-        class ConvergenceError < StandardError; end
+        class ConvergenceError < StandardError
+          attr_reader :details
+
+          def initialize(message = nil, details: nil)
+            super(message)
+            @details = details&.freeze
+          end
+        end
 
         module_function
 

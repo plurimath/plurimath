@@ -1,6 +1,18 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Math::Evaluation::MonteCarlo do
+  it "preserves every Welford prefix bit when batches replace historical rescans" do
+    evaluator = Plurimath::Math::Evaluation::MonteCarlo.allocate
+    values = Array.new(30000) { |i| ((i*7919)%10007-5003).to_f/97 }
+    state = {count: 0, estimate: 0.0, sum: 0.0}
+    values.each_slice(10000).with_index do |batch,index|
+      actual = evaluator.send(:moments,batch,state: state)
+      expected = evaluator.send(:moments,values.first((index+1)*10000))
+      actual.each { |key,value| expect([value].pack("G")).to eq([expected.fetch(key)].pack("G")) }
+      expect(state[:count]).to eq((index+1)*10000)
+    end
+  end
+
   let(:gum) { Plurimath::Math::Evaluation::Gum }
   let(:seeds) { [12_345, 23_456, 34_567, 45_678] }
 
@@ -60,7 +72,12 @@ RSpec.describe Plurimath::Math::Evaluation::MonteCarlo do
       [{ distribution: :student_t, location: 0, scale: 1, degrees_of_freedom: 3 }],
       Plurimath::Math::Evaluation::WichmannHill.new(seeds), degrees: [1])
     expect(linear.draw.first).to be_finite
-    expect { request(formula, significant_digits: 12, max_samples: 20_000) }.to raise_error(gum::ConvergenceError)
+    expect { request(formula, significant_digits: 12, max_samples: 20_000) }.to raise_error(gum::ConvergenceError) { |error|
+      expect(error.details[:samples]).to eq(20_000)
+      expect(error.details[:numerical_tolerance]).not_to be_nil
+      expect(error.details[:twice_standard_errors].keys).to include(:estimate,:standard_uncertainty)
+      expect(error.details[:final_state]).to have_attributes(length: 4)
+    }
     expect { request(Plurimath::Math.parse("1/x", :asciimath)) }.to raise_error(gum::UnsupportedModel, /finite output moments/)
   end
 

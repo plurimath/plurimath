@@ -62,6 +62,8 @@ module Plurimath
         def evaluate
           all = []
           batches = []
+          overall_state = { count: 0, estimate: 0.0, sum: 0.0 }
+          delta = stability = overall = nil
           @max_batches.times do
             values = Array.new(@batch_size) do
               value = @model.call(@sampler.draw)
@@ -70,9 +72,8 @@ module Plurimath
             end
             all.concat(values)
             batches << summarize(values)
+            overall = moments(values, state: overall_state)
             next if batches.length < 2
-
-            overall = moments(all)
             delta = self.class.numerical_tolerance(overall[:standard_uncertainty], @significant_digits)
             stability = batches.first.keys.to_h do |key|
               data = batches.map { |batch| batch.fetch(key) }
@@ -84,7 +85,15 @@ module Plurimath
 
             return result(summarize(all), all.length, batches.length, delta, stability)
           end
-          raise Gum::ConvergenceError, "adaptive MCM did not stabilize within #{@max_batches * @batch_size} samples"
+          raise Gum::ConvergenceError.new(
+            "adaptive MCM did not stabilize within #{@max_batches * @batch_size} samples",
+            details: { samples: all.length, batches: batches.length,
+                       numerical_tolerance: delta.to_s("F"),
+                       estimate: decimal(@model.offset + overall.fetch(:estimate).to_r),
+                       standard_uncertainty: decimal(overall.fetch(:standard_uncertainty)),
+                       twice_standard_errors: stability.transform_values { |value| decimal(value) },
+                       initial_seeds: @generator.initial_seeds, final_state: @generator.state,
+                       uniform_draws: @generator.draws })
         end
 
         # Equation18 after rounding the uncertainty to the requested number
@@ -131,15 +140,19 @@ module Plurimath
 
         private
 
-        def moments(values)
-          mean = 0.0
-          sum = 0.0
-          values.each_with_index do |value, index|
+        # Persist the same Welford recurrence in sample order. Chunking
+        # changes no arithmetic operation; rescanning prior batches is avoided.
+        def moments(values, state: nil)
+          state ||= { count: 0, estimate: 0.0, sum: 0.0 }
+          mean, sum, count = state.values_at(:estimate, :sum, :count)
+          values.each do |value|
+            count += 1
             delta = value - mean
-            mean += delta / (index + 1)
+            mean += delta / count
             sum += delta * (value - mean)
           end
-          { estimate: mean, standard_uncertainty: ::Math.sqrt(sum / (values.length - 1)) }
+          state.update(count: count, estimate: mean, sum: sum)
+          { estimate: mean, standard_uncertainty: ::Math.sqrt(sum / (count - 1)) }
         end
 
         def summarize(values)

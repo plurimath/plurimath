@@ -316,7 +316,7 @@ comparison-loss moment cases in section16; and the linear-sum variances of
 section6. The actual mass-calibration PDFs of section7 are used for LPU;
 normal-only GUF2 is refused for that mixed-PDF profile. An independent exact
 population-moment calculation uses reciprocal-uniform integrals. Its
-reference-density half-width is0.05kg/m3, as specified in Table7.1.
+reference-density half-width is 0.05 kg/m3, as specified in Table7.1.
 MCM supports the mass model through exact rational compilation and an
 explicit denominator-support certificate. Correlated normal MCM requires
 `independent: false`, `joint_distribution: :multivariate_normal` and
@@ -356,3 +356,13 @@ means/uncertainties are checked within two predeclared adaptive tolerances.
 This moment check does not establish population coverage of every returned
 interval. The bounded local three-profile run uses one meaningful digit;
 stronger full-profile execution is reported separately from Actions.
+
+
+The extended reference job declares a maximum of eight million samples per
+profile. Its first two-million-sample run did not stabilize the zero-mean,
+correlation 0.9 quadratic case; that failure remains evidence of the resource
+boundary. A convergence refusal includes the achieved sample count, numerical
+tolerance, twice-standard-error diagnostics and PRNG state. The implementation
+persists the original Welford recurrence in sample order, avoiding repeated
+historical rescans while retaining the same binary64 prefix moments. Requested
+stopping criteria and meaningful digits are unchanged.
