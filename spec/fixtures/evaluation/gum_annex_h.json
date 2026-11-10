@@ -1,0 +1,259 @@
+{
+  "schema": "gum-annex-H-inputs/1",
+  "source_url": "https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf/cb0ef43f-baa5-11cf-3f85-4dcd86f77bd6?download=true&version=1.24",
+  "source_pdf_sha256": "41bbf068fbc0d7986c98691b2d1af6680cb3044f6a1a89b3560933ed9ef9626c",
+  "h2": {
+    "source": "H.2 TablesH.2-H.4, equationsH.7-H.9",
+    "observation_columns": [
+      "voltage_V",
+      "current_mA",
+      "phase_rad"
+    ],
+    "observations": [
+      [
+        "5.007",
+        "19.663",
+        "1.0456"
+      ],
+      [
+        "4.994",
+        "19.639",
+        "1.0438"
+      ],
+      [
+        "5.005",
+        "19.640",
+        "1.0468"
+      ],
+      [
+        "4.990",
+        "19.685",
+        "1.0428"
+      ],
+      [
+        "4.999",
+        "19.678",
+        "1.0433"
+      ]
+    ],
+    "published_approach1_estimates": [
+      "127.732",
+      "219.847",
+      "254.260"
+    ],
+    "published_approach1_uncertainties": [
+      "0.071",
+      "0.295",
+      "0.236"
+    ],
+    "published_output_correlations": [
+      [
+        "1",
+        "-0.588",
+        "-0.485"
+      ],
+      [
+        "-0.588",
+        "1",
+        "0.993"
+      ],
+      [
+        "-0.485",
+        "0.993",
+        "1"
+      ]
+    ],
+    "rounded_summary_uncertainties": [
+      "0.0032",
+      "0.0095",
+      "0.00075"
+    ],
+    "rounded_summary_correlations": [
+      [
+        "1",
+        "-0.36",
+        "0.86"
+      ],
+      [
+        "-0.36",
+        "1",
+        "-0.65"
+      ],
+      [
+        "0.86",
+        "-0.65",
+        "1"
+      ]
+    ]
+  },
+  "h3": {
+    "source": "H.3 TableH.6, equationsH.12-H.15",
+    "temperatures_C": [
+      "21.521",
+      "22.012",
+      "22.512",
+      "23.003",
+      "23.507",
+      "23.999",
+      "24.513",
+      "25.002",
+      "25.503",
+      "26.010",
+      "26.511"
+    ],
+    "corrections_C": [
+      "-0.171",
+      "-0.169",
+      "-0.166",
+      "-0.159",
+      "-0.164",
+      "-0.165",
+      "-0.156",
+      "-0.157",
+      "-0.159",
+      "-0.161",
+      "-0.160"
+    ],
+    "reference_temperature_C": "20",
+    "prediction_temperature_C": "30",
+    "published_intercept": "-0.1712",
+    "published_slope": "0.00218",
+    "published_intercept_u": "0.0029",
+    "published_slope_u": "0.00067",
+    "published_correlation": "-0.930",
+    "published_residual_s": "0.0035",
+    "published_prediction": "-0.1494"
+  },
+  "h4": {
+    "source": "H.4 TablesH.7-H.8, equationsH.19-H.23",
+    "columns": [
+      "t_standard_min",
+      "counts_standard",
+      "t_blank_min",
+      "counts_blank",
+      "t_sample_min",
+      "counts_sample"
+    ],
+    "observations": [
+      [
+        "243.74",
+        "15380",
+        "305.56",
+        "4054",
+        "367.37",
+        "41432"
+      ],
+      [
+        "984.53",
+        "14978",
+        "1046.10",
+        "3922",
+        "1107.66",
+        "38706"
+      ],
+      [
+        "1723.87",
+        "14394",
+        "1785.43",
+        "4200",
+        "1846.99",
+        "35860"
+      ],
+      [
+        "2463.17",
+        "13254",
+        "2524.73",
+        "3830",
+        "2586.28",
+        "32238"
+      ],
+      [
+        "3217.56",
+        "12516",
+        "3279.12",
+        "3956",
+        "3340.68",
+        "29640"
+      ],
+      [
+        "3956.83",
+        "11058",
+        "4018.38",
+        "3980",
+        "4079.94",
+        "26356"
+      ]
+    ],
+    "decay_constant_per_min": "0.000125894",
+    "counting_time_min": "60",
+    "standard_activity_Bq_per_g": "0.1368",
+    "standard_activity_u": "0.0018",
+    "standard_mass_g": "5.0192",
+    "standard_mass_u": "0.0050",
+    "sample_mass_g": "5.0571",
+    "sample_mass_u": "0.0010",
+    "published_approach1_activity": "0.4300",
+    "published_approach1_u": "0.0083",
+    "published_approach2_activity": "0.4304",
+    "published_approach2_u": "0.0084",
+    "source_assumptions": [
+      "decay/time/efficiency/dead-time uncertainties evaluated negligible",
+      "empirical variability already includes Poisson counting variability; do not add it twice"
+    ]
+  },
+  "h5": {
+    "source": "H.5 TableH.9,equationsH.25-H.32",
+    "group_means_V": [
+      "10.000172",
+      "10.000116",
+      "10.000013",
+      "10.000144",
+      "10.000106",
+      "10.000031",
+      "10.000060",
+      "10.000125",
+      "10.000163",
+      "10.000041"
+    ],
+    "group_sample_sds_microV": [
+      "60",
+      "77",
+      "111",
+      "101",
+      "67",
+      "93",
+      "80",
+      "73",
+      "88",
+      "86"
+    ],
+    "observations_per_group": 5,
+    "raw_observations_provided": false,
+    "published_mean_V": "10.000097",
+    "published_random_group_u_microV": "18",
+    "published_no_group_u_microV": "13",
+    "published_F": "2.25",
+    "published_F_critical_95": "2.12",
+    "published_F_critical_975": "2.45",
+    "rounded_group_mean_sd_microV": "57",
+    "rounded_pooled_within_sd_microV": "85"
+  },
+  "h6": {
+    "source": "H.6 TableH.10,equationsH.33-H.38",
+    "unit_mm": "0.002",
+    "mean_depth_scale_units": "36.0",
+    "pooled_sd_scale_units": "0.45",
+    "resolution_scale_units": "0.1",
+    "standard_average_sd_scale_units": "0.10",
+    "calibration_average_sd_scale_units": "0.11",
+    "standard_series_count": 6,
+    "calibration_series_count": 6,
+    "fractional_variation": "3/200",
+    "national_definition_u_scale_units": "0.5",
+    "correction_assumed_zero": true,
+    "published_hardness_index": "64.0",
+    "published_uncertainty_scale_units": "0.55",
+    "published_uncertainty_mm": "0.0011",
+    "pooled_sd_degrees_of_freedom_provided": false
+  }
+}

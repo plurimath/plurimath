@@ -67,6 +67,34 @@ module Plurimath
           raise InvalidInput, "missing validation result field: #{error.key}"
         end
 
+        def grouped_type_a(**options)
+          GroupedStatistics.evaluate(**options)
+        end
+
+        def linear_calibration(**options)
+          Calibration.fit(**options)
+        end
+
+        def predict_calibration(calibration, **options)
+          Calibration.predict(calibration, **options)
+        end
+
+        def type_a_covariance(observations)
+          Covariance.type_a(observations)
+        end
+
+        def propagate_covariance(**options)
+          Covariance.propagate(**options)
+        end
+
+        def correlation_matrix(covariance, **options)
+          Covariance.correlations(covariance, **options)
+        end
+
+        def propagate_vector(**options)
+          Covariance.transform(**options)
+        end
+
         def coverage(**options)
           Statistics.coverage(**options)
         end
@@ -207,7 +235,14 @@ module Plurimath
         # Half-width a about the estimate. Normal uses standard uncertainty,
         # not half-width; Student-t uses scale, not standard deviation.
         def component(distribution:, half_width: nil, standard_uncertainty: nil,
-                      scale: nil, degrees_of_freedom: nil, boundary_half_width: nil)
+                      scale: nil, degrees_of_freedom: nil, boundary_half_width: nil,
+                      pdf_degrees_of_freedom: nil, variance_degrees_of_freedom: :not_provided)
+          if distribution != :student_t && !pdf_degrees_of_freedom.nil?
+            raise InvalidInput, "PDF degrees of freedom apply only to Student-t"
+          end
+          if distribution != :student_t && !degrees_of_freedom.nil? && variance_degrees_of_freedom != :not_provided
+            raise InvalidInput, "provide only one variance degrees-of-freedom argument"
+          end
           variance = case distribution
                      when :rectangular, :triangular, :arcsine
                        a = exact(half_width)
@@ -226,14 +261,29 @@ module Plurimath
                        u**2
                      when :student_t
                        sigma = exact(scale)
-                       nu = exact(degrees_of_freedom)
+                       if pdf_degrees_of_freedom && degrees_of_freedom
+                         raise InvalidInput, "use variance_degrees_of_freedom separately from Student-t PDF degrees"
+                       end
+                       nu = exact(pdf_degrees_of_freedom || degrees_of_freedom)
                        raise InvalidInput, "Student-t needs nonnegative scale and nu > 2" if sigma.negative? || nu <= 2
                        sigma**2 * nu / (nu - 2)
                      else
                        raise UnsupportedModel, "unsupported component distribution"
                      end
-          { variance: variance, distribution: distribution,
-            degrees_of_freedom: degrees_of_freedom }.freeze
+          variance_dof = if variance_degrees_of_freedom != :not_provided
+                           variance_degrees_of_freedom
+                         elsif distribution == :student_t
+                           :unknown
+                         else
+                           degrees_of_freedom
+                         end
+          unless variance_dof.nil? || variance_dof == :unknown || exact(variance_dof).positive?
+            raise InvalidInput, "variance degrees of freedom must be positive, nil or unknown"
+          end
+          result = { variance: variance, distribution: distribution,
+                     degrees_of_freedom: variance_dof }
+          result[:pdf_degrees_of_freedom] = nu if distribution == :student_t
+          result.freeze
         end
 
         # JCGM 100 5.1.2 / note and JCGM 101 5.6: GUF2 is restricted
@@ -297,11 +347,24 @@ module Plurimath
                      adequacy: :not_assessed,
                      engine: { name: "plurimath", version: Plurimath::VERSION,
                                method: "independent-gum-v1" }.freeze }
-          result[:effective_degrees_of_freedom] = effective_dof(components, contributions, variance) if order == 1
+          if order == 1
+            unknown_dof = components.zip(contributions).any? { |component, contribution| component[:degrees_of_freedom] == :unknown && !contribution.zero? }
+            nu = effective_dof(components, contributions, variance)
+            result[:effective_degrees_of_freedom] = nu
+            result[:degrees_of_freedom_status] = if variance.zero?
+                                                   :not_applicable
+                                                 elsif unknown_dof
+                                                   :unknown
+                                                 else
+                                                   nu.nil? ? :infinite : :finite
+                                                 end
+          end
           result.freeze
         end
 
         def effective_dof(components, contributions, variance)
+          return nil if components.zip(contributions).any? { |component, contribution| component[:degrees_of_freedom] == :unknown && !contribution.zero? }
+
           denominator = components.zip(contributions).sum do |component, contribution|
             nu = component[:degrees_of_freedom]
             next 0 if nu.nil? || contribution.zero?

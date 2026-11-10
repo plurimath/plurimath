@@ -245,3 +245,55 @@ MCM to be at least five times tighter (JCGM 101 clauses 8.1/8.2). It returns
 `validated` or `not_validated` for that specified probability and interval;
 coarser, mismatched or incomplete MCM receives a typed refusal. This does not
 turn `adequacy: :not_assessed` into an unconditional model-validity claim.
+
+
+== Covariance, calibration and grouped observations
+
+`Gum.type_a_covariance(paired_observations)` retains the sample covariance
+and covariance of the mean of paired observations. `Gum.propagate_vector`
+uses an explicit Jacobian and covariance matrix and returns the complete
+output covariance, including cross-output terms. Covariance matrices must be
+symmetric positive semidefinite; singular matrices are accepted without
+adding diagonal noise.
+
+`Gum.propagate_covariance` extends the scalar propagation interface with
+`covariance:` and `joint_distribution:`. First-order propagation uses the
+complete covariance matrix. Second-order propagation requires explicit
+`:multivariate_normal` joint knowledge, normal component declarations, and
+complete symmetric Hessian and third-derivative tensors. Normal marginal
+PDFs and zero correlation alone do not establish joint normality. Correlated
+Welch-Satterthwaite degrees of freedom are not inferred.
+
+Student-t PDF shape and variance-estimate degrees of freedom are separate.
+Use `pdf_degrees_of_freedom:` for the PDF and, when supported by the source,
+`variance_degrees_of_freedom:` for the uncertainty estimate. The legacy
+Student-t `degrees_of_freedom:` keyword remains a PDF-shape alias. Its
+variance-estimate degrees default to `:unknown`, which propagates an unknown
+effective-degrees status. For other distributions, nil explicitly denotes
+infinite variance-estimate degrees; `:unknown` preserves missing information.
+
+`Gum.linear_calibration` implements the unweighted GUM H.3 line fit. The
+caller declares `abscissa_uncertainty: :negligible` and
+`residual_model: :independent_common_variance`. Prediction distinguishes
+`:mean_correction` from `:new_observation`; the latter includes residual
+variance. Extrapolation is flagged. The engine does not infer linearity,
+normality, or negligible temperature uncertainty.
+
+`Gum.grouped_type_a` accepts balanced group means and sample variances
+with `observations_per_group:`. It reports both mean squares, the F statistic
+and its degrees of freedom. The caller chooses `:random_group_effect` or
+`:no_group_effect`; no automatic F-test changes that choice. A negative
+estimated random-group component requires an explicit constrained model and
+is refused rather than silently clipped.
+
+The independently regenerated Annex H fixture covers paired electrical
+outputs (H.2), calibration (H.3), decay-corrected activity (H.4), balanced
+observation summaries (H.5), and Rockwell hardness components (H.6). Exact input
+profiles and numerical tolerances are in the focused specs. H.5 distinguishes
+provided summaries from the publication's rounded intermediate values. H.2
+checks both supplied raw observations and rounded uncertainty/correlation
+summaries against independent calculations; neither reproduces every
+published uncertainty to its last digit. Unrounded source observations or
+the publication's calculation/rounding convention are needed to close that
+separate boundary. Missing certificate or pooled-variance degrees of freedom
+remain unknown. These examples do not establish general model adequacy.
