@@ -2,7 +2,7 @@
 
 module Plurimath
   # pma, the strict ASCII dialect of AsciiMath (docs/pma.adoc). amath reads
-  # it with Amath.parse(text, dialect: :pma) and the AsciiMath mapper builds
+  # it with Amath.parse_model(text, dialect: :pma) and the AsciiMath mapper builds
   # the formula, so a measured value is the same Uncertainty node that the
   # :asciimath input type builds.
   class Pma

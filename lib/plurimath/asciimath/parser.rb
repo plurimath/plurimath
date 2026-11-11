@@ -40,8 +40,8 @@ module Plurimath
       # pma numbers always use the full stop, whatever the locale.
       def parse_with_amath
         decimal = dialect == :pma ? "." : Plurimath.configuration.decimal
-        document = ::Amath.parse(text, dialect: dialect, engine: :ruby,
-                                       decimal: decimal)
+        document = ::Amath.parse_model(text, dialect: dialect, engine: :ruby,
+                                             decimal: decimal)
         Mapper.new.call(document, text)
       rescue ::Amath::ParseError => e
         raise Parse.parse_failed(e, text)

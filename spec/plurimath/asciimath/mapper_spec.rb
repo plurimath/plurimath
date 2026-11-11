@@ -22,13 +22,13 @@ RSpec.describe Plurimath::Asciimath::Mapper do
     value.is_a?(Plurimath::Math::Formula) ? value : Plurimath::Math::Formula.new(value)
   end
 
-  it "parses through Amath.parse with dialect L on the Ruby engine" do
-    allow(Amath).to receive(:parse).and_call_original
+  it "parses through Amath.parse_model with dialect L on the Ruby engine" do
+    allow(Amath).to receive(:parse_model).and_call_original
     allow(Amath::Parser).to receive(:raw).and_call_original
 
     Plurimath::Math.parse("a+b", :asciimath)
 
-    expect(Amath).to have_received(:parse)
+    expect(Amath).to have_received(:parse_model)
       .with("a+b", dialect: :legacy, engine: :ruby, decimal: ".").once
     expect(Amath::Parser).not_to have_received(:raw)
   end
