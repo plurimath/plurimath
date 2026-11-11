@@ -28,6 +28,9 @@ gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 gem "parsanol"
 gem "umath", "~> 0.1"
+# Qualify the serialized quantity profile against the exact conversion producer.
+# Remove this development pin when the exact fractional conversion ships.
+gem "unitsml", github: "unitsml/unitsml-ruby", ref: "d64c95a478427b482f9bde2c4cbb626b111cb059"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"
