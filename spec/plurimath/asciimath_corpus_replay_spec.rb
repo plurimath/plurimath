@@ -162,10 +162,10 @@ RSpec.describe AsciimathCorpusReplay do
       out, status = runs[:pinned]
 
       expect(status).to eq(0), out
-      expect(out).to include("total: 27 payloads, 173 cases, 0 failures")
+      expect(out).to include("total: 28 payloads, 173 cases, 0 failures")
       expect(out).to match(%r{plurimath-corpus/rejections/1 +1 +13 })
       expect(out).to match(%r{plurimath-corpus/calls/1 +7 +66 })
-      expect(out).to match(%r{plurimath-corpus/asciimath/2 +1 +4 .*render_error_match=4})
+      expect(out).to match(%r{plurimath-corpus/asciimath/2 +1 +1 .*render_error_match=1})
       expect(out).to match(%r{plurimath-corpus/calls/2 +1 +2 })
     end
 
