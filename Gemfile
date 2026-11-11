@@ -10,6 +10,7 @@ gemspec
 gem "amath", git: "https://github.com/plurimath/amath",
              ref: "a4ed231057aeb98022f5c825807e888946a9e71c"
 gem "canon"
+gem "fiddle", "~> 1.1"
 # Candidate includes typed symbol portability; retain its exact pin until published.
 gem "latexmath", github: "plurimath/latexmath", ref: "372e377261c82e801ce755ebca7abfae1336ec39"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
