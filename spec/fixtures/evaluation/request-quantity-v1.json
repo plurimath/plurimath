@@ -3,7 +3,7 @@
   "source": {
     "plurimath_rust_commit": "03b0f4861ec374d704ec79de418e362f8f218386",
     "native_sha256": "0fb25423e8ddf0e62ec6a2d7591b8d277b4eda5bc9adafda9263a7b9409e3746",
-    "unitsml_ruby_commit": "21e874c53b3118288fd211648fa458d977f98f20"
+    "unitsml_ruby_commit": "d64c95a478427b482f9bde2c4cbb626b111cb059"
   },
   "cases": [
     {
@@ -112,6 +112,31 @@
       "expected_wire": "{\"engine\":\"plurimath.quantity/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"accuracy\":{\"symbol\":\"exact\"},\"converted\":null,\"value\":{\"canonical_magnitude\":\"1/4\",\"dimension_id\":\"NISTd96\",\"dimensions\":{\"Length\":\"-2\"},\"magnitude\":\"1/4\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"-2\",\"prefix\":null,\"unit\":\"NISTu1\"}]}},\"schema\":\"plurimath.evaluate.quantity/1\"}"
     },
     {
+      "id": "fractional-power",
+      "request_json": "{\"schema\":\"plurimath.evaluate.quantity/1\",\"ast\":{\"type\":\"variable\",\"name\":\"x\"},\"bindings\":{\"x\":{\"value\":\"1\",\"unit\":\"cm^(1/2)\"}}}",
+      "expected_wire": "{\"engine\":\"plurimath.quantity/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"accuracy\":{\"symbol\":\"exact\"},\"converted\":null,\"value\":{\"canonical_magnitude\":\"1/10\",\"dimension_id\":null,\"dimensions\":{\"Length\":\"1/2\"},\"magnitude\":\"1\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1/2\",\"prefix\":\"NISTp10_-2\",\"unit\":\"NISTu1\"}]}},\"schema\":\"plurimath.evaluate.quantity/1\"}"
+    },
+    {
+      "id": "fractional-conversion",
+      "request_json": "{\"schema\":\"plurimath.evaluate.quantity/1\",\"ast\":{\"type\":\"variable\",\"name\":\"x\"},\"bindings\":{\"x\":{\"value\":\"1\",\"unit\":\"cm^(1/2)\"}},\"convert_to\":\"m^(1/2)\"}",
+      "expected_wire": "{\"engine\":\"plurimath.quantity/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"accuracy\":{\"symbol\":\"exact\"},\"converted\":{\"canonical_magnitude\":\"1/10\",\"dimension_id\":null,\"dimensions\":{\"Length\":\"1/2\"},\"magnitude\":\"1/10\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1/2\",\"prefix\":null,\"unit\":\"NISTu1\"}]},\"value\":{\"canonical_magnitude\":\"1/10\",\"dimension_id\":null,\"dimensions\":{\"Length\":\"1/2\"},\"magnitude\":\"1\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1/2\",\"prefix\":\"NISTp10_-2\",\"unit\":\"NISTu1\"}]}},\"schema\":\"plurimath.evaluate.quantity/1\"}"
+    },
+    {
+      "id": "irrational-prefix-power",
+      "request_json": "{\"schema\":\"plurimath.evaluate.quantity/1\",\"ast\":{\"type\":\"variable\",\"name\":\"x\"},\"bindings\":{\"x\":{\"value\":\"1\",\"unit\":\"mm^(1/2)\"}}}",
+      "expected_wire": "{\"engine\":\"plurimath.quantity/1\",\"error\":{\"class\":\"error\",\"code\":\"InexactUnitPowerError\",\"detail\":\"InexactPower\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.quantity/1\"}"
+    },
+    {
+      "id": "combined-prefix-power",
+      "request_json": "{\"schema\":\"plurimath.evaluate.quantity/1\",\"ast\":{\"type\":\"variable\",\"name\":\"x\"},\"bindings\":{\"x\":{\"value\":\"1\",\"unit\":\"mg^(1/2)\"}},\"convert_to\":\"kg^(1/2)\"}",
+      "expected_wire": "{\"engine\":\"plurimath.quantity/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"accuracy\":{\"symbol\":\"exact\"},\"converted\":{\"canonical_magnitude\":\"1/1000\",\"dimension_id\":null,\"dimensions\":{\"Mass\":\"1/2\"},\"magnitude\":\"1/1000\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1/2\",\"prefix\":\"NISTp10_3\",\"unit\":\"NISTu27\"}]},\"value\":{\"canonical_magnitude\":\"1/1000\",\"dimension_id\":null,\"dimensions\":{\"Mass\":\"1/2\"},\"magnitude\":\"1\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1/2\",\"prefix\":\"NISTp10_-3\",\"unit\":\"NISTu27\"}]}},\"schema\":\"plurimath.evaluate.quantity/1\"}"
+    },
+    {
+      "id": "cube-prefix-power",
+      "request_json": "{\"schema\":\"plurimath.evaluate.quantity/1\",\"ast\":{\"type\":\"variable\",\"name\":\"x\"},\"bindings\":{\"x\":{\"value\":\"1\",\"unit\":\"mm^(1/3)\"}},\"convert_to\":\"m^(1/3)\"}",
+      "expected_wire": "{\"engine\":\"plurimath.quantity/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"accuracy\":{\"symbol\":\"exact\"},\"converted\":{\"canonical_magnitude\":\"1/10\",\"dimension_id\":null,\"dimensions\":{\"Length\":\"1/3\"},\"magnitude\":\"1/10\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1/3\",\"prefix\":null,\"unit\":\"NISTu1\"}]},\"value\":{\"canonical_magnitude\":\"1/10\",\"dimension_id\":null,\"dimensions\":{\"Length\":\"1/3\"},\"magnitude\":\"1\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1/3\",\"prefix\":\"NISTp10_-3\",\"unit\":\"NISTu1\"}]}},\"schema\":\"plurimath.evaluate.quantity/1\"}"
+    },
+    {
       "id": "explicit-dimensionless",
       "request_json": "{\"schema\":\"plurimath.evaluate.quantity/1\",\"ast\":{\"type\":\"variable\",\"name\":\"x\"},\"bindings\":{\"x\":{\"value\":\"1\",\"unit\":\"1\"}}}",
       "expected_wire": "{\"engine\":\"plurimath.quantity/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"accuracy\":{\"symbol\":\"exact\"},\"converted\":null,\"value\":{\"canonical_magnitude\":\"1\",\"dimension_id\":null,\"dimensions\":{},\"magnitude\":\"1\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1\",\"prefix\":null,\"unit\":\"NISTu61\"}]}},\"schema\":\"plurimath.evaluate.quantity/1\"}"
@@ -131,11 +156,5 @@
       "request_json": "{\"schema\":\"plurimath.evaluate.quantity/1\",\"ast\":{\"type\":\"variable\",\"name\":\"x\"},\"bindings\":{}}",
       "expected_wire": "{\"engine\":\"plurimath.quantity/1\",\"error\":{\"code\":\"MissingVariableError\"},\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":false,\"schema\":\"plurimath.evaluate.quantity/1\"}"
     }
-  ],
-  "known_gap": {
-    "id": "fractional-power",
-    "request_json": "{\"schema\":\"plurimath.evaluate.quantity/1\",\"ast\":{\"type\":\"variable\",\"name\":\"x\"},\"bindings\":{\"x\":{\"value\":\"1\",\"unit\":\"cm^(1/2)\"}}}",
-    "reference_wire": "{\"engine\":\"plurimath.quantity/1\",\"grammar\":\"plurimath.numeric-ast/1\",\"ok\":true,\"result\":{\"accuracy\":{\"symbol\":\"exact\"},\"converted\":null,\"value\":{\"canonical_magnitude\":\"1/10\",\"dimension_id\":null,\"dimensions\":{\"Length\":\"1/2\"},\"magnitude\":\"1\",\"scale\":\"ratio\",\"terms\":[{\"power\":\"1/2\",\"prefix\":\"NISTp10_-2\",\"unit\":\"NISTu1\"}]}},\"schema\":\"plurimath.evaluate.quantity/1\"}",
-    "expected_ruby_refusal": "InexactUnitPowerError"
-  }
+  ]
 }

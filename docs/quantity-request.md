@@ -13,5 +13,7 @@ The result contains the quantity and, when requested, its converted
 form. Each quantity carries its exact rational magnitude, canonical
 magnitude, dimensional powers, scale and resolved unit terms. Parser
 refusals carry a byte offset and the parser's expectations. Division
-by zero returns an indeterminate outcome. A conversion factor produced
-as a float is refused rather than presented as exact.
+by zero returns an indeterminate outcome. UnitsML retains rational
+conversion roots and reports an inexact-power refusal when a root
+is irrational. The fractional conversion cases use the UnitsML
+producer revision recorded in the quantity fixture.

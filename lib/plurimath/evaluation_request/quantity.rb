@@ -150,6 +150,10 @@ module Plurimath
 
         canonical
       rescue UNIT_ERRORS::ConversionError => error
+        if defined?(UNIT_ERRORS::InexactPowerError) && error.is_a?(UNIT_ERRORS::InexactPowerError)
+          refuse("InexactUnitPowerError", "InexactPower")
+        end
+
         case error.message
         when /affine/ then refuse("AffineCompositionError", "AffineComposition")
         when /no canonical conversion path for (.+)\z/
