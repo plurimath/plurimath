@@ -50,16 +50,16 @@ require "plurimath"
 module AsciimathCorpusReplay
   class Error < StandardError; end
 
-  # plurimath-testsuite e9e2403b2714219fa8ed80ad863460a9c5c7db0e
-  TESTSUITE_COMMIT = "e9e2403b2714219fa8ed80ad863460a9c5c7db0e"
+  # plurimath-testsuite 51d64ea4006f29df085445e469e74190aa6758c5
+  TESTSUITE_COMMIT = "51d64ea4006f29df085445e469e74190aa6758c5"
   PROVENANCE_SHA256 =
-    "4a212fd1e5cdb0223e19b573ed22dbadd28f8d6fd1ef730c678b1d449248019a"
+    "4f7f379f3994eba5c33c5117c0084b7e0cc9b51a860474813a87de68a5c67130"
   PROVENANCE_SCHEMA = "plurimath-corpus/provenance/3"
-  GENERATOR_COMMIT = "53b9c5b5fc6e26fdf56c4d31e5882fbd631e41da"
+  GENERATOR_COMMIT = "67ae25d96ebb38e6af2847abfbe7b112cfde3377"
   GENERATOR_SHA256 =
-    "f2ff26da538f90070d44077af2f60f475eb69bc3ff64424a1096e7a0b8e1af66"
-  ORACLE_COMMIT = "ae20be111a26fdd988c58be0bfb2b7f6fe6e352f"
-  ORACLE_VERSION = "0.11.12"
+    "351209c1964a74f4d5e3b7d58c14492625b02a2a97c251da1ee2c87a5098f87b"
+  ORACLE_COMMIT = "2967dcc47a9f37d5b9a2dd13d94a2ad35d4cc256"
+  ORACLE_VERSION = "0.11.17"
   XML_ENGINE = "Plurimath::XmlEngine::OxEngine"
 
   INPUT_FORMAT = "asciimath"
