@@ -18,7 +18,7 @@ jobs:
       after-setup-ruby: |
         set -euo pipefail
         git init ../amath
-        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git 43b59f4a3cd70691508d7297e4d7a8a03df34740
+        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git 667b517bb81276bf920f6f9fea940ae342d8c9e3
         git -C ../amath checkout --detach FETCH_HEAD
         printf '\ngem "amath", path: "../amath"\n' >> Gemfile
       repos-json-file: .github/workflows/dependent-repos-ruby.json
