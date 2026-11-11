@@ -5,10 +5,10 @@ gemspec
 
 # amath's typed model (Amath.parse_model returning Amath::Model::Document) ships in
 # amath 0.2.0, which is not on RubyGems yet. Until it is, amath comes from this
-# main commit (its version file still says 0.1.0). Drop this line once 0.2.0
+# commit of plurimath/amath PR #34 (version 0.2.0). Drop this line once 0.2.0
 # is published, and do not release plurimath before then.
 gem "amath", git: "https://github.com/plurimath/amath",
-             ref: "a4ed231057aeb98022f5c825807e888946a9e71c"
+             ref: "667b517bb81276bf920f6f9fea940ae342d8c9e3"
 gem "canon"
 # Candidate includes typed symbol portability; retain its exact pin until published.
 gem "latexmath", github: "plurimath/latexmath", ref: "372e377261c82e801ce755ebca7abfae1336ec39"
