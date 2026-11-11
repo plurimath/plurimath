@@ -167,11 +167,11 @@ RSpec.describe Plurimath::Asciimath do
   end
 
   describe Plurimath::Asciimath::Parser do
-    # Records each Amath.parse call and answers with the real amath result.
+    # Records each Amath.parse_model call and answers with the real amath result.
     let(:amath_calls) { [] }
 
     before do
-      allow(Amath).to receive(:parse).and_wrap_original do |original, text, **options|
+      allow(Amath).to receive(:parse_model).and_wrap_original do |original, text, **options|
         amath_calls << [text, options]
         original.call(text, **options)
       end

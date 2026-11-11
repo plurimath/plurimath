@@ -102,6 +102,9 @@ module Plurimath
         run = nil
         node.class.attributes.each do |name, attribute|
           next if attribute.method_name
+          # Portable stage declarations store these strings, while Ruby's
+          # Spelled readers still derive them from the spelling capture.
+          next if node.is_a?(::Amath::Model::Spelled) && %i[value kind].include?(name)
 
           value = node.public_send(name)
           next if value.nil?

@@ -49,7 +49,7 @@ https://github.com/plurimath/amath/issues/13[amath#13] is still open
 |implemented
 |https://github.com/plurimath/plurimath/pull/509[#509]
 
-|`Amath.parse` returning a typed model (amath 0.2.0)
+|`Amath.parse_model` returning a typed model (amath 0.2.0)
 |proposed
 |amath `docs/stage-contract.adoc`, issue
 https://github.com/plurimath/plurimath/issues/541[#541]
@@ -81,7 +81,7 @@ exists; nothing on this page changes until that happens.
 == Grammar source of truth
 
 Plurimath has no AsciiMath grammar of its own. `Plurimath::Asciimath::Parser`
-calls `Amath.parse(text, dialect: :legacy, engine: :ruby, decimal:
+calls `Amath.parse_model(text, dialect: :legacy, engine: :ruby, decimal:
 Plurimath.configuration.decimal)`, and `Plurimath::Asciimath::Mapper` turns
 the returned typed model (`Amath::Model::Document`) into a Formula with the
 rule table `Plurimath::Asciimath::Mapper::Rules`. The `:pma` input type
@@ -114,7 +114,7 @@ bindings, which amath removes before returning the tree.
 |===
 |Item |Value
 
-|amath revision documented |`3cbf3f8d0c789dff0542ad8b412d088659423d06`
+|amath revision documented |`667b517bb81276bf920f6f9fea940ae342d8c9e3`
 |`grammars/asciimath.parg` |`sha256:8fc391577745dec67f31913a54de1060c6856f5514ed3c11300724a462ae8cfb`
 |`data/vocabulary.json` |`sha256:768016984baee3ea142b69f0f31f4b9e9255ddedea078d6c7fb1728dc718695c`
 |vocabulary format |`amath-vocabulary/v2`
@@ -123,7 +123,7 @@ bindings, which amath removes before returning the tree.
 |artifact checksum (`artifacts/asciimath.json`) |`sha256:38d3d04d938de7a1989dd7779e725c1c19d6f6fb38a3a65feb4bcc5c8395f369`
 |artifact compiler (Parsanol) |`1.3.134`
 |artifact entries |`dot comma arabic`
-|runtime amath gem |`0.1.0`
+|runtime amath gem |`0.2.0`
 |runtime artifact checksum |`sha256:38d3d04d938de7a1989dd7779e725c1c19d6f6fb38a3a65feb4bcc5c8395f369`
 |runtime grammar source hash |`sha256:8fc391577745dec67f31913a54de1060c6856f5514ed3c11300724a462ae8cfb`
 |runtime artifact compiler (Parsanol) |`1.3.134`

@@ -73,6 +73,15 @@ module Plurimath
                                   guard_digits: guard_digits).evaluate
       end
 
+      # Explicit unit-aware arithmetic; callers construct Unitsml::Quantity
+      # bindings. The ordinary numeric evaluate API remains independent.
+      def evaluate_quantity(bindings = {})
+        hash = bindings.to_hash if bindings.respond_to?(:to_hash)
+        raise ArgumentError, "bindings must be a Hash-like object" unless hash.is_a?(Hash)
+
+        Evaluation::QuantityEvaluator.new(self, hash).evaluate
+      end
+
       def to_asciimath(formatter: nil, unitsml: {}, options: nil)
         options ||= { formatter: formatter, unitsml: unitsml }.compact
         options[:formula] ||= self

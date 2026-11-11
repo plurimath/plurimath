@@ -3,15 +3,16 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in plurimath.gemspec
 gemspec
 
-# amath's typed model (Amath.parse returning Amath::Model::Document) ships in
+# amath's typed model (Amath.parse_model returning Amath::Model::Document) ships in
 # amath 0.2.0, which is not on RubyGems yet. Until it is, amath comes from this
-# main commit (its version file still says 0.1.0). Drop this line once 0.2.0
+# commit of plurimath/amath PR #34 (version 0.2.0). Drop this line once 0.2.0
 # is published, and do not release plurimath before then.
 gem "amath", git: "https://github.com/plurimath/amath",
-             ref: "3cbf3f8d0c789dff0542ad8b412d088659423d06"
+             ref: "667b517bb81276bf920f6f9fea940ae342d8c9e3"
 gem "canon"
-# latexmath 1.0.0 lacks \begin{cases}; pinned to main until latexmath 1.0.1 is published.
-gem "latexmath", github: "plurimath/latexmath", ref: "8eb16f6d931ef35817f0188fe25a4f170f3da645"
+gem "fiddle", "~> 1.1"
+# Candidate includes typed symbol portability; retain its exact pin until published.
+gem "latexmath", github: "plurimath/latexmath", ref: "372e377261c82e801ce755ebca7abfae1336ec39"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # Optional native image-rendering backend for `Formula#render` / `plurimath
 # render`. Git-pinned until `lasem` ships to RubyGems; intentionally NOT a
@@ -28,6 +29,9 @@ gem "opal-rspec", "~> 1.1.0a"
 gem "ox"
 gem "parsanol"
 gem "umath", "~> 0.1"
+# Qualify the serialized quantity profile against the exact conversion producer.
+# Remove this development pin when the exact fractional conversion ships.
+gem "unitsml", github: "unitsml/unitsml-ruby", ref: "d64c95a478427b482f9bde2c4cbb626b111cb059"
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 gem "rubocop-performance"

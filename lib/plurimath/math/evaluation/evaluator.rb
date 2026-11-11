@@ -35,7 +35,7 @@ module Plurimath
         GUARD_DIGIT_FUNCTIONS = %w[sin cos exp log log_base log10 sqrt atan].freeze
 
         def initialize(formula, bindings = {}, mode: :approximate,
-                       guard_digits: nil)
+                       guard_digits: nil, unevaluated: nil)
           unless MODES.include?(mode)
             raise ArgumentError, "mode must be one of #{MODES.inspect}"
           end
@@ -43,6 +43,11 @@ module Plurimath
             raise ArgumentError, "guard_digits must be a positive Integer"
           end
 
+          unless unevaluated.nil? || unevaluated.is_a?(Array)
+            raise ArgumentError, "unevaluated must be an Array or nil"
+          end
+
+          @deferred_representation = unevaluated&.dup&.freeze
           @formula = formula
           @mode = mode
           @guard_digits = guard_digits
@@ -60,7 +65,7 @@ module Plurimath
                      unevaluated: @unevaluated)
         rescue BoundaryReached
           Result.new(value: nil, boundaries: @boundaries,
-                     unevaluated: [@formula.to_asciimath])
+                     unevaluated: @deferred_representation || [@formula.to_asciimath])
         rescue ::Math::DomainError => e
           raise Errors::Evaluation::MathDomainError, e.message
         rescue ::FloatDomainError
@@ -146,7 +151,11 @@ module Plurimath
           raise Errors::Evaluation::DivisionByZeroError if divisor.zero?
 
           if mode == :strict
-            exact_division(dividend, divisor)
+            if Accuracy.exact?(dividend) && Accuracy.exact?(divisor)
+              exact_division(dividend, divisor)
+            else
+              dividend / divisor
+            end
           else
             record_crossing("divide", [dividend, divisor], dividend / divisor.to_f)
           end
@@ -270,14 +279,22 @@ module Plurimath
         end
 
         def guard_digit_value(label, operands)
-          x, y = operands.map { |value| value.is_a?(BigDecimal) ? value : BigDecimal(value.to_s) }
-          case label
-          when "sqrt" then x.sqrt(guard_digits)
-          when "log" then BigMath.log(x, guard_digits)
-          when "log_base" then BigMath.log(x, guard_digits) / BigMath.log(y, guard_digits)
-          when "log10" then BigMath.log(x, guard_digits) / BigMath.log(BigDecimal("10"), guard_digits)
-          when "atan" then BigMath.atan(x, guard_digits)
-          else BigMath.public_send(label, x, guard_digits)
+          Accuracy.with_decimal_context do
+            x, y = operands.map do |value|
+              if value.is_a?(Rational)
+                BigDecimal(value.numerator, guard_digits).div(value.denominator, guard_digits)
+              else
+                BigDecimal(value.to_s)
+              end
+            end
+            case label
+            when "sqrt" then x.sqrt(guard_digits)
+            when "log" then BigMath.log(x, guard_digits)
+            when "log_base" then BigMath.log(x, guard_digits) / BigMath.log(y, guard_digits)
+            when "log10" then BigMath.log(x, guard_digits) / BigMath.log(BigDecimal("10"), guard_digits)
+            when "atan" then BigMath.atan(x, guard_digits)
+            else BigMath.public_send(label, x, guard_digits)
+            end
           end
         end
 

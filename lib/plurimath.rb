@@ -18,6 +18,7 @@ require "htmlentities"
 require "plurimath/xml_engine"
 
 module Plurimath
+  autoload :NativeKernel, "plurimath/native_kernel" unless RUBY_ENGINE == "opal"
   autoload :Asciimath, "plurimath/asciimath"
   autoload :Pma, "plurimath/pma"
   autoload :BaseNumberPrefix, "plurimath/base_number_prefix"

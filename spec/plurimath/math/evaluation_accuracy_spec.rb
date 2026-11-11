@@ -20,8 +20,31 @@ RSpec.describe "accuracy-aware evaluation" do # rubocop:disable RSpec/DescribeCl
     expect(outcome).not_to be_deferred
   end
 
+  it "computes guard digits for exact rational transcendental operands" do
+    outcome = result("sin(x)", { x: Rational(1, 2) }, mode: :strict, guard_digits: 40)
+    expected = BigDecimal("0.4794255386042030002732879352155713880818")
+    expect(outcome.value).to be_a(BigDecimal)
+    expect((outcome.value - expected).abs).to be < BigDecimal("1e-38")
+  end
+
   it "keeps rational division exact in strict mode" do
     expect(value("1/3", mode: :strict)).to eq(Rational(1, 3))
+  end
+
+  it "keeps limited float bindings limited through strict division" do
+    outcome = result("x/2", { x: 0.5 }, mode: :strict)
+
+    expect(outcome.value).to be_a(Float)
+    expect(outcome.value).to eq(0.25)
+    expect(outcome).not_to be_exact
+  end
+
+  it "keeps limited decimal bindings limited through strict division" do
+    outcome = result("x/2", { x: BigDecimal("1.2345") }, mode: :strict)
+
+    expect(outcome.value).to be_a(BigDecimal)
+    expect(outcome.value).to eq(BigDecimal("0.61725"))
+    expect(outcome).not_to be_exact
   end
 
   it "records the float crossing in approximate mode" do
@@ -152,5 +175,40 @@ RSpec.describe "accuracy-aware evaluation" do # rubocop:disable RSpec/DescribeCl
   it "absorbs keyword shorthand bindings while accepting mode options" do
     expect(value("a+b", a: 2, b: 3)).to eq(5)
     expect(value("x * 2", { x: "0.5" }, mode: :strict)).to eq(Rational(1))
+  end
+end
+
+RSpec.describe Plurimath::Math::Evaluation::Accuracy do
+  describe ".combine" do
+    it "keeps integer and rational operands exact" do
+      expect(described_class.combine(2, Rational(1, 3))).to eq(:exact)
+    end
+
+    it "preserves float contamination regardless of operand order" do
+      expect(described_class.combine(2, 0.5)).to eq(:limited_float)
+      expect(described_class.combine(0.5, Rational(1, 3))).to eq(:limited_float)
+    end
+
+    it "preserves declared decimal accuracy alongside exact operands" do
+      decimal = BigDecimal("1.2345")
+
+      expect(described_class.combine(2, decimal)).to eq(:limited_5)
+      expect(described_class.combine(decimal, Rational(1, 3))).to eq(:limited_5)
+    end
+
+    it "uses the least declared decimal precision" do
+      lower = BigDecimal("1.2345")
+      higher = BigDecimal("1.234567")
+
+      expect(described_class.combine(lower, higher)).to eq(:limited_5)
+      expect(described_class.combine(higher, lower)).to eq(:limited_5)
+    end
+
+    it "retains undeclared float accuracy when a decimal is also present" do
+      decimal = BigDecimal("1.2345")
+
+      expect(described_class.combine(decimal, 0.5)).to eq(:limited_float)
+      expect(described_class.combine(0.5, decimal, 2)).to eq(:limited_float)
+    end
   end
 end

@@ -1,0 +1,405 @@
+{
+  "schema": "gum-mcm-reference/1",
+  "moment_tolerance": "two adaptive numerical tolerances, applied to mean and standard uncertainty; no global coverage claim",
+  "intervals": "both interval kinds must stabilize; population interval validation is separate",
+  "cases": [
+    {
+      "id": "gum5_linear_1",
+      "model": "a+b+c+d",
+      "inputs": {
+        "a": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "1"
+        },
+        "b": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "1"
+        },
+        "c": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "1"
+        },
+        "d": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "1"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "0",
+      "expected_standard_uncertainty": "2.0",
+      "unit": "dimensionless"
+    },
+    {
+      "id": "gum5_linear_2",
+      "model": "a+b+c+d",
+      "inputs": {
+        "a": {
+          "distribution": "rectangular",
+          "lower": "-1.73205080756887729352744634150587236694280525381038062805580697945193301691",
+          "upper": "1.73205080756887729352744634150587236694280525381038062805580697945193301691"
+        },
+        "b": {
+          "distribution": "rectangular",
+          "lower": "-1.73205080756887729352744634150587236694280525381038062805580697945193301691",
+          "upper": "1.73205080756887729352744634150587236694280525381038062805580697945193301691"
+        },
+        "c": {
+          "distribution": "rectangular",
+          "lower": "-1.73205080756887729352744634150587236694280525381038062805580697945193301691",
+          "upper": "1.73205080756887729352744634150587236694280525381038062805580697945193301691"
+        },
+        "d": {
+          "distribution": "rectangular",
+          "lower": "-1.73205080756887729352744634150587236694280525381038062805580697945193301691",
+          "upper": "1.73205080756887729352744634150587236694280525381038062805580697945193301691"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "0",
+      "expected_standard_uncertainty": "2.0",
+      "unit": "dimensionless"
+    },
+    {
+      "id": "gum5_linear_3",
+      "model": "a+b+c+d",
+      "inputs": {
+        "a": {
+          "distribution": "rectangular",
+          "lower": "-1.73205080756887729352744634150587236694280525381038062805580697945193301691",
+          "upper": "1.73205080756887729352744634150587236694280525381038062805580697945193301691"
+        },
+        "b": {
+          "distribution": "rectangular",
+          "lower": "-1.73205080756887729352744634150587236694280525381038062805580697945193301691",
+          "upper": "1.73205080756887729352744634150587236694280525381038062805580697945193301691"
+        },
+        "c": {
+          "distribution": "rectangular",
+          "lower": "-1.73205080756887729352744634150587236694280525381038062805580697945193301691",
+          "upper": "1.73205080756887729352744634150587236694280525381038062805580697945193301691"
+        },
+        "d": {
+          "distribution": "rectangular",
+          "lower": "-17.3205080756887729352744634150587236694280525381038062805580697945193301691",
+          "upper": "17.3205080756887729352744634150587236694280525381038062805580697945193301691"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "0",
+      "expected_standard_uncertainty": "10.1488915650922194686485201189358743835819225018884066522536509206114038227",
+      "unit": "dimensionless"
+    },
+    {
+      "id": "gum5_comparison_loss_1",
+      "model": "x^2+y^2",
+      "inputs": {
+        "x": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "0.005"
+        },
+        "y": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "0.005"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "1/20000",
+      "expected_standard_uncertainty": "0.00005",
+      "unit": "dimensionless",
+      "independent": false,
+      "joint_distribution": "multivariate_normal",
+      "joint_covariance": [
+        [
+          "1/40000",
+          "0"
+        ],
+        [
+          "0",
+          "1/40000"
+        ]
+      ]
+    },
+    {
+      "id": "gum5_comparison_loss_2",
+      "model": "x^2+y^2",
+      "inputs": {
+        "x": {
+          "distribution": "normal",
+          "location": "0.010",
+          "sd": "0.005"
+        },
+        "y": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "0.005"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "3/20000",
+      "expected_standard_uncertainty": "0.000111803398874989484820458683436563811772030917980576286213544862270526046282",
+      "unit": "dimensionless",
+      "independent": false,
+      "joint_distribution": "multivariate_normal",
+      "joint_covariance": [
+        [
+          "1/40000",
+          "0"
+        ],
+        [
+          "0",
+          "1/40000"
+        ]
+      ]
+    },
+    {
+      "id": "gum5_comparison_loss_3",
+      "model": "x^2+y^2",
+      "inputs": {
+        "x": {
+          "distribution": "normal",
+          "location": "0.050",
+          "sd": "0.005"
+        },
+        "y": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "0.005"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "51/20000",
+      "expected_standard_uncertainty": "0.000502493781056044513510963245637978809347251173501318864528641414866424561578",
+      "unit": "dimensionless",
+      "independent": false,
+      "joint_distribution": "multivariate_normal",
+      "joint_covariance": [
+        [
+          "1/40000",
+          "0"
+        ],
+        [
+          "0",
+          "1/40000"
+        ]
+      ]
+    },
+    {
+      "id": "gum5_comparison_loss_4",
+      "model": "x^2+y^2",
+      "inputs": {
+        "x": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "0.005"
+        },
+        "y": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "0.005"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "1/20000",
+      "expected_standard_uncertainty": "0.0000672681202353685515858154273108520209693548119276006013760024364165901935921",
+      "unit": "dimensionless",
+      "independent": false,
+      "joint_distribution": "multivariate_normal",
+      "joint_covariance": [
+        [
+          "1/40000",
+          "9/400000"
+        ],
+        [
+          "9/400000",
+          "1/40000"
+        ]
+      ]
+    },
+    {
+      "id": "gum5_comparison_loss_5",
+      "model": "x^2+y^2",
+      "inputs": {
+        "x": {
+          "distribution": "normal",
+          "location": "0.010",
+          "sd": "0.005"
+        },
+        "y": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "0.005"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "3/20000",
+      "expected_standard_uncertainty": "0.000120519707931939496548430767314499851610521933391605919756188927508754599883",
+      "unit": "dimensionless",
+      "independent": false,
+      "joint_distribution": "multivariate_normal",
+      "joint_covariance": [
+        [
+          "1/40000",
+          "9/400000"
+        ],
+        [
+          "9/400000",
+          "1/40000"
+        ]
+      ]
+    },
+    {
+      "id": "gum5_comparison_loss_6",
+      "model": "x^2+y^2",
+      "inputs": {
+        "x": {
+          "distribution": "normal",
+          "location": "0.050",
+          "sd": "0.005"
+        },
+        "y": {
+          "distribution": "normal",
+          "location": "0",
+          "sd": "0.005"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "51/20000",
+      "expected_standard_uncertainty": "0.000504504707609354226132807346725198629356562294353534230856598779731087740044",
+      "unit": "dimensionless",
+      "independent": false,
+      "joint_distribution": "multivariate_normal",
+      "joint_covariance": [
+        [
+          "1/40000",
+          "9/400000"
+        ],
+        [
+          "9/400000",
+          "1/40000"
+        ]
+      ]
+    },
+    {
+      "id": "gum5_mass_calibration",
+      "model": "(p+q)*(1+(a-1.2)*(1/w-1/r))-100000",
+      "inputs": {
+        "p": {
+          "distribution": "normal",
+          "location": "100000.000",
+          "sd": "0.050"
+        },
+        "q": {
+          "distribution": "normal",
+          "location": "1.234",
+          "sd": "0.020"
+        },
+        "a": {
+          "distribution": "rectangular",
+          "lower": "11/10",
+          "upper": "13/10"
+        },
+        "w": {
+          "distribution": "rectangular",
+          "lower": "7000",
+          "upper": "9000"
+        },
+        "r": {
+          "distribution": "rectangular",
+          "lower": "159999/20",
+          "upper": "160001/20"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "da5fa8a2406cc2013eeff86d8b5e63a3647cd56410f1e58a42941c098db1a3a5",
+      "expected_mean": "1.234",
+      "expected_standard_uncertainty": "0.0754352711793805566346873347195885613346101564415969141408829996301950084928",
+      "unit": "mg"
+    },
+    {
+      "id": "gum6_bromine",
+      "model": "2*x*(1-x)",
+      "inputs": {
+        "x": {
+          "distribution": "normal",
+          "location": "0.500",
+          "sd": "0.005"
+        }
+      },
+      "seeds": [
+        12345,
+        23456,
+        34567,
+        45678
+      ],
+      "source_pdf_sha256": "5abfd9c6791c41857c46d84807ec51b189e4b4068f4688936cd6f495c27f8e93",
+      "expected_mean": "9999/20000",
+      "expected_standard_uncertainty": "0.0000707106781186547524400844362104849039284835937688474036588339868995366239231",
+      "unit": "fraction"
+    }
+  ]
+}

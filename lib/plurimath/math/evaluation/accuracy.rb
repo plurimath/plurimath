@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
+
 module Plurimath
   module Math
     module Evaluation
@@ -13,6 +15,18 @@ module Plurimath
         FLOAT = :limited_float
 
         module_function
+
+        # Explicit guard-digit computations own their decimal policy and
+        # restore the caller's thread-local settings, including on failure.
+        def with_decimal_context
+          BigDecimal.save_limit do
+            BigDecimal.save_rounding_mode do
+              BigDecimal.limit(0)
+              BigDecimal.mode(BigDecimal::ROUND_MODE, BigDecimal::ROUND_HALF_UP)
+              yield
+            end
+          end
+        end
 
         def of(value)
           case value
@@ -36,8 +50,8 @@ module Plurimath
         def combine(*values)
           values.map { |value| of(value) }.min_by do |label|
             case label
-            when EXACT then 0
-            when FLOAT then Float::INFINITY
+            when EXACT then Float::INFINITY
+            when FLOAT then -Float::INFINITY
             else label.to_s.split("_").last.to_i
             end
           end

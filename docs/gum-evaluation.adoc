@@ -1,0 +1,368 @@
+= Uncertainty propagation and measurement statistics
+
+`Plurimath::Math::Evaluation::Gum` accepts explicit estimates, component
+variances and analytic sensitivity coefficients in one coherent unit system.
+`analyze` derives exact first, second and third derivatives of an existing
+Formula with polynomial/rational arithmetic and integer powers. It reuses
+the existing expression parser. Unsupported function derivatives are refused;
+there is no finite-difference Hessian fallback. Neither entrypoint infers
+units or independence.
+
+[source,ruby]
+----
+gum = Plurimath::Math::Evaluation::Gum
+component = gum.component(distribution: :rectangular, half_width: "0.3")
+result = gum.propagate(estimate: "12.3", components: [component],
+                       gradient: [1], independent: true, guard_digits: 30)
+result[:variance] # => (3/100)
+result[:standard_uncertainty] # BigDecimal, declared precision
+----
+
+Inputs accept integers, rationals, decimal strings and finite BigDecimal
+values. Binary Float input is refused. `type_a(observations)` reports count,
+mean, extrema, sample variance, variance of the mean and degrees of freedom.
+A rectangular, triangular or arcsine component takes a half-width. Curvilinear trapezoid additionally takes
+`boundary_half_width: d`, with `0 < d < half_width`, giving variance
+`half_width^2/3 + d^2/9` (JCGM 101 6.4.3.4); a normal
+component takes a standard uncertainty. Student-t takes its scale and degrees
+of freedom, giving variance `scale^2 * nu/(nu-2)`; `nu <= 2` is refused.
+
+First-order propagation gives the sum of squared sensitivities times input
+variances. Optional positive component degrees of freedom give the
+Welch-Satterthwaite effective degrees of freedom. An omitted value denotes
+infinite degrees of freedom; a returned nil means the denominator is zero.
+This does not choose a coverage factor or assess LPU adequacy.
+
+For `order: 2`, all components must explicitly declare `distribution: :normal`.
+Supply a complete symmetric `hessian` matrix and `third` rank-three tensor,
+plus `derivatives_complete: true`. The estimate includes half the diagonal
+Hessian contraction. The variance includes both the Hessian-square and
+first-times-third derivative terms in JCGM 100:2008 5.1.2 note. A Hessian
+alone is insufficient: `f(x)=x+x^3` at zero has a zero Hessian and a nonzero
+order-four variance correction. Every derivative entry, including zeros,
+must be supplied. Unsupported joint dependence, nonnormal GUF2, incomplete
+derivatives and negative approximated variance raise a named error.
+
+[source,ruby]
+----
+formula = Plurimath::Math.parse("x+x^3", :asciimath)
+result = gum.analyze(formula, estimates: { x: 0 },
+                     components: { x: { variance: "0.01", distribution: :normal } },
+                     independent: true, order: 2, guard_digits: 40)
+result[:variance] # => (53/5000), including the first-times-third term
+----
+
+The estimate and component hashes must have identical ordered variable keys.
+Results identify the engine version and method revision. They retain exact
+rational variances and BigDecimal standard uncertainties; this is a Ruby API,
+not the complete serialized cross-runtime evaluator contract.
+
+== H.1 conventions and verification
+
+The fixture records four distinct source conventions: rounded GUM 100 H.1
+standard uncertainties, unrounded H.1 source components, JCGM 101 Table 10
+PDF population moments, and GUM 5:2026 Table 8.1 PDF population moments.
+These are different inputs and produce different uncertainties. The tests
+use explicitly synthetic independent normal inputs with each variance set
+to check the Taylor contraction; they refuse the actual nonnormal H.1 PDFs.
+No assertion forces the original 34 nm result to equal the amended 36 nm
+result within 0.5 nm. A special multi-affine moment identity does not remove
+the general normality restriction.
+
+Run `python3 spec/support/gum_h1_reference.py` to regenerate the exact
+rational derivative fixtures and independently factored variance references.
+The focused spec also checks a polynomial with nonzero third derivatives,
+a quadratic with a nonzero mean correction and the refusal boundaries.
+
+Sources: https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf[JCGM 100:2008],
+https://www.bipm.org/documents/20126/2071204/JCGM_101_2008_E.pdf[JCGM 101:2008],
+and the BIPM JCGM publications for GUM 100:2008/Amd.1:2026 and GUM 5:2026.
+
+This entrypoint supplies numerical propagation, not a complete JCGM engine.
+Unsupported function derivatives, automatic unit-aware GUM propagation,
+correlated inputs, global risks and Ruby/TS wire conformance remain outside
+this capability. An LPU/GUF2 result retains `adequacy: :not_assessed`; producing
+a coverage factor alone does not validate the approximation.
+
+== Quantity arithmetic
+
+`Formula#evaluate_quantity(bindings)` is an explicit arithmetic entrypoint.
+It needs UnitsML Quantity/conversion support (available in 0.6.14). Older
+UnitsML versions retain the ordinary numeric evaluator; a quantity request
+receives a named unsupported-expression error when that engine is absent.
+Construct bindings with `Unitsml::Quantity.new(value: ..., unit: ...)`.
+Numeric bindings and literals are dimensionless; integer division retains
+rational magnitudes. Unit parsing, dimensions, composition, conversion and
+scale legality stay in UnitsML. Addition and subtraction convert the right
+operand into the left operand's unit before delegating the operation.
+
+[source,ruby]
+----
+require "unitsml"
+formula = Plurimath::Math.parse("x+y", :asciimath)
+outcome = formula.evaluate_quantity(
+  x: Unitsml::Quantity.new(value: 1, unit: "m"),
+  y: Unitsml::Quantity.new(value: 50, unit: "cm")
+)
+outcome.value.value # => (3/2)
+outcome.value.norm_text # => "m"
+----
+
+The supported expression subset is arithmetic, rational fractions, parentheses
+and integer powers. Other functions raise an evaluator unsupported-expression
+error. Dimension mismatches, conversion failures and invalid scale operations
+preserve UnitsML's named error types. This does not attach units to GUM
+sensitivities automatically; callers of Gum still supply one coherent system.
+
+Quantity results expose `accuracy`; limited Float or BigDecimal sources remain
+limited even when UnitsML conversion returns a Rational magnitude.
+
+== Series and coverage factors
+
+`Gum.series(observations, axis:, window:, guard_digits:)` reports exact mean,
+extrema, count and sample variance, plus decimal strings for sample standard
+deviation and standard uncertainty of the mean. For a matrix, axis 0 treats
+rows as observations and axis 1 treats columns as observations. A window is
+nil (all observations) or zero-based `[start, length]` on the observation
+axis; out-of-range, ragged or insufficient samples are refused.
+
+`Gum.coverage(standard_uncertainty:, probability:, degrees_of_freedom:,
+guard_digits:)` returns a coverage factor and expanded uncertainty as decimal
+strings. Nil degrees of freedom selects a normal distribution; finite values
+select Student-t. The verified domain is central probability 0.5 through 0.999,
+Student-t degrees of freedom 1 through 10000, and at most 8 output significant
+digits. Other requests receive a typed refusal. Student-t factors come from
+integrating the normalized density and bracketing its CDF, independently
+checked against 80-digit incomplete-beta references. They are not interpolated
+from a table.
+
+Explicit guard-digit calculations select half-up decimal rounding and restore
+the caller's decimal context. Statistical wire rounding uses integer/rational
+arithmetic and does not depend on ambient BigDecimal limits or modes.
+
+== Deterministic adaptive Monte Carlo
+
+[source,ruby]
+----
+result = gum.monte_carlo(formula,
+  inputs: { x: { distribution: :normal, location: "0", sd: "1" } },
+  independent: true, seeds: [12345,23456,34567,45678], probability: "0.95",
+  interval: :both, significant_digits: 2, guard_digits: 12,
+  max_samples: 200000
+)
+----
+
+The sampler uses the enhanced four-state Wichmann-Hill recurrence from
+JCGM 101:2008 C.3.3.3. Four nonzero seeds below their respective moduli are
+required; they, the final state, draw count, method revision and variable
+order are included in the result. No process-global random source is used.
+Normal and Student-t sampling follow C.4 and C.6. Rectangular, symmetric
+triangular, arcsine and fixed-midpoint curvilinear trapezoid PDFs are also
+supported. Every input must declare its PDF and parameters; Student-t `scale`
+is not its standard deviation.
+
+The existing Formula parser compiles exact polynomials about the exact PDF
+centers. Large offset cancellation is simplified before sampling. The current
+sampling domain has at most 128 intermediate terms and total degree 32;
+nonconstant divisors are refused because finite output moments are not
+established. Finite output variance is checked before sampling: a Student-t input needs
+degrees of freedom greater than twice its polynomial degree. A linear
+Student-t input with three degrees of freedom is supported; its square is
+refused because that output has infinite variance. The batch standard
+deviation has a finite second moment whenever output variance is finite;
+no unnecessary fourth-moment condition is imposed.
+
+The batch size, significant-digit tolerance and stopping statistics follow
+7.9.4 and equation 18. Both probabilistically symmetric and shortest intervals
+use the one-based endpoint convention of 7.7.2. With `interval: :both`, every
+endpoint is included in the stabilization test. Exhausting the explicit
+sample cap raises `ConvergenceError`; it never reports an unstabilized
+calculation as complete. This statistical stopping procedure is not a
+mathematical guarantee of a particular realization's error.
+
+Sampling and centered evaluation use declared binary64 arithmetic; the exact
+polynomial coefficients and center expansion precede that computation.
+Non-exact result fields are decimal strings with at most 12 significant
+digits. `significant_digits` controls statistical stabilization independently
+of the wire's `guard_digits`. Cross-runtime byte identity is not asserted.
+
+The separate `GUM mathematical references` Actions job runs both actual
+nonnormal H.1 PDF conventions at two meaningful uncertainty digits and both
+interval kinds. Its artifact includes the actual sample counts, tolerance,
+seed states and comparison with independently factored population moments.
+The bounded local one-digit run is a coarser check, not a substitute for that
+job. Reproduce the stronger check with:
+
+[source,shell]
+----
+bundle exec ruby scripts/check_gum_references.rb --output /tmp/gum-reference.json \
+  --significant-digits 2 --max-samples 2000000 \
+  spec/fixtures/evaluation/gum_h1_mcm.json
+----
+
+== Normal conformity decisions
+
+`Gum.conformity` implements the normal, measurement-only knowledge case of
+JCGM 106:2012. Both `distribution: :normal` and
+`knowledge: :measurement_only` are explicit. This identifies the posterior
+estimate/uncertainty with the measurement estimate/uncertainty for the
+capability index and guard geometry; informative priors are refused.
+
+Supply `estimate:`, `standard_uncertainty:`, two `tolerance:` limits (nil for
+an unbounded side), `rule:`, `coverage_factor:`, `guard_ratio:` and
+`guard_digits:`. Rules are simple acceptance, guarded acceptance, guarded
+rejection, and `iso14253_style` (the k=2,r=1 geometry described in JCGM 106).
+The separately named `three_zone` policy reports conditional outcomes when
+the expanded interval overlaps a tolerance boundary. It is not substituted
+for a requested binary decision rule. Limits are closed, and boundary status
+and signed residuals are explicit.
+
+The returned specific consumer risk applies only to acceptance; specific
+producer risk applies only to rejection. Conditional decisions report neither
+as an actual decision risk. Global risks need a process/measurement joint PDF
+and receive a typed refusal. Conformance probabilities use both normal tails;
+probability fields declare 1 through 12 decimal places and their resolution.
+
+A 2.3 percent one-sided tail ceiling must not be assumed for every two-sided
+geometry. For example, with tolerance width 4u and w=2u, Cm=1 and the accepted
+midpoint has nonconformance probability 2*Phi(-2), about 4.55 percent.
+The engine returns the exact two-tail normal probability for the declared
+geometry. A requested `consumer_risk_ceiling:` is refused if the guard band
+does not establish it at the declared numerical resolution. The
+`iso14253_style` name denotes the geometry documented in JCGM 106:2012 and does
+not claim compliance with an unprovided later ISO edition.
+
+Reference regeneration: `spec/support/gum_statistics_reference.py` uses
+mpmath 1.3.0 at 80 decimal digits; `spec/support/wichmann_hill_reference.py` uses
+the independent 32-bit recurrence and exact rational arithmetic. Runtime Ruby
+uses different quadrature/recurrence paths. Normative publications remain at
+their official source; no PDF is bundled with this implementation.
+
+`Gum.validate_coverage` explicitly compares a proposed GUM interval against a
+stabilized MCM interval at the same probability. It derives the target tolerance
+from the proposed GUM standard uncertainty and meaningful digits, and requires
+MCM to be at least five times tighter (JCGM 101 clauses 8.1/8.2). It returns
+`validated` or `not_validated` for that specified probability and interval;
+coarser, mismatched or incomplete MCM receives a typed refusal. This does not
+turn `adequacy: :not_assessed` into an unconditional model-validity claim.
+
+
+== Covariance, calibration and grouped observations
+
+`Gum.type_a_covariance(paired_observations)` retains the sample covariance
+and covariance of the mean of paired observations. `Gum.propagate_vector`
+uses an explicit Jacobian and covariance matrix and returns the complete
+output covariance, including cross-output terms. Covariance matrices must be
+symmetric positive semidefinite; singular matrices are accepted without
+adding diagonal noise.
+
+`Gum.propagate_covariance` extends the scalar propagation interface with
+`covariance:` and `joint_distribution:`. First-order propagation uses the
+complete covariance matrix. Second-order propagation requires explicit
+`:multivariate_normal` joint knowledge, normal component declarations, and
+complete symmetric Hessian and third-derivative tensors. Normal marginal
+PDFs and zero correlation alone do not establish joint normality. Correlated
+Welch-Satterthwaite degrees of freedom are not inferred.
+
+Student-t PDF shape and variance-estimate degrees of freedom are separate.
+Use `pdf_degrees_of_freedom:` for the PDF and, when supported by the source,
+`variance_degrees_of_freedom:` for the uncertainty estimate. The legacy
+Student-t `degrees_of_freedom:` keyword remains a PDF-shape alias. Its
+variance-estimate degrees default to `:unknown`, which propagates an unknown
+effective-degrees status. For other distributions, nil explicitly denotes
+infinite variance-estimate degrees; `:unknown` preserves missing information.
+
+`Gum.linear_calibration` implements the unweighted GUM H.3 line fit. The
+caller declares `abscissa_uncertainty: :negligible` and
+`residual_model: :independent_common_variance`. Prediction distinguishes
+`:mean_correction` from `:new_observation`; the latter includes residual
+variance. Extrapolation is flagged. The engine does not infer linearity,
+normality, or negligible temperature uncertainty.
+
+`Gum.grouped_type_a` accepts balanced group means and sample variances
+with `observations_per_group:`. It reports both mean squares, the F statistic
+and its degrees of freedom. The caller chooses `:random_group_effect` or
+`:no_group_effect`; no automatic F-test changes that choice. A negative
+estimated random-group component requires an explicit constrained model and
+is refused rather than silently clipped.
+
+The independently regenerated Annex H fixture covers paired electrical
+outputs (H.2), calibration (H.3), decay-corrected activity (H.4), balanced
+observation summaries (H.5), and Rockwell hardness components (H.6). Exact input
+profiles and numerical tolerances are in the focused specs. H.5 distinguishes
+provided summaries from the publication's rounded intermediate values. H.2
+checks both supplied raw observations and rounded uncertainty/correlation
+summaries against independent calculations; neither reproduces every
+published uncertainty to its last digit. Unrounded source observations or
+the publication's calculation/rounding convention are needed to close that
+separate boundary. Missing certificate or pooled-variance degrees of freedom
+remain unknown. These examples do not establish general model adequacy.
+
+
+== Implicit measurements and additional source profiles
+
+`Gum.propagate_implicit` linearizes a caller-supplied root of `h(y,x)=0`.
+Supply output estimates, `output_jacobian:`, `input_jacobian:`, input
+`covariance:`, `residuals:`, `residual_tolerance:` and `guard_digits:`.
+Exact pivoted elimination solves the sensitivity system, and the result
+retains the complete output covariance. Singular output Jacobians and
+residuals beyond the declared tolerance receive typed refusals. This is not
+a root finder; the residual tolerance has the units of the supplied equations.
+It does not establish the adequacy of the linearization.
+
+The GUM5 profiles include all ten thermometer outputs in section13, with
+shared calibration uncertainty; all six correlated Gaussian quadratic
+comparison-loss moment cases in section16; and the linear-sum variances of
+section6. The actual mass-calibration PDFs of section7 are used for LPU;
+normal-only GUF2 is refused for that mixed-PDF profile. An independent exact
+population-moment calculation uses reciprocal-uniform integrals. Its
+reference-density half-width is 0.05 kg/m3, as specified in Table7.1.
+MCM supports the mass model through exact rational compilation and an
+explicit denominator-support certificate. Correlated normal MCM requires
+`independent: false`, `joint_distribution: :multivariate_normal` and
+`joint_covariance:` in the ordered input mapping. Marginal normal variances
+must agree with the covariance diagonal. Exact LDL factorization supports
+singular positive-semidefinite covariance without jitter; final factor roots
+and samples use binary64. The result records the joint law, covariance and
+factor policy.
+Normal-equivalent local Taylor derivatives must not be interpreted as finite
+population moments of reciprocals of unbounded Gaussian variables.
+
+The GUM6:2020 section13.1.4 bromine profile uses the source's explicit normal
+PDF example. It demonstrates vanishing first-order sensitivity, nonzero
+quadratic variance, and the corrected mean. Neither unrequested truncation
+nor a different physical PDF is inferred from the example. Source digests,
+inputs, independent numerical reference generators and declared tolerances
+are included in the fixtures and focused specs.
+
+
+The rational sampler retains exact numerator/denominator polynomials and
+centers the output before binary64 evaluation. Conservative exact interval
+bounds must prove the denominator is separated from zero using explicitly
+bounded rectangular input supports. Other denominator PDFs, zero-crossing
+support and unsupported coefficient ranges receive typed refusals. A finite
+normal-input reciprocal is not inferred from a small standard deviation.
+Finite-output-variance checks use numerator polynomial degrees together with
+the bounded reciprocal certificate. Result metadata identifies this backend
+and records the exact denominator interval; it is distinct from the original
+polynomial backend.
+
+`spec/fixtures/evaluation/gum_mcm_profiles.json` supplies eleven explicit
+source profiles: three linear sums, six correlated quadratic cases, the
+actual mixed-PDF mass calibration, and the normal bromine example. The
+mathematical-reference Actions job runs these at two meaningful uncertainty
+digits and requires both interval kinds to stabilize. Independent population
+means/uncertainties are checked within two predeclared adaptive tolerances.
+This moment check does not establish population coverage of every returned
+interval. The bounded local three-profile run uses one meaningful digit;
+stronger full-profile execution is reported separately from Actions.
+
+
+The extended reference job declares a maximum of eight million samples per
+profile. Its first two-million-sample run did not stabilize the zero-mean,
+correlation 0.9 quadratic case; that failure remains evidence of the resource
+boundary. A convergence refusal includes the achieved sample count, numerical
+tolerance, twice-standard-error diagnostics and PRNG state. The implementation
+persists the original Welford recurrence in sample order, avoiding repeated
+historical rescans while retaining the same binary64 prefix moments. Requested
+stopping criteria and meaningful digits are unchanged.

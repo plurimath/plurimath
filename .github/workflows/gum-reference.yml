@@ -1,0 +1,48 @@
+name: GUM mathematical references
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  h1-adaptive-mcm:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0.1"
+          bundler-cache: true
+      - name: Check both actual H.1 PDF conventions with adaptive MCM
+        run: >-
+          bundle exec ruby scripts/check_gum_references.rb
+          --output "$RUNNER_TEMP/gum-reference.json"
+          --significant-digits 2 --max-samples 2000000
+          spec/fixtures/evaluation/gum_h1_mcm.json
+      - name: Check linear, correlated quadratic, rational mass and bromine profiles
+        run: >-
+          bundle exec ruby scripts/check_gum_references.rb
+          --output "$RUNNER_TEMP/gum-profiles-reference.json"
+          --significant-digits 2 --max-samples 8000000
+          spec/fixtures/evaluation/gum_mcm_profiles.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gum-h1-mathematical-reference
+          path: ${{ runner.temp }}/gum-reference.json
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gum-extended-mathematical-references
+          path: ${{ runner.temp }}/gum-profiles-reference.json
+          if-no-files-found: warn
