@@ -48,7 +48,7 @@ Plurimath), *proposed* (described in an open issue, not built), or *open*
 |proposed
 |amath#16 task 2
 
-|`Amath.parse(input, dialect: :pma)` and the Plurimath `:pma` input type
+|`Amath.parse_model(input, dialect: :pma)` and the Plurimath `:pma` input type
 |implemented
 |amath#16 (amath `6e91de8`); selection decided in
 https://github.com/plurimath/plurimath/issues/541[#541]
@@ -120,7 +120,7 @@ These points are decided for this specification:
 * pma lives in amath, with the same registry, artifact pipeline and corpus
   tooling as dialect L. amath#16 left repository placement to the
   maintainers; this settles it.
-* pma is selected with an option on the single `Amath.parse`, not a second
+* pma is selected with an option on the single `Amath.parse_model`, not a second
   parser API (<<selection>>).
 * Version 1 has no fenced `±` shorthand. `+(v +/- u)+`, with `{plus}/-` as one
   terminal, is the only spelling of a measured literal.
@@ -179,15 +179,15 @@ The main differences, for readers who know dialect L:
 [[selection]]
 == Selection API
 
-pma is selected by an option of the one public `Amath.parse`. The option is
+pma is selected by an option of the one public `Amath.parse_model`. The option is
 added beside the existing `decimal:` and `engine:` options of the
 link:https://github.com/plurimath/amath/blob/main/docs/parser-contract.adoc[amath
 parser contract]:
 
 [source,ruby]
 ----
-Amath.parse(input, dialect: :legacy, decimal: ".", engine: :auto)
-Amath.parse(input, dialect: :pma)
+Amath.parse_model(input, dialect: :legacy, decimal: ".", engine: :auto)
+Amath.parse_model(input, dialect: :pma)
 
 Plurimath::Math.parse(text, :asciimath)   # dialect L, unchanged
 Plurimath::Math.parse(text, :pma)         # dialect P
@@ -212,7 +212,7 @@ link:https://github.com/plurimath/amath/blob/main/docs/stage-contract.adoc[share
 stage contract]: the dialect is an option, not a second entry point.
 
 In Plurimath, `:pma` is an input type next to `:asciimath`.
-`Plurimath::Math.parse(text, :pma)` calls `Amath.parse(text, dialect: :pma,
+`Plurimath::Math.parse(text, :pma)` calls `Amath.parse_model(text, dialect: :pma,
 engine: :ruby, decimal: ".")`, and the AsciiMath mapper builds the formula
 from the returned `Amath::Model::PmaDocument`. A measured value becomes the
 same `Uncertainty` node that the `ustd`, `uexp` and `ucov` calls of dialect L

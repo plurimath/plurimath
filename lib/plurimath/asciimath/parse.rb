@@ -9,9 +9,9 @@ module Plurimath
     # Parslet-shaped tree Mapper::Rules reads, and raises
     # Parslet::ParseFailed with a cause at amath's rejection position.
     #
-    # The raw tree is an amath internal (Amath::Parser.raw), not its public
-    # API (Amath.parse and the typed model are); nothing in plurimath's own
-    # parsing uses it.
+    # The raw tree is what Amath.parse and Amath::Parser.raw return (amath
+    # 0.1's contract); plurimath's own parsing uses the typed model from
+    # Amath.parse_model instead.
     class Parse
       # amath is a runtime dependency (published on RubyGems); this line is
       # only guidance for installs where the gem is unexpectedly missing.

@@ -49,7 +49,7 @@ https://github.com/plurimath/amath/issues/13[amath#13] is still open
 |implemented
 |https://github.com/plurimath/plurimath/pull/509[#509]
 
-|`Amath.parse` returning a typed model (amath 0.2.0)
+|`Amath.parse_model` returning a typed model (amath 0.2.0)
 |proposed
 |amath `docs/stage-contract.adoc`, issue
 https://github.com/plurimath/plurimath/issues/541[#541]
@@ -81,7 +81,7 @@ exists; nothing on this page changes until that happens.
 == Grammar source of truth
 
 Plurimath has no AsciiMath grammar of its own. `Plurimath::Asciimath::Parser`
-calls `Amath.parse(text, dialect: :legacy, engine: :ruby, decimal:
+calls `Amath.parse_model(text, dialect: :legacy, engine: :ruby, decimal:
 Plurimath.configuration.decimal)`, and `Plurimath::Asciimath::Mapper` turns
 the returned typed model (`Amath::Model::Document`) into a Formula with the
 rule table `Plurimath::Asciimath::Mapper::Rules`. The `:pma` input type
