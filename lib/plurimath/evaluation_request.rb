@@ -4,10 +4,11 @@ require "json"
 require_relative "../plurimath"
 
 module Plurimath
-  # A closed numeric AST profile over the existing evaluator. Quantity budgets,
-  # registers and GUM requests are separate profiles, never silently discarded.
+  # Closed serialized profiles over the existing evaluators.
   module EvaluationRequest
     SCHEMA = "plurimath.evaluate.numeric/1"
+    QUANTITY_SCHEMA = "plurimath.evaluate.quantity/1"
+    autoload :Quantity, "plurimath/evaluation_request/quantity"
     ENGINE = "plurimath.numeric/1"
     GRAMMAR = "plurimath.numeric-ast/1"
     DECIMAL = /\A[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?\z/
@@ -26,6 +27,10 @@ module Plurimath
     def call(json)
       invalid! unless json.is_a?(String)
       request = JSON.parse(json)
+      if request.is_a?(Hash) && request["schema"] == QUANTITY_SCHEMA
+        return Quantity.call(request)
+      end
+
       keys!(request, %w[schema ast bindings mode guard_digits], %w[schema ast])
       invalid! unless request["schema"] == SCHEMA
       mode = request.fetch("mode", "strict")
