@@ -128,13 +128,13 @@ RSpec.describe Plurimath::UnicodeMath do
   context "with a unit written to UnicodeMath and read back" do
     sources = %i[from_asciimath from_mathml]
     cases = {
-      "g" => ["\\mupg", %w[g], 'ustd(1.2, 0.1, "unitsml(g)")'],
-      "m" => ["\\mupm", %w[m], 'ustd(1.2, 0.1, "unitsml(m)")'],
-      "kg" => ['\\mup"kg"', %w[kg], 'ustd(1.2, 0.1, "unitsml(kg)")'],
-      "mol" => ['\\mup"mol"', %w[mol], 'ustd(1.2, 0.1, "unitsml(mol)")'],
-      "um" => ['\\mup"µm"', %w[µm], 'ustd(1.2, 0.1) rm("&#xb5;m")'],
-      "m*s^-1" => ["\\mupm ⋅ \\mups^(− 1)", %w[m s], 'ustd(1.2, 0.1, "unitsml(m*s^-1)")'],
-      "kg*m^2" => ['\\mup"kg" ⋅ \\mupm^(2)', %w[kg m], 'ustd(1.2, 0.1, "unitsml(kg*m^2)")'],
+      "g" => ["\\mupg", %w[g], '"ustd(1.2, 0.1, "unitsml(g)")"'],
+      "m" => ["\\mupm", %w[m], '"ustd(1.2, 0.1, "unitsml(m)")"'],
+      "kg" => ['\\mup"kg"', %w[kg], '"ustd(1.2, 0.1, "unitsml(kg)")"'],
+      "mol" => ['\\mup"mol"', %w[mol], '"ustd(1.2, 0.1, "unitsml(mol)")"'],
+      "um" => ['\\mup"µm"', %w[µm], '"ustd(1.2, 0.1)" rm("&#xb5;m")'],
+      "m*s^-1" => ["\\mupm ⋅ \\mups^(− 1)", %w[m s], '"ustd(1.2, 0.1, "unitsml(m*s^-1)")"'],
+      "kg*m^2" => ['\\mup"kg" ⋅ \\mupm^(2)', %w[kg m], '"ustd(1.2, 0.1, "unitsml(kg*m^2)")"'],
     }
 
     # The text of each upright run in a unit, in order.
@@ -151,7 +151,7 @@ RSpec.describe Plurimath::UnicodeMath do
     end
 
     def from_asciimath(unit)
-      math.parse("ustd(1.2, 0.1, \"unitsml(#{unit})\")", :asciimath)
+      math.parse("\"ustd(1.2, 0.1, \"unitsml(#{unit})\")\"", :asciimath)
     end
 
     def from_mathml(unit)

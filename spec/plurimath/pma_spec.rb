@@ -130,15 +130,15 @@ RSpec.describe Plurimath::Pma do
       "ucov(1.024, 0.983, 1.088, 0.95, symmetric)"
     ].each do |input|
       it "builds the same node and output for #{input}" do
-        expect(node(input)).to eq(node(input, :asciimath))
-        expect(writers(input, :pma)).to eq(writers(input, :asciimath))
+        expect(node(input)).to eq(node(%("#{input}"), :asciimath))
+        expect(writers(input, :pma)).to eq(writers(%("#{input}"), :asciimath))
       end
     end
 
     {
-      "(10.3 +/- 0.2)" => "ustd(10.3, 0.2)",
-      "(3.85 +/- 0.23)e4" => "ustd((3.85, 0.23)e4)",
-      "ustd(1.230, 0.004) unit(g)" => "ustd(1.230, 0.004, \"unitsml(g)\")",
+      "(10.3 +/- 0.2)" => '"ustd(10.3, 0.2)"',
+      "(3.85 +/- 0.23)e4" => '"ustd((3.85, 0.23)e4)"',
+      "ustd(1.230, 0.004) unit(g)" => '"ustd(1.230, 0.004, "unitsml(g)")"',
     }.each do |pma, legacy|
       it "reads #{pma} as :asciimath reads #{legacy}" do
         expect(node(pma)).to eq(node(legacy, :asciimath))

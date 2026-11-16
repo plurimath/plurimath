@@ -10,7 +10,7 @@ require "spec_helper"
 # `sqrt ustd(1,2)` gives {unary_class:, uncertainty:} rather than a named
 # operand; that shape once left a raw Hash in the Formula.
 module AsciimathUncertaintyContexts
-  UNCERTAINTY = "ustd(1,2)"
+  UNCERTAINTY = '"ustd(1,2)"'
   PLACEHOLDER = "Q"
   FORMATS = %i[to_latex to_mathml to_asciimath to_unicodemath to_omml to_html].freeze
 
@@ -99,10 +99,10 @@ RSpec.describe Plurimath::Asciimath do
   end
 
   [
-    "uexp(10.0, 0.3, 2)",
-    "ucov(1.024, 0.983, 1.088, 0.95, shortest)",
-    "ustd(1.230(4))",
-    "ustd(1.23, 0.04, \"unitsml(m)\")",
+    '"uexp(10.0, 0.3, 2)"',
+    '"ucov(1.024, 0.983, 1.088, 0.95, shortest)"',
+    '"ustd(1.230(4))"',
+    '"ustd(1.23, 0.04, "unitsml(m)")"',
   ].each do |call|
     it "reads sqrt #{call} as sqrt(#{call})" do
       expect(parse("sqrt #{call}")).to eq(parse("sqrt(#{call})"))

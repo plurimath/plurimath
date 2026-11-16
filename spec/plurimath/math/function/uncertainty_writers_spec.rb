@@ -30,16 +30,16 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
 
   describe "negative values through UnicodeMath" do
     {
-      "ustd(-1.230, 0.004)" =>
+      "\"ustd(-1.230, 0.004)\"" =>
         'ⓘ("standard-uncertainty(-1.230,0.004)"〖-1.230〗(0.004))',
-      "ustd(-1.230(4))" =>
+      "\"ustd(-1.230(4))\"" =>
         'ⓘ("standard-uncertainty:concise(-1.230,0.004)"〖-1.230〗(4))',
-      "uexp(-10.0, 0.3, 2.5, 0.95)" =>
+      "\"uexp(-10.0, 0.3, 2.5, 0.95)\"" =>
         'ⓘ("expanded-uncertainty(-10.0,0.3,2.5,0.95)"(-10.0±0.3), k=2.5, p=0.95)',
-      "ucov(-1.024, 0.983, 1.088, 0.95, shortest)" =>
+      "\"ucov(-1.024, 0.983, 1.088, 0.95, shortest)\"" =>
         'ⓘ("coverage-interval:shortest(-1.024,0.983,1.088,0.95)"' \
         "〖-1.024〗, [0.983, 1.088], p=0.95)",
-      "ucov(-1.024, 0.983, 1.088, 0.95)" =>
+      "\"ucov(-1.024, 0.983, 1.088, 0.95)\"" =>
         'ⓘ("coverage-interval(-1.024,0.983,1.088,0.95)"' \
         "〖-1.024〗, [0.983, 1.088], p=0.95)",
     }.each do |input, expected|
@@ -55,7 +55,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
     end
 
     it "leaves a positive value unwrapped" do
-      node = single_node(asciimath("ustd(1.230, 0.004)"))
+      node = single_node(asciimath('"ustd(1.230, 0.004)"'))
       expect(node.to_unicodemath(options: {}))
         .to eq('ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))')
     end
@@ -76,7 +76,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
         it "writes unitsml(#{unit_text}) read from #{language} as " \
            "\"unitsml(#{written_text})\"" do
           source = asciimath(
-            %(uexp(100.02147, 0.00079, 2, "unitsml(#{unit_text})")),
+            "\"uexp(100.02147, 0.00079, 2, \"unitsml(#{unit_text})\")\"",
           )
           markup = source.public_send(:"to_#{language}")
           read = Plurimath::Math.parse(markup, language)
@@ -84,7 +84,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
 
           written = read.to_asciimath
           expect(written).to eq(
-            %(uexp(100.02147, 0.00079, 2, "unitsml(#{written_text})")),
+            "\"uexp(100.02147, 0.00079, 2, \"unitsml(#{written_text})\")\"",
           )
           back = single_node(asciimath(written))
           expect(back.unit).to eq(
@@ -102,7 +102,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
         )],
       )
       written = standard_with(unit).to_asciimath(options: {})
-      expect(written).to eq("ustd(1.230, 0.004) mathbf(x)")
+      expect(written).to eq('"ustd(1.230, 0.004)" mathbf(x)')
 
       read = asciimath(written)
       expect(read.value.first).to be_a(described_class)
@@ -116,7 +116,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
         )],
       )
       expect(standard_with(unit).to_asciimath(options: {}))
-        .to eq("ustd(1.230, 0.004) rm(zz)")
+        .to eq('"ustd(1.230, 0.004)" rm(zz)')
     end
   end
 
@@ -133,13 +133,13 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
     end
 
     it "rejects a unit holding an uncertainty" do
-      inner = single_node(asciimath("uexp(10.0, 0.3, 2)"))
+      inner = single_node(asciimath('"uexp(10.0, 0.3, 2)"'))
       expect { standard_with(Plurimath::Math::Formula.new([inner])) }
         .to raise_error(invalid, /unit must not contain an uncertainty/)
     end
 
     it "rejects a unit holding an uncertainty deeper down" do
-      inner = single_node(asciimath("uexp(10.0, 0.3, 2)"))
+      inner = single_node(asciimath('"uexp(10.0, 0.3, 2)"'))
       unit = Plurimath::Math::Formula.new(
         [Plurimath::Math::Function::Power.new(inner, num("2"))],
       )

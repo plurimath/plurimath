@@ -157,7 +157,10 @@ module Plurimath
                  end
           unitsml = asciimath_unitsml if unit
           args << "\"unitsml(#{unitsml})\"" if unitsml
-          call = "#{ASCIIMATH_NAMES[category]}(#{args.compact.join(', ')})"
+          # The quoted channel (amath#17): the call rides asciimath's own
+          # string literal, so the reader's comma and decimal rules inside
+          # it are the channel's, not the locale's.
+          call = "\"#{ASCIIMATH_NAMES[category]}(#{args.compact.join(', ')})\""
           return call if unit.nil? || unitsml
 
           # Not expressible in UnitsML: keep it visible after the call, the
@@ -276,7 +279,7 @@ module Plurimath
 
         def to_asciimath_math_zone(spacing = "", _last = false, _indent = true,
                                    options:)
-          "#{spacing}\"#{to_asciimath(options: options)}\" uncertainty\n"
+          "#{spacing}#{to_asciimath(options: options)} uncertainty\n"
         end
 
         def to_latex_math_zone(spacing = "", _last = false, _indent = true,

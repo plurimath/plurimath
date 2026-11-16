@@ -118,12 +118,18 @@ module ReplayStageRoundtrips
   end
 
   def cases(dir)
-    Dir.glob(File.join(dir, "payloads", "*.yaml")).sort.flat_map do |path|
+    rows = Dir.glob(File.join(dir, "payloads", "*.yaml")).sort.flat_map do |path|
       doc = YAML.safe_load_file(path, aliases: false)
       check(doc["schema"] == CASE_SCHEMA,
             "#{path}: schema is not #{CASE_SCHEMA}")
       doc.fetch("cases")
     end
+    # Append-only supersessions (the text-unitsml-valid-r2 pattern): a row
+    # whose id has an -r2 sibling is kept for history and superseded by that
+    # sibling; only the sibling replays.
+    superseded = rows.select { |r| r["id"].include?("-r2") }
+                     .to_h { |r| [r["id"].sub("-r2", ""), true] }
+    rows.reject { |r| superseded.key?(r["id"]) }
   end
 
   def refusal?(kase)

@@ -3,12 +3,8 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in plurimath.gemspec
 gemspec
 
-# amath's typed model (Amath.parse_model returning Amath::Model::Document) ships in
-# amath 0.2.0, which is not on RubyGems yet. Until it is, amath comes from this
-# commit of plurimath/amath PR #34 (version 0.2.0). Drop this line once 0.2.0
-# is published, and do not release plurimath before then.
-gem "amath", git: "https://github.com/plurimath/amath",
-             ref: "667b517bb81276bf920f6f9fea940ae342d8c9e3"
+# The quoted uncertainty channel (amath#17) ships in amath 0.2.1, resolved
+# from RubyGems; the gemspec floor (amath >= 0.2.0, < 0.3) admits it.
 gem "canon"
 gem "fiddle", "~> 1.1"
 # Candidate includes typed symbol portability; retain its exact pin until published.
