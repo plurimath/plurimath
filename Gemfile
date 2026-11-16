@@ -9,6 +9,10 @@ gem "canon"
 gem "fiddle", "~> 1.1"
 # Candidate includes typed symbol portability; retain its exact pin until published.
 gem "latexmath", github: "plurimath/latexmath", ref: "372e377261c82e801ce755ebca7abfae1336ec39"
+# The OpenMath notation (stages 1-3: object model, validation, CDs,
+# evaluation) — git-pinned until its next release publishes; the gemspec
+# floor (openmath ~> 0.2) lands then (plurimath#585).
+gem "openmath", github: "plurimath/openmath", branch: "main"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # Optional native image-rendering backend for `Formula#render` / `plurimath
 # render`. Git-pinned until `lasem` ships to RubyGems; intentionally NOT a
