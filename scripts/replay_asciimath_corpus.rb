@@ -50,8 +50,8 @@ require "plurimath"
 module AsciimathCorpusReplay
   class Error < StandardError; end
 
-  # plurimath-testsuite 0acf8b1be7602595b97b7f18cf3357451f5a9601
-  TESTSUITE_COMMIT = "0acf8b1be7602595b97b7f18cf3357451f5a9601"
+  # plurimath-testsuite b0d5148cba9b2373b18491cf90ba8dfe540b28ab
+  TESTSUITE_COMMIT = "b0d5148cba9b2373b18491cf90ba8dfe540b28ab"
   PROVENANCE_SHA256 =
     "4f7f379f3994eba5c33c5117c0084b7e0cc9b51a860474813a87de68a5c67130"
   PROVENANCE_SCHEMA = "plurimath-corpus/provenance/3"
