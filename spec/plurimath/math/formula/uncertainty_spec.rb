@@ -28,7 +28,7 @@ RSpec.describe Plurimath::Math::Formula do
   describe "an uncertainty nested in a formula" do
     it "writes text formats around the node" do
       expect(formula.to_asciimath)
-        .to eq('m = uexp(100.02147, 0.00079, 2, "unitsml(g)")')
+        .to eq('m = "uexp(100.02147, 0.00079, 2, "unitsml(g)")"')
       expect(formula.to_latex)
         .to eq("m = (100.02147 \\pm 0.00079) \\mathrm{g},\\ k = 2")
       expect(formula.to_html)

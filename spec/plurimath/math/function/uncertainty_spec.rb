@@ -251,7 +251,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
 
     it "writes text formats" do
       expect(node.to_asciimath(options: options))
-        .to eq('uexp(10.0, 0.3, 2, 0.95, "unitsml(g)")')
+        .to eq('"uexp(10.0, 0.3, 2, 0.95, "unitsml(g)")"')
       expect(node.to_latex(options: options))
         .to eq("(10.0 \\pm 0.3) \\mathrm{g},\\ k = 2,\\ p = 0.95")
       expect(node.to_html(options: options))
@@ -283,13 +283,13 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
       )
       formula = Plurimath::Math::Formula.new([standard("1.230", "0.004")])
       expect(formula.to_latex(formatter: formatter)).to eq("1.230(0.004)")
-      expect(formula.to_asciimath(formatter: formatter)).to eq("ustd(1.230, 0.004)")
+      expect(formula.to_asciimath(formatter: formatter)).to eq('"ustd(1.230, 0.004)"')
     end
 
     it "writes a standard result with a unit after the parentheses" do
       node = standard(unit: unitsml("g"))
       expect(node.to_asciimath(options: options))
-        .to eq('ustd(1.230, 0.004, "unitsml(g)")')
+        .to eq('"ustd(1.230, 0.004, "unitsml(g)")"')
       expect(node.to_latex(options: options)).to eq("1.230(0.004) \\mathrm{g}")
       expect(node.to_html(options: options)).to eq("1.230(0.004) g")
     end
@@ -297,7 +297,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
     it "writes an interval with a unit after the brackets and no stated kind" do
       node = interval(unit: unitsml("V"))
       expect(node.to_asciimath(options: options))
-        .to eq('ucov(1.024, 0.983, 1.088, 0.95, "unitsml(V)")')
+        .to eq('"ucov(1.024, 0.983, 1.088, 0.95, "unitsml(V)")"')
       expect(node.to_latex(options: options))
         .to eq("1.024,\\ [0.983, 1.088] \\mathrm{V},\\ p = 0.95")
       expect(node.to_unicodemath(options: options)).to eq(
@@ -309,7 +309,7 @@ RSpec.describe Plurimath::Math::Function::Uncertainty do
     it "writes the symmetric interval kind" do
       node = interval(interval_kind: :probabilistically_symmetric)
       expect(node.to_asciimath(options: options))
-        .to eq("ucov(1.024, 0.983, 1.088, 0.95, symmetric)")
+        .to eq('"ucov(1.024, 0.983, 1.088, 0.95, symmetric)"')
     end
   end
 end

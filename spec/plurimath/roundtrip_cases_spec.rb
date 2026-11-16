@@ -134,6 +134,6 @@ RSpec.describe RoundtripCases do
   end
 
   it "leaves the model out when a field has no declared encoding" do
-    expect(find("unicode-markers.unit-kg")).not_to have_key("model")
+    expect(find("unicode-markers.unit-kg-r2")).not_to have_key("model")
   end
 end
