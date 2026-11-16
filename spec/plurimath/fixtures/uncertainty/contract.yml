@@ -34,7 +34,7 @@ cases:
       interval_kind: null
       unit: null
     inputs:
-      asciimath: ustd(1.230, 0.004)
+      asciimath: '"ustd(1.230, 0.004)"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -90,7 +90,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
     outputs:
-      asciimath: ustd(1.230, 0.004)
+      asciimath: '"ustd(1.230, 0.004)"'
       latex: 1.230(0.004)
       html: 1.230(0.004)
       unicodemath: ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
@@ -164,7 +164,7 @@ cases:
       interval_kind: null
       unit: null
     inputs:
-      asciimath: uexp(10.0, 0.3, 2)
+      asciimath: '"uexp(10.0, 0.3, 2)"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -240,7 +240,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("expanded-uncertainty(10.0,0.3,2)"(10.0±0.3), k=2)
     outputs:
-      asciimath: uexp(10.0, 0.3, 2)
+      asciimath: '"uexp(10.0, 0.3, 2)"'
       latex: "(10.0 \\pm 0.3),\\ k = 2"
       html: "(10.0 &#xb1; 0.3), k = 2"
       unicodemath: ⓘ("expanded-uncertainty(10.0,0.3,2)"(10.0±0.3), k=2)
@@ -330,7 +330,7 @@ cases:
       interval_kind: null
       unit: null
     inputs:
-      asciimath: uexp(100.02147, 0.00079, 2, 0.95)
+      asciimath: '"uexp(100.02147, 0.00079, 2, 0.95)"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -422,7 +422,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,0.95)"(100.02147±0.00079), k=2, p=0.95)
     outputs:
-      asciimath: uexp(100.02147, 0.00079, 2, 0.95)
+      asciimath: '"uexp(100.02147, 0.00079, 2, 0.95)"'
       latex: "(100.02147 \\pm 0.00079),\\ k = 2,\\ p = 0.95"
       html: "(100.02147 &#xb1; 0.00079), k = 2, p = 0.95"
       unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,0.95)"(100.02147±0.00079), k=2, p=0.95)
@@ -532,7 +532,7 @@ cases:
       interval_kind: shortest
       unit: null
     inputs:
-      asciimath: ucov(1.024, 0.983, 1.088, 0.95, shortest)
+      asciimath: '"ucov(1.024, 0.983, 1.088, 0.95, shortest)"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -616,7 +616,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"1.024, [0.983, 1.088], p=0.95)
     outputs:
-      asciimath: ucov(1.024, 0.983, 1.088, 0.95, shortest)
+      asciimath: '"ucov(1.024, 0.983, 1.088, 0.95, shortest)"'
       latex: 1.024,\ [0.983, 1.088],\ p = 0.95
       html: 1.024, [0.983, 1.088], p = 0.95
       unicodemath: ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"1.024, [0.983, 1.088], p=0.95)
@@ -719,7 +719,7 @@ cases:
       interval_kind: null
       unit: null
     inputs:
-      asciimath: ustd(1.23(4))
+      asciimath: '"ustd(1.23(4))"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -775,7 +775,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("standard-uncertainty:concise(1.23,0.04)"1.23(4))
     outputs:
-      asciimath: ustd(1.23(4))
+      asciimath: '"ustd(1.23(4))"'
       latex: 1.23(4)
       html: 1.23(4)
       unicodemath: ⓘ("standard-uncertainty:concise(1.23,0.04)"1.23(4))
@@ -845,7 +845,7 @@ cases:
       interval_kind: null
       unit: null
     inputs:
-      asciimath: ustd(1.230(4))
+      asciimath: '"ustd(1.230(4))"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -901,7 +901,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("standard-uncertainty:concise(1.230,0.004)"1.230(4))
     outputs:
-      asciimath: ustd(1.230(4))
+      asciimath: '"ustd(1.230(4))"'
       latex: 1.230(4)
       html: 1.230(4)
       unicodemath: ⓘ("standard-uncertainty:concise(1.230,0.004)"1.230(4))
@@ -971,7 +971,7 @@ cases:
       interval_kind: null
       unit: null
     inputs:
-      asciimath: ustd(100.02147(35))
+      asciimath: '"ustd(100.02147(35))"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -1027,7 +1027,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("standard-uncertainty:concise(100.02147,0.00035)"100.02147(35))
     outputs:
-      asciimath: ustd(100.02147(35))
+      asciimath: '"ustd(100.02147(35))"'
       latex: 100.02147(35)
       html: 100.02147(35)
       unicodemath: ⓘ("standard-uncertainty:concise(100.02147,0.00035)"100.02147(35))
@@ -1103,7 +1103,7 @@ cases:
       interval_kind: null
       unit: null
     inputs:
-      asciimath: ustd(1.23, 0.04)
+      asciimath: '"ustd(1.23, 0.04)"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -1159,7 +1159,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("standard-uncertainty(1.23,0.04)"1.23(0.04))
     outputs:
-      asciimath: ustd(1.23, 0.04)
+      asciimath: '"ustd(1.23, 0.04)"'
       latex: 1.23(0.04)
       html: 1.23(0.04)
       unicodemath: ⓘ("standard-uncertainty(1.23,0.04)"1.23(0.04))
@@ -1229,7 +1229,7 @@ cases:
       interval_kind: null
       unit: null
     inputs:
-      asciimath: ustd(100.02147, 0.00035)
+      asciimath: '"ustd(100.02147, 0.00035)"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -1285,7 +1285,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("standard-uncertainty(100.02147,0.00035)"100.02147(0.00035))
     outputs:
-      asciimath: ustd(100.02147, 0.00035)
+      asciimath: '"ustd(100.02147, 0.00035)"'
       latex: 100.02147(0.00035)
       html: 100.02147(0.00035)
       unicodemath: ⓘ("standard-uncertainty(100.02147,0.00035)"100.02147(0.00035))
@@ -1366,7 +1366,7 @@ cases:
         class: Plurimath::Math::Function::Unitsml
         text: g
     inputs:
-      asciimath: uexp(100.02147, 0.00079, 2, "unitsml(g)")
+      asciimath: '"uexp(100.02147, 0.00079, 2, "unitsml(g)")"'
       mathml: |
         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
           <mstyle displaystyle="true">
@@ -1458,7 +1458,7 @@ cases:
         </m:oMathPara>
       unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"(100.02147±0.00079)ⓐ(unit \mupg), k=2)
     outputs:
-      asciimath: uexp(100.02147, 0.00079, 2, "unitsml(g)")
+      asciimath: '"uexp(100.02147, 0.00079, 2, "unitsml(g)")"'
       latex: "(100.02147 \\pm 0.00079) \\mathrm{g},\\ k = 2"
       html: "(100.02147 &#xb1; 0.00079) g, k = 2"
       unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"(100.02147±0.00079)ⓐ(unit \mupg), k=2)
