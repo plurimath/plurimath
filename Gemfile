@@ -3,12 +3,8 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in plurimath.gemspec
 gemspec
 
-# The quoted uncertainty channel (amath#17) ships in amath 0.2.1, which is not
-# on RubyGems yet. Until it is, amath comes from this branch of plurimath/amath
-# PR #36. Drop this line once 0.2.1 is published, and do not release plurimath
-# with the quoted-channel renderer before then.
-gem "amath", git: "https://github.com/plurimath/amath",
-             branch: "feat/amath-17-quoted-uncertainty-channel"
+# The quoted uncertainty channel (amath#17) ships in amath 0.2.1, resolved
+# from RubyGems; the gemspec floor (amath >= 0.2.0, < 0.3) admits it.
 gem "canon"
 gem "fiddle", "~> 1.1"
 # Candidate includes typed symbol portability; retain its exact pin until published.
