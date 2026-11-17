@@ -511,13 +511,16 @@ Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_mathml
 ----
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mstyle displaystyle="true">
-    <mrow intent="standard-uncertainty(1.230,0.004)">
+    <mi>u</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>d</mi>
+    <mrow>
+      <mo>(</mo>
       <mn>1.230</mn>
-      <mrow>
-        <mo>(</mo>
-        <mn>0.004</mn>
-        <mo>)</mo>
-      </mrow>
+      <mo>,</mo>
+      <mn>0.004</mn>
+      <mo>)</mo>
     </mrow>
   </mstyle>
 </math>
