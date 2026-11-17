@@ -308,7 +308,7 @@ raises Plurimath::Math::ParseError
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `51d64ea4006f29df085445e469e74190aa6758c5` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `b0d5148cba9b2373b18491cf90ba8dfe540b28ab` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===
