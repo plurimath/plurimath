@@ -347,7 +347,7 @@ Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_unicodemath
 
 [source]
 ----
-ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
+u s t d (1.230 , 0.004)
 ----
 // END GENERATED example uncertainty
 
@@ -363,7 +363,7 @@ Plurimath::Math.parse("ustd(-1.230, 0.004)", :asciimath).to_unicodemath
 
 [source]
 ----
-ⓘ("standard-uncertainty(-1.230,0.004)"〖-1.230〗(0.004))
+u s t d (− 1.230 , 0.004)
 ----
 // END GENERATED example uncertainty-negative
 
@@ -380,7 +380,7 @@ Plurimath::Math.parse(%q(ustd(1.2, 0.1, "unitsml(kg)")), :asciimath).to_unicodem
 
 [source]
 ----
-ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mup"kg"))
+u s t d (1.2 , 0.1 , \mup"kg")
 ----
 // END GENERATED example uncertainty-unit
 
@@ -392,7 +392,7 @@ Plurimath::Math.parse("ⓘ(\"standard-uncertainty(1.2,0.1,$unit)\"1.2(0.1)ⓐ(un
 
 [source]
 ----
-ustd(1.2, 0.1, "unitsml(kg)")
+"ustd(1.2, 0.1, "unitsml(kg)")"
 ----
 // END GENERATED example uncertainty-unit-readback
 
