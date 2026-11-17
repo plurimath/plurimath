@@ -75,8 +75,12 @@ options:)
           new_arr
         end
 
+        # The color is one value. AsciiMath reads color(red) as the
+        # symbols r, e and d, which write back space-separated; drop the
+        # spaces as #to_asciimath and the MathML attribute already do.
         def to_unicodemath(options:)
-          "#{color_symbol}(#{parameter_one.to_unicodemath(options: options)}&#{parameter_two.to_unicodemath(options: options)})"
+          color = parameter_one.to_unicodemath(options: options)&.gsub(/\s/, "")
+          "#{color_symbol}(#{color}&#{parameter_two.to_unicodemath(options: options)})"
         end
 
         protected
