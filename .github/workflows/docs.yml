@@ -22,5 +22,9 @@ jobs:
           bundler-cache: true
       - name: Check the generated regions of the format pages
         run: bundle exec ruby scripts/docs/format_specs.rb --check
+      # The released amath gem does not ship its grammar sources, so check
+      # out the amath tag that matches the locked gem version.
+      - name: Check out the amath sources for the locked version
+        run: git clone --quiet --depth 1 --branch "v$(bundle exec ruby -e 'print Gem.loaded_specs["amath"].version')" https://github.com/plurimath/amath.git "$RUNNER_TEMP/amath"
       - name: Check the generated regions of the AsciiMath specification
-        run: bundle exec ruby scripts/docs/asciimath_tables.rb --amath "$(bundle info amath --path)" --check
+        run: bundle exec ruby scripts/docs/asciimath_tables.rb --amath "$RUNNER_TEMP/amath" --check
