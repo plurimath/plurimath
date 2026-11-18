@@ -22,3 +22,21 @@ jobs:
         git -C ../amath checkout --detach FETCH_HEAD
         printf '\ngem "amath", path: "../amath"\n' >> Gemfile
       repos-json-file: .github/workflows/dependent-repos-ruby.json
+
+  # Metanorma gate: plurimath must drop into the Metanorma stack unchanged.
+  # Direct gemspec dependents (html2doc, metanorma-document, stepmod-utils),
+  # the render chain (isodoc, metanorma-standoc) and metanorma-iso as the
+  # flavour representative. One OS and one Ruby to keep Actions time low.
+  metanorma:
+    uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
+    with:
+      command: bundle exec rspec
+      matrix_os: '["ubuntu-latest"]'
+      # Same amath pin as the rake job above; keep both in step with the Gemfile.
+      after-setup-ruby: |
+        set -euo pipefail
+        git init ../amath
+        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git 667b517bb81276bf920f6f9fea940ae342d8c9e3
+        git -C ../amath checkout --detach FETCH_HEAD
+        printf '\ngem "amath", path: "../amath"\n' >> Gemfile
+      repos-json-file: .github/workflows/dependent-repos-metanorma.json
