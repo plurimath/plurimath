@@ -25,8 +25,9 @@ jobs:
 
   # Metanorma gate: plurimath must drop into the Metanorma stack unchanged.
   # Direct gemspec dependents (html2doc, metanorma-document, stepmod-utils),
-  # the render chain (isodoc, metanorma-standoc) and metanorma-iso as the
-  # flavour representative. One OS and one Ruby to keep Actions time low.
+  # the render chain (isodoc, metanorma-standoc) and two math-heavy flavours
+  # (bipm, itu). metanorma-iso is left out while its own Rakefile skips the main
+  # suite (blocked upstream). One OS and one Ruby to keep Actions time low.
   metanorma:
     uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
     with:
