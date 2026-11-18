@@ -66,4 +66,23 @@ RSpec.describe Plurimath::Math::Function::Frac do
 
     it_behaves_like "shared renderer fixture", "function-frac-249-1"
   end
+
+  describe ".to_unicodemath" do
+    it "renders each part of a displaystyle fraction once" do
+      inner = described_class.new(
+        Plurimath::Math::Symbols::Symbol.new("a"),
+        Plurimath::Math::Symbols::Symbol.new("b"),
+        { displaystyle: true },
+      )
+      frac = described_class.new(inner, Plurimath::Math::Symbols::Symbol.new("c"), { displaystyle: true })
+      calls = 0
+      inner.define_singleton_method(:to_unicodemath) do |**kwargs|
+        calls += 1
+        super(**kwargs)
+      end
+
+      expect(frac.to_unicodemath(options: {})).to eq("a⊘b⊘c")
+      expect(calls).to eq(1)
+    end
+  end
 end
