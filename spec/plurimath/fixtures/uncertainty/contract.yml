@@ -1378,7 +1378,7 @@ cases:
                 <mn>0.00079</mn>
                 <mo>)</mo>
               </mrow>
-              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mo rspace="0.2778em">&#x2062;</mo>
               <mrow arg="unit">
                 <mstyle mathvariant="normal">
                   <mi>g</mi>
@@ -1473,7 +1473,7 @@ cases:
                 <mn>0.00079</mn>
                 <mo>)</mo>
               </mrow>
-              <mo rspace="thickmathspace">&#x2062;</mo>
+              <mo rspace="0.2778em">&#x2062;</mo>
               <mrow arg="unit">
                 <mstyle mathvariant="normal">
                   <mi>g</mi>

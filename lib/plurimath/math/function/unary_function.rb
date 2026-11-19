@@ -53,7 +53,9 @@ module Plurimath
             XmlHelper.update_nodes(
               ox_element("mrow"),
               [
-                ox_element("mo", attributes: { rspace: "thickmathspace" }),
+                ox_element(
+                  "mo", attributes: { rspace: Symbols::Symbol::THICK_RSPACE }
+                ),
                 unary_element,
               ],
             )

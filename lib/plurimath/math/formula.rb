@@ -545,7 +545,7 @@ options:)
 
       def space_element
         element = (ox_element("mo") << "&#x2062;")
-        element[:rspace] = "thickmathspace"
+        element[:rspace] = Symbols::Symbol::THICK_RSPACE
         element
       end
 

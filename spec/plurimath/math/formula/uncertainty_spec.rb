@@ -46,7 +46,7 @@ RSpec.describe Plurimath::Math::Formula do
           '<mrow intent="expanded-uncertainty(100.02147,0.00079,2,$unit)">',
         )
         expect(mathml).to match(
-          %r{<mo rspace="thickmathspace">&#x2062;</mo>\s*<mrow arg="unit">},
+          %r{<mo rspace="0.2778em">&#x2062;</mo>\s*<mrow arg="unit">},
         )
         expect(mathml).not_to include("unitsml=")
       end
