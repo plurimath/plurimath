@@ -112,16 +112,16 @@ module Plurimath
         end
 
         wrap_render_error(:mathml) do
+          # MathML 4 carries displaystyle on <math> itself, so no <mstyle>
+          # wrapper is emitted (plurimath#477).
           math_attrs = {
             xmlns: "http://www.w3.org/1998/Math/MathML",
             display: "block",
+            displaystyle: boolean_display_style(display_style),
           }
-          style_attrs = { displaystyle: boolean_display_style(display_style) }
-          math  = ox_element("math", attributes: math_attrs)
-          style = ox_element("mstyle", attributes: style_attrs)
-          XmlHelper.update_nodes(style, mathml_content(intent, options: options))
-          XmlHelper.update_nodes(math, [style])
-          unitsml_post_processing(math, style)
+          math = ox_element("math", attributes: math_attrs)
+          XmlHelper.update_nodes(math, mathml_content(intent, options: options))
+          unitsml_post_processing(math)
           dump_nodes(math, indent: 2)
         end
       end
@@ -506,18 +506,18 @@ options:)
         r_tag << ox_element("br")
       end
 
-      def unitsml_post_processing(math, style)
-        if all_unitsml_nodes?(style)
-          style.nodes.first.remove_attr("unitsml")
+      def unitsml_post_processing(math)
+        if all_unitsml_nodes?(math)
+          math.nodes.first.remove_attr("unitsml")
         else
           unitsml_processing(math.nodes, math)
         end
       end
 
-      def all_unitsml_nodes?(style)
-        return false unless style.nodes.one?
+      def all_unitsml_nodes?(node)
+        return false unless node.nodes.one?
 
-        style.nodes.first["unitsml"] == "true"
+        node.nodes.first["unitsml"] == "true"
       end
 
       # Elements whose children are positional arguments (base, script,

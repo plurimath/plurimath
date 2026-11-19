@@ -77,6 +77,10 @@ module Plurimath
         end
         formula_values = nary_check(formula_values)
         display_style = boolean_to_displaystyle(math.display)
+        # plurimath#477 output carries displaystyle on <math> itself.
+        if math.respond_to?(:displaystyle) && present_attr?(math.displaystyle)
+          display_style = boolean_to_displaystyle(math.displaystyle)
+        end
 
         if formula_values.length == 1 && formula_values.first.respond_to?(:is_mstyle?) && formula_values.first.is_mstyle?
           mstyle = formula_values.first
@@ -93,6 +97,9 @@ module Plurimath
       # MathML element: <mrow>
       def mrow_to_mrow(mrow)
         return mrow_to_uncertainty(mrow) if uncertainty_mrow?(mrow)
+        # An mrow carrying mathcolor/mathvariant is what plurimath#477 emits
+        # in place of <mstyle>; read it back the same way.
+        return mstyle_to_mstyle(mrow) if styled_mrow?(mrow)
 
         children = ordered_children(mrow)
         formula_values = children.filter_map do |child|
@@ -410,6 +417,16 @@ module Plurimath
         children = ordered_children(error)
         content = children.filter_map { |child| mml_to_plurimath(child) }
         Plurimath::Math::Function::Merror.new(wrap_children(content))
+      end
+
+      def styled_mrow?(mrow)
+        %i[mathcolor mathvariant].any? do |attr|
+          mrow.respond_to?(attr) && present_attr?(mrow.public_send(attr))
+        end
+      end
+
+      def present_attr?(value)
+        !value.nil? && !value.to_s.empty?
       end
 
       # MathML element: <mstyle> - style
