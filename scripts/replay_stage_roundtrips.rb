@@ -128,9 +128,12 @@ module ReplayStageRoundtrips
     # whose id has a later -rN sibling (-r2 for a bare id, -r3 for an -r2
     # id, and so on) is kept for history and superseded by that sibling;
     # only the latest revision replays.
-    latest = rows.group_by { |r| revision(r["id"]).first }
-                 .transform_values { |group| group.map { |r| revision(r["id"]).last }.max }
-    rows.select { |r| revision(r["id"]).last == latest[revision(r["id"]).first] }
+    latest = Hash.new(0)
+    rows.each do |r|
+      base, number = revision(r["id"])
+      latest[base] = [latest[base], number].max
+    end
+    rows.select { |r| revision(r["id"]).then { |base, number| latest[base] == number } }
   end
 
   # [base id, revision]: "g.case" is revision 1 of itself, "g.case-r3" is

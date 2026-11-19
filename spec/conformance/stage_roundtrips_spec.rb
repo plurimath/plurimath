@@ -71,6 +71,6 @@ RSpec.describe ReplayStageRoundtrips do
 
   it "rejects a --generation other than the pinned one" do
     expect { described_class.run(generation: 1) }
-      .to raise_error(described_class::Error, %r{not the pinned 2})
+      .to raise_error(described_class::Error, %r{not the pinned 3})
   end
 end
