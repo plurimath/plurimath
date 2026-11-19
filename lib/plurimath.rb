@@ -113,6 +113,18 @@ default_adapter =
 
 if RUBY_ENGINE == "opal"
   Plurimath.mml_adapter(default_adapter)
+elsif defined?(Lutaml::Model) &&
+      Lutaml::Model::Config.xml_adapter_type &&
+      Lutaml::Model::Config.xml_adapter_type != :ox
+  # A host application has explicitly pinned a non-ox lutaml adapter.
+  # Arming our :ox default would overwrite the host's choice process-
+  # wide when mml loads (the write lands on Lutaml::Model::Config
+  # .xml_adapter_type, the same setting every lutaml-model library
+  # reads - plurimath#588). Leave it: mml delegates to
+  # Lutaml::Model::Config.xml_adapter_type on CRuby, so mml parsing
+  # follows the host's adapter. Hosts that want ox anyway can set
+  # Lutaml::Model::Config.xml_adapter_type = :ox or require
+  # plurimath before configuring lutaml.
 else
   Plurimath.default_mml_adapter = default_adapter
 end
