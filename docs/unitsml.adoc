@@ -147,7 +147,7 @@ The format pages say how each writer treats the result:
 * HTML writes the symbols as upright text, with or without an exponent.
 * MathML writes each symbol in an `mrow` with `mathvariant="normal"`. When
   the formula holds more than the unit, an
-  `<mo rspace="thickmathspace">&#x2062;</mo>` (invisible times) is put
+  `<mo rspace="0.2778em">&#x2062;</mo>` (invisible times) is put
   before each unit (link:mathml.adoc[MathML in Plurimath]).
 * OMML writes each symbol as a run with `m:sty` set to `p` (plain), and puts
   nothing between the number and the unit (link:omml.adoc[OMML in
@@ -211,7 +211,7 @@ Plurimath::Math.parse(%q(9.8 "unitsml(m*s^-2)"), :asciimath).to_mathml
 ----
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
   <mn>9.8</mn>
-  <mo rspace="thickmathspace">&#x2062;</mo>
+  <mo rspace="0.2778em">&#x2062;</mo>
   <mrow>
     <mrow mathvariant="normal">
       <mi>m</mi>
@@ -383,7 +383,7 @@ In AsciiMath the same errors make the whole formula fail to parse.
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `9767c37a8d7bb21a0694780ecfcbc4f1fbd9eb39` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `a6beeb5c483bf33782037d9cb50247ec10d2b543` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===

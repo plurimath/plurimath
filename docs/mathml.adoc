@@ -222,7 +222,7 @@ read as described in <<uncertainty>>.
 * `unitsml:` is passed to the UnitsML renderer (see
   link:unitsml.adoc[UnitsML in Plurimath]).
 * `unary_function_spacing:` set to false leaves out the empty
-  `<mo rspace="thickmathspace"/>` that is otherwise written before a unary
+  `<mo rspace="0.2778em"/>` that is otherwise written before a unary
   function such as `sin` when it follows another term (see the last two
   examples).
 
@@ -292,7 +292,7 @@ Plurimath::Math.parse("2 sin x", :asciimath).to_mathml
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
   <mn>2</mn>
   <mrow>
-    <mo rspace="thickmathspace"/>
+    <mo rspace="0.2778em"/>
     <mrow>
       <mi>sin</mi>
       <mi>x</mi>
@@ -569,7 +569,7 @@ raises Plurimath::Math::ParseOptionError
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `9767c37a8d7bb21a0694780ecfcbc4f1fbd9eb39` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `a6beeb5c483bf33782037d9cb50247ec10d2b543` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===
