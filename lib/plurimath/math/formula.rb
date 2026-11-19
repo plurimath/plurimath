@@ -509,7 +509,7 @@ options:)
       def unitsml_post_processing(math)
         if all_unitsml_nodes?(math)
           math.nodes.first.remove_attr("unitsml")
-        else
+        elsif math.nodes.none?(String)
           unitsml_processing(math.nodes, math)
         end
       end
