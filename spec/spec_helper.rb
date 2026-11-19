@@ -56,6 +56,13 @@ RSpec.configure do |config|
   # post-processing-removed attributes into serialized MathML after the
   # subtree has been attached (attach-time attribute snapshot). Re-add a
   # leptris pass once remove_attr survives attachment.
+  # The per-format parser specs run once, on Ox. Their XML-engine matrix
+  # belongs to the stage gems' suites (#537); the facade, integration and
+  # MathML/OMML specs keep the Ox and Oga passes.
+  config.define_derived_metadata(file_path: %r{/spec/plurimath/(asciimath|latex|unicode_math)/}) do |meta|
+    meta[:engine_loop] ||= :once
+  end
+
   config.around do |example|
     if example.metadata[:shared_corpus]
       Plurimath.xml_engine = Plurimath::XmlEngine::OxEngine
