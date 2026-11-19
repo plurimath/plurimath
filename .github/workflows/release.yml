@@ -12,12 +12,19 @@ on:
         default: 'skip'
   repository_dispatch:
     types: [ do-release ]
+  # The publish leg: when the release PR (head branch release/v*) merges,
+  # metanorma/ci tags the merge commit and publishes (metanorma/ci#515).
+  # Ordinary PR closes are skipped inside the reusable workflow.
+  pull_request:
+    types:
+      - closed
 
 jobs:
   release:
     permissions:
       contents: write
       id-token: write
+      pull-requests: write
     uses: metanorma/ci/.github/workflows/rubygems-release.yml@main
     with:
       next_version: ${{ github.event.inputs.next_version }}

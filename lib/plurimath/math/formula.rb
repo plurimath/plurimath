@@ -520,12 +520,23 @@ options:)
         style.nodes.first["unitsml"] == "true"
       end
 
+      # Elements whose children are positional arguments (base, script,
+      # numerator, ...). A spacer added as a sibling here would add an
+      # argument and break the MathML grammar, so it goes inside the unit.
+      FIXED_ARITY_ELEMENTS = %w[
+        msub msup msubsup mfrac mroot munder mover munderover mmultiscripts
+      ].freeze
+
       def unitsml_processing(nodes, prev_node)
         insert_index = 0
         nodes.each.with_index do |node, index|
           if node[:unitsml]
-            prev_node.insert_in_nodes(index + insert_index, space_element)
-            insert_index += 1
+            if FIXED_ARITY_ELEMENTS.include?(prev_node.name)
+              node.insert_in_nodes(0, space_element) if node.name == "mrow"
+            else
+              prev_node.insert_in_nodes(index + insert_index, space_element)
+              insert_index += 1
+            end
             node.remove_attr("unitsml")
           end
           unitsml_processing(node.nodes, node) if node.nodes.none?(String)
