@@ -113,9 +113,10 @@ default_adapter =
 
 if RUBY_ENGINE == "opal"
   Plurimath.mml_adapter(default_adapter)
-elsif defined?(Lutaml::Model) &&
-      Lutaml::Model::Config.xml_adapter_type &&
-      Lutaml::Model::Config.xml_adapter_type != :ox
+elsif !Object.autoload?(:Lutaml) &&
+    defined?(Lutaml::Model::Config) &&
+    Lutaml::Model::Config.xml_adapter_type &&
+    Lutaml::Model::Config.xml_adapter_type != :ox
   # A host application has explicitly pinned a non-ox lutaml adapter.
   # Arming our :ox default would overwrite the host's choice process-
   # wide when mml loads (the write lands on Lutaml::Model::Config
@@ -125,6 +126,11 @@ elsif defined?(Lutaml::Model) &&
   # follows the host's adapter. Hosts that want ox anyway can set
   # Lutaml::Model::Config.xml_adapter_type = :ox or require
   # plurimath before configuring lutaml.
+  #
+  # Object.autoload? is checked first because defined?(Lutaml::Model)
+  # resolves Lutaml, which fires the autoload above and loads all of
+  # lutaml-model at require time. A pending autoload means the host has
+  # not loaded lutaml-model, so it cannot have pinned an adapter.
 else
   Plurimath.default_mml_adapter = default_adapter
 end
