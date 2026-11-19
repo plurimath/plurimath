@@ -17,6 +17,7 @@ module Plurimath
     autoload :Renderer, "#{__dir__}/math/renderer"
     autoload :AmbiguousDecimalError, "#{__dir__}/errors/ambiguous_decimal_error"
     autoload :Symbols, "#{__dir__}/math/symbols"
+    autoload :Openmath, "#{__dir__}/openmath"
     autoload :SymbolIndex, "#{__dir__}/math/symbol_index"
     autoload :SymbolTable, "#{__dir__}/math/symbol_table"
 
@@ -29,6 +30,7 @@ module Plurimath
       unicode: UnicodeMath,
       asciimath: Asciimath,
       pma: Pma,
+      openmath: Plurimath::Openmath,
     }.freeze
     # Types Plurimath reads but has no writer for.
     INPUT_ONLY_TYPES = %i[pma].freeze
