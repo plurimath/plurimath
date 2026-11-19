@@ -27,7 +27,7 @@ module Plurimath
           def to_mathml_without_math_tag(intent, options:)
             XmlHelper.update_nodes(
               XmlHelper.ox_element(
-                "mstyle",
+                "mrow",
                 attributes: { mathvariant: "sans-serif" },
               ),
               [parameter_one&.to_mathml_without_math_tag(intent,

@@ -144,29 +144,27 @@ Plurimath::Math.parse("E=mc^2#(1)", :unicode).to_mathml
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mtable>
-      <mlabeledtr>
-        <mtd>
-          <mtext>(1)</mtext>
-        </mtd>
-        <mtd>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mtable>
+    <mlabeledtr>
+      <mtd>
+        <mtext>(1)</mtext>
+      </mtd>
+      <mtd>
+        <mrow>
+          <mi>E</mi>
+          <mo>=</mo>
           <mrow>
-            <mi>E</mi>
-            <mo>=</mo>
-            <mrow>
-              <mi>m</mi>
-              <msup>
-                <mi>c</mi>
-                <mn>2</mn>
-              </msup>
-            </mrow>
+            <mi>m</mi>
+            <msup>
+              <mi>c</mi>
+              <mn>2</mn>
+            </msup>
           </mrow>
-        </mtd>
-      </mlabeledtr>
-    </mtable>
-  </mstyle>
+        </mrow>
+      </mtd>
+    </mlabeledtr>
+  </mtable>
 </math>
 ----
 // END GENERATED example read-label
@@ -421,7 +419,7 @@ as a `ParseError`.
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `9767c37a8d7bb21a0694780ecfcbc4f1fbd9eb39` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `a6beeb5c483bf33782037d9cb50247ec10d2b543` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===

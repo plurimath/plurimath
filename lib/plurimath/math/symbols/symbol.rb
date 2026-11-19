@@ -35,6 +35,13 @@ module Plurimath
 
         INPUT = {}.freeze
 
+        # Thick space (5/18 em) as a MathML 4 length. MathML 4 dropped the
+        # named space `thickmathspace`, so plurimath emits the numeric form.
+        THICK_RSPACE = "0.2778em"
+        # Values read as an explicit thick space; the named form still
+        # arrives in MathML 3 input.
+        THICK_RSPACE_VALUES = [THICK_RSPACE, "thickmathspace"].freeze
+
         def initialize(sym = nil,
                        slashed = nil,
                        mini_sub_sized: false,
@@ -101,7 +108,8 @@ module Plurimath
         def to_omml_without_math_tag(_, **)
           # Office Math represents thick spacing with U+2004. Keep this
           # explicit request separate from ordinary invisible multiplication.
-          if value == "&#x2062;" && @options&.[](:rspace) == "thickmathspace"
+          if value == "&#x2062;" &&
+              THICK_RSPACE_VALUES.include?(@options&.[](:rspace))
             return "&#x2004;"
           end
           # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328

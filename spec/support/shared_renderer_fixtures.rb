@@ -519,7 +519,8 @@ module SharedRendererFixtures
     end
 
     spacers = doc.xpath("//*").select do |node|
-      node.name == "mo" && node.get("rspace") == "thickmathspace"
+      node.name == "mo" &&
+        Plurimath::Math::Symbols::Symbol::THICK_RSPACE_VALUES.include?(node.get("rspace"))
     end
     observation == "unitsml_presentation_spacer_count" ? spacers.size : spacers.map(&:text).uniq
   end

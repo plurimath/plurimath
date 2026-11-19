@@ -77,6 +77,10 @@ module Plurimath
         end
         formula_values = nary_check(formula_values)
         display_style = boolean_to_displaystyle(math.display)
+        # plurimath#477 output carries displaystyle on <math> itself.
+        if math.respond_to?(:displaystyle) && present_attr?(math.displaystyle)
+          display_style = boolean_to_displaystyle(math.displaystyle)
+        end
 
         if formula_values.length == 1 && formula_values.first.respond_to?(:is_mstyle?) && formula_values.first.is_mstyle?
           mstyle = formula_values.first
@@ -93,6 +97,9 @@ module Plurimath
       # MathML element: <mrow>
       def mrow_to_mrow(mrow)
         return mrow_to_uncertainty(mrow) if uncertainty_mrow?(mrow)
+        # An mrow carrying mathcolor/mathvariant is what plurimath#477 emits
+        # in place of <mstyle>; read it back the same way.
+        return mstyle_to_mstyle(mrow) if styled_mrow?(mrow)
 
         children = ordered_children(mrow)
         formula_values = children.filter_map do |child|
@@ -412,6 +419,24 @@ module Plurimath
         Plurimath::Math::Function::Merror.new(wrap_children(content))
       end
 
+      def styled_mrow?(mrow)
+        present_attr?(mrow.respond_to?(:mathcolor) && mrow.mathcolor) ||
+          present_attr?(mathvariant_of(mrow))
+      end
+
+      # Mml::V4::Mrow has no mathvariant attribute of its own; MathML 4
+      # makes it global, and mml keeps it in other_attributes.
+      def mathvariant_of(node)
+        return node.mathvariant if node.respond_to?(:mathvariant)
+        return unless node.respond_to?(:other_attributes)
+
+        node.other_attributes&.fetch("mathvariant", nil)
+      end
+
+      def present_attr?(value)
+        !value.nil? && !value.to_s.empty?
+      end
+
       # MathML element: <mstyle> - style
       def mstyle_to_mstyle(style)
         children = ordered_children(style)
@@ -419,7 +444,8 @@ module Plurimath
         content_obj = wrap_children(content)
 
         has_color = style.respond_to?(:mathcolor) && style.mathcolor && !style.mathcolor.empty?
-        has_variant = style.respond_to?(:mathvariant) && style.mathvariant && !style.mathvariant.empty?
+        variant = mathvariant_of(style)
+        has_variant = present_attr?(variant)
 
         if has_color
           content_obj = Plurimath::Math::Function::Color.new(
@@ -429,8 +455,8 @@ module Plurimath
         end
 
         if has_variant
-          font_class = Plurimath::Utility::FONT_STYLES[style.mathvariant.to_sym]
-          return font_class.new(content_obj, style.mathvariant) if font_class
+          font_class = Plurimath::Utility::FONT_STYLES[variant.to_sym]
+          return font_class.new(content_obj, variant) if font_class
         end
 
         return content_obj if has_color

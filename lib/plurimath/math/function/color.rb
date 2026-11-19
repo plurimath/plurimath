@@ -43,7 +43,7 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           XmlHelper.update_nodes(
             XmlHelper.ox_element(
-              "mstyle",
+              "mrow",
               attributes: mathml_options,
             ),
             [parameter_two&.to_mathml_without_math_tag(intent,

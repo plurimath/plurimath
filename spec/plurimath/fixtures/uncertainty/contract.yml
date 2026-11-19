@@ -36,17 +36,15 @@ cases:
     inputs:
       asciimath: '"ustd(1.230, 0.004)"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty(1.230,0.004)">
-              <mn>1.230</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>0.004</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty(1.230,0.004)">
+            <mn>1.230</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>0.004</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -95,17 +93,15 @@ cases:
       html: 1.230(0.004)
       unicodemath: ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty(1.230,0.004)">
-              <mn>1.230</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>0.004</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty(1.230,0.004)">
+            <mn>1.230</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>0.004</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -166,22 +162,20 @@ cases:
     inputs:
       asciimath: '"uexp(10.0, 0.3, 2)"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="expanded-uncertainty(10.0,0.3,2)">
-              <mrow>
-                <mo>(</mo>
-                <mn>10.0</mn>
-                <mo>&#xb1;</mo>
-                <mn>0.3</mn>
-                <mo>)</mo>
-              </mrow>
-              <mo>,</mo>
-              <mi>k</mi>
-              <mo>=</mo>
-              <mn>2</mn>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="expanded-uncertainty(10.0,0.3,2)">
+            <mrow>
+              <mo>(</mo>
+              <mn>10.0</mn>
+              <mo>&#xb1;</mo>
+              <mn>0.3</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+            <mo>,</mo>
+            <mi>k</mi>
+            <mo>=</mo>
+            <mn>2</mn>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -245,22 +239,20 @@ cases:
       html: "(10.0 &#xb1; 0.3), k = 2"
       unicodemath: ⓘ("expanded-uncertainty(10.0,0.3,2)"(10.0±0.3), k=2)
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="expanded-uncertainty(10.0,0.3,2)">
-              <mrow>
-                <mo>(</mo>
-                <mn>10.0</mn>
-                <mo>&#xb1;</mo>
-                <mn>0.3</mn>
-                <mo>)</mo>
-              </mrow>
-              <mo>,</mo>
-              <mi>k</mi>
-              <mo>=</mo>
-              <mn>2</mn>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="expanded-uncertainty(10.0,0.3,2)">
+            <mrow>
+              <mo>(</mo>
+              <mn>10.0</mn>
+              <mo>&#xb1;</mo>
+              <mn>0.3</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+            <mo>,</mo>
+            <mi>k</mi>
+            <mo>=</mo>
+            <mn>2</mn>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -332,26 +324,24 @@ cases:
     inputs:
       asciimath: '"uexp(100.02147, 0.00079, 2, 0.95)"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="expanded-uncertainty(100.02147,0.00079,2,0.95)">
-              <mrow>
-                <mo>(</mo>
-                <mn>100.02147</mn>
-                <mo>&#xb1;</mo>
-                <mn>0.00079</mn>
-                <mo>)</mo>
-              </mrow>
-              <mo>,</mo>
-              <mi>k</mi>
-              <mo>=</mo>
-              <mn>2</mn>
-              <mo>,</mo>
-              <mi>p</mi>
-              <mo>=</mo>
-              <mn>0.95</mn>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="expanded-uncertainty(100.02147,0.00079,2,0.95)">
+            <mrow>
+              <mo>(</mo>
+              <mn>100.02147</mn>
+              <mo>&#xb1;</mo>
+              <mn>0.00079</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+            <mo>,</mo>
+            <mi>k</mi>
+            <mo>=</mo>
+            <mn>2</mn>
+            <mo>,</mo>
+            <mi>p</mi>
+            <mo>=</mo>
+            <mn>0.95</mn>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -427,26 +417,24 @@ cases:
       html: "(100.02147 &#xb1; 0.00079), k = 2, p = 0.95"
       unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,0.95)"(100.02147±0.00079), k=2, p=0.95)
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="expanded-uncertainty(100.02147,0.00079,2,0.95)">
-              <mrow>
-                <mo>(</mo>
-                <mn>100.02147</mn>
-                <mo>&#xb1;</mo>
-                <mn>0.00079</mn>
-                <mo>)</mo>
-              </mrow>
-              <mo>,</mo>
-              <mi>k</mi>
-              <mo>=</mo>
-              <mn>2</mn>
-              <mo>,</mo>
-              <mi>p</mi>
-              <mo>=</mo>
-              <mn>0.95</mn>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="expanded-uncertainty(100.02147,0.00079,2,0.95)">
+            <mrow>
+              <mo>(</mo>
+              <mn>100.02147</mn>
+              <mo>&#xb1;</mo>
+              <mn>0.00079</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+            <mo>,</mo>
+            <mi>k</mi>
+            <mo>=</mo>
+            <mn>2</mn>
+            <mo>,</mo>
+            <mi>p</mi>
+            <mo>=</mo>
+            <mn>0.95</mn>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -534,24 +522,22 @@ cases:
     inputs:
       asciimath: '"ucov(1.024, 0.983, 1.088, 0.95, shortest)"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="coverage-interval:shortest(1.024,0.983,1.088,0.95)">
-              <mn>1.024</mn>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="coverage-interval:shortest(1.024,0.983,1.088,0.95)">
+            <mn>1.024</mn>
+            <mo>,</mo>
+            <mrow>
+              <mo>[</mo>
+              <mn>0.983</mn>
               <mo>,</mo>
-              <mrow>
-                <mo>[</mo>
-                <mn>0.983</mn>
-                <mo>,</mo>
-                <mn>1.088</mn>
-                <mo>]</mo>
-              </mrow>
-              <mo>,</mo>
-              <mi>p</mi>
-              <mo>=</mo>
-              <mn>0.95</mn>
+              <mn>1.088</mn>
+              <mo>]</mo>
             </mrow>
-          </mstyle>
+            <mo>,</mo>
+            <mi>p</mi>
+            <mo>=</mo>
+            <mn>0.95</mn>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -621,24 +607,22 @@ cases:
       html: 1.024, [0.983, 1.088], p = 0.95
       unicodemath: ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"1.024, [0.983, 1.088], p=0.95)
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="coverage-interval:shortest(1.024,0.983,1.088,0.95)">
-              <mn>1.024</mn>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="coverage-interval:shortest(1.024,0.983,1.088,0.95)">
+            <mn>1.024</mn>
+            <mo>,</mo>
+            <mrow>
+              <mo>[</mo>
+              <mn>0.983</mn>
               <mo>,</mo>
-              <mrow>
-                <mo>[</mo>
-                <mn>0.983</mn>
-                <mo>,</mo>
-                <mn>1.088</mn>
-                <mo>]</mo>
-              </mrow>
-              <mo>,</mo>
-              <mi>p</mi>
-              <mo>=</mo>
-              <mn>0.95</mn>
+              <mn>1.088</mn>
+              <mo>]</mo>
             </mrow>
-          </mstyle>
+            <mo>,</mo>
+            <mi>p</mi>
+            <mo>=</mo>
+            <mn>0.95</mn>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -721,17 +705,15 @@ cases:
     inputs:
       asciimath: '"ustd(1.23(4))"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty:concise(1.23,0.04)">
-              <mn>1.23</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>4</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty:concise(1.23,0.04)">
+            <mn>1.23</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>4</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -780,17 +762,15 @@ cases:
       html: 1.23(4)
       unicodemath: ⓘ("standard-uncertainty:concise(1.23,0.04)"1.23(4))
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty:concise(1.23,0.04)">
-              <mn>1.23</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>4</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty:concise(1.23,0.04)">
+            <mn>1.23</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>4</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -847,17 +827,15 @@ cases:
     inputs:
       asciimath: '"ustd(1.230(4))"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty:concise(1.230,0.004)">
-              <mn>1.230</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>4</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty:concise(1.230,0.004)">
+            <mn>1.230</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>4</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -906,17 +884,15 @@ cases:
       html: 1.230(4)
       unicodemath: ⓘ("standard-uncertainty:concise(1.230,0.004)"1.230(4))
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty:concise(1.230,0.004)">
-              <mn>1.230</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>4</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty:concise(1.230,0.004)">
+            <mn>1.230</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>4</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -973,17 +949,15 @@ cases:
     inputs:
       asciimath: '"ustd(100.02147(35))"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty:concise(100.02147,0.00035)">
-              <mn>100.02147</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>35</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty:concise(100.02147,0.00035)">
+            <mn>100.02147</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>35</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -1032,17 +1006,15 @@ cases:
       html: 100.02147(35)
       unicodemath: ⓘ("standard-uncertainty:concise(100.02147,0.00035)"100.02147(35))
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty:concise(100.02147,0.00035)">
-              <mn>100.02147</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>35</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty:concise(100.02147,0.00035)">
+            <mn>100.02147</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>35</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -1105,17 +1077,15 @@ cases:
     inputs:
       asciimath: '"ustd(1.23, 0.04)"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty(1.23,0.04)">
-              <mn>1.23</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>0.04</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty(1.23,0.04)">
+            <mn>1.23</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>0.04</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -1164,17 +1134,15 @@ cases:
       html: 1.23(0.04)
       unicodemath: ⓘ("standard-uncertainty(1.23,0.04)"1.23(0.04))
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty(1.23,0.04)">
-              <mn>1.23</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>0.04</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty(1.23,0.04)">
+            <mn>1.23</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>0.04</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -1231,17 +1199,15 @@ cases:
     inputs:
       asciimath: '"ustd(100.02147, 0.00035)"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty(100.02147,0.00035)">
-              <mn>100.02147</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>0.00035</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty(100.02147,0.00035)">
+            <mn>100.02147</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>0.00035</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -1290,17 +1256,15 @@ cases:
       html: 100.02147(0.00035)
       unicodemath: ⓘ("standard-uncertainty(100.02147,0.00035)"100.02147(0.00035))
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="standard-uncertainty(100.02147,0.00035)">
-              <mn>100.02147</mn>
-              <mrow>
-                <mo>(</mo>
-                <mn>0.00035</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="standard-uncertainty(100.02147,0.00035)">
+            <mn>100.02147</mn>
+            <mrow>
+              <mo>(</mo>
+              <mn>0.00035</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -1368,28 +1332,26 @@ cases:
     inputs:
       asciimath: '"uexp(100.02147, 0.00079, 2, "unitsml(g)")"'
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="expanded-uncertainty(100.02147,0.00079,2,$unit)">
-              <mrow>
-                <mo>(</mo>
-                <mn>100.02147</mn>
-                <mo>&#xb1;</mo>
-                <mn>0.00079</mn>
-                <mo>)</mo>
-              </mrow>
-              <mo rspace="thickmathspace">&#x2062;</mo>
-              <mrow arg="unit">
-                <mstyle mathvariant="normal">
-                  <mi>g</mi>
-                </mstyle>
-              </mrow>
-              <mo>,</mo>
-              <mi>k</mi>
-              <mo>=</mo>
-              <mn>2</mn>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="expanded-uncertainty(100.02147,0.00079,2,$unit)">
+            <mrow>
+              <mo>(</mo>
+              <mn>100.02147</mn>
+              <mo>&#xb1;</mo>
+              <mn>0.00079</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+            <mo rspace="0.2778em">&#x2062;</mo>
+            <mrow arg="unit">
+              <mrow mathvariant="normal">
+                <mi>g</mi>
+              </mrow>
+            </mrow>
+            <mo>,</mo>
+            <mi>k</mi>
+            <mo>=</mo>
+            <mn>2</mn>
+          </mrow>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -1463,28 +1425,26 @@ cases:
       html: "(100.02147 &#xb1; 0.00079) g, k = 2"
       unicodemath: ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"(100.02147±0.00079)ⓐ(unit \mupg), k=2)
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="expanded-uncertainty(100.02147,0.00079,2,$unit)">
-              <mrow>
-                <mo>(</mo>
-                <mn>100.02147</mn>
-                <mo>&#xb1;</mo>
-                <mn>0.00079</mn>
-                <mo>)</mo>
-              </mrow>
-              <mo rspace="thickmathspace">&#x2062;</mo>
-              <mrow arg="unit">
-                <mstyle mathvariant="normal">
-                  <mi>g</mi>
-                </mstyle>
-              </mrow>
-              <mo>,</mo>
-              <mi>k</mi>
-              <mo>=</mo>
-              <mn>2</mn>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="expanded-uncertainty(100.02147,0.00079,2,$unit)">
+            <mrow>
+              <mo>(</mo>
+              <mn>100.02147</mn>
+              <mo>&#xb1;</mo>
+              <mn>0.00079</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+            <mo rspace="0.2778em">&#x2062;</mo>
+            <mrow arg="unit">
+              <mrow mathvariant="normal">
+                <mi>g</mi>
+              </mrow>
+            </mrow>
+            <mo>,</mo>
+            <mi>k</mi>
+            <mo>=</mo>
+            <mn>2</mn>
+          </mrow>
         </math>
       omml: |-
         <m:oMath>
@@ -1661,18 +1621,16 @@ cases:
   - id: invalid.mathml_marker_missing_k
     inputs:
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mrow intent="expanded-uncertainty(10.0,0.3)">
-              <mrow>
-                <mo>(</mo>
-                <mn>10.0</mn>
-                <mo>&#xb1;</mo>
-                <mn>0.3</mn>
-                <mo>)</mo>
-              </mrow>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mrow intent="expanded-uncertainty(10.0,0.3)">
+            <mrow>
+              <mo>(</mo>
+              <mn>10.0</mn>
+              <mo>&#xb1;</mo>
+              <mn>0.3</mn>
+              <mo>)</mo>
             </mrow>
-          </mstyle>
+          </mrow>
         </math>
     error: Plurimath::Errors::InvalidUncertainty
   - id: invalid.unicodemath_marker_bad_number
@@ -1701,12 +1659,10 @@ cases:
     inputs:
       asciimath: 1.23 +- 0.04
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mn>1.23</mn>
-            <mo>&#xb1;</mo>
-            <mn>0.04</mn>
-          </mstyle>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mn>1.23</mn>
+          <mo>&#xb1;</mo>
+          <mn>0.04</mn>
         </math>
       omml: |-
         <m:oMathPara xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">
@@ -1730,12 +1686,10 @@ cases:
       html: 1.23 &#xb1; 0.04
       unicodemath: 1.23 ± 0.04
       mathml: |
-        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-          <mstyle displaystyle="true">
-            <mn>1.23</mn>
-            <mo>&#xb1;</mo>
-            <mn>0.04</mn>
-          </mstyle>
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+          <mn>1.23</mn>
+          <mo>&#xb1;</mo>
+          <mn>0.04</mn>
         </math>
       omml: |-
         <m:oMath>

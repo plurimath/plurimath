@@ -12,7 +12,16 @@ RSpec.describe Plurimath::Math::Symbols::Symbol do
     XML
   end
 
-  it "retains explicitly requested thick spacing between upright units" do
+  it "maps the MathML 4 thick space length to Office Math thick spacing" do
+    formula = unit_product('<mo rspace="0.2778em">&#x2062;</mo>')
+    document = Nokogiri::XML(formula.to_omml)
+    texts = document.xpath("//*[local-name()='t']").map(&:text)
+
+    expect(texts).to eq(["kg", "\u2004", "kmol", "-1"])
+    expect(formula.to_mathml).to include('rspace="0.2778em"')
+  end
+
+  it "still reads the MathML 3 named thick space from input" do
     formula = unit_product('<mo rspace="thickmathspace">&#x2062;</mo>')
     document = Nokogiri::XML(formula.to_omml)
     texts = document.xpath("//*[local-name()='t']").map(&:text)
