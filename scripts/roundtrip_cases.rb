@@ -103,19 +103,19 @@ module RoundtripCases
     ["asciimath-units",
      "Calls with a UnitsML unit. MathML, OMML and UnicodeMath read the unit " \
      "back as its rendered formula, not as a Unitsml node.",
-     [["expanded-g-r2",  "asciimath",
+     [["expanded-g-r3",  "asciimath",
        '"uexp(100.02147, 0.00079, 2, "unitsml(g)")"', {}, [UNITS]],
-      ["standard-kg-r2",  "asciimath", '"ustd(1.2, 0.1, "unitsml(kg)")"', {},
+      ["standard-kg-r3",  "asciimath", '"ustd(1.2, 0.1, "unitsml(kg)")"', {},
        [UNITS]],
-      ["standard-m-per-s-r2",  "asciimath", '"ustd(1.2, 0.1, "unitsml(m*s^-1)")"',
+      ["standard-m-per-s-r3",  "asciimath", '"ustd(1.2, 0.1, "unitsml(m*s^-1)")"',
        {}, [UNITS]],
-      ["standard-kg-m2-r2",  "asciimath", '"ustd(1.2, 0.1, "unitsml(kg*m^2)")"',
+      ["standard-kg-m2-r3",  "asciimath", '"ustd(1.2, 0.1, "unitsml(kg*m^2)")"',
        {}, [UNITS]],
-      ["standard-um-r2",  "asciimath", '"ustd(1.2, 0.1, "unitsml(um)")"', {},
+      ["standard-um-r3",  "asciimath", '"ustd(1.2, 0.1, "unitsml(um)")"', {},
        [UNITS]],
-      ["concise-g-r2",  "asciimath", '"ustd(1.230(4), "unitsml(g)")"', {},
+      ["concise-g-r3",  "asciimath", '"ustd(1.230(4), "unitsml(g)")"', {},
        [UNITS]],
-      ["interval-m-r2",  "asciimath",
+      ["interval-m-r3",  "asciimath",
        '"ucov(1.024, 0.983, 1.088, 0.95, shortest, "unitsml(m)")"', {},
        [UNITS]]]],
     ["asciimath-locale",
@@ -154,22 +154,22 @@ module RoundtripCases
       ["negative-r2",  "unicode",
        'ⓘ("standard-uncertainty(-1.230,0.004)"〖-1.230〗(0.004))', {},
        [UNICODE]],
-      ["unit-g-r2",  "unicode",
+      ["unit-g-r3",  "unicode",
        'ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"' \
        '(100.02147±0.00079)ⓐ(unit \mupg), k=2)', {}, [MATRIX]],
-      ["unit-kg-r2",  "unicode",
+      ["unit-kg-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mupkg))',
        {}, [MATRIX]],
-      ["unit-kg-quoted-r2",  "unicode",
+      ["unit-kg-quoted-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mup"kg"))',
        {}, [MATRIX]],
-      ["unit-m-per-s-r2",  "unicode",
+      ["unit-m-per-s-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"' \
        '1.2(0.1)ⓐ(unit \mupm⋅\mups^(-1)))', {}, [MATRIX]],
-      ["unit-um-r2",  "unicode",
+      ["unit-um-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mupµm))',
        {}, [MATRIX]],
-      ["unit-kg-m2-r2",  "unicode",
+      ["unit-kg-m2-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"' \
        '1.2(0.1)ⓐ(unit \mupkg ⋅ \mupm^(2)))', {}, [MATRIX]]]],
     ["mathml-markers",
@@ -187,12 +187,12 @@ module RoundtripCases
        "<mrow><mo>(</mo><mn>10.0</mn><mo>&#xb1;</mo><mn>0.3</mn><mo>)</mo>" \
        "</mrow><mo>,</mo><mi>k</mi><mo>=</mo><mn>2</mn></mrow>" \
        "#{MATHML_CLOSE}", {}, [MATHML]],
-      ["unit-kg-r2",  "mathml",
+      ["unit-kg-r3",  "mathml",
        "#{MATHML_OPEN}<mrow intent=\"standard-uncertainty(1.2,0.1,$unit)\">" \
        "<mn>1.2</mn><mrow><mo>(</mo><mn>0.1</mn><mo>)</mo></mrow>" \
        "<mrow arg=\"unit\"><mi mathvariant=\"normal\">kg</mi></mrow></mrow>" \
        "#{MATHML_CLOSE}", {}, [MATRIX]],
-      ["unit-kg-m2-r2",  "mathml",
+      ["unit-kg-m2-r3",  "mathml",
        "#{MATHML_OPEN}<mrow intent=\"standard-uncertainty(1.2,0.1,$unit)\">" \
        "<mn>1.2</mn><mrow><mo>(</mo><mn>0.1</mn><mo>)</mo></mrow>" \
        "<mo rspace=\"thickmathspace\">&#x2062;</mo><mrow arg=\"unit\">" \

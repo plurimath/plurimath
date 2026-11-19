@@ -30,7 +30,7 @@ RSpec.describe ReplayStageRoundtrips do
     result = StageRoundtripsSpecData.result
 
     expect(result["cases"]).to eq(46)
-    # The replay classifies -r2 supersessions and replays their originals' kept count.
+    # The replay keeps only the latest -rN revision of each case.
     expect(result["differing"]).to eq([])
   end
 

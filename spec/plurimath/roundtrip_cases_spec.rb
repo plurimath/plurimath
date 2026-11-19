@@ -95,7 +95,7 @@ RSpec.describe RoundtripCases do
   end
 
   it "writes a multi-letter UnicodeMath unit after the AsciiMath call" do
-    asciimath = find("unicode-markers.unit-kg-r2")["expected"]["asciimath"]
+    asciimath = find("unicode-markers.unit-kg-r3")["expected"]["asciimath"]
 
     expect(asciimath["output"]).to eq('"ustd(1.2, 0.1)" rm(k) g')
     expect(asciimath["lossless"]).to be(false)
@@ -103,10 +103,10 @@ RSpec.describe RoundtripCases do
   end
 
   it "writes one-letter UnicodeMath unit symbols back as unitsml" do
-    expect(find("unicode-markers.unit-g-r2")["expected"]["asciimath"]["output"])
+    expect(find("unicode-markers.unit-g-r3")["expected"]["asciimath"]["output"])
       .to eq('"uexp(100.02147, 0.00079, 2, "unitsml(g)")"')
     expect(
-      find("unicode-markers.unit-m-per-s-r2")["expected"]["asciimath"]["output"],
+      find("unicode-markers.unit-m-per-s-r3")["expected"]["asciimath"]["output"],
     ).to eq('"ustd(1.2, 0.1, "unitsml(m*s^-1)")"')
   end
 
@@ -134,6 +134,6 @@ RSpec.describe RoundtripCases do
   end
 
   it "leaves the model out when a field has no declared encoding" do
-    expect(find("unicode-markers.unit-kg-r2")).not_to have_key("model")
+    expect(find("unicode-markers.unit-kg-r3")).not_to have_key("model")
   end
 end

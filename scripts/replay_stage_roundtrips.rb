@@ -125,11 +125,19 @@ module ReplayStageRoundtrips
       doc.fetch("cases")
     end
     # Append-only supersessions (the text-unitsml-valid-r2 pattern): a row
-    # whose id has an -r2 sibling is kept for history and superseded by that
-    # sibling; only the sibling replays.
-    superseded = rows.select { |r| r["id"].include?("-r2") }
-                     .to_h { |r| [r["id"].sub("-r2", ""), true] }
-    rows.reject { |r| superseded.key?(r["id"]) }
+    # whose id has a later -rN sibling (-r2 for a bare id, -r3 for an -r2
+    # id, and so on) is kept for history and superseded by that sibling;
+    # only the latest revision replays.
+    latest = rows.group_by { |r| revision(r["id"]).first }
+                 .transform_values { |group| group.map { |r| revision(r["id"]).last }.max }
+    rows.select { |r| revision(r["id"]).last == latest[revision(r["id"]).first] }
+  end
+
+  # [base id, revision]: "g.case" is revision 1 of itself, "g.case-r3" is
+  # revision 3 of "g.case".
+  def revision(id)
+    match = id.match(/\A(.+)-r(\d+)\z/)
+    match ? [match[1], Integer(match[2])] : [id, 1]
   end
 
   def refusal?(kase)
