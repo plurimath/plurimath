@@ -103,6 +103,24 @@ Tag a group or example with `engine_loop: :always` to force the Oga pass. Set
 `ENGINE_LOOP_TRACE=1` to print where each example first reached the XML layer.
 Shared-corpus examples still run on Ox only.
 
+The per-format parser specs under `spec/plurimath/asciimath`,
+`spec/plurimath/latex` and `spec/plurimath/unicode_math` are tagged
+`engine_loop: :once` by the spec helper and run on Ox only, whatever they
+touch. The parsers live in the stage gems (amath, latexmath, umath), and each
+stage gem's suite replays its pinned plurimath-testsuite generation. The XML
+engines stay covered in plurimath by the facade, integration, MathML and OMML
+specs, which keep both passes. Before this change, 192 of the 2,055 examples
+in those three folders ran a second time on Oga (asciimath 120, latex 7,
+unicode_math 65).
+
+The folders stay in plurimath because they test plurimath code, not the stage
+gems. They compare plurimath's own model, built by the Mapper and Utility
+classes from the stage gem's output. A script recorded every input these
+specs pass to the stage gems, 1,542 inputs counted once per spec file, and
+looked for each one in the stage gem's suite at the version plurimath pins.
+760 were found there, 669 of them UnicodeMath shared examples; 782 were not. No spec file is
+a copy of a stage gem's tests, so none was dropped.
+
 Parsing-only specs make up most of the saving. The 1,350 UnicodeMath
 expectation examples took 674 s of the 1,621 s of example time in performance
 run https://github.com/plurimath/plurimath/actions/runs/42176576146[42176576146]

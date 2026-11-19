@@ -12,7 +12,12 @@
 # that reached neither does the same work under Oga, and its Oga pass is
 # skipped. An example that reached either runs again under Oga, as before.
 #
-# Tag a group or example with `engine_loop: :always` to force the Oga pass.
+# Tag a group or example with `engine_loop: :always` to force the Oga pass,
+# or with `engine_loop: :once` to run it on Ox only. The spec helper tags the
+# per-format parser specs (spec/plurimath/{asciimath,latex,unicode_math})
+# `:once`: the XML engines are covered by the facade, integration and XML
+# format specs, and the parsers' own engine matrix runs in the stage gems'
+# suites (amath, latexmath, umath).
 module EngineLoop
   # Classes and modules whose use under Ox means the example is XML-touching.
   # Inherited methods count too, so a call to an adapter method defined in a
@@ -70,6 +75,11 @@ module EngineLoop
     def run(example)
       instrument_available!
       use(Plurimath::XmlEngine::OxEngine, :ox)
+      if example.metadata[:engine_loop] == :once
+        example.run
+        return count(:once)
+      end
+
       @touched = false
       @watching = true
       begin
@@ -91,7 +101,8 @@ module EngineLoop
       both = @counts[:both]
       once = @counts[:ox_only]
       "Engine loop: #{both} examples ran on Ox and Oga; " \
-        "#{once} did not reach the XML layer and ran on Ox only."
+        "#{once} did not reach the XML layer and ran on Ox only; " \
+        "#{@counts[:once]} per-format parser examples ran on Ox only."
     end
 
     private
