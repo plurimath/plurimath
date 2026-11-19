@@ -112,7 +112,7 @@ RSpec.describe RoundtripCases do
 
   it "writes the shifted numbers of a shared exponent" do
     expect(
-      find("asciimath-shared-exponent.standard-r2")["expected"]["asciimath"],
+      find("asciimath-shared-exponent.standard-r3")["expected"]["asciimath"],
     ).to eq("output" => '"ustd(38500, 2300)"', "lossless" => true)
   end
 
@@ -123,7 +123,7 @@ RSpec.describe RoundtripCases do
   end
 
   it "pins the exact decimal text of the model" do
-    model = find("asciimath-standard.absolute-r2")["model"]
+    model = find("asciimath-standard.absolute-r3")["model"]
     fields = model["fields"].to_h
 
     expect(model["node"]).to eq("Plurimath::Math::Function::Uncertainty")
