@@ -420,9 +420,17 @@ module Plurimath
       end
 
       def styled_mrow?(mrow)
-        %i[mathcolor mathvariant].any? do |attr|
-          mrow.respond_to?(attr) && present_attr?(mrow.public_send(attr))
-        end
+        present_attr?(mrow.respond_to?(:mathcolor) && mrow.mathcolor) ||
+          present_attr?(mathvariant_of(mrow))
+      end
+
+      # Mml::V4::Mrow has no mathvariant attribute of its own; MathML 4
+      # makes it global, and mml keeps it in other_attributes.
+      def mathvariant_of(node)
+        return node.mathvariant if node.respond_to?(:mathvariant)
+        return unless node.respond_to?(:other_attributes)
+
+        node.other_attributes&.fetch("mathvariant", nil)
       end
 
       def present_attr?(value)
@@ -436,7 +444,8 @@ module Plurimath
         content_obj = wrap_children(content)
 
         has_color = style.respond_to?(:mathcolor) && style.mathcolor && !style.mathcolor.empty?
-        has_variant = style.respond_to?(:mathvariant) && style.mathvariant && !style.mathvariant.empty?
+        variant = mathvariant_of(style)
+        has_variant = present_attr?(variant)
 
         if has_color
           content_obj = Plurimath::Math::Function::Color.new(
@@ -446,8 +455,8 @@ module Plurimath
         end
 
         if has_variant
-          font_class = Plurimath::Utility::FONT_STYLES[style.mathvariant.to_sym]
-          return font_class.new(content_obj, style.mathvariant) if font_class
+          font_class = Plurimath::Utility::FONT_STYLES[variant.to_sym]
+          return font_class.new(content_obj, variant) if font_class
         end
 
         return content_obj if has_color
