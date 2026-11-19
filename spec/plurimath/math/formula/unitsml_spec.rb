@@ -39,7 +39,7 @@ RSpec.describe Plurimath::Math::Formula do
         document = Nokogiri::XML(mathml)
         arity = element == "msubsup" ? 3 : 2
         scripts = document.xpath("//*[local-name()='#{element}']")
-        spacers = document.xpath("//*[local-name()='mo'][@rspace='thickmathspace']")
+        spacers = document.xpath("//*[local-name()='mo'][@rspace='0.2778em']")
 
         expect(scripts.map { |node| node.element_children.size }).to all(eq(arity))
         expect(spacers).not_to be_empty
@@ -51,7 +51,7 @@ RSpec.describe Plurimath::Math::Formula do
       mathml = Plurimath::Math.parse('9 "unitsml(kg)"', :asciimath)
         .to_mathml(unitsml: { xml: true, multiplier: :space })
       spacer = Nokogiri::XML(mathml)
-        .at_xpath("//*[local-name()='mo'][@rspace='thickmathspace']")
+        .at_xpath("//*[local-name()='mo'][@rspace='0.2778em']")
 
       expect(spacer.previous_element.name).to eq("mn")
     end

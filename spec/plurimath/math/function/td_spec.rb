@@ -75,4 +75,26 @@ RSpec.describe Plurimath::Math::Function::Td do
 
     it_behaves_like "shared renderer fixture", "function-td-189-1"
   end
+
+  describe "inside a Formula with a raw text cell" do
+    subject(:formula) do
+      Plurimath::Math::Formula.new(
+        [
+          described_class.new(
+            [
+              Plurimath::Math::Symbols::Symbol.new("|"),
+              Plurimath::Math::Symbols::Symbol.new("y"),
+            ],
+          ),
+        ],
+      ).to_mathml
+    end
+
+    it "writes MathML without raising on the top-level text node" do
+      expect(formula).to eq(
+        '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" ' \
+        "displaystyle=\"true\"></math>\n",
+      )
+    end
+  end
 end

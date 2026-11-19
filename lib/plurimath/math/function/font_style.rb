@@ -39,11 +39,20 @@ module Plurimath
                                                                   options: options)
           XmlHelper.update_nodes(
             XmlHelper.ox_element(
-              "mstyle",
-              attributes: { mathvariant: font_family(mathml: true) },
+              "mrow",
+              attributes: mathml_style_attributes,
             ),
             [first_value],
           )
+        end
+
+        # LaTeX \displaystyle is parsed as a font, but it is a style, not a
+        # mathvariant value: emit it as displaystyle on the mrow (#477).
+        def mathml_style_attributes
+          variant = font_family(mathml: true)
+          return { displaystyle: "true" } if variant == "displaystyle"
+
+          { mathvariant: variant }
         end
 
         def to_omml_without_math_tag(display_style, options:)
