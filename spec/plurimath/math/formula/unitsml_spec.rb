@@ -21,4 +21,39 @@ RSpec.describe Plurimath::Math::Formula do
     it_behaves_like "shared renderer fixture", "formula-unitsml-spacers-identifiers"
     it_behaves_like "shared renderer fixture", "formula-unitsml-spacers-count"
   end
+
+  # msub, msup, mfrac and friends take a fixed number of arguments, so the
+  # multiplier spacer must not be added next to a unit that is one of them.
+  # It goes inside the unit's own mrow instead.
+  describe "multiplier spacer under fixed-arity elements" do
+    {
+      '3 "unitsml(m)"^2' => "msup",
+      'Delta_"unitsml(m)"' => "msub",
+      'x_"unitsml(m)"^"unitsml(s)"' => "msubsup",
+      '1/"unitsml(s)"' => "mfrac",
+      'root(3)("unitsml(m)")' => "mroot",
+    }.each do |input, element|
+      it "keeps the #{element} arity for #{input}" do
+        mathml = Plurimath::Math.parse(input, :asciimath)
+          .to_mathml(unitsml: { xml: false, multiplier: :space })
+        document = Nokogiri::XML(mathml)
+        arity = element == "msubsup" ? 3 : 2
+        scripts = document.xpath("//*[local-name()='#{element}']")
+        spacers = document.xpath("//*[local-name()='mo'][@rspace='thickmathspace']")
+
+        expect(scripts.map { |node| node.element_children.size }).to all(eq(arity))
+        expect(spacers).not_to be_empty
+        expect(spacers.map { |node| node.parent.name }).to all(eq("mrow"))
+      end
+    end
+
+    it "still adds the spacer as a sibling in a plain row" do
+      mathml = Plurimath::Math.parse('9 "unitsml(kg)"', :asciimath)
+        .to_mathml(unitsml: { xml: true, multiplier: :space })
+      spacer = Nokogiri::XML(mathml)
+        .at_xpath("//*[local-name()='mo'][@rspace='thickmathspace']")
+
+      expect(spacer.previous_element.name).to eq("mn")
+    end
+  end
 end
