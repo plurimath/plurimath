@@ -66,7 +66,7 @@ module Plurimath
           return first_value unless any_value_exist?
 
           munderover_tag = XmlHelper.update_nodes(
-            sum_tag,
+            options[:presentation_profile]&.layout&.mathml_limits(self, :sum) || sum_tag,
             [
               first_value,
               parameter_one&.to_mathml_without_math_tag(intent,
@@ -119,7 +119,8 @@ module Plurimath
           XmlHelper.update_nodes(
             nary,
             [
-              narypr(hide_function_name ? "" : "∑"),
+              narypr(hide_function_name ? "" : "∑",
+                     function_type: options[:presentation_profile]&.layout&.limits(self, :sum) || "undOvr"),
               omml_parameter(parameter_one, display_style, tag_name: "sub",
                                                            options: options),
               omml_parameter(parameter_two, display_style, tag_name: "sup",
