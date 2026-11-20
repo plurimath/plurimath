@@ -42,14 +42,24 @@ RSpec.describe Plurimath::Math::Function::Glb do
     it_behaves_like "shared renderer fixture", "function-glb-90-1"
   end
 
-  describe ".to_latex" do
-    subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
-
-    it_behaves_like "shared renderer fixture", "function-glb-121-1"
-
-    it_behaves_like "shared renderer fixture", "function-glb-129-1"
-
-    it_behaves_like "shared renderer fixture", "function-glb-137-1"
+  # The immutable renderer fixtures record the previous plain-letter output.
+  describe ".to_latex", engine_loop: :always do
+    {
+      Plurimath::Math::Symbols::Symbol.new("x") => "x",
+      Plurimath::Math::Number.new("70") => "70",
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbols::Symbol.new("x"),
+        Plurimath::Math::Number.new("2"),
+      ]) => "x 2",
+    }.each do |argument, latex|
+      it "writes an upright glb operator with #{latex}" do
+        node = described_class.new(argument)
+        output = node.to_latex(options: {})
+        expect(output).to eq("\\operatorname{glb}{#{latex}}")
+        reread = Plurimath::Math.parse(output, :latex)
+        expect(reread.to_mathml).to include("<mi>glb</mi>")
+      end
+    end
   end
 
   describe ".to_html" do
