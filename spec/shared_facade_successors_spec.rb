@@ -5,11 +5,24 @@ require "support/shared_facade_successors"
 require "support/shared_renderer_fixtures"
 
 RSpec.describe SharedFacadeSuccessors do
-  it "pins eighteen successors and preserves the unselected legacy renderer rows" do
-    expect(described_class::PROFILE).to eq("writer-fidelity-v1")
-    expect(described_class.data.fetch("cases").length).to eq(18)
+  it "pins twenty-four successors and preserves the unselected legacy renderer rows" do
+    expect(described_class::PROFILES).to eq(%w[writer-fidelity-v1 writer-authored-v1])
+    expect(described_class.data.fetch("cases").length).to eq(24)
     original = { "id" => "unselected", "expected" => "unchanged" }
     expect(described_class.row("fixtures/renderer-expectations.yaml", original)).to equal(original)
+  end
+
+  it "rejects overlapping sources across selected profiles" do
+    allow(FacadeSuccessors).to receive(:load).and_return(
+      { "cases" => [{ "source" => { "path" => "fixtures/renderer-expectations.yaml", "id" => "same" } }] },
+    )
+    cached = described_class.instance_variable_get(:@data)
+    described_class.remove_instance_variable(:@data) if described_class.instance_variable_defined?(:@data)
+    begin
+      expect { described_class.data }.to raise_error(FacadeSuccessors::Error, /duplicate source/)
+    ensure
+      described_class.instance_variable_set(:@data, cached)
+    end
   end
 
   it "selects the renderer successor with exact public refusals and the original MathML assertion" do
