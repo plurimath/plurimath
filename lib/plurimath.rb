@@ -10,9 +10,24 @@ if Object.const_defined?(:Lutaml)
 else
   autoload :Lutaml, "lutaml/model"
 end
-require "parslet"
-require "parsanol"
-require "htmlentities"
+# Parsing and entity decoding belong to first use, like the stage models.
+# Keep Opal's build-time requires explicit. A namespace already defined by a
+# partial dependency load needs its entrypoint (autoload cannot replace it).
+if RUBY_ENGINE == "opal" || Object.const_defined?(:Parslet)
+  require "parslet"
+else
+  autoload :Parslet, "parslet"
+end
+if RUBY_ENGINE == "opal" || Object.const_defined?(:Parsanol)
+  require "parsanol"
+else
+  autoload :Parsanol, "parsanol"
+end
+if RUBY_ENGINE == "opal" || Object.const_defined?(:HTMLEntities)
+  require "htmlentities"
+else
+  autoload :HTMLEntities, "htmlentities"
+end
 
 # Select an XML engine
 require "plurimath/xml_engine"
