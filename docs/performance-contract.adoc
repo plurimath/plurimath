@@ -111,14 +111,15 @@ load order, the first conversion and parser rejection.
 
 `scripts/measure_optional_stages.rb` prepares the catalog, formatter and
 renderer staging requested in #537/#541 without choosing new gem names,
-moving public constants or changing runtime loading. It runs five operations
+moving public constants. It runs six operations
 in separate cold processes for each of Ox and Oga:
 
 * require the facade;
 * parse `x^2 + 3.14` and write all six output formats without a formatter;
 * validate one catalog metadata record;
 * format `1234567.891` as text with the existing number formatter;
-* normalize an image format through the renderer bridge, without calling lasem.
+* normalize an image format through the renderer bridge, without calling lasem;
+* write an intent-enabled derivative as MathML.
 
 The `require-footprint` job saves `optional-stages-ox.json` and
 `optional-stages-oga.json` beside its existing reports. Each records the source
@@ -128,14 +129,22 @@ before and after an extraction to compare file surfaces and output bytes.
 There is no timing threshold or speedup claim for these small probes.
 
 The probe exits 1 if require or ordinary conversion loads the catalog,
-formatter, renderer bridge or native lasem backend; if metadata validation
+formatter, renderer bridge, native lasem backend or intent processing; if metadata validation
 loads formatting or rendering; if text formatting loads the catalog or
 rendering; or if renderer dispatch loads catalog, formatter or native lasem.
 Cold-process specs also check that metadata validation and text formatting
 leave the math facade deferred, and exercise the failure exit with an eager
-catalog preload. Actual image rendering remains covered by renderer specs.
+catalog or intent-stage preload. Actual image rendering remains covered by renderer specs.
 
-This is preparation for physical extraction. It does not mark the catalog
+Formula's MathML intent post-processing lives in
+`math/formula/intent_processing.rb`. Ordinary parsing and all six default
+writers leave that module unloaded; the first intent-enabled MathML write
+loads it into Formula. The two protected dispatch methods retain their
+signatures, and the moved helpers keep protected visibility. Repeated writes
+and Formula subclasses use the same stage. This is an internal source split;
+public constants, writer options and defaults stay the same.
+
+This is an initial physical writer split. It does not mark the catalog
 and formatter/renderer staging checkbox complete. The existing require,
 first-conversion and suite budgets continue to cover overall costs.
 
