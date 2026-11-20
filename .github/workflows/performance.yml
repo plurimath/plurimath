@@ -14,6 +14,7 @@ on:
       - "Gemfile"
       - "plurimath.gemspec"
       - "scripts/measure_require.rb"
+      - "scripts/measure_optional_stages.rb"
       - "scripts/check_suite_budget.rb"
       - ".github/workflows/performance.yml"
   workflow_dispatch:
@@ -56,6 +57,14 @@ jobs:
               puts "| #{d["engine"]} | #{r["wall_ms"]} | #{r["loaded_features"]} | #{r["plurimath_lib_files"]} | #{r["allocated_objects"]} | #{r["rss_growth_kb"]} | #{u["wall_ms"]} | #{u["plurimath_lib_files"]} | #{a["pending_after_require"]} | #{gate} |"
             end
           ' >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
+      - name: Check optional stage loading boundaries (ox and oga)
+        run: |
+          status=0
+          for engine in ox oga; do
+            bundle exec ruby scripts/measure_optional_stages.rb --engine "$engine" \
+              --output "tmp/performance/optional-stages-$engine.json" || status=1
+          done
           exit "$status"
       - uses: actions/upload-artifact@v4
         if: always()
