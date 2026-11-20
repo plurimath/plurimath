@@ -87,6 +87,26 @@ ruby scripts/check_suite_budget.rb suite --rspec-json rspec.json -- \
 `measure_require.rb --baseline FILE --enforce` exit 1 when a gate check fails.
 The workflows pass both.
 
+== Parser dependency loading
+
+On MRI, `require "plurimath"` registers autoloads for Parslet, Parsanol
+and HTMLEntities. Parsing, slice conversion and entity decoding load them
+on first use. A host that loaded a dependency first keeps the same module
+or class. Opal keeps its explicit requires for bundle construction.
+
+A focused before/after probe at `b0a695cb`, using Ruby 4.0.1, Parsanol
+1.5.9 and Leptris 1.9.429.0, reduced cold loaded features from 73 to 23
+with Ox, and measured 62 after the change with Oga. The 50 deferred files
+belong to the parser and entity libraries. Five representative inputs
+(AsciiMath, LaTeX, UnicodeMath, MathML and HTML), each written in all six
+formats, retained identical bytes. These are focused local checks; GHA
+runs the full suite and conformance corpora with the current dependencies.
+
+The require feature ceilings are now 23 (Ox) and 62 (Oga). The existing
+first-use and timing budgets stay in place, so the performance workflow
+also checks the deferred cost. Cold-process specs cover deferral, host
+load order, the first conversion and parser rejection.
+
 == The engine loop
 
 Every example used to run twice, once with the Ox engine and once with the Oga
@@ -270,11 +290,11 @@ The require footprint has no absolute number in #537.
   `require`, loads more of its own files on first use, has fewer autoloads
   pending after `require` than the baseline, or a median wall time is over
   three times the baseline plus 500 ms. The baseline is
-  `scripts/require_baseline.json`. Its counts were measured on `main` at
+  `scripts/require_baseline.json`. Its original counts were measured on `main` at
   `85fd8deb` with the UnicodeMath change (#555) merged, so they match `main`
   once that lands; its wall times come from performance run 42176576146 on
   `main` at `c511801b`, before first use loaded amath. The counts are exact:
-  the `require` feature count was 73 (ox) and 112 (oga) in each of the 12
+  the earlier `require` feature count was 73 (ox) and 112 (oga) in each of the 12
   performance runs from 34eb4dbe to 5d9ab96b. The wall time has only a loose
   bound because it varies about twofold between runs. The five samples in
   one run stay within about 10% of each other, but the median moves with the
