@@ -12,6 +12,8 @@ module Plurimath
       # exactly as written; it never calculates, rounds or converts them.
       # See docs/uncertainty.adoc.
       class Uncertainty < Core
+        autoload :DisplayTreeMethods, "plurimath/math/function/uncertainty/display_tree_methods"
+
         CATEGORIES = %i[standard expanded coverage_interval].freeze
         NOTATIONS = %i[absolute concise].freeze
         INTERVAL_KINDS = %i[shortest probabilistically_symmetric].freeze
@@ -279,28 +281,32 @@ module Plurimath
 
         def to_asciimath_math_zone(spacing = "", _last = false, _indent = true,
                                    options:)
-          "#{spacing}#{to_asciimath(options: options)} uncertainty\n"
+          Uncertainty.include(DisplayTreeMethods) unless Uncertainty < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing = "", _last = false, _indent = true,
                                options:)
-          "#{spacing}\"#{to_latex(options: options)}\" uncertainty\n"
+          Uncertainty.include(DisplayTreeMethods) unless Uncertainty < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing = "", _last = false, _indent = true,
                                 options:)
-          "#{spacing}\"#{dump_mathml(self, options: options)}\" uncertainty\n"
+          Uncertainty.include(DisplayTreeMethods) unless Uncertainty < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing = "", _last = false, _indent = true,
                               display_style:, options:)
-          "#{spacing}\"#{dump_omml(self, display_style,
-                                   options: options)}\" uncertainty\n"
+          Uncertainty.include(DisplayTreeMethods) unless Uncertainty < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath_math_zone(spacing = "", _last = false,
                                      _indent = true, options:)
-          "#{spacing}\"#{to_unicodemath(options: options)}\" uncertainty\n"
+          Uncertainty.include(DisplayTreeMethods) unless Uncertainty < DisplayTreeMethods
+          super
         end
 
         private
