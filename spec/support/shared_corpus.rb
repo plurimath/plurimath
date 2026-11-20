@@ -2,6 +2,7 @@
 
 require "stringio"
 require "yaml"
+require_relative "shared_facade_successors"
 
 # Read the shared snapshots; never regenerate them while running the suite.
 module SharedCorpus
@@ -73,7 +74,8 @@ module SharedCorpus
       # loaded as executable cases here. No aliases or Ruby objects are allowed.
       payload = YAML.safe_load_file(path, aliases: false)
       kind = schema_kind(payload.fetch("schema"), path)
-      payload.fetch("cases").map do |kase|
+      relative = "corpus/#{path.delete_prefix("#{corpus_root}/")}"
+      SharedFacadeSuccessors.select(relative, payload.fetch("cases")).map do |kase|
         format = CorpusGenerator::FORMATS.find { |entry| entry.name == kase.fetch("input_format") }
         raise Error, "#{path}: unsupported input format #{kase['input_format'].inspect}" unless format
 

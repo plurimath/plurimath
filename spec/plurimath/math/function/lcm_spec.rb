@@ -42,14 +42,24 @@ RSpec.describe Plurimath::Math::Function::Lcm do
     it_behaves_like "shared renderer fixture", "function-lcm-91-1"
   end
 
-  describe ".to_latex" do
-    subject(:formula) { described_class.new(first_value).to_latex(options: {}) }
-
-    it_behaves_like "shared renderer fixture", "function-lcm-122-1"
-
-    it_behaves_like "shared renderer fixture", "function-lcm-130-1"
-
-    it_behaves_like "shared renderer fixture", "function-lcm-138-1"
+  # The immutable renderer fixtures record the previous plain-letter output.
+  describe ".to_latex", engine_loop: :always do
+    {
+      Plurimath::Math::Symbols::Symbol.new("x") => "x",
+      Plurimath::Math::Number.new("70") => "70",
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Symbols::Symbol.new("x"),
+        Plurimath::Math::Number.new("2"),
+      ]) => "x 2",
+    }.each do |argument, latex|
+      it "writes an upright lcm operator with #{latex}" do
+        node = described_class.new(argument)
+        output = node.to_latex(options: {})
+        expect(output).to eq("\\operatorname{lcm}{#{latex}}")
+        reread = Plurimath::Math.parse(output, :latex)
+        expect(reread.to_mathml).to include("<mi>lcm</mi>")
+      end
+    end
   end
 
   describe ".to_html" do

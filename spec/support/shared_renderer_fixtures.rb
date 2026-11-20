@@ -2,6 +2,7 @@
 
 require "support/shared_model_recipes"
 require "yaml"
+require_relative "shared_facade_successors" unless RUBY_ENGINE == "opal"
 
 module SharedRendererFixtures
   METHODS = %w[to_asciimath to_latex to_html to_mathml to_omml to_unicodemath to_display to_mathml_without_math_tag to_omml_without_math_tag].freeze
@@ -9,6 +10,7 @@ module SharedRendererFixtures
   STEP_FIELDS = {
     "build" => [%w[kind save recipe], %w[memo]],
     "render" => [%w[kind save source operation], %w[memo]],
+    "assert_refusal" => [%w[kind source operation error_class message assertion_line], []],
     "decode" => [%w[kind save source boundary format], %w[format_argument memo]],
     "transform" => [%w[kind save source normalization], %w[memo]],
     "observe" => [%w[kind save source observation], %w[arguments memo]],
@@ -99,7 +101,7 @@ module SharedRendererFixtures
         available << step.fetch("save")
       end
     end
-    unless steps.any? { |step| step.fetch("kind") == "assert" } || program["no_error"] == true
+    unless steps.any? { |step| %w[assert assert_refusal].include?(step.fetch("kind")) } || program["no_error"] == true
       raise Error, "renderer program needs an assertion or explicit no-error acceptance"
     end
   end
@@ -116,6 +118,13 @@ module SharedRendererFixtures
     end
     case step.fetch("kind")
     when "render" then validate_operation!(step.fetch("operation"))
+    when "assert_refusal"
+      validate_operation!(step.fetch("operation"))
+      unless %w[Plurimath::Error Plurimath::Math::ParseError].include?(step.fetch("error_class")) &&
+          step.fetch("message").is_a?(String) && !step.fetch("message").empty? &&
+          step.fetch("assertion_line").is_a?(Integer) && step.fetch("assertion_line").positive?
+        raise Error, "invalid renderer refusal assertion"
+      end
     when "decode"
       boundary = step.fetch("boundary")
       formats = { "html_parser" => "html", "asciimath_parser" => "asciimath", "mathml_utility_helper" => "mathml", "omml_utility_helper" => "omml" }
@@ -215,7 +224,9 @@ module SharedRendererFixtures
     matches = rows.select { |entry| entry.fetch("id") == id }
     raise Error, "unknown renderer fixture #{id.inspect}" unless matches.length == 1
 
-    matches.first
+    return matches.first if RUBY_ENGINE == "opal"
+
+    SharedFacadeSuccessors.row("fixtures/renderer-expectations.yaml", matches.first)
   end
 
   def build_input(input, memo, example_memo)
@@ -341,6 +352,11 @@ module SharedRendererFixtures
         case step.fetch("kind")
                when "build" then SharedModelRecipes.build(step.fetch("recipe"), memo)
                when "render" then render_model(slots.fetch(step.fetch("source")), step.fetch("operation"), memo, example_memo: example_memo)
+               when "assert_refusal"
+                 observed = refusal_outcome(slots.fetch(step.fetch("source")), step.fetch("operation"), memo, example_memo)
+                 expected = step.slice("error_class", "message")
+                 yield observed, expected, "eq"
+                 nil
                when "decode" then decode(slots.fetch(step.fetch("source")), step, memo, context: context)
                when "transform" then transform(slots.fetch(step.fetch("source")), step.fetch("normalization"))
                when "observe" then observe(slots.fetch(step.fetch("source")), step.fetch("observation"), step.fetch("arguments", {}))
@@ -366,6 +382,12 @@ module SharedRendererFixtures
     end
   ensure
     Plurimath.configuration.number_formatter = previous_formatter if configured_formatter
+  end
+
+  def refusal_outcome(model, operation, memo, example_memo)
+    { "output" => render_model(model, operation, memo, example_memo: example_memo) }
+  rescue StandardError => e
+    { "error_class" => e.class.name, "message" => e.message }
   end
 
   def decode(text, step, memo, context: nil)

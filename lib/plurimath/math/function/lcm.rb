@@ -8,12 +8,6 @@ module Plurimath
         DESCRIPTION = "The least common multiple operator."
         REFERENCE = "https://en.wikipedia.org/wiki/Least_common_multiple"
         EXAMPLE = -> { new(sym("x")) }
-        CATALOG_FORMAT_LIMITATIONS = {
-          latexmath: {
-            status: :limited,
-            notes: ["The operator name is emitted as plain math letters, not an operator command."],
-          },
-        }.freeze
         # --- end catalog documentation ---
 
         def validate_function_formula
@@ -35,7 +29,7 @@ module Plurimath
         end
 
         def to_latex(options:)
-          "lcm{#{latex_value(options: options)}}"
+          "\\operatorname{lcm}{#{latex_value(options: options)}}"
         end
 
         def to_omml_without_math_tag(display_style, options:)

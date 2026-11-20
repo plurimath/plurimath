@@ -58,14 +58,18 @@ RSpec.describe "shared corpus conformance", :shared_corpus do # rubocop:disable 
         row.fetch(:targets).each do |target|
           aggregate_failures("#{label} / target=#{target}") do
             expected = kase.fetch("expected").fetch(target)
-            expected = { "output" => expected } if row.fetch(:kind) == :strings
+            expected = { "output" => expected } if expected.is_a?(String)
             if expected.key?("output")
               expect(SharedCorpus.render(formula, target, options))
                 .to eq(expected.fetch("output"))
             else
-              expect(expected.fetch("error").fetch("category")).to eq("parse_error")
+              error = expected.fetch("error")
+              expect(error.fetch("category")).to eq("parse_error")
               expect { SharedCorpus.render(formula, target, options) }
-                .to raise_error(Plurimath::Math::ParseError)
+                .to raise_error(Plurimath::Math::ParseError) { |actual|
+                  expect(actual.class.name).to eq(error.fetch("error_class")) if error.key?("error_class")
+                  expect(actual.message).to eq(error.fetch("message")) if error.key?("message")
+                }
             end
           end
         end
