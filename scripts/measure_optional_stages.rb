@@ -32,12 +32,17 @@ module MeasureOptionalStages
     RUBY
     # Exercise the bridge without probing native availability or rendering.
     "renderer_dispatch" => 'Plurimath::Math::Renderer.normalize_format("SVG")',
+    "intent_mathml" => <<~'RUBY',
+      formula = Plurimath::Math.parse("ⅆf/ⅆx", :unicode)
+      formula.to_mathml(intent: true)
+    RUBY
   }.freeze
   GROUPS = {
     "catalog" => %r{/plurimath/catalog(?:/|\.rb$)},
     "formatter" => %r{/plurimath/(?:formatter(?:/|\.rb$)|number_formatter\.rb$)},
     "renderer" => %r{/plurimath/math/renderer\.rb$},
     "native_backend" => %r{/(?:lasem\.rb|lasem/[^/]+\.(?:so|bundle|dll))$},
+    "intent_processing" => %r{/plurimath/math/formula/intent_processing\.rb$},
   }.freeze
   ALLOWED = {
     "require" => [],
@@ -45,6 +50,7 @@ module MeasureOptionalStages
     "catalog_metadata" => %w[catalog],
     "number_formatting" => %w[formatter],
     "renderer_dispatch" => %w[renderer],
+    "intent_mathml" => %w[intent_processing],
   }.freeze
   CHILD = <<~'RUBY'
     require "json"

@@ -40,23 +40,31 @@ RSpec.describe MeasureOptionalStages, if: RUBY_ENGINE != "opal", engine_loop: :o
         expect(renderer.fetch("loaded_groups").fetch("renderer")).to be(true)
         expect(renderer.fetch("loaded_groups").fetch("native_backend")).to be(false)
       end
+
+      it "loads the intent stage only for an intent-enabled writer" do
+        intent = report.fetch("intent_mathml")
+        expect(intent.fetch("loaded_groups").fetch("intent_processing")).to be(true)
+        expect(intent.fetch("result")).to include('intent=":derivative(1,f,x)"')
+      end
     end
   end
 
-  it "fails the gate when require eagerly loads an optional stage" do
-    Tempfile.create(["eager-stage", ".rb"]) do |preload|
-      preload.write('require "plurimath"; require "plurimath/catalog"')
-      preload.flush
-      Tempfile.create(["optional-stages", ".json"]) do |output|
-        stdout, stderr, status = Open3.capture3(
-          { "RUBYOPT" => "#{ENV['RUBYOPT']} -r#{preload.path}" },
-          RbConfig.ruby, "-Ilib", "scripts/measure_optional_stages.rb",
-          "--scenario", "require", "--output", output.path,
-          chdir: described_class::ROOT,
-        )
-        expect(status.exitstatus).to eq(1), "#{stdout}\n#{stderr}"
-        data = JSON.parse(File.read(output.path))
-        expect(data.dig("scenarios", "require", "violations")).to include("catalog")
+  { "catalog" => "plurimath/catalog", "intent_processing" => "plurimath/math/formula/intent_processing" }.each do |group, path|
+    it "fails the gate when require eagerly loads #{group}" do
+      Tempfile.create(["eager-stage", ".rb"]) do |preload|
+        preload.write("require 'plurimath'; require '#{path}'")
+        preload.flush
+        Tempfile.create(["optional-stages", ".json"]) do |output|
+          stdout, stderr, status = Open3.capture3(
+            { "RUBYOPT" => "#{ENV['RUBYOPT']} -r#{preload.path}" },
+            RbConfig.ruby, "-Ilib", "scripts/measure_optional_stages.rb",
+            "--scenario", "require", "--output", output.path,
+            chdir: described_class::ROOT,
+          )
+          expect(status.exitstatus).to eq(1), "#{stdout}\n#{stderr}"
+          data = JSON.parse(File.read(output.path))
+          expect(data.dig("scenarios", "require", "violations")).to include(group)
+        end
       end
     end
   end
