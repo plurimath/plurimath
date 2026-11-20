@@ -10,6 +10,7 @@ module Plurimath
     autoload :InvalidUncertainty, "#{__dir__}/errors/invalid_uncertainty"
     autoload :UnsupportedBase, "#{__dir__}/errors/unsupported_base"
     autoload :UnsupportedLocale, "#{__dir__}/errors/unsupported_locale"
+    autoload :UnsupportedSerialization, "#{__dir__}/errors/unsupported_serialization"
     autoload :UnsupportedRenderFormat, "#{__dir__}/errors/unsupported_render_format"
   end
 end
