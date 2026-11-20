@@ -14,9 +14,12 @@ RSpec.describe Plurimath::Math::SymbolIndex do
     expect(status.success?).to be(true), err
   end
 
-  it "lists every symbol file under a constant" do
+  it "lists every symbol class file under a constant" do
     dir = "#{root}/lib/plurimath/math/symbols/"
-    files = Dir.glob("#{dir}**/*.rb").map { |f| f.delete_prefix(dir).delete_suffix(".rb") }
+    # The base Symbol's subtree holds lazy implementation modules, not
+    # symbol classes. Nested symbol families (such as Paren) stay covered.
+    files = Dir.glob("#{dir}**/*.rb").reject { |f| f.start_with?("#{dir}symbol/") }
+      .map { |f| f.delete_prefix(dir).delete_suffix(".rb") }
     indexed = described_class::FILES.values + described_class::PAREN_FILES.values + ["symbol"]
 
     expect(indexed).to match_array(files)
