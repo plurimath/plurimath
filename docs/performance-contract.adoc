@@ -367,3 +367,22 @@ The require footprint has no absolute number in #537.
 | `ci-legs`
 | a leg of the `rake` run on `main` took longer than 1800 s, or has no time.
 |===
+
+== Display-tree staging
+
+The `Formula#to_display` entrypoint and the five language tree writers on
+`Formula`, `UnaryFunction`, `BinaryFunction`, `TernaryFunction`, and
+`Symbols::Symbol` load their implementation modules on first tree use.
+Ordinary conversion, including MathML intent processing, leaves these modules
+unloaded. Existing public signatures and subclass `super` calls are preserved.
+`spec/plurimath/math/formula/lazy_display_tree_spec.rb` checks that boundary in
+fresh Ox and Oga processes, repeated tree calls, and conversion after tree use.
+
+Against main at `60105962170cee51371035e5a9b1dd222deacf47`, the eight-input,
+six-writer conversion probe loads 11,773 fewer bytes of plurimath source with
+either engine; the cold `require "plurimath"` file list and source bytes are
+unchanged. This is a source-loading measurement, not a time or memory claim.
+The same probe preserves all 96 default outputs and 16 intent outputs across
+both engines. Specialized node tree methods and other formatter/renderer code
+remain in their existing files; this boundary does not complete #537's physical
+staging work.

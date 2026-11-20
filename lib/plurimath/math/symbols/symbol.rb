@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Symbols
       class Symbol < Core
+        autoload :DisplayTreeMethods, "plurimath/math/symbols/symbol/display_tree_methods"
+
         extend SymbolDocumentation
 
         attribute :value, :string
@@ -230,28 +232,32 @@ module Plurimath
 
         def to_asciimath_math_zone(spacing = "", _last = false, _indent = true,
 options:)
-          "#{spacing}\"#{to_asciimath(options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing = "", _last = false, _indent = true,
 options:)
-          "#{spacing}\"#{to_latex(options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing = "", _last = false, _indent = true,
 display_style:, options:)
-          "#{spacing}\"#{dump_omml(self, display_style,
-                                   options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing = "", _last = false, _indent = true,
 options:)
-          "#{spacing}\"#{dump_mathml(self, options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath_math_zone(spacing = "", _last = false, _indent = true,
 options:)
-          "#{spacing}\"#{to_unicodemath(options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def paren?
