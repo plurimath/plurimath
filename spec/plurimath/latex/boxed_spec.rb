@@ -55,6 +55,45 @@ RSpec.describe "LaTeX boxed expressions", engine_loop: :always do
     )
   end
 
+  it "attaches a subscript to the enclosure" do
+    expect(parse('\\boxed{x}_{i}')).to eq(
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Base.new(
+          box(Plurimath::Math::Symbols::Symbol.new("x")),
+          Plurimath::Math::Symbols::Symbol.new("i"),
+        ),
+      ])
+    )
+  end
+
+  ['\\boxed{x}_{i}^{2}', '\\boxed{x}^{2}_{i}'].each do |input|
+    it "attaches both scripts to the enclosure in #{input}" do
+      expect(parse(input)).to eq(
+        Plurimath::Math::Formula.new([
+          Plurimath::Math::Function::PowerBase.new(
+            box(Plurimath::Math::Symbols::Symbol.new("x")),
+            Plurimath::Math::Symbols::Symbol.new("i"),
+            Plurimath::Math::Number.new("2"),
+          ),
+        ])
+      )
+    end
+  end
+
+  it "keeps a grouped exponent inside the subscript" do
+    expect(parse('\\boxed{x}_{i^2}')).to eq(
+      Plurimath::Math::Formula.new([
+        Plurimath::Math::Function::Base.new(
+          box(Plurimath::Math::Symbols::Symbol.new("x")),
+          Plurimath::Math::Function::Power.new(
+            Plurimath::Math::Symbols::Symbol.new("i"),
+            Plurimath::Math::Number.new("2"),
+          ),
+        ),
+      ])
+    )
+  end
+
   it "renders nested enclosures with the box notation" do
     xml = Nokogiri::XML(parse('\\boxed{\\boxed{x}+1}').to_mathml) { |config| config.noblanks }
     enclosures = xml.xpath("//*[local-name()='menclose']")

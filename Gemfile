@@ -8,7 +8,7 @@ gemspec
 gem "canon"
 gem "fiddle", "~> 1.1"
 # Candidate adds boxed parsing; replace this development pin after latexmath#72 is released.
-gem "latexmath", github: "plurimath/latexmath", ref: "92d944bbcdd07ae5dc3250000d4344ad9e306ebe"
+gem "latexmath", github: "plurimath/latexmath", ref: "b013c397b6dd68d953a43edb757efc43d4281d64"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # Optional native image-rendering backend for `Formula#render` / `plurimath
 # render`. Git-pinned until `lasem` ships to RubyGems; intentionally NOT a

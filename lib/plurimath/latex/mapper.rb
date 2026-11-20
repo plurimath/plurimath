@@ -78,6 +78,7 @@ module Plurimath
         simple: ->(v) { !v.is_a?(Hash) && !v.is_a?(Array) },
         sequence: ->(v) { v.is_a?(Array) && v.none? { |e| e.is_a?(Hash) || e.is_a?(Array) } },
         subtree: ->(_) { true },
+        box_enclosure: ->(v) { v.is_a?(Math::Function::Menclose) && v.parameter_one == "box" },
       }.freeze
 
       # Builders shared by the typed rules below.
@@ -244,6 +245,7 @@ module Plurimath
         [{ unary_functions: s, supscript: s }, ->(u, p) { Math::Function::Power.new(Build.unary(u), p) }],
         [{ ternary_functions: s, subscript: s }, ->(x, b) { Utility.get_class(x).new(b) }],
         [{ binary_functions: s, supscript: s }, ->(x, p) { Math::Function::Power.new(x, p) }],
+        [{ binary_functions: :box_enclosure, subscript: s }, ->(x, b) { Math::Function::Base.new(x, b) }],
         [{ unary_functions: s, subscript: s }, ->(u, b) { Math::Function::Base.new(Build.unary(u), b) }],
         [{ sequence: s, expression: q }, ->(z, x) { Build.nary(z, Utility.filter_values(x), [z] + x) }],
         [{ sequence: s, expression: s }, ->(z, x) { Build.nary(z, x, [z, x].compact) }],
