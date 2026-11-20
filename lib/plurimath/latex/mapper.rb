@@ -207,7 +207,14 @@ module Plurimath
         [{ fonts: s, intermediate_exp: s, subscript: s }, ->(f, x, b) { Math::Function::Base.new(Build.font(f, x), b) }],
         [{ fonts: s, intermediate_exp: s, supscript: s }, ->(f, x, p) { Math::Function::Power.new(Build.font(f, x), p) }],
         [{ sqrt: s, intermediate_exp: s }, ->(_, x) { Math::Function::Sqrt.new(x) }],
-        [{ unary: s, first_value: s }, ->(u, f) { Utility.get_class(u == "overline" ? "bar" : u).new(f) }],
+        [{ unary: s, first_value: s },
+         lambda do |u, f|
+           if u == "boxed"
+             Math::Function::Menclose.new("box", f)
+           else
+             Utility.get_class(u == "overline" ? "bar" : u).new(f)
+           end
+         end],
         [{ text: s, first_value: s, subscript: s, supscript: s },
          ->(x, f, b, p) { Math::Function::PowerBase.new(Utility.get_class(x).new(f), b, p) }],
         [{ text: s, first_value: s, subscript: s }, ->(x, f, b) { Math::Function::Base.new(Utility.get_class(x).new(f), b) }],

@@ -7,8 +7,8 @@ gemspec
 # from RubyGems; the gemspec floor (amath >= 0.2.0, < 0.3) admits it.
 gem "canon"
 gem "fiddle", "~> 1.1"
-# Candidate includes typed symbol portability; retain its exact pin until published.
-gem "latexmath", github: "plurimath/latexmath", ref: "372e377261c82e801ce755ebca7abfae1336ec39"
+# Candidate adds boxed parsing; replace this development pin after latexmath#72 is released.
+gem "latexmath", github: "plurimath/latexmath", ref: "92d944bbcdd07ae5dc3250000d4344ad9e306ebe"
 gem "leptris" # third XML engine under test (spec_helper runs each example per engine)
 # Optional native image-rendering backend for `Formula#render` / `plurimath
 # render`. Git-pinned until `lasem` ships to RubyGems; intentionally NOT a
