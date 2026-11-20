@@ -9,13 +9,30 @@ module. Parsing, ordinary conversion, intent output, left/right validation and
 notation masks leave both modules unloaded. Public method signatures, private
 helper visibility, repeated calls and subclass `super` behavior are preserved.
 
-`spec/plurimath/math/lazy_tree_helpers_spec.rb` checks the boundary in fresh Ox
-and Oga processes. Existing `model_helper_spec.rb` checks the helper behavior.
-The focused eight-input, six-writer probe against the parent change
-`1dc34786093a8ad60f86a34d6ea8c4dc99590aa3` preserves 96 ordinary outputs,
-16 intent outputs and 106 successful display outputs across both engines.
-Two pre-existing display errors are unchanged. It loads 4,340 fewer bytes of
-plurimath source through ordinary and intent conversion with either engine.
-The cold `require "plurimath"` file list and source bytes are unchanged.
+Specialized nodes (color, fences, fonts, left/right delimiters, stack groups,
+tables, rows, cells, text, uncertainty, units and vectors) load their own
+`DisplayTreeMethods` on first tree use. Formula's protected spacing helpers
+live in its display stage. Core's diagnostic printing and `to_ms_value` helpers
+share `Core::TreeHelpers`, retaining the private parameter helper.
+Signatures, visibility, repeated calls and overrides using `super` are preserved.
+The duplicate, identical cell Unicode-tree definition is consolidated.
+
+`spec/plurimath/math/lazy_tree_helpers_spec.rb` and
+`spec/plurimath/math/lazy_specialized_tree_spec.rb` check these boundaries in
+fresh Ox and Oga processes, including each writer as the first entrypoint.
+Existing model-helper and display/intent-stage specs cover their integration.
+Across both engines, the eight-input parent probe preserves 96 ordinary,
+16 intent and 106 successful display outputs; two existing display errors
+are unchanged. A separate 13-node probe compares all writers, intent output,
+display output and direct tree calls with spacing/indent/style variations.
+Known FontStyle Unicode and Unitsml OMML/Unicode errors remain unchanged.
+
+The eight-input ordinary-conversion probe loads 7,981 fewer bytes of plurimath
+source than the parent change `1dc34786093a8ad60f86a34d6ea8c4dc99590aa3`
+with either engine. Loading all 13 specialized nodes defers a further
+7,894 source bytes relative to the initial helper-only change
+`71ebd4ba44758becf0322fd348abb50c365729b2`. The cold
+`require "plurimath"` file list and source bytes are unchanged.
 These are source-loading measurements; they do not establish time or memory
-savings. Specialized node tree methods remain in their existing files.
+savings. No eager display-tree entrypoint bodies remain. Separate catalog or
+formatter packages and their packaging destinations are outside this change.

@@ -86,6 +86,46 @@ module Plurimath
           spacing.gsub("|_", last ? "  " : "| ")
         end
 
+        def pretty_print_instance_variables
+          excluded_vars = %i[
+            @left_right_wrapper
+            @using_default
+            @displaystyle
+            @__encoding
+            @__register
+            @__ordered
+            @unitsml
+            @__mixed
+            @is_mrow
+            @values
+          ]
+          instance_variables.sort - excluded_vars
+        end
+
+        def to_ms_value
+          new_arr = []
+          case self
+          when Math::Symbols::Symbol
+            new_arr << (value ? value.to_s : to_unicodemath(options: {}))
+          when Math::Number, Math::Function::Text
+            new_arr << value
+          else
+            parameters_to_ms_value(new_arr)
+            if respond_to?(:value) && value.is_a?(Array)
+              new_arr << value&.map(&:to_ms_value)&.join(" ")
+            end
+          end
+          new_arr
+        end
+
+        private
+
+        def parameters_to_ms_value(array)
+          ALL_PARAMETERS.each do |field|
+            array << get("@#{field}")&.to_ms_value if respond_to?(field)
+          end
+        end
+
       end
     end
   end
