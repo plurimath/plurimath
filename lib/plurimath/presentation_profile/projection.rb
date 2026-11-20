@@ -63,9 +63,10 @@ module Plurimath
 
         name = Utility.html_entity_to_unicode(token.nodes.join)
         role = @profile.role(name, @context, function_call: function_call)
-        return node unless role
+        variant = role ? (role == :variable ? "italic" : "normal") : @profile.fallback_variant(name)
+        return node unless variant
 
-        Identifier.new(node, role == :variable ? "italic" : "normal")
+        Identifier.new(node, variant)
       end
     end
   end

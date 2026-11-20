@@ -54,13 +54,16 @@ module Plurimath
           base_element = (XmlHelper.ox_element("mo") << invert_unicode_symbols.to_s)
           return base_element unless any_value_exist?
 
-          msubsup_tag = XmlHelper.ox_element("msubsup")
+          msubsup_tag = options[:presentation_profile]&.layout&.mathml_limits(self, :integral) ||
+            XmlHelper.ox_element("msubsup")
           XmlHelper.update_nodes(
             msubsup_tag,
             [
               base_element,
-              validate_mathml_tag(parameter_one, intent, options: options),
-              validate_mathml_tag(parameter_two, intent, options: options),
+              (validate_mathml_tag(parameter_one, intent, options: options) unless
+                %w[mover msup].include?(msubsup_tag.name)),
+              (validate_mathml_tag(parameter_two, intent, options: options) unless
+                %w[munder msub].include?(msubsup_tag.name)),
             ],
           )
           msubsup_tag = masked_tag(msubsup_tag) if self.options&.key?(:mask)
@@ -125,7 +128,7 @@ module Plurimath
         def nary_array(display_style, options:)
           symbol = hide_function_name ? "" : "∫"
           [
-            narypr(symbol, function_type: "subSup"),
+            narypr(symbol, function_type: options[:presentation_profile]&.layout&.limits(self, :integral) || "subSup"),
             omml_parameter(parameter_one, display_style, tag_name: "sub",
                                                          options: options),
             omml_parameter(parameter_two, display_style, tag_name: "sup",

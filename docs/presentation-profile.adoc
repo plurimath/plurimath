@@ -1,6 +1,6 @@
-= Presentation profile proposal: identifier semantics
+= Presentation profile proposal
 
-This is a draft API for the identifier part of
+This is a draft API for rendering options in
 https://github.com/plurimath/plurimath/issues/134[#134], with examples from
 https://github.com/plurimath/plurimath/issues/129[#129] and
 https://github.com/plurimath/plurimath/issues/142[#142]. It needs design-owner
@@ -46,7 +46,9 @@ Precedence is:
 . Explicit font markup, including input MathML `mathvariant`, is preserved.
 . Explicit context overrides the profile's name assumptions.
 . The profile's constant and function declarations apply.
-. Unclassified identifiers use the existing writer's fallback unchanged.
+. Configured character-class fallback applies to unclassified identifiers;
+  unspecified single-letter classes retain the existing writer fallback.
+  Multi-letter identifiers are upright, following the MathML identifier rule.
 
 Constants and context-free functions receive `mathvariant="normal"` directly
 on MathML `mi`, and `m:rPr/m:sty m:val="p"` on OMML runs. Explicit variables
@@ -64,17 +66,90 @@ profile = Plurimath::PresentationProfile.new(
 formula.to_mathml(profile: profile)
 ----
 
-== Remaining profile work and owner decisions
+== Fallback and layout options
+
+All new options below are explicit choices on a custom profile. Selecting
+`:iso_80000_2` alone does not select a fraction style or limit placement.
+
+[source,ruby]
+----
+profile = Plurimath::PresentationProfile.new(
+  fallback_italics: {
+    upperroman: false, lowerroman: true,
+    uppergreek: false, lowergreek: false
+  },
+  fraction_layout: :slanted,
+  sum_limits: :above_below,
+  integral_limits: :side,
+  symbols: { "sin" => "sen", "∧" => "⋀" },
+  operator_spacing: { "+" => { lspace: "0.2em", rspace: "0.2em" } }
+)
+formula.to_mathml(profile: profile)
+formula.to_omml(profile: profile)
+----
+
+`fallback_italics` takes boolean values for the four named character classes.
+It applies to single Latin/Greek letters only after explicit fonts and semantic
+roles; multi-letter identifiers are upright. It introduces no new constant
+inference. The French-style preferences above are an example, not a new preset.
+
+`fraction_layout` accepts `:vertical`, `:slanted`, and `:inline`. MathML uses
+`mfrac` with `bevelled=false/true` for the first two; inline output uses a slash
+and explicitly parenthesizes both operands to preserve grouping. OMML uses
+fraction types `bar`, `skw`, and `lin`. Explicit fraction source options
+(`bevelled`, `linethickness`, `ldiv`, or `choose`) take precedence.
+
+`sum_limits` and `integral_limits` accept `:side` or `:above_below`.
+The writers select the appropriate MathML script/limit element and OMML
+`limLoc` (`subSup` or `undOvr`). These options also apply to generic n-ary
+models whose base is a sum or integral; explicit n-ary source `type` wins.
+Other n-ary operators keep their own layout.
+
+`symbols` replaces exact output identifier/operator tokens and OMML n-ary
+characters, after role selection. A replacement is applied once, without
+changing parsing, stored names, or evaluation. Supply literal Unicode token
+text, with no ampersands, entity references, empty strings, or control
+characters. Multi-character prose in `mtext` is unaffected. Different writers
+may split tokens differently, so this is a token mapping, not a text search.
+
+`operator_spacing` sets MathML `mo` `lspace` and/or `rspace` using nonnegative
+lengths in `em`, keyed by the original token before symbol replacement.
+Explicit source spacing takes precedence. OMML has no corresponding per-token
+length attribute; this option leaves OMML spacing unchanged rather than
+inserting fixed whitespace that would change the formula text.
+
+== Document-level OMML defaults
+
+[source,ruby]
+----
+# XML fragment for a document producer's Word settings part:
+profile.to_omml_math_properties
+----
+
+This exports only the selected limit defaults as a namespaced `m:mathPr`
+fragment (`intLim`, then `naryLim`). The latter is Word's document-wide n-ary
+default. The caller owns insertion into document settings; `Formula#to_omml`
+continues to return equation XML and never embeds `mathPr` inside an equation.
+Other document-wide math properties are outside this proposal.
+
+The XML mappings follow
+https://www.w3.org/TR/MathML3/chapter3.html[the MathML presentation specification],
+https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.math.fractiontypevalues?view=openxml-3.0.1[Open XML fraction types],
+and
+https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.math.mathproperties?view=openxml-3.0.1[Open XML math properties].
+
+== Remaining owner decisions
 
 The owner must confirm the API, the preset name lists, precedence, and how to
 encode roles on individual source occurrences. In particular, assuming `e` is
 a constant requires an explicit variable override for elementary charge.
 The preset's function list is deliberately bounded to Ronald's named examples;
-an exhaustive ISO function list has not been established.
+an exhaustive ISO function list has not been established. The layout options
+are configurable mechanisms, not a claim of complete ISO 80000 conformance.
+Native Word and browser appearance still need target-environment qualification.
 
 Number localisation already has a separate `formatter:` API, including decimal
 and integer/fraction group settings; it remains composable with this profile.
-This proposal does not replace or bind that API to a profile. Configurable
-character-class fallback, fraction layout, sum/integral script placement,
-alternative operator symbols, spacing, and document-wide OMML math properties
-remain separate parts of #134. No issue is closed by this slice.
+This proposal does not replace or bind that API to a profile. Broader document
+properties and OMML per-symbol spacing remain design questions. No issue is
+closed by this draft.

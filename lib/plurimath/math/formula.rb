@@ -107,6 +107,7 @@ module Plurimath
           formatter: formatter,
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing,
+          presentation_profile: profile && PresentationProfile.resolve(profile),
         }.compact
         options[:formula] ||= source
         if split_on_linebreak
@@ -125,6 +126,7 @@ module Plurimath
           math = ox_element("math", attributes: math_attrs)
           XmlHelper.update_nodes(math, source.mathml_content(intent, options: options))
           unitsml_post_processing(math)
+          options[:presentation_profile]&.render_tokens(math, :mathml)
           dump_nodes(math, indent: 2)
         end
       end
@@ -136,6 +138,7 @@ module Plurimath
             intent: intent,
             formatter: options[:formatter],
             unary_function_spacing: options[:unary_function_spacing],
+            profile: options[:presentation_profile],
           )
         end.join
       end
@@ -181,7 +184,8 @@ formatter: nil, unitsml: {}, profile: nil, context: {})
         source = presentation_source(profile, context)
         wrap_render_error(:omml) do
           objects = split_on_linebreak ? source.new_line_support : [source]
-          options = { formatter: formatter, unitsml: unitsml }.compact
+          options = { formatter: formatter, unitsml: unitsml,
+                      presentation_profile: profile && PresentationProfile.resolve(profile) }.compact
           options[:formula] ||= source
           para_element = XmlHelper.ox_element("oMathPara",
                                             attributes: OMML_NAMESPACES, namespace: "m")
@@ -195,6 +199,7 @@ formatter: nil, unitsml: {}, profile: nil, context: {})
 
             para_element << omml_br_tag
           end
+          options[:presentation_profile]&.render_tokens(para_element, :omml)
           dump_nodes(para_element, indent: 2)
         end
       end
