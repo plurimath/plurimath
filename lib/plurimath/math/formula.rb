@@ -98,17 +98,20 @@ module Plurimath
         unitsml: {},
         split_on_linebreak: false,
         display_style: displaystyle,
-        unary_function_spacing: true
+        unary_function_spacing: true,
+        profile: nil,
+        context: {}
       )
+        source = presentation_source(profile, context)
         options = {
           formatter: formatter,
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing,
         }.compact
-        options[:formula] ||= self
+        options[:formula] ||= source
         if split_on_linebreak
-          return line_breaked_mathml(display_style, intent,
-                                     options: options)
+          return source.line_breaked_mathml(display_style, intent,
+                                           options: options)
         end
 
         wrap_render_error(:mathml) do
@@ -120,7 +123,7 @@ module Plurimath
             displaystyle: boolean_display_style(display_style),
           }
           math = ox_element("math", attributes: math_attrs)
-          XmlHelper.update_nodes(math, mathml_content(intent, options: options))
+          XmlHelper.update_nodes(math, source.mathml_content(intent, options: options))
           unitsml_post_processing(math)
           dump_nodes(math, indent: 2)
         end
@@ -174,11 +177,12 @@ module Plurimath
       end
 
       def to_omml(display_style: displaystyle, split_on_linebreak: false,
-formatter: nil, unitsml: {})
+formatter: nil, unitsml: {}, profile: nil, context: {})
+        source = presentation_source(profile, context)
         wrap_render_error(:omml) do
-          objects = split_on_linebreak ? new_line_support : [self]
+          objects = split_on_linebreak ? source.new_line_support : [source]
           options = { formatter: formatter, unitsml: unitsml }.compact
-          options[:formula] ||= self
+          options[:formula] ||= source
           para_element = XmlHelper.ox_element("oMathPara",
                                             attributes: OMML_NAMESPACES, namespace: "m")
           objects.each.with_index(1) do |object, index|
@@ -464,6 +468,16 @@ options:)
       # Attributes end
 
       protected
+
+      def presentation_source(profile, context)
+        unless profile
+          raise ArgumentError, "context requires a presentation profile" unless context == {}
+
+          return self
+        end
+
+        PresentationProfile.resolve(profile).apply(self, context: context)
+      end
 
       def asciimath_table_options(options, object)
         return options unless options.key?(:table) && object.is_a?(Math::Symbols::Comma)

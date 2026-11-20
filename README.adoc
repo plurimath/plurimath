@@ -45,6 +45,9 @@ accessible for screen readers and other assistive technologies.
 including each serializer's output and separate availability notes. See
 link:docs/catalog.adoc[the Ruby catalog contract] for the entry schema and export rules.
 
+An opt-in identifier presentation profile is proposed in
+link:docs/presentation-profile.adoc[the presentation profile design].
+
 
 == Installation
 
