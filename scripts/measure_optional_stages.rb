@@ -21,6 +21,12 @@ module MeasureOptionalStages
       %i[to_asciimath to_latex to_mathml to_omml to_html to_unicodemath]
         .to_h { |writer| [writer, formula.public_send(writer)] }
     RUBY
+    "catalog_examples" => <<~'RUBY',
+      {
+        "symbol" => Plurimath::Math::Symbols::Alpha.catalog_entry,
+        "function" => Plurimath::Math::Function::Sin.catalog_entry,
+      }
+    RUBY
     "catalog_metadata" => <<~'RUBY',
       Plurimath::Catalog::Validation.validate_metadata!(
         "name" => "alpha", "kind" => "symbol", "type" => "symbol", "arity" => nil
@@ -39,6 +45,7 @@ module MeasureOptionalStages
   }.freeze
   GROUPS = {
     "catalog" => %r{/plurimath/catalog(?:/|\.rb$)},
+    "catalog_documentation" => %r{/plurimath/(?:documentation|symbol_documentation)/catalog_methods\.rb$},
     "formatter" => %r{/plurimath/(?:formatter(?:/|\.rb$)|number_formatter\.rb$)},
     "renderer" => %r{/plurimath/math/renderer\.rb$},
     "native_backend" => %r{/(?:lasem\.rb|lasem/[^/]+\.(?:so|bundle|dll))$},
@@ -47,6 +54,7 @@ module MeasureOptionalStages
   ALLOWED = {
     "require" => [],
     "conversion" => [],
+    "catalog_examples" => %w[catalog catalog_documentation],
     "catalog_metadata" => %w[catalog],
     "number_formatting" => %w[formatter],
     "renderer_dispatch" => %w[renderer],

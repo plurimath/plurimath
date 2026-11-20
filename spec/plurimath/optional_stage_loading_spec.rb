@@ -34,6 +34,14 @@ RSpec.describe MeasureOptionalStages, if: RUBY_ENGINE != "opal", engine_loop: :o
         expect(formatter.fetch("pending").fetch("Math")).not_to be_nil
       end
 
+      it "loads catalog documentation only when a class is documented" do
+        catalog = report.fetch("catalog_examples")
+        expect(catalog.fetch("loaded_groups").fetch("catalog_documentation")).to be(true)
+        expect(catalog.fetch("result").fetch("symbol").fetch("latexmath")).to eq("\\alpha")
+        expect(catalog.fetch("result").fetch("function").fetch("name")).to eq("sin")
+        expect(catalog.fetch("violations")).to be_empty
+      end
+
       it "dispatches the renderer without loading its native backend" do
         renderer = report.fetch("renderer_dispatch")
         expect(renderer.fetch("result")).to eq("svg")
@@ -49,7 +57,11 @@ RSpec.describe MeasureOptionalStages, if: RUBY_ENGINE != "opal", engine_loop: :o
     end
   end
 
-  { "catalog" => "plurimath/catalog", "intent_processing" => "plurimath/math/formula/intent_processing" }.each do |group, path|
+  {
+    "catalog" => "plurimath/catalog",
+    "catalog_documentation" => "plurimath/documentation/catalog_methods",
+    "intent_processing" => "plurimath/math/formula/intent_processing",
+  }.each do |group, path|
     it "fails the gate when require eagerly loads #{group}" do
       Tempfile.create(["eager-stage", ".rb"]) do |preload|
         preload.write("require 'plurimath'; require '#{path}'")
