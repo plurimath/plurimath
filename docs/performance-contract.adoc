@@ -285,12 +285,13 @@ The require footprint has no absolute number in #537.
   the same pull request.
 
 | `suite-timing`
-| an example fails, or the suite takes longer than 1850 s. The target stays
-  600 s. The ceiling is 1.25 times the 1442 s measured in performance run
-  42230833245 at `71c0bc02`, rounded up to the next 50 s. Before the
-  engine-loop change, `main` took 1100 s to 1755 s on this runner for the
-  same code, so the ceiling leaves room for that spread. It
-  moves down as the staged libraries land.
+| an example fails, or the suite takes longer than 600 s. This ceiling
+  adopts https://github.com/plurimath/plurimath/issues/541[#541]'s local
+  full-suite target of under 10 minutes, using the fixed `ubuntu-22.04`
+  runner as a proxy. Recent completed performance runs on that runner took
+  303.6 s (44611807258), 435.1 s (44602758128), 460.5 s (44599034712), and
+  573.5 s (44608625351). The slowest leaves little room for runner variation.
+  Lower the ceiling further as #537's staging work frees room.
 
 | `ci-legs`
 | a leg of the `rake` run on `main` took longer than 1800 s, or has no time.
