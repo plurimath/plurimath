@@ -1,0 +1,11 @@
+{
+  "repo": [
+    "metanorma/html2doc",
+    "metanorma/metanorma-document",
+    "metanorma/stepmod-utils",
+    "metanorma/isodoc",
+    "metanorma/metanorma-standoc",
+    "metanorma/metanorma-bipm",
+    "metanorma/metanorma-itu"
+  ]
+}
