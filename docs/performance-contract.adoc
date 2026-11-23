@@ -107,6 +107,57 @@ first-use and timing budgets stay in place, so the performance workflow
 also checks the deferred cost. Cold-process specs cover deferral, host
 load order, the first conversion and parser rejection.
 
+== Optional stage boundaries
+
+`scripts/measure_optional_stages.rb` prepares the catalog, formatter and
+renderer staging requested in #537/#541 without choosing new gem names or
+moving public constants. It runs seven operations
+in separate cold processes for each of Ox and Oga:
+
+* require the facade;
+* parse `x^2 + 3.14` and write all six output formats without a formatter;
+* validate one catalog metadata record;
+* render representative symbol and function catalog entries;
+* format `1234567.891` as text with the existing number formatter;
+* normalize an image format through the renderer bridge, without calling lasem;
+* write an intent-enabled derivative as MathML.
+
+The `require-footprint` job saves `optional-stages-ox.json` and
+`optional-stages-oga.json` beside its existing reports. Each records the source
+revision, Ruby version, loaded plurimath paths, pending top-level autoloads,
+operation results and any boundary violations. These same probes can be run
+before and after an extraction to compare file surfaces and output bytes.
+There is no timing threshold or speedup claim for these small probes.
+
+The probe exits 1 if require or ordinary conversion loads the catalog,
+catalog documentation methods, formatter, renderer bridge, native lasem backend
+or intent processing; if metadata validation loads formatting or rendering; if text formatting loads the catalog or
+rendering; or if renderer dispatch loads catalog, formatter or native lasem.
+Cold-process specs also check that metadata validation and text formatting
+leave the math facade deferred, and exercise the failure exit with an eager
+catalog, catalog-documentation or intent-stage preload. Actual image rendering
+remains covered by renderer specs.
+
+Formula's MathML intent post-processing lives in
+`math/formula/intent_processing.rb`. Ordinary parsing and all six default
+writers leave that module unloaded; the first intent-enabled MathML write
+loads it into Formula. The two protected dispatch methods retain their
+signatures, and the moved helpers keep protected visibility. Repeated writes
+and Formula subclasses use the same stage. This is an internal source split;
+public constants, writer options and defaults stay the same.
+
+Function and symbol catalog methods live in `documentation/catalog_methods.rb`
+and `symbol_documentation/catalog_methods.rb`. Extending the existing
+`Documentation` and `SymbolDocumentation` modules leaves those implementations
+unloaded. The first catalog method includes the implementation in its shared
+module, preserving existing classes, inherited metadata and overrides using
+`super`. The cold-process probe renders representative symbol and function
+entries and rejects loading either implementation during ordinary conversion.
+
+This is an initial physical writer and catalog split. It does not mark the
+catalog and formatter/renderer staging checkbox complete. The existing require,
+first-conversion and suite budgets continue to cover overall costs.
+
 == The engine loop
 
 Every example used to run twice, once with the Ox engine and once with the Oga
@@ -316,3 +367,22 @@ The require footprint has no absolute number in #537.
 | `ci-legs`
 | a leg of the `rake` run on `main` took longer than 1800 s, or has no time.
 |===
+
+== Display-tree staging
+
+The `Formula#to_display` entrypoint and the five language tree writers on
+`Formula`, `UnaryFunction`, `BinaryFunction`, `TernaryFunction`, and
+`Symbols::Symbol` load their implementation modules on first tree use.
+Ordinary conversion, including MathML intent processing, leaves these modules
+unloaded. Existing public signatures and subclass `super` calls are preserved.
+`spec/plurimath/math/formula/lazy_display_tree_spec.rb` checks that boundary in
+fresh Ox and Oga processes, repeated tree calls, and conversion after tree use.
+
+Against main at `60105962170cee51371035e5a9b1dd222deacf47`, the eight-input,
+six-writer conversion probe loads 11,773 fewer bytes of plurimath source with
+either engine; the cold `require "plurimath"` file list and source bytes are
+unchanged. This is a source-loading measurement, not a time or memory claim.
+The same probe preserves all 96 default outputs and 16 intent outputs across
+both engines. Specialized node tree methods and other formatter/renderer code
+remain in their existing files; this boundary does not complete #537's physical
+staging work.

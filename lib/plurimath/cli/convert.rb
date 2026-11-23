@@ -18,6 +18,8 @@ module Plurimath
         return puts formula.to_display(output_format.to_sym) if options[:math_rendering].to_s == "true"
 
         puts convert_formula(formula, output_format)
+      rescue Plurimath::Error => e
+        warn_and_exit(e.message)
       end
 
       private
