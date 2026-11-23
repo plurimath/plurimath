@@ -4,6 +4,9 @@ module Plurimath
   class Openmath
     # An unbound CD symbol keeps its identity; presentation cannot carry its CD.
     class Symbol < Math::Symbols::Symbol
+      # Not a notation symbol: keep it out of the core symbol catalog.
+      Math::Symbols::Symbol.descendants.delete(self)
+
       attribute :cd, :string
       attribute :cdbase, :string
 
