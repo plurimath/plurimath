@@ -28,7 +28,12 @@ RSpec.describe "Specialized display-tree loading", if: RUBY_ENGINE != "opal", en
         loaded = -> { $LOADED_FEATURES.grep(%r{/function/(color|fenced|font_style|left|right|msgroup|table|td|text|tr|uncertainty|unitsml|vec)/display_tree_methods\.rb$}) }
         cold = loaded.call
         # Normal conversion and intent must keep these tree modules unloaded.
-        ordinary = math.parse("sin(x) + frac(1)(2)", :asciimath)
+        # Build the semantic tree directly: parser startup is covered by its
+        # own stage specs and would be repeated for every writer/engine here.
+        ordinary = math::Formula.new([
+          functions::Sin.new(symbol.call), math::Symbols::Plus.new,
+          functions::Frac.new(math::Number.new("1"), math::Number.new("2")),
+        ])
         before = %i[to_asciimath to_latex to_mathml to_omml to_html to_unicodemath]
           .map { |writer| ordinary.public_send(writer) }
         ordinary.to_mathml(intent: true)
