@@ -383,7 +383,7 @@ In AsciiMath the same errors make the whole formula fail to parse.
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `a3a11e6c6122cc95ec3c8d7ca556c58da0e3156e` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `519bda9bf14a7247b4f520c6e72cd3013942264b` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===
