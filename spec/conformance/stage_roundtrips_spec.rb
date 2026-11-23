@@ -3,6 +3,7 @@
 require "spec_helper"
 require "tmpdir"
 require_relative "../../scripts/replay_stage_roundtrips"
+require_relative "../support/roundtrip_parse_cache"
 
 # Replays the plurimath-testsuite roundtrip generation pinned in
 # spec/fixtures/roundtrip-pin.yml (scripts/replay_stage_roundtrips.rb).
@@ -20,6 +21,10 @@ module StageRoundtripsSpecData
 end
 
 RSpec.describe ReplayStageRoundtrips do
+  include RoundtripParseCache
+
+  before { memoize_roundtrip_parses }
+
   def pin_file(dir, changes)
     path = File.join(dir, "pin.yml")
     File.write(path, YAML.dump(StageRoundtripsSpecData.pin.merge(changes)))

@@ -2,8 +2,13 @@
 
 require "spec_helper"
 require_relative "../../scripts/replay_stage_roundtrips"
+require_relative "../support/roundtrip_parse_cache"
 
 RSpec.describe ReplayStageRoundtrips, engine_loop: :always do
+  include RoundtripParseCache
+
+  before { memoize_roundtrip_parses }
+
   let(:formula) { Plurimath::Math.parse("2 + 3", :asciimath) }
   let(:legacy_targets) { %w[asciimath unicode mathml omml] }
 

@@ -35,6 +35,16 @@ RSpec.describe Plurimath::Openmath, engine_loop: :always do
     expect(formula.to_asciimath).to eq("x^(2)")
   end
 
+  # The comparison examples use the same source on each engine. Keep independent
+  # copies because the writer refusal example edits its Formula.
+  before(:context) { @comparison_snapshots = {} }
+
+  def comparison_formula(body, version:)
+    key = [Plurimath.xml_engine, Mml::V4::Configuration.adapter, body, version]
+    snapshot = @comparison_snapshots[key] ||= Marshal.dump(openmath(body, version: version))
+    Marshal.load(snapshot)
+  end
+
   [2, 3].each do |version|
     {
       "eq" => Plurimath::Math::Symbols::Equal,
@@ -46,7 +56,7 @@ RSpec.describe Plurimath::Openmath, engine_loop: :always do
     }.each do |name, symbol|
       context "with relation1/#{name} in OpenMath version #{version}" do
         it "parses, renders and replays its retained source" do
-          formula = openmath(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
+          formula = comparison_formula(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
           expect(formula.value.map(&:class)).to eq([Plurimath::Math::Number, symbol, Plurimath::Math::Number])
           replayed = Plurimath::Math.parse(formula.to_openmath(version: version), :openmath, version: version)
           expect(replayed.value).to eq(formula.value)
@@ -56,7 +66,7 @@ RSpec.describe Plurimath::Openmath, engine_loop: :always do
         end
 
         it "refuses to write fresh or edited comparison nodes" do
-          formula = openmath(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
+          formula = comparison_formula(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
           fresh = Plurimath::Math::Formula.new(formula.value)
           expect { fresh.to_openmath(version: version) }.to raise_error(Plurimath::Openmath::UnsupportedError)
           formula.value.first.value = "4"
@@ -64,7 +74,7 @@ RSpec.describe Plurimath::Openmath, engine_loop: :always do
         end
 
         it "refuses scalar evaluation with or without retained source in either mode" do
-          formula = openmath(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
+          formula = comparison_formula(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
           [formula, Plurimath::Math::Formula.new(formula.value)].each do |candidate|
             expect { candidate.evaluate }.to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
             expect { candidate.evaluate({}, mode: :strict) }
