@@ -43,7 +43,9 @@ module ReplayStageRoundtrips
   REPOSITORY = "https://github.com/plurimath/plurimath-testsuite"
   LANGUAGE = "roundtrip"
   CASE_SCHEMA = "plurimath-stage/roundtrip/1"
-  TARGETS = RoundtripCases::TARGETS
+  # Stage generations also record presentation-only LaTeX and HTML outcomes.
+  # Keep the uncertainty generator's target set unchanged.
+  TARGETS = %w[asciimath unicode mathml omml latex html openmath].freeze
 
   Pin = Struct.new(:commit, :generation, :digest, keyword_init: true)
 

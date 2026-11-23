@@ -71,6 +71,28 @@ RSpec.describe ReplayStageRoundtrips, engine_loop: :always do
     expect(described_class.differences(entry)).to include("html: output differs")
   end
 
+  it "checks the measured LaTeX and HTML losses for uncertainty" do
+    input = '"ustd(1.230, 0.004)"'
+    uncertainty = Plurimath::Math.parse(input, :asciimath)
+    _, expected = RoundtripCases.expected(input, "asciimath", {})
+    presentation = {
+      "latex" => { "output" => "1.230(0.004)", "lossless" => false,
+                   "loss" => "reads back as 2 node(s) (Number, Fenced) instead of 1 node(s) (Uncertainty)" },
+      "html" => { "output" => "1.230(0.004)", "lossless" => false,
+                  "loss" => "node 0: Plurimath::Math::Function::Uncertainty reads back as Hash" },
+    }
+    entry = { "source" => { "language" => "asciimath", "input" => input },
+              "expected" => expected.merge(presentation) }
+
+    expect(described_class.differences(entry)).to be_empty
+    presentation.each do |name, target|
+      expect(described_class.target_differences(uncertainty, name, target.merge("lossless" => true), {}))
+        .to include(a_string_starting_with("#{name}:"))
+      expect(described_class.target_differences(uncertainty, name, target.merge("loss" => "wrong"), {}))
+        .to include(a_string_starting_with("#{name}:"))
+    end
+  end
+
   it "counts target refusals separately from source refusals" do
     entry = recorded_case(legacy_targets + ["openmath"])
     entry["expected"]["openmath"] = { "refusal" => { "category" => "unsupported_expression" } }
