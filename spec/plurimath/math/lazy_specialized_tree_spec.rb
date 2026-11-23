@@ -3,7 +3,7 @@ require "open3"
 require "rbconfig"
 
 RSpec.describe "Specialized display-tree loading", if: RUBY_ENGINE != "opal", engine_loop: :once do
-  %w[ox oga].product(%w[asciimath latex mathml omml unicodemath]).each do |engine, type|
+  %w[ox oga].product(%w[asciimath latex mathml omml unicodemath unitsml]).each do |engine, type|
     it "loads specialized #{type} writers on first use with #{engine}" do
       code = <<~'CODE'
         require "json"
@@ -12,7 +12,11 @@ RSpec.describe "Specialized display-tree loading", if: RUBY_ENGINE != "opal", en
         functions = math::Function
         symbol = ->(value = "x") { math::Symbols::Symbol.new(value) }
         cell = -> { functions::Td.new([symbol.call]) }
-        nodes = [
+        unitsml_only = ARGV.fetch(0) == "unitsml"
+        # Unitsml loads its converter and unit catalog. Exercise its delegates
+        # together in one cold process per engine instead of loading it for
+        # every unrelated specialized writer.
+        nodes = unitsml_only ? [functions::Unitsml.new("m")] : [
           functions::Color.new(symbol.call("red"), symbol.call),
           functions::Fenced.new("(", [symbol.call], ")"),
           functions::FontStyle.new(symbol.call, "bold"),
@@ -23,7 +27,7 @@ RSpec.describe "Specialized display-tree loading", if: RUBY_ENGINE != "opal", en
           functions::Tr.new([cell.call]),
           functions::Uncertainty.new(math::Number.new("2"),
             category: :standard, magnitude: math::Number.new("0.1")),
-          functions::Unitsml.new("m"), functions::Vec.new(symbol.call),
+          functions::Vec.new(symbol.call),
         ]
         loaded = -> { $LOADED_FEATURES.grep(%r{/function/(color|fenced|font_style|left|right|msgroup|table|td|text|tr|uncertainty|unitsml|vec)/display_tree_methods\.rb$}) }
         cold = loaded.call
@@ -38,43 +42,46 @@ RSpec.describe "Specialized display-tree loading", if: RUBY_ENGINE != "opal", en
           .map { |writer| ordinary.public_send(writer) }
         ordinary.to_mathml(intent: true)
         converted = loaded.call
-        type = ARGV.fetch(0)
-        method = :"to_#{type}_math_zone"
-        nodes.reject! { |node| node.is_a?(functions::Color) && type != "omml" }
-        nodes.reject! { |node| node.is_a?(functions::Vec) && type == "unicodemath" }
-        result = nodes.map do |node|
-          options = { options: {} }
-          options[:display_style] = false if type == "omml" && !node.is_a?(functions::Unitsml)
-          invoke = -> {
-            begin
-              node.public_send(method, "|_ ", true, false, **options)
-            rescue NoMethodError => error
-              # Existing FontStyle and Unitsml Unicode trees lack this helper.
-              raise unless type == "unicodemath" && error.name == :dump_unicodemath
-              { error: error.name }
-            rescue ArgumentError => error
-              # Unitsml's existing tree delegate omits the required style keyword.
-              raise unless type == "omml" && node.is_a?(functions::Unitsml) &&
-                error.message == "missing keyword: :display_style"
-              { error: error.message }
-            end
-          }
-          first = invoke.call
-          repeated = invoke.call
-          node.singleton_class.prepend(Module.new do
-            define_method(method) { |*args, **keywords| super(*args, **keywords) }
-          end)
-          via_super = invoke.call
-          stage = node.class.const_get(:DisplayTreeMethods, false)
-          [first == repeated && first == via_super,
-           node.class.ancestors.count { |ancestor| ancestor == stage }]
+        types = unitsml_only ? %w[asciimath latex mathml omml unicodemath] : [ARGV.fetch(0)]
+        result = types.flat_map do |type|
+          method = :"to_#{type}_math_zone"
+          nodes.reject! { |node| node.is_a?(functions::Color) && type != "omml" }
+          nodes.reject! { |node| node.is_a?(functions::Vec) && type == "unicodemath" }
+          nodes.map do |node|
+            options = { options: {} }
+            options[:display_style] = false if type == "omml" && !unitsml_only
+            invoke = -> {
+              begin
+                node.public_send(method, "|_ ", true, false, **options)
+              rescue NoMethodError => error
+                # Existing FontStyle and Unitsml Unicode trees lack this helper.
+                raise unless type == "unicodemath" && error.name == :dump_unicodemath
+                { error: error.name }
+              rescue ArgumentError => error
+                # Unitsml's existing tree delegate omits the required style keyword.
+                raise unless type == "omml" && unitsml_only &&
+                  error.message == "missing keyword: :display_style"
+                { error: error.message }
+              end
+            }
+            first = invoke.call
+            repeated = invoke.call
+            node.singleton_class.prepend(Module.new do
+              define_method(method) { |*args, **keywords| super(*args, **keywords) }
+            end)
+            via_super = invoke.call
+            stage = node.class.const_get(:DisplayTreeMethods, false)
+            [first == repeated && first == via_super,
+             node.class.ancestors.count { |ancestor| ancestor == stage }]
+          end
         end
         # Protected Formula helpers also support direct first use and stay protected.
         formula = math::Formula.new([symbol.call])
         formula.left_right_wrapper = true
         spacing = formula.send(:new_space, "", true)
+        # A parsed unit delegates to a FontStyle tree as well as its own stage.
         puts JSON.generate(cold: cold, converted: converted, results: result,
-          loaded: loaded.call.size, expected: nodes.size, spacing: spacing,
+          loaded: loaded.call.size, expected: unitsml_only ? 2 : nodes.size, spacing: spacing,
           protected: %i[new_space wrapable?].all? { |name| math::Formula.protected_method_defined?(name) },
           before: before, after: %i[to_asciimath to_latex to_mathml to_omml to_html to_unicodemath]
             .map { |writer| ordinary.public_send(writer) })
