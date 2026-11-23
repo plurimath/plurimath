@@ -17,7 +17,8 @@
 # options. A case whose targets record a refusal must fail to parse. Any
 # other case must parse to the recorded model, when one is recorded, and for
 # each target Formula#to_<target> must write the recorded output byte for
-# byte, and reading that output back must give the recorded lossless flag
+# byte (OpenMath uses the specs' XML equivalence convention), and reading
+# that output back must give the recorded lossless flag
 # and, for a lossy target, the recorded loss.
 #
 # Prints the lossless, lossy, refused and differing counts. A pin failure,
@@ -27,6 +28,7 @@ require "digest"
 require "open3"
 require "optparse"
 require "yaml"
+require "canon"
 require_relative "roundtrip_cases"
 
 module ReplayStageRoundtrips
@@ -191,7 +193,12 @@ module ReplayStageRoundtrips
     end
 
     output = formula.public_send(RoundtripCases::WRITERS.fetch(name))
-    return ["#{name}: output differs"] unless output == expected["output"]
+    matches = if name == "openmath"
+                Canon::Comparison.equivalent?(output, expected["output"], format: :xml)
+              else
+                output == expected["output"]
+              end
+    return ["#{name}: output differs"] unless matches
 
     read = RoundtripCases::LOCALIZED.include?(name) ? opts : {}
     actual = begin

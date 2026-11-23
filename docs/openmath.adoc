@@ -70,3 +70,9 @@ four-target generations remain replayable. Shared corpus adoption needs a
 new testsuite generation accepting `openmath`, cross-notation rows and
 refusals, followed by a coordinated submodule and snapshot-pin update.
 The current integration does not change that shared repository or pin.
+
+The roundtrip replayer compares OpenMath output using the specs' Canon XML
+equivalence convention: self-closing and expanded empty elements are equal.
+Element names, namespaces, attributes, text and child order remain checked,
+as do the Formula model, readback loss flags and typed refusals. Other targets
+retain their byte comparisons; recorded output bytes remain unchanged.

@@ -28,6 +28,42 @@ RSpec.describe ReplayStageRoundtrips, engine_loop: :always do
     expect(described_class.differences(entry)).to include("openmath: output differs")
   end
 
+  it "replays equivalent self-closing and expanded OpenMath elements" do
+    output = '<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0"><OMA><OMS cd="arith1" name="plus"/><OMI>2</OMI><OMI>3</OMI></OMA></OMOBJ>'
+    expanded = output.sub('<OMS cd="arith1" name="plus"/>', '<OMS cd="arith1" name="plus"></OMS>')
+    [output, expanded].each do |expected|
+      entry = recorded_case(legacy_targets + ["openmath"])
+      entry["expected"]["openmath"]["output"] = expected
+      expect(described_class.differences(entry)).to be_empty
+    end
+  end
+
+  it "still checks OpenMath names, attributes, text and child order" do
+    entry = recorded_case(legacy_targets + ["openmath"])
+    output = entry["expected"]["openmath"]["output"]
+    [output.sub('name="plus"', 'name="minus"'),
+     output.sub('cd="arith1"', 'cd="custom"'),
+     output.sub('>2</OMI>', '>4</OMI>'),
+     output.sub('<OMI>2</OMI><OMI>3</OMI>', '<OMI>3</OMI><OMI>2</OMI>'),
+     output.sub('http://www.openmath.org/OpenMath', 'https://example.org/other')].each do |different|
+      entry["expected"]["openmath"]["output"] = different
+      expect(described_class.differences(entry)).to include("openmath: output differs")
+    end
+  end
+
+  it "still checks the loss flag after matching equivalent OpenMath XML" do
+    entry = recorded_case(legacy_targets + ["openmath"])
+    entry["expected"]["openmath"]["output"] = '<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0"><OMA><OMS cd="arith1" name="plus"></OMS><OMI>2</OMI><OMI>3</OMI></OMA></OMOBJ>'
+    entry["expected"]["openmath"]["lossless"] = false
+    expect(described_class.differences(entry)).to include(a_string_starting_with("openmath:"))
+  end
+
+  it "keeps byte comparison for other XML targets" do
+    entry = recorded_case(legacy_targets)
+    entry["expected"]["mathml"]["output"] += "\n"
+    expect(described_class.differences(entry)).to include("mathml: output differs")
+  end
+
   it "replays all six presentation targets and OpenMath" do
     entry = recorded_case(legacy_targets + %w[latex html openmath])
     expect(described_class.differences(entry)).to be_empty
