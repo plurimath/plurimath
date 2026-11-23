@@ -234,7 +234,7 @@ module CheckSuiteBudget
     write(report, options[:output])
     areas = report.dig(:rspec, :areas) || {}
     loop_counts = report[:engine_loop]
-    loop_note = loop_counts && !loop_counts.key?(:error) ? "; engine loop: #{loop_counts['both'].to_i} on Ox and Oga, #{loop_counts['ox_only'].to_i} on Ox only" : ""
+    loop_note = loop_counts && !loop_counts.key?(:error) ? "; engine loop: #{loop_counts['both'].to_i} on Ox and Oga, #{loop_counts['ox_only'].to_i} on Ox only, #{loop_counts['once'].to_i} per-format on Ox only" : ""
     summary_markdown(
       "Suite wall time #{wall} s (budget #{options[:budget]} s, exit #{status}#{loop_note})",
       %w[Spec\ area Examples Example\ s],

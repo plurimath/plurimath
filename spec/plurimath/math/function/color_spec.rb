@@ -66,4 +66,24 @@ RSpec.describe Plurimath::Math::Function::Color do
 
     it_behaves_like "shared renderer fixture", "function-color-185-1"
   end
+
+  describe ".to_unicodemath" do
+    # AsciiMath reads color(red) as the symbols r, e and d; the colour is
+    # still written as one value, as from LaTeX and UnicodeMath input.
+    {
+      "color(red)(y)" => "✎(red&y)",
+      "color(blue)(x+1)" => "✎(blue&x + 1)",
+    }.each do |asciimath, unicodemath|
+      it "writes AsciiMath #{asciimath} as #{unicodemath}" do
+        formula = Plurimath::Math.parse(asciimath, :asciimath)
+        expect(formula.to_unicodemath).to eq(unicodemath)
+      end
+    end
+
+    it "reads the written colour back as the same MathML colour" do
+      formula = Plurimath::Math.parse("color(red)(y)", :asciimath)
+      reread = Plurimath::Math.parse(formula.to_unicodemath, :unicode)
+      expect(reread.to_mathml).to eq(formula.to_mathml)
+    end
+  end
 end

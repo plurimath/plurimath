@@ -506,7 +506,7 @@ module FormatSpecs
     return [] unless node.is_a?(Ox::Element)
     return [] if page == "omml" && node.name.end_with?("Pr")
 
-    wrappers = page == "mathml" ? %w[math mstyle] : %w[m:oMathPara m:oMath]
+    wrappers = page == "mathml" ? %w[math] : %w[m:oMathPara m:oMath]
     wrapper = wrappers[depth] == node.name
     own = wrapper ? [] : [node.name]
     own + node.nodes.flat_map { |child| element_names(child, page, wrapper ? depth + 1 : wrappers.size) }

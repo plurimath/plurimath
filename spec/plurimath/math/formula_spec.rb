@@ -354,11 +354,9 @@ RSpec.describe Plurimath::Math::Formula do
 
           it "returns mathml string with formatted numbers using compact formatter" do
             expected_value = <<~MATHML
-              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-                <mstyle displaystyle="true">
-                  <mn>3&gt;3&gt;1^46;77</mn>
-                  <mn>1&gt;2&gt;3^45;67</mn>
-                </mstyle>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+                <mn>3&gt;3&gt;1^46;77</mn>
+                <mn>1&gt;2&gt;3^45;67</mn>
               </math>
             MATHML
             expect(formula).to be_xml_equivalent_to(expected_value)

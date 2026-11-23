@@ -3,9 +3,14 @@
 module Plurimath
   module Math
     class Formula < Core
+      # Include the shared base on first tree use so subclass super calls keep
+      # their lookup order while conversion leaves the implementation unloaded.
+      autoload :DisplayTreeMethods, "plurimath/math/formula/display_tree_methods"
+
       autoload :Mrow, "#{__dir__}/formula/mrow"
       autoload :Mstyle, "#{__dir__}/formula/mstyle"
       autoload :ClassTree, "#{__dir__}/formula/class_tree"
+      autoload :IntentProcessing, "#{__dir__}/formula/intent_processing"
 
       include Mathml::FormulaTransformation
 
@@ -112,16 +117,16 @@ module Plurimath
         end
 
         wrap_render_error(:mathml) do
+          # MathML 4 carries displaystyle on <math> itself, so no <mstyle>
+          # wrapper is emitted (plurimath#477).
           math_attrs = {
             xmlns: "http://www.w3.org/1998/Math/MathML",
             display: "block",
+            displaystyle: boolean_display_style(display_style),
           }
-          style_attrs = { displaystyle: boolean_display_style(display_style) }
-          math  = ox_element("math", attributes: math_attrs)
-          style = ox_element("mstyle", attributes: style_attrs)
-          XmlHelper.update_nodes(style, mathml_content(intent, options: options))
-          XmlHelper.update_nodes(math, [style])
-          unitsml_post_processing(math, style)
+          math = ox_element("math", attributes: math_attrs)
+          XmlHelper.update_nodes(math, mathml_content(intent, options: options))
+          unitsml_post_processing(math)
           dump_nodes(math, indent: 2)
         end
       end
@@ -215,103 +220,38 @@ formatter: nil, unitsml: {})
 
       def to_display(type = nil, formatter: nil, unitsml: {},
 unary_function_spacing: true, tree: :display)
-        unless %i[display semantic].include?(tree)
-          raise ArgumentError, "Unknown display tree: #{tree.inspect}"
-        end
-        if tree == :display && type.downcase.to_sym == :formula
-          return ClassTree.new.render(self)
-        end
-
-        options = {
-          formatter: formatter,
-          unitsml: unitsml,
-          unary_function_spacing: unary_function_spacing,
-        }
-        options[:formula] ||= self
-        if tree == :semantic
-          return SemanticTree.new(type.downcase.to_sym, options).render(self)
-        end
-        return type_error!(type) unless MATH_ZONE_TYPES.include?(type.downcase.to_sym)
-
-        math_zone = case type
-                    when :asciimath
-                      "  |_ \"#{to_asciimath(options: options)}\"\n#{to_asciimath_math_zone(
-                        '     ', options: options
-                      ).join}"
-                    when :latex
-                      "  |_ \"#{to_latex(options: options)}\"\n#{to_latex_math_zone(
-                        '     ', options: options
-                      ).join}"
-                    when :mathml
-                      mathml = to_mathml(formatter: formatter, unary_function_spacing: options[:unary_function_spacing]).gsub(
-                        /\n\s*/, ""
-                      )
-                      math_display = to_mathml_math_zone("     ",
-                                                         options: options).join
-                      "  |_ \"#{mathml}\"\n#{math_display}"
-                    when :omml
-                      omml = to_omml.gsub(/\n\s*/, "")
-                      omml_display = to_omml_math_zone("     ",
-                                                       display_style: displaystyle, options: options).join
-                      "  |_ \"#{omml}\"\n#{omml_display}"
-                    when :unicodemath
-                      "  |_ \"#{to_unicodemath(options: options)}\"\n#{to_unicodemath_math_zone(
-                        '     ', options: options
-                      ).join}"
-                    end
-        <<~MATHZONE.sub(/\n$/, "")
-          |_ Math zone
-          #{math_zone}
-        MATHZONE
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def to_asciimath_math_zone(spacing = "", last = false, indent = true,
 options:)
-        filtered_values(value,
-                        lang: :asciimath).map.with_index(1) do |object, index|
-          last = index == @values.length
-          object.to_asciimath_math_zone(new_space(spacing, indent), last,
-                                        indent, options: options)
-        end
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def to_latex_math_zone(spacing = "", last = false, indent = true,
 options:)
-        filtered_values(value,
-                        lang: :latex).map.with_index(1) do |object, index|
-          last = index == @values.length
-          object.to_latex_math_zone(new_space(spacing, indent), last, indent,
-                                    options: options)
-        end
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def to_mathml_math_zone(spacing = "", last = false, indent = true,
 options:)
-        filtered_values(value, lang: :mathml,
-                               options: options).map.with_index(1) do |object, index|
-          last = index == @values.length
-          object.to_mathml_math_zone(new_space(spacing, indent), last, indent,
-                                     options: options)
-        end
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def to_omml_math_zone(spacing = "", last = false, indent = true,
 display_style:, options:)
-        filtered_values(value, lang: :omml).map.with_index(1) do |object, index|
-          last = index == @values.length
-          object.to_omml_math_zone(new_space(spacing, indent), last, indent,
-                                   display_style: display_style, options: options)
-        end
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def to_unicodemath_math_zone(spacing = "", last = false, indent = true,
 options:)
-        filtered_values(value,
-                        lang: :unicodemath).map.with_index(1) do |object, index|
-          last = index == @values.length
-          object.to_unicodemath_math_zone(new_space(spacing, indent), last,
-                                          indent, options: options)
-        end
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def extract_class_name_from_text
@@ -506,26 +446,37 @@ options:)
         r_tag << ox_element("br")
       end
 
-      def unitsml_post_processing(math, style)
-        if all_unitsml_nodes?(style)
-          style.nodes.first.remove_attr("unitsml")
-        else
+      def unitsml_post_processing(math)
+        if all_unitsml_nodes?(math)
+          math.nodes.first.remove_attr("unitsml")
+        elsif math.nodes.none?(String)
           unitsml_processing(math.nodes, math)
         end
       end
 
-      def all_unitsml_nodes?(style)
-        return false unless style.nodes.one?
+      def all_unitsml_nodes?(node)
+        return false unless node.nodes.one?
 
-        style.nodes.first["unitsml"] == "true"
+        node.nodes.first["unitsml"] == "true"
       end
+
+      # Elements whose children are positional arguments (base, script,
+      # numerator, ...). A spacer added as a sibling here would add an
+      # argument and break the MathML grammar, so it goes inside the unit.
+      FIXED_ARITY_ELEMENTS = %w[
+        msub msup msubsup mfrac mroot munder mover munderover mmultiscripts
+      ].freeze
 
       def unitsml_processing(nodes, prev_node)
         insert_index = 0
         nodes.each.with_index do |node, index|
           if node[:unitsml]
-            prev_node.insert_in_nodes(index + insert_index, space_element)
-            insert_index += 1
+            if FIXED_ARITY_ELEMENTS.include?(prev_node.name)
+              node.insert_in_nodes(0, space_element) if node.name == "mrow"
+            else
+              prev_node.insert_in_nodes(index + insert_index, space_element)
+              insert_index += 1
+            end
             node.remove_attr("unitsml")
           end
           unitsml_processing(node.nodes, node) if node.nodes.none?(String)
@@ -534,7 +485,7 @@ options:)
 
       def space_element
         element = (ox_element("mo") << "&#x2062;")
-        element[:rspace] = "thickmathspace"
+        element[:rspace] = Symbols::Symbol::THICK_RSPACE
         element
       end
 
@@ -547,323 +498,18 @@ options:)
         value&.map { |v| v.to_unicodemath(options: options) }&.join(join_str)
       end
 
+      # Keep ordinary conversion independent of the optional intent stage.
+      # Include on Formula (rather than self.class) so subclass super calls
+      # keep the same method lookup order.
       def intent_attribute(mathml)
-        return unless mathml || value.length != 2
-        return unless valid_first_parameter?(value.first)
-
-        { intent: ":function" }
-      end
-
-      def valid_first_parameter?(param)
-        undef_functions = UnicodeMath::Constants::UNDEF_UNARY_FUNCTIONS
-        return true if param.is_a?(Symbols::Symbol) && undef_functions.include?(param.value)
-        return false unless POWER_BASE_CLASSES.include?(param.class_name)
-
-        param.parameter_one.is_a?(Function::UnaryFunction) ||
-          param.parameter_one.is_a?(Function::Lim)
+        Formula.include(IntentProcessing) unless Formula < IntentProcessing
+        super
       end
 
       def intent_post_processing(nodes, _intent)
-        mrow = XmlHelper.update_nodes(ox_element("mrow"), nodes)
-        upcase_dd_derivative(nodes) if validate_upcase_dd_derivatives?(nodes)
-        subsup_dd_derivative(nodes) if validate_subsup_dd_derivatives?(nodes)
-        partial_derivative(nodes) if valid_partial_derivative?(nodes)
-        update_partial_derivative_nodes(nodes) unless mrow.locate("*/mfrac/@arg").empty?
+        Formula.include(IntentProcessing) unless Formula < IntentProcessing
+        super
       end
-
-      # Partial derivative nodes begin
-      def update_partial_derivative_nodes(nodes)
-        nodes.reduce do |first, second|
-          if valid_partial_node(first)
-            if %w[mfrac mo].include?(second.name)
-              first["intent"] = first["intent"].gsub("$f", "")
-            else
-              second["arg"] = "f"
-            end
-          end
-          second
-        end
-      end
-
-      def valid_partial_node(node)
-        return unless node.name == "mfrac"
-
-        node["intent"]&.start_with?(":partial-derivative") &&
-          !node.locate("*/@arg").include?("f")
-      end
-
-      def valid_partial_derivative?(nodes)
-        valid = false
-        nodes.reduce do |first, second|
-          next second unless first.name == "msub"
-
-          valid = true if first.nodes[0].nodes[0] == "&#x2202;" && second
-          second
-        end
-        valid
-      end
-
-      def partial_derivative(nodes)
-        nodes.each.with_index do |first, index|
-          second = nodes[index + 1]
-          next second unless first.name == "msub" && first.nodes.first.nodes.include?("&#x2202;")
-
-          first["intent"] = partial_derivative_intent(first)
-          f_arg(nodes, index + 1)
-        end
-      end
-
-      def partial_derivative_intent(first)
-        first_node = first.nodes.last
-        case first_node.name
-        when "mi"
-          first_arg = 1
-          second_arg = encode(first_node.nodes.first)
-        when "mn"
-          first_arg, second_arg = numeric_encoding(node)
-        when "mrow"
-          str = ""
-          first_node.nodes.each do |node|
-            case node.name
-            when "mi"
-              str += encode(node.nodes.first)
-            when "mn"
-              str += numeric_encoding(node).last if str.empty?
-              break
-            end
-          end
-          first_arg = str.include?(",") ? str.split(",").length : str.length
-          second_arg = str.include?(",") ? str : str.chars.join(",")
-        when "msup"
-          nodes = first_node.nodes
-          str = ""
-          case nodes.first.name
-          when "mrow"
-            nodes.first.nodes.each do |node|
-              case node.name
-              when "mi"
-                str += encode(node.nodes.first)
-              when "mn"
-                str += numeric_encoding(node).last if str.empty?
-                break
-              end
-            end
-          when "mi"
-            str += encode(node.nodes.first)
-          end
-          first_arg = str.include?(",") ? str.split(",").length : str.length
-          second_arg = str.include?(",") ? str : str.chars.join(",")
-          prime_str = encode(nodes.last.nodes.first) if valid_prime?(nodes.last)
-          second_arg.insert(-1, prime_str) unless second_arg.match?(/[0-9]$/)
-        end
-        "#{intent_names[:partial_derivative]}(#{first_arg},$f,#{second_arg})"
-      end
-
-      def f_arg(tag_nodes, index)
-        nodes = []
-        while index <= tag_nodes.length
-          node = tag_nodes[index]
-          break unless node
-
-          case node.name
-          when "mrow"
-            nodes << tag_nodes.delete_at(index)
-            break
-          when "mi"
-            nodes << tag_nodes.delete_at(index)
-          when "mn"
-            nodes << tag_nodes.delete_at(index) if nodes.empty?
-            break
-          else
-            break
-          end
-        end
-        mrow = if nodes.length == 1
-                 node = nodes.first
-                 node["arg"] = "f"
-                 node
-               else
-                 XmlHelper.update_nodes(
-                   ox_element("mrow", attributes: { arg: "f" }),
-                   nodes,
-                 )
-               end
-        tag_nodes.insert(index, mrow)
-      end
-      # Partial derivative nodes end
-
-      # Dd derivative nodes begin
-      def validate_subsup_dd_derivatives?(nodes)
-        nodes.find.with_index do |node, index|
-          next unless %w[msub msup msubsup].include?(node.name)
-
-          next_node = nodes[index + 1]
-          next unless next_node
-          next if next_node.name == "mo"
-
-          DERIVATIVE_CONSTS.include?(node.nodes.first.nodes.first)
-        end
-      end
-
-      def validate_upcase_dd_derivatives?(nodes)
-        return false unless nodes[0]&.nodes&.first == "&#x2145;"
-        return false unless nodes[1].name == "mi"
-
-        true
-      end
-
-      def upcase_dd_derivative(nodes)
-        mrow_nodes = []
-        while true
-          node = nodes[1]
-          case node.name
-          when "mi"
-            mrow_nodes << nodes.delete_at(1)
-            next
-          when "mrow"
-            second_arg = mrow_nodes.map { |n| encode(n.nodes.first) }.join
-            third_arg  = upcase_dd_intent_name(node.nodes[1..-2])
-            mrow_nodes << nodes.delete_at(1)
-            break
-          end
-          break
-        end
-        intent_name = "#{intent_names[:derivative]}(1,#{second_arg},#{third_arg})"
-        mrow = ox_element("mrow", attributes: { intent: intent_name })
-        nodes.insert(0, XmlHelper.update_nodes(mrow, mrow_nodes))
-      end
-
-      def subsup_dd_derivative(nodes)
-        iteration = 0
-        return unless DERIVATIVE_CONSTS.include?(nodes[iteration].nodes[iteration].nodes.first)
-
-        while iteration < nodes.length
-          node = nodes[iteration]
-          next iteration += 1 unless node.nodes[0].is_a?(Plurimath::XmlEngine::OxEngine::Element)
-
-          if DERIVATIVE_CONSTS.include?(node.nodes[0]&.nodes&.first)
-            iteration += 1
-            node["intent"] =
-              "#{intent_names[:derivative]}#{derivative_intent_name(node.nodes[1],
-                                                                    nodes[iteration..], type: node.name)}"
-            next_node = nodes[iteration]
-            case next_node.name
-            when "mi", "mrow"
-              if ["mi", "mrow"].include?(nodes[iteration + 1].name)
-                wrap_in_mrow(nodes[iteration..])
-              else
-                next_node["arg"] = "f"
-              end
-            end
-          end
-          iteration += 1
-        end
-      end
-
-      def derivative_intent_name(node, next_nodes, type:)
-        case type
-        when "msub"
-          first_value, second_value = sub_intent_content(node)
-          "(#{first_value},$f,#{second_value})"
-        when "msup"
-          "(#{sup_intent_content(node)},$f,#{sup_second_content(next_nodes)})"
-        end
-      end
-
-      def sub_intent_content(node)
-        return ["1", encode(node.nodes[0])] if node.name == "mi"
-        return numeric_encoding(node) if node.name == "mn"
-        return ["1"] if node["intent"] == "fenced"
-        return unless node.name == "mrow"
-
-        ["1"] unless node.nodes.all? { |element| element.name == "mi" }
-      end
-
-      def sup_intent_content(node)
-        return encode(first_node) if node.name == "mi"
-        return node.nodes[0] if node.name == "mn"
-
-        "$n" if node.name == "mrow"
-      end
-
-      def sup_second_content(next_nodes)
-        fence_node = nil
-        next_nodes.each do |node|
-          break if fence_node
-
-          next if %w[mi mn].include?(node.name)
-
-          fence_node = node if node.name == "mrow" && node["intent"] == ":fenced"
-          break unless %w[mi mn].include?(node.name)
-        end
-        return if fence_node.nil?
-
-        nodes = fence_node.nodes[1..]
-        sliced_nodes = nodes.slice_before { |node| node.name == "mn" }
-        str = ""
-        sliced_nodes.to_a.last.each do |node|
-          break unless %w[msub msup msubsup mi mn].include?(node.name)
-
-          case node.name
-          when "msub", "msup", "msubsup"
-            powerbase_nodes = node.nodes
-            str += encode(powerbase_nodes.first.nodes.first)
-            str += encode(powerbase_nodes.last.nodes.first) if valid_prime?(powerbase_nodes.last)
-          when "mi", "mn"
-            str += node.nodes.first
-          end
-        end
-        str
-      end
-
-      def wrap_in_mrow(nodes)
-        mrow = ox_element("mrow", attributes: { arg: "f" })
-        row_nodes = []
-        loop do
-          node = nodes.shift if ["mi", "mrow"].include?(nodes[0].name)
-          row_nodes << node
-          next if node.name == "mi"
-          break if node.name == "mrow"
-        end
-        XmlHelper.update_nodes(mrow, row_nodes)
-      end
-
-      def numeric_encoding(node)
-        nodes = node.nodes[0].chars
-        [nodes.length, nodes.join(",")]
-      end
-
-      def valid_prime?(node)
-        Utility.primes_constants.values.any?(node.nodes.first)
-      end
-
-      def encode(str)
-        Utility.html_entity_to_unicode(str)
-      end
-
-      def upcase_dd_intent_name(nodes)
-        str = ""
-        nodes.each do |node|
-          case node.name
-          when "mi"
-            str += node.nodes.first
-          when "mn"
-            str = node.nodes.first
-          when "msub", "msup", "msubsup"
-            next unless %w[mi mn].include?(node.nodes[0].name)
-
-            str = node.nodes[0] if node.nodes.first.name == "mn"
-            str += node.nodes[0].nodes[0] if node.nodes.first.name == "mi"
-            sup_index = node.name == "msubsup" ? 2 : 1
-            str += node.nodes[sup_index].nodes[0] if valid_prime?(node.nodes[sup_index])
-          else
-            str = "" if node.name == "mfrac"
-            break
-          end
-        end
-        encode(str)
-      end
-      # Dd derivative nodes end
 
       def type_error!(type)
         raise Math::InvalidTypeError.new(type)

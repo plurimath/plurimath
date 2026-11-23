@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Symbols
       class Symbol < Core
+        autoload :DisplayTreeMethods, "plurimath/math/symbols/symbol/display_tree_methods"
+
         extend SymbolDocumentation
 
         attribute :value, :string
@@ -34,6 +36,13 @@ module Plurimath
         end
 
         INPUT = {}.freeze
+
+        # Thick space (5/18 em) as a MathML 4 length. MathML 4 dropped the
+        # named space `thickmathspace`, so plurimath emits the numeric form.
+        THICK_RSPACE = "0.2778em"
+        # Values read as an explicit thick space; the named form still
+        # arrives in MathML 3 input.
+        THICK_RSPACE_VALUES = [THICK_RSPACE, "thickmathspace"].freeze
 
         def initialize(sym = nil,
                        slashed = nil,
@@ -99,6 +108,12 @@ module Plurimath
         end
 
         def to_omml_without_math_tag(_, **)
+          # Office Math represents thick spacing with U+2004. Keep this
+          # explicit request separate from ordinary invisible multiplication.
+          if value == "&#x2062;" &&
+              THICK_RSPACE_VALUES.include?(@options&.[](:rspace))
+            return "&#x2004;"
+          end
           # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
           return if value == "&#x2062;"
 
@@ -115,7 +130,7 @@ module Plurimath
 
         def insert_t_tag(_, options:)
           # TODO: remove this condition once to word rendering issue is resolved, plurimath/plurimath/pull/328
-          return if value == "&#x2062;"
+          return if value == "&#x2062;" && !to_omml_without_math_tag(nil)
 
           [XmlHelper.ox_element("r", namespace: "m") << t_tag(options: options)]
         end
@@ -192,7 +207,11 @@ module Plurimath
         end
 
         def t_tag(options:)
-          output = value || to_omml_without_math_tag(nil, options: options)
+          output = if value == "&#x2062;"
+                     to_omml_without_math_tag(nil, options: options)
+                   else
+                     value || to_omml_without_math_tag(nil, options: options)
+                   end
           return t_element unless output
 
           t_element << output
@@ -213,28 +232,32 @@ module Plurimath
 
         def to_asciimath_math_zone(spacing = "", _last = false, _indent = true,
 options:)
-          "#{spacing}\"#{to_asciimath(options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing = "", _last = false, _indent = true,
 options:)
-          "#{spacing}\"#{to_latex(options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing = "", _last = false, _indent = true,
 display_style:, options:)
-          "#{spacing}\"#{dump_omml(self, display_style,
-                                   options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing = "", _last = false, _indent = true,
 options:)
-          "#{spacing}\"#{dump_mathml(self, options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath_math_zone(spacing = "", _last = false, _indent = true,
 options:)
-          "#{spacing}\"#{to_unicodemath(options: options)}\" text\n"
+          Symbol.include(DisplayTreeMethods) unless Symbol < DisplayTreeMethods
+          super
         end
 
         def paren?

@@ -23,10 +23,8 @@ RSpec.describe Plurimath, ".load_mml", if: RUBY_ENGINE != "opal" do
 
   it "loads mml on the first MathML parse with unchanged output" do
     expected = <<~MATHML.inspect
-      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-        <mstyle displaystyle="true">
-          <mi>x</mi>
-        </mstyle>
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+        <mi>x</mi>
       </math>
     MATHML
     lines = run_ruby("f = #{parse}; p #{mml_loaded}; p f.to_asciimath; " \

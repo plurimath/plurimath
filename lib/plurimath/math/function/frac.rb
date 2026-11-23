@@ -79,6 +79,10 @@ module Plurimath
 
         def to_unicodemath(options:)
           return unicodemath_fraction if self.options&.dig(:unicodemath_fraction)
+          # Render each part once: the ⊘ form does not use the parenthesized
+          # parts, and computing them first doubled the work at every
+          # nesting level.
+          return unicodemath_displaystyle(options) if unicodemath_displaystyle?
 
           if parameter_one
             first_value = unicodemath_parens(parameter_one,
@@ -91,7 +95,6 @@ module Plurimath
           return "#{first_value}/#{second_value}" unless self.options
 
           return "#{first_value}¦#{second_value}" if self.options&.key?(:linethickness)
-          return "#{parameter_one.to_unicodemath(options: options)}⊘#{parameter_two.to_unicodemath(options: options)}" if self.options&.key?(:displaystyle)
 
           "#{first_value}∕#{second_value}" if self.options&.key?(:ldiv)
         end
@@ -142,6 +145,17 @@ module Plurimath
         end
 
         protected
+
+        def unicodemath_displaystyle?
+          return false unless options
+          return false if options.key?(:linethickness)
+
+          options.key?(:displaystyle)
+        end
+
+        def unicodemath_displaystyle(options)
+          "#{parameter_one.to_unicodemath(options: options)}⊘#{parameter_two.to_unicodemath(options: options)}"
+        end
 
         def fpr_element
           fpr_element = XmlHelper.ox_element("fPr", namespace: "m")

@@ -243,7 +243,7 @@ Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_latex
 
 [source]
 ----
-1.230(0.004)
+u s t d ( 1.230 , 0.004 )
 ----
 // END GENERATED example uncertainty-standard
 
@@ -255,7 +255,7 @@ Plurimath::Math.parse("ucov(1.024, 0.983, 1.088, 0.95, shortest)", :asciimath).t
 
 [source]
 ----
-1.024,\ [0.983, 1.088],\ p = 0.95
+u c o v ( 1.024 , 0.983 , 1.088 , 0.95 , s h o r t e s t )
 ----
 // END GENERATED example uncertainty-interval
 
@@ -308,7 +308,7 @@ raises Plurimath::Math::ParseError
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `51d64ea4006f29df085445e469e74190aa6758c5` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `a6beeb5c483bf33782037d9cb50247ec10d2b543` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===
