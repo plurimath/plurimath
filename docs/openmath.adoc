@@ -29,6 +29,17 @@ and refuse presentation and scalar evaluation. An unchanged sourced
 Formula preserves its original OpenMath tree; editing the Formula rebuilds
 output from its current nodes.
 
+The six mapped comparisons `relation1/eq`, `relation1/neq`, `relation1/gt`,
+`relation1/lt`, `relation1/geq` and `relation1/leq` parse into Formula nodes
+and render to the presentation formats listed above. Writing them back to
+OpenMath works only for an unchanged Formula retaining its original
+OpenMath source. A fresh Formula or an edited comparison raises
+`Plurimath::Openmath::UnsupportedError` when written to OpenMath.
+Comparison evaluation is not defined by the existing numeric Formula
+evaluator: both the default mode and `mode: :strict` raise
+`Plurimath::Errors::Evaluation::UnsupportedExpressionError`.
+These limits apply to OpenMath versions 2 and 3.
+
 `Plurimath::Math.parse(xml, :content_mathml, version: 2)` and
 `formula.to_content_mathml(version: 2)` delegate to the gem's Content
 MathML reader and writer. These share the OpenMath models for `csymbol`,
@@ -37,7 +48,7 @@ The published gem's strict symbol spelling uses `cd` and `name`
 attributes, for example `<csymbol cd="arith1" name="plus"/>`.
 Non-strict operator elements such as `<plus/>` are also accepted by the gem.
 
-Mapped expressions use the existing Formula evaluator, including its
+Mapped numeric expressions use the existing Formula evaluator, including its
 `mode: :strict`, guard digits, accuracy boundaries and typed errors.
 An adapter mapping does not add the gem's extra evaluation domains to
 Plurimath. A refusal raised by Formula evaluation can be serialized with

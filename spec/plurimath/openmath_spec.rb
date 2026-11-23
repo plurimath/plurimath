@@ -7,6 +7,7 @@ require "spec_helper"
 # every target; symbols outside the converter's table refuse.
 RSpec.describe Plurimath::Openmath, engine_loop: :always do
   let(:namespace) { "http://www.openmath.org/OpenMath" }
+  let(:presentation_formats) { %i[to_asciimath to_latex to_mathml to_omml to_unicodemath to_html] }
 
   def parse(body)
     Plurimath::Math.parse(%(<OMOBJ xmlns="#{namespace}">#{body}</OMOBJ>), :openmath)
@@ -34,11 +35,44 @@ RSpec.describe Plurimath::Openmath, engine_loop: :always do
     expect(formula.to_asciimath).to eq("x^(2)")
   end
 
-  it "converts the comparison symbols" do
-    expect(parse('<OMA><OMS cd="relation1" name="eq"/><OMI>1</OMI><OMI>1</OMI></OMA>').value)
-      .to include(Plurimath::Math::Symbols::Equal)
-    expect(parse('<OMA><OMS cd="relation1" name="lt"/><OMI>1</OMI><OMI>2</OMI></OMA>').value)
-      .to include(Plurimath::Math::Symbols::Less)
+  [2, 3].each do |version|
+    {
+      "eq" => Plurimath::Math::Symbols::Equal,
+      "neq" => Plurimath::Math::Symbols::Ne,
+      "gt" => Plurimath::Math::Symbols::Greater,
+      "lt" => Plurimath::Math::Symbols::Less,
+      "geq" => Plurimath::Math::Symbols::Geq,
+      "leq" => Plurimath::Math::Symbols::Leq,
+    }.each do |name, symbol|
+      context "with relation1/#{name} in OpenMath version #{version}" do
+        it "parses, renders and replays its retained source" do
+          formula = openmath(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
+          expect(formula.value.map(&:class)).to eq([Plurimath::Math::Number, symbol, Plurimath::Math::Number])
+          replayed = Plurimath::Math.parse(formula.to_openmath(version: version), :openmath, version: version)
+          expect(replayed.value).to eq(formula.value)
+          presentation_formats.each do |format|
+            expect(formula.public_send(format)).not_to be_empty
+          end
+        end
+
+        it "refuses to write fresh or edited comparison nodes" do
+          formula = openmath(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
+          fresh = Plurimath::Math::Formula.new(formula.value)
+          expect { fresh.to_openmath(version: version) }.to raise_error(Plurimath::Openmath::UnsupportedError)
+          formula.value.first.value = "4"
+          expect { formula.to_openmath(version: version) }.to raise_error(Plurimath::Openmath::UnsupportedError)
+        end
+
+        it "refuses scalar evaluation with or without retained source in either mode" do
+          formula = openmath(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
+          [formula, Plurimath::Math::Formula.new(formula.value)].each do |candidate|
+            expect { candidate.evaluate }.to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
+            expect { candidate.evaluate({}, mode: :strict) }
+              .to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
+          end
+        end
+      end
+    end
   end
 
   it "renders openmath-parsed formulas in every target" do
