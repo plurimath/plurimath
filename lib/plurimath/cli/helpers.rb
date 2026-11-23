@@ -18,7 +18,7 @@ module Plurimath
       end
 
       def configure_xml_engine(input_format, output_format)
-        xml_formats = %w[mathml omml]
+        xml_formats = %w[mathml omml openmath content_mathml]
         return unless xml_formats.include?(input_format) || xml_formats.include?(output_format)
 
         set_xml_engine(options[:xml_engine] || "ox")

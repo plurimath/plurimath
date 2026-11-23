@@ -9,6 +9,12 @@ module Plurimath
   # to Formula nodes; symbols outside the converter's table refuse rather
   # than lose meaning silently.
   class Openmath
+    # Refusal to discard semantics the Formula model cannot express.
+    class UnsupportedError < Math::ParseError; end
+
+    autoload :Semantic, "#{__dir__}/openmath/semantic"
+    autoload :Writer, "#{__dir__}/openmath/writer"
+    autoload :Symbol, "#{__dir__}/openmath/symbol"
     autoload :Converter, "#{__dir__}/openmath/converter"
 
     attr_accessor :text, :version
@@ -19,7 +25,17 @@ module Plurimath
     end
 
     def to_formula
-      Converter.new(::Openmath.parse(@text, version: @version)).to_formula
+      ::Openmath.validate!(@text, version: @version)
+      from_object(::Openmath.parse(@text, version: @version))
+    rescue ::Openmath::Validation::ValidationError => e
+      raise UnsupportedError.new(e.message, :openmath)
+    end
+
+    def from_object(object)
+      formula = Converter.new(object).to_formula
+      formula.openmath_source = object
+      formula.openmath_snapshot = formula.cloned_objects
+      formula
     end
   end
 end

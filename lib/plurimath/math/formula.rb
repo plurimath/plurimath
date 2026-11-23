@@ -63,6 +63,23 @@ module Plurimath
           object.left_right_wrapper == left_right_wrapper
       end
 
+      attr_accessor :openmath_source, :openmath_snapshot
+
+      def openmath_source_current?
+        openmath_source && self == openmath_snapshot
+      end
+
+      def to_openmath(version: 2)
+        Plurimath::Openmath::Writer.new.serialize(self, version: version)
+      end
+
+      def to_content_mathml(version: 2)
+        ::Openmath::ContentMathML.generate(to_openmath(version: version),
+                                          version: version)
+      rescue ::Openmath::ContentMathML::Error => e
+        raise Plurimath::Openmath::UnsupportedError.new(e.message, :content_mathml)
+      end
+
       # Keyword shorthand bindings (evaluate(a: 2)) are absorbed into the
       # bindings hash; pass bindings positionally when a key collides with
       # an option name (mode:, guard_digits:).

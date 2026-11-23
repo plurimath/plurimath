@@ -171,7 +171,13 @@ module ReplayStageRoundtrips
     if kase.key?("model") && RoundtripCases.model(formula) != kase["model"]
       diffs << "model differs"
     end
-    TARGETS.each do |name|
+    names = kase.fetch("expected").keys
+    required = TARGETS - ["openmath"]
+    unless (names - TARGETS).empty? && (required - names).empty?
+      return ["unknown or missing roundtrip targets"]
+    end
+
+    names.each do |name|
       diffs.concat(target_differences(formula, name, kase["expected"][name],
                                       opts))
     end
@@ -179,6 +185,11 @@ module ReplayStageRoundtrips
   end
 
   def target_differences(formula, name, expected, opts)
+    if expected.key?("refusal")
+      actual = RoundtripCases.target(formula, name, opts)
+      return actual == expected ? [] : ["#{name}: refusal differs"]
+    end
+
     output = formula.public_send(RoundtripCases::WRITERS.fetch(name))
     return ["#{name}: output differs"] unless output == expected["output"]
 
@@ -204,7 +215,12 @@ module ReplayStageRoundtrips
         counts["refused"] += 1
       else
         kase["expected"].each_value do |target|
-          counts[target["lossless"] ? "lossless" : "lossy"] += 1
+          outcome = if target.key?("refusal")
+                      "refused"
+                    else
+                      target["lossless"] ? "lossless" : "lossy"
+                    end
+          counts[outcome] += 1
         end
       end
     end
