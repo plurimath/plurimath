@@ -6,7 +6,7 @@
 ---
 schema: plurimath-stage/pin/1
 repository: https://github.com/plurimath/plurimath-testsuite
-commit: 519bda9bf14a7247b4f520c6e72cd3013942264b
+commit: 4ca9fd6cd6e99d8fe552e7d9a6a39071b3711415
 language: roundtrip
 generation: 3
 snapshot_digest: sha256:f7c46cac4ccac29988edc3b1db2b1d626cc3a0b8f716ab95c3353e3629411fe1
