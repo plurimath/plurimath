@@ -172,7 +172,7 @@ module ReplayStageRoundtrips
       diffs << "model differs"
     end
     names = kase.fetch("expected").keys
-    required = TARGETS - ["openmath"]
+    required = %w[asciimath unicode mathml omml]
     unless (names - TARGETS).empty? && (required - names).empty?
       return ["unknown or missing roundtrip targets"]
     end
@@ -213,6 +213,7 @@ module ReplayStageRoundtrips
     kases.each do |kase|
       if refusal?(kase)
         counts["refused"] += 1
+        counts["source_refused"] += 1
       else
         kase["expected"].each_value do |target|
           outcome = if target.key?("refusal")
@@ -221,6 +222,7 @@ module ReplayStageRoundtrips
                       target["lossless"] ? "lossless" : "lossy"
                     end
           counts[outcome] += 1
+          counts["target_refused"] += 1 if outcome == "refused"
         end
       end
     end
@@ -235,6 +237,8 @@ module ReplayStageRoundtrips
     end
     { "cases" => kases.size, "lossless" => counts["lossless"],
       "lossy" => counts["lossy"], "refused" => counts["refused"],
+      "source_refused" => counts["source_refused"],
+      "target_refused" => counts["target_refused"],
       "differing" => differing }
   end
 
@@ -263,7 +267,8 @@ module ReplayStageRoundtrips
       warn "#{d['engine']} #{d['id']}: #{d['differences'].join('; ')}"
     end
     puts "cases #{result['cases']}: targets lossless #{result['lossless']}, " \
-         "lossy #{result['lossy']}; cases refused #{result['refused']}; " \
+         "lossy #{result['lossy']}; sources refused #{result['source_refused']}; " \
+         "targets refused #{result['target_refused']}; " \
          "differing #{result['differing'].size}"
     result["differing"].empty? ? 0 : 1
   rescue Error => e

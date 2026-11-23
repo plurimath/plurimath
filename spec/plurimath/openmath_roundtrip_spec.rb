@@ -28,6 +28,23 @@ RSpec.describe ReplayStageRoundtrips, engine_loop: :always do
     expect(described_class.differences(entry)).to include("openmath: output differs")
   end
 
+  it "replays all six presentation targets and OpenMath" do
+    entry = recorded_case(legacy_targets + %w[latex html openmath])
+    expect(described_class.differences(entry)).to be_empty
+    entry["expected"]["html"]["output"] = "wrong"
+    expect(described_class.differences(entry)).to include("html: output differs")
+  end
+
+  it "counts target refusals separately from source refusals" do
+    entry = recorded_case(legacy_targets + ["openmath"])
+    entry["expected"]["openmath"] = { "refusal" => { "category" => "unsupported_expression" } }
+    source_refusal = { "source" => { "language" => "asciimath", "input" => "" },
+                       "expected" => { "openmath" => { "refusal" => { "category" => "parse_error" } } } }
+    result = described_class.replay([entry, source_refusal])
+    expect(result).to include("source_refused" => 1, "target_refused" => 1, "refused" => 2)
+    expect(result["differing"]).not_to be_empty
+  end
+
   it "replays explicit target refusals without refusing a valid source" do
     uncertainty = Plurimath::Math.parse('"ustd(1.2,0.1)"', :asciimath)
     target = RoundtripCases.target(uncertainty, "openmath", {})

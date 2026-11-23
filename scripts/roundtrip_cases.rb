@@ -39,9 +39,10 @@ module RoundtripCases
   HEADER = "# Written by plurimath scripts/roundtrip_cases.rb. Do not edit.\n"
   DOCUMENT = "plurimath docs/uncertainty.adoc"
   ASCIIMATH_DOCUMENT = "plurimath docs/asciimath.adoc"
-  TARGETS = %w[asciimath unicode mathml omml openmath].freeze
+  TARGETS = %w[asciimath unicode mathml omml latex html openmath].freeze
   WRITERS = { "asciimath" => :to_asciimath, "unicode" => :to_unicodemath,
               "mathml" => :to_mathml, "omml" => :to_omml,
+              "latex" => :to_latex, "html" => :to_html,
               "openmath" => :to_openmath }.freeze
   LOCALIZED = %w[asciimath unicode].freeze
   ENGINES = {
