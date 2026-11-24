@@ -29,9 +29,10 @@ module Plurimath
       unicode: UnicodeMath,
       asciimath: Asciimath,
       pma: Pma,
+      content_mathml: ContentMathml,
     }.freeze
     # Types Plurimath reads but has no writer for.
-    INPUT_ONLY_TYPES = %i[pma].freeze
+    INPUT_ONLY_TYPES = %i[pma content_mathml].freeze
     SUPPORTED_PARSE_OPTIONS = %i[locale].freeze
     LOCALIZED_PARSE_TYPES = %i[asciimath html latex unicode].freeze
 

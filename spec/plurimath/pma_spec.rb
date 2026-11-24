@@ -37,7 +37,7 @@ RSpec.describe Plurimath::Pma do
 
   it "is a valid input type" do
     expect(Plurimath::Math::VALID_TYPES).to include(pma: described_class)
-    expect(Plurimath::Math::INPUT_ONLY_TYPES).to eq(%i[pma])
+    expect(Plurimath::Math::INPUT_ONLY_TYPES).to eq(%i[pma content_mathml])
   end
 
   describe "accepted forms" do
