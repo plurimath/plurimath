@@ -209,6 +209,7 @@ read as described in <<uncertainty>>.
 |`split_on_linebreak:` |`false`
 |`display_style:` |`displaystyle`
 |`unary_function_spacing:` |`true`
+|`profile:` |`nil`
 |===
 // END GENERATED writer-options
 
