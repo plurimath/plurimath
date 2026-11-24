@@ -97,18 +97,20 @@ module Plurimath
         end
       end
 
-      def to_mathml(
+      def to_mathml( # rubocop:disable Metrics/ParameterLists
         intent: false,
         formatter: nil,
         unitsml: {},
         split_on_linebreak: false,
         display_style: displaystyle,
-        unary_function_spacing: true
+        unary_function_spacing: true,
+        profile: nil
       )
         options = {
           formatter: formatter,
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing,
+          profile: profile,
         }.compact
         options[:formula] ||= self
         if split_on_linebreak
@@ -138,6 +140,7 @@ module Plurimath
             intent: intent,
             formatter: options[:formatter],
             unary_function_spacing: options[:unary_function_spacing],
+            profile: options[:profile],
           )
         end.join
       end
@@ -154,12 +157,33 @@ module Plurimath
         XmlHelper.update_nodes(mrow, mathml_value)
       end
 
+      # Names the ISO 80000-2 profile treats as context-free functions when
+      # they are written as a call, name(...) (plurimath#142).
+      ISO80000_2_FUNCTION_NAMES = ["F", "G", "H"].freeze
+
       def mathml_content(intent, options:)
-        nodes = value.map do |val|
+        nodes = value.each_with_index.map do |val, index|
+          val = iso80000_2_function(val, value[index + 1]) if
+            options[:profile] == :iso80000part2
           val.to_mathml_without_math_tag(intent, options: options)
         end
         intent_post_processing(nodes, intent) if intent
         nodes
+      end
+
+      # In the ISO 80000-2 profile a name directly followed by a parenthesised
+      # argument list is an assumed context-free function and renders upright.
+      # An explicit caller style (:mathvariant) is kept. Returns the original
+      # token when the rule does not apply.
+      def iso80000_2_function(token, following)
+        return token unless token.is_a?(Symbols::Symbol) &&
+          following.is_a?(Function::Fenced) &&
+          (token.is_a?(Symbols::UpcasePi) ||
+           ISO80000_2_FUNCTION_NAMES.include?(token.value))
+
+        styled = token.dup
+        styled.options = (token.options || {}).merge(constant: true)
+        styled
       end
 
       def to_latex(formatter: nil, unitsml: {}, options: nil)

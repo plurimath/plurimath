@@ -26,8 +26,8 @@ module Plurimath
           Utility.html_entity_to_unicode("&#x3c0;")
         end
 
-        def to_mathml_without_math_tag(_, **)
-          ox_element("mi", attributes: mathml_style_attributes) << "&#x3c0;"
+        def to_mathml_without_math_tag(_, options: {}, **)
+          ox_element("mi", attributes: mathml_style_attributes(options)) << "&#x3c0;"
         end
 
         def to_omml_without_math_tag(_, **)

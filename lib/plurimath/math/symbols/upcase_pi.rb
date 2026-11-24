@@ -27,7 +27,7 @@ module Plurimath
         end
 
         def to_mathml_without_math_tag(_, **)
-          ox_element("mi") << "&#x3a0;"
+          ox_element("mi", attributes: mathml_style_attributes) << "&#x3a0;"
         end
 
         def to_omml_without_math_tag(_, **)
