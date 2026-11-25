@@ -34,10 +34,12 @@ module Plurimath
       # Lasem.render; nil values are dropped so lasem applies its defaults).
       LASEM_OPTIONS = %i[ppi zoom width height offset_x offset_y].freeze
 
-      # Engines by name, in registration order.
+      # Engines by name, in registration order. Values are the backend
+      # modules' names, autoloaded on first use — resolving one engine must
+      # not load the others (or their native stacks).
       ENGINES = {
-        lasem: Renderer::Lasem,
-        logifos: Renderer::Logifos,
+        lasem: "Lasem",
+        logifos: "Logifos",
       }.freeze
 
       module_function
@@ -48,22 +50,26 @@ module Plurimath
       # RenderingUnavailable, or RenderingFailed) on any problem.
       def render(mathml, format:, engine: :lasem, **opts)
         format = normalize_format(format)
-        backend = normalize_engine(engine)
-        ensure_supported!(backend, format, engine)
-        ensure_available!(backend, engine)
+        name = normalize_engine(engine)
+        backend = backend_for(name)
+        ensure_supported!(backend, format, name)
+        ensure_available!(backend, name)
         backend.render(mathml, format: format, **opts)
       end
 
       # True when the default engine (lasem) renders here. Never raises.
       def available?
-        available_engines.include?(:lasem)
+        return false if RUBY_ENGINE == "opal"
+
+        backend_for(:lasem).available?
       end
 
-      # The engine names that render on this runtime. Never raises.
+      # The engine names that render on this runtime. Probing every engine
+      # loads each backend (and tries its gem). Never raises.
       def available_engines
         return [] if RUBY_ENGINE == "opal"
 
-        ENGINES.filter_map { |name, backend| name if backend.available? }
+        ENGINES.filter_map { |name, _| name if backend_for(name).available? }
       end
 
       def normalize_format(format)
@@ -75,9 +81,13 @@ module Plurimath
 
       def normalize_engine(engine)
         name = engine.to_s.downcase.to_sym
-        return ENGINES.fetch(name) if ENGINES.key?(name)
+        return name if ENGINES.key?(name)
 
         raise Errors::UnsupportedRenderEngine.new(engine, ENGINES.keys)
+      end
+
+      def backend_for(name)
+        const_get(ENGINES.fetch(name))
       end
 
       def ensure_supported!(backend, format, _engine)

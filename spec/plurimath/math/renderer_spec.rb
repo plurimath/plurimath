@@ -82,8 +82,8 @@ RSpec.describe Plurimath::Math::Renderer do
       end
 
       it "accepts engine names case-insensitively" do
-        expect(described_class.normalize_engine("Lasem")).to eq(described_class::Lasem)
-        expect(described_class.normalize_engine(:LOGIFOS)).to eq(described_class::Logifos)
+        expect(described_class.normalize_engine("Lasem")).to eq(:lasem)
+        expect(described_class.normalize_engine(:LOGIFOS)).to eq(:logifos)
       end
 
       it "checks the selected engine's own formats" do
