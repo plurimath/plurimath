@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Function
       class Text < UnaryFunction
+        autoload :DisplayTreeMethods, "plurimath/math/function/text/display_tree_methods"
+
         # --- Catalog documentation (see Plurimath::Documentation) ---
         DESCRIPTION = "Typesets its argument as literal text."
         REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mtext"
@@ -93,24 +95,28 @@ module Plurimath
         end
 
         def to_asciimath_math_zone(spacing, _, _, options:)
-          "#{spacing}#{to_asciimath(options: options)} text\n"
+          Text.include(DisplayTreeMethods) unless Text < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing, _, _, options:)
-          "#{spacing}#{to_asciimath(options: options)} text\n"
+          Text.include(DisplayTreeMethods) unless Text < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing, _, _, options:)
-          "#{spacing}\"#{dump_mathml(self, options: options)}\" text\n"
+          Text.include(DisplayTreeMethods) unless Text < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing, _, _, display_style:, options:)
-          "#{spacing}\"#{dump_omml(self, display_style,
-                                   options: options)}\" text\n"
+          Text.include(DisplayTreeMethods) unless Text < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath_math_zone(spacing, _, _, options:)
-          "#{spacing}#{to_unicodemath(options: options)} text\n"
+          Text.include(DisplayTreeMethods) unless Text < DisplayTreeMethods
+          super
         end
 
         def value

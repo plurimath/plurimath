@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Function
       class Right < UnaryFunction
+        autoload :DisplayTreeMethods, "plurimath/math/function/right/display_tree_methods"
+
         def to_asciimath(**)
           "right#{parameter_one}"
         end
@@ -40,25 +42,28 @@ module Plurimath
         end
 
         def to_asciimath_math_zone(spacing = "", _, _, **)
-          "#{spacing}\"#{latex_paren}\" right\n"
+          Right.include(DisplayTreeMethods) unless Right < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing = "", _, _, **)
-          "#{spacing}\"#{latex_paren}\" right\n"
+          Right.include(DisplayTreeMethods) unless Right < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing = "", _, _, **)
-          mo_tag = (XmlHelper.ox_element("mo") << right_paren)
-          "#{spacing}\"#{dump_ox_nodes(mo_tag).gsub(/\s+/, '')}\" right\n"
+          Right.include(DisplayTreeMethods) unless Right < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing = "", _, _, **)
-          t_tag = (XmlHelper.ox_element("t", namespace: "m") << right_paren)
-          "#{spacing}\"#{dump_ox_nodes(t_tag).gsub(/\s+/, '')}\" right\n"
+          Right.include(DisplayTreeMethods) unless Right < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath_math_zone(spacing = "", _, _, **)
-          "#{spacing}\"#{parameter_one}\" right\n"
+          Right.include(DisplayTreeMethods) unless Right < DisplayTreeMethods
+          super
         end
 
         protected

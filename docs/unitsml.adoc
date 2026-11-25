@@ -253,7 +253,7 @@ table lists the keys the gem reads from that hash, found in its source, and
 the one key that Plurimath reads itself:
 
 // BEGIN GENERATED unitsml-options
-unitsml 0.6.14, the version the bundle loads:
+unitsml 0.6.15, the version the bundle loads:
 
 [cols="1,2"]
 |===
@@ -383,7 +383,7 @@ In AsciiMath the same errors make the whole formula fail to parse.
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `a6beeb5c483bf33782037d9cb50247ec10d2b543` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `167ee6c0953320ee9b68c810e7cf29a18fd23d6e` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===

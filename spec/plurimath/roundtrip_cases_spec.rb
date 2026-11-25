@@ -56,7 +56,15 @@ RSpec.describe RoundtripCases do
 
   it "covers every target for every case" do
     expect(cases.map { |entry| entry["expected"].keys }.uniq)
-      .to eq([%w[asciimath unicode mathml omml]])
+      .to eq([%w[asciimath unicode mathml omml openmath]])
+  end
+
+  it "records typed refusals for uncertainty constructs OpenMath cannot write" do
+    targets = cases.map { |entry| entry["expected"].fetch("openmath") }
+    expect(targets).to include(include("refusal"))
+    targets.reject { |target| target.key?("refusal") }.each do |target|
+      expect(target["lossless"]).to be(true)
+    end
   end
 
   it "reads every result without a unit back exactly in every target" do
@@ -70,7 +78,7 @@ RSpec.describe RoundtripCases do
 
     expect(exact).not_to be_empty
     exact.each do |entry|
-      expect(entry["expected"].values.map { |target| target["lossless"] })
+      expect(entry["expected"].except("openmath").values.map { |target| target["lossless"] })
         .to all(be(true)), entry["id"]
     end
   end

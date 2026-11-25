@@ -165,6 +165,8 @@ taken from `Plurimath::Math::Formula::OMML_NAMESPACES`:
 |`split_on_linebreak:` |`false`
 |`formatter:` |`nil`
 |`unitsml:` |`{}`
+|`profile:` |`nil`
+|`context:` |`{}`
 |===
 // END GENERATED writer-options
 
@@ -555,7 +557,7 @@ meets a node it does not support. The original error is not kept as the
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `a6beeb5c483bf33782037d9cb50247ec10d2b543` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `167ee6c0953320ee9b68c810e7cf29a18fd23d6e` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===

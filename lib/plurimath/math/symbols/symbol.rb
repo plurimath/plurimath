@@ -102,16 +102,10 @@ module Plurimath
         # Otherwise `options[:constant]` marks the token as a constant and
         # renders it upright. With neither, nothing is added, so ordinary
         # variables keep the renderer or profile default.
-        #
-        # The ISO 80000-2 profile (`profile: :iso80000part2` on Formula#to_mathml)
-        # marks the pi constant upright; other tokens are styled by Formula.
-        def mathml_style_attributes(render_options = {})
+        def mathml_style_attributes
           variant = @options&.[](:mathvariant)
           return { mathvariant: variant.to_s } unless variant.nil?
           return { mathvariant: "normal" } if @options&.[](:constant)
-          if is_a?(Pi) && render_options[:profile] == :iso80000part2
-            return { mathvariant: "normal" }
-          end
 
           {}
         end

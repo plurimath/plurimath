@@ -63,6 +63,23 @@ module Plurimath
           object.left_right_wrapper == left_right_wrapper
       end
 
+      attr_accessor :openmath_source, :openmath_snapshot
+
+      def openmath_source_current?
+        openmath_source && self == openmath_snapshot
+      end
+
+      def to_openmath(version: 2)
+        Plurimath::Openmath::Writer.new.serialize(self, version: version)
+      end
+
+      def to_content_mathml(version: 2)
+        ::Openmath::ContentMathML.generate(to_openmath(version: version),
+                                          version: version)
+      rescue ::Openmath::ContentMathML::Error => e
+        raise Plurimath::Openmath::UnsupportedError.new(e.message, :content_mathml)
+      end
+
       # Keyword shorthand bindings (evaluate(a: 2)) are absorbed into the
       # bindings hash; pass bindings positionally when a key collides with
       # an option name (mode:, guard_digits:).
@@ -97,25 +114,27 @@ module Plurimath
         end
       end
 
-      def to_mathml( # rubocop:disable Metrics/ParameterLists
+      def to_mathml(
         intent: false,
         formatter: nil,
         unitsml: {},
         split_on_linebreak: false,
         display_style: displaystyle,
         unary_function_spacing: true,
-        profile: nil
+        profile: nil,
+        context: {}
       )
+        source = presentation_source(profile, context)
         options = {
           formatter: formatter,
           unitsml: unitsml,
           unary_function_spacing: unary_function_spacing,
-          profile: profile,
+          presentation_profile: profile && PresentationProfile.resolve(profile),
         }.compact
-        options[:formula] ||= self
+        options[:formula] ||= source
         if split_on_linebreak
-          return line_breaked_mathml(display_style, intent,
-                                     options: options)
+          return source.line_breaked_mathml(display_style, intent,
+                                           options: options)
         end
 
         wrap_render_error(:mathml) do
@@ -127,8 +146,9 @@ module Plurimath
             displaystyle: boolean_display_style(display_style),
           }
           math = ox_element("math", attributes: math_attrs)
-          XmlHelper.update_nodes(math, mathml_content(intent, options: options))
+          XmlHelper.update_nodes(math, source.mathml_content(intent, options: options))
           unitsml_post_processing(math)
+          options[:presentation_profile]&.render_tokens(math, :mathml)
           dump_nodes(math, indent: 2)
         end
       end
@@ -140,7 +160,7 @@ module Plurimath
             intent: intent,
             formatter: options[:formatter],
             unary_function_spacing: options[:unary_function_spacing],
-            profile: options[:profile],
+            profile: options[:presentation_profile],
           )
         end.join
       end
@@ -157,33 +177,12 @@ module Plurimath
         XmlHelper.update_nodes(mrow, mathml_value)
       end
 
-      # Names the ISO 80000-2 profile treats as context-free functions when
-      # they are written as a call, name(...) (plurimath#142).
-      ISO80000_2_FUNCTION_NAMES = ["F", "G", "H"].freeze
-
       def mathml_content(intent, options:)
-        nodes = value.each_with_index.map do |val, index|
-          val = iso80000_2_function(val, value[index + 1]) if
-            options[:profile] == :iso80000part2
+        nodes = value.map do |val|
           val.to_mathml_without_math_tag(intent, options: options)
         end
         intent_post_processing(nodes, intent) if intent
         nodes
-      end
-
-      # In the ISO 80000-2 profile a name directly followed by a parenthesised
-      # argument list is an assumed context-free function and renders upright.
-      # An explicit caller style (:mathvariant) is kept. Returns the original
-      # token when the rule does not apply.
-      def iso80000_2_function(token, following)
-        return token unless token.is_a?(Symbols::Symbol) &&
-          following.is_a?(Function::Fenced) &&
-          (token.is_a?(Symbols::UpcasePi) ||
-           ISO80000_2_FUNCTION_NAMES.include?(token.value))
-
-        styled = token.dup
-        styled.options = (token.options || {}).merge(constant: true)
-        styled
       end
 
       def to_latex(formatter: nil, unitsml: {}, options: nil)
@@ -203,11 +202,13 @@ module Plurimath
       end
 
       def to_omml(display_style: displaystyle, split_on_linebreak: false,
-formatter: nil, unitsml: {})
+formatter: nil, unitsml: {}, profile: nil, context: {})
+        source = presentation_source(profile, context)
         wrap_render_error(:omml) do
-          objects = split_on_linebreak ? new_line_support : [self]
-          options = { formatter: formatter, unitsml: unitsml }.compact
-          options[:formula] ||= self
+          objects = split_on_linebreak ? source.new_line_support : [source]
+          options = { formatter: formatter, unitsml: unitsml,
+                      presentation_profile: profile && PresentationProfile.resolve(profile) }.compact
+          options[:formula] ||= source
           para_element = XmlHelper.ox_element("oMathPara",
                                             attributes: OMML_NAMESPACES, namespace: "m")
           objects.each.with_index(1) do |object, index|
@@ -220,6 +221,7 @@ formatter: nil, unitsml: {})
 
             para_element << omml_br_tag
           end
+          options[:presentation_profile]&.render_tokens(para_element, :omml)
           dump_nodes(para_element, indent: 2)
         end
       end
@@ -401,18 +403,22 @@ options:)
       #
       # +format+ is the output image format, one of :svg, :png, :pdf, :ps.
       #
-      # Remaining keyword options are split between the two stages:
+      # Remaining keyword options are split between the stages:
       #   * to_mathml options (forwarded to #to_mathml): :intent, :formatter,
       #     :unitsml, :split_on_linebreak, :display_style,
       #     :unary_function_spacing. When :display_style is omitted the
       #     formula's own displaystyle is used.
-      #   * lasem geometry options (forwarded to the renderer): :ppi, :zoom,
-      #     :width, :height, :offset_x, :offset_y. Omit them for lasem defaults.
+      #   * the render engine (:engine, default :lasem), plus that engine's
+      #     own options: lasem geometry (:ppi, :zoom, :width, :height,
+      #     :offset_x, :offset_y — omit them for lasem defaults), or for
+      #     logifos :library_path and :fonts (required) plus :font_size_px,
+      #     :display, :color, :limits.
       # Unrecognized keyword options are ignored.
       #
       # Raises a Plurimath::Errors rendering error (RenderingUnavailable,
-      # UnsupportedRenderFormat, or RenderingFailed) when lasem / its native
-      # extension is unavailable, the format is unsupported, or rendering fails.
+      # UnsupportedRenderFormat, UnsupportedRenderEngine, or RenderingFailed)
+      # when the selected engine is unknown or unavailable, the format is
+      # unsupported for it, or rendering fails.
       # A malformed formula surfaces as Plurimath::Math::ParseError from
       # #to_mathml, not as a rendering error. Note: :split_on_linebreak emits
       # multiple <math> roots,
@@ -422,12 +428,22 @@ options:)
         Renderer.render(
           mathml,
           format: format,
-          **opts.slice(*Renderer::LASEM_OPTIONS),
+          **opts.except(*Renderer::MATHML_OPTIONS),
         )
       end
       # Attributes end
 
       protected
+
+      def presentation_source(profile, context)
+        unless profile
+          raise ArgumentError, "context requires a presentation profile" unless context == {}
+
+          return self
+        end
+
+        PresentationProfile.resolve(profile).apply(self, context: context)
+      end
 
       def asciimath_table_options(options, object)
         return options unless options.key?(:table) && object.is_a?(Math::Symbols::Comma)
@@ -440,17 +456,13 @@ options:)
       end
 
       def new_space(spacing, indent)
-        if value.any? { |val| val.class_name == "left" } && value.any? do |val|
-          val.class_name == "right"
-        end
-          return spacing
-        end
-
-        indent && wrapable?(spacing) ? "#{spacing}|_ " : spacing
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def wrapable?(spacing)
-        left_right_wrapper && !spacing.end_with?("|_ ")
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def parse_error!(type)
