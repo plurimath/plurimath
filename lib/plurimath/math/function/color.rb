@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Function
       class Color < BinaryFunction
+        autoload :DisplayTreeMethods, "plurimath/math/function/color/display_tree_methods"
+
         # --- Catalog documentation (see Plurimath::Documentation) ---
         DESCRIPTION = "An expression rendered in a specified color."
         REFERENCE = "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Element/mstyle"
@@ -43,7 +45,7 @@ module Plurimath
         def to_mathml_without_math_tag(intent, options:)
           XmlHelper.update_nodes(
             XmlHelper.ox_element(
-              "mstyle",
+              "mrow",
               attributes: mathml_options,
             ),
             [parameter_two&.to_mathml_without_math_tag(intent,
@@ -65,14 +67,8 @@ module Plurimath
 
         def to_omml_math_zone(spacing, last = false, _, display_style:,
 options:)
-          parameters = self.class::FUNCTION
-          new_spacing = gsub_spacing(spacing, last)
-          new_arr = ["#{spacing}\"#{dump_omml(self, display_style,
-                                              options: options)}\" #{parameters[:name]}\n"]
-          omml_fields_to_print(parameter_two,
-                               { spacing: new_spacing, field_name: "text", additional_space: "|  |_ ",
-                                 array: new_arr, display_style: display_style, options: options })
-          new_arr
+          Color.include(DisplayTreeMethods) unless Color < DisplayTreeMethods
+          super
         end
 
         # The color is one value. AsciiMath reads color(red) as the

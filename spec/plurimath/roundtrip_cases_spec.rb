@@ -56,7 +56,15 @@ RSpec.describe RoundtripCases do
 
   it "covers every target for every case" do
     expect(cases.map { |entry| entry["expected"].keys }.uniq)
-      .to eq([%w[asciimath unicode mathml omml]])
+      .to eq([%w[asciimath unicode mathml omml openmath]])
+  end
+
+  it "records typed refusals for uncertainty constructs OpenMath cannot write" do
+    targets = cases.map { |entry| entry["expected"].fetch("openmath") }
+    expect(targets).to include(include("refusal"))
+    targets.reject { |target| target.key?("refusal") }.each do |target|
+      expect(target["lossless"]).to be(true)
+    end
   end
 
   it "reads every result without a unit back exactly in every target" do
@@ -70,7 +78,7 @@ RSpec.describe RoundtripCases do
 
     expect(exact).not_to be_empty
     exact.each do |entry|
-      expect(entry["expected"].values.map { |target| target["lossless"] })
+      expect(entry["expected"].except("openmath").values.map { |target| target["lossless"] })
         .to all(be(true)), entry["id"]
     end
   end
@@ -95,7 +103,7 @@ RSpec.describe RoundtripCases do
   end
 
   it "writes a multi-letter UnicodeMath unit after the AsciiMath call" do
-    asciimath = find("unicode-markers.unit-kg-r2")["expected"]["asciimath"]
+    asciimath = find("unicode-markers.unit-kg-r3")["expected"]["asciimath"]
 
     expect(asciimath["output"]).to eq('"ustd(1.2, 0.1)" rm(k) g')
     expect(asciimath["lossless"]).to be(false)
@@ -103,16 +111,16 @@ RSpec.describe RoundtripCases do
   end
 
   it "writes one-letter UnicodeMath unit symbols back as unitsml" do
-    expect(find("unicode-markers.unit-g-r2")["expected"]["asciimath"]["output"])
+    expect(find("unicode-markers.unit-g-r3")["expected"]["asciimath"]["output"])
       .to eq('"uexp(100.02147, 0.00079, 2, "unitsml(g)")"')
     expect(
-      find("unicode-markers.unit-m-per-s-r2")["expected"]["asciimath"]["output"],
+      find("unicode-markers.unit-m-per-s-r3")["expected"]["asciimath"]["output"],
     ).to eq('"ustd(1.2, 0.1, "unitsml(m*s^-1)")"')
   end
 
   it "writes the shifted numbers of a shared exponent" do
     expect(
-      find("asciimath-shared-exponent.standard-r2")["expected"]["asciimath"],
+      find("asciimath-shared-exponent.standard-r3")["expected"]["asciimath"],
     ).to eq("output" => '"ustd(38500, 2300)"', "lossless" => true)
   end
 
@@ -123,7 +131,7 @@ RSpec.describe RoundtripCases do
   end
 
   it "pins the exact decimal text of the model" do
-    model = find("asciimath-standard.absolute-r2")["model"]
+    model = find("asciimath-standard.absolute-r3")["model"]
     fields = model["fields"].to_h
 
     expect(model["node"]).to eq("Plurimath::Math::Function::Uncertainty")
@@ -134,6 +142,6 @@ RSpec.describe RoundtripCases do
   end
 
   it "leaves the model out when a field has no declared encoding" do
-    expect(find("unicode-markers.unit-kg-r2")).not_to have_key("model")
+    expect(find("unicode-markers.unit-kg-r3")).not_to have_key("model")
   end
 end

@@ -7,6 +7,8 @@ module Plurimath
   module Math
     module Function
       class Unitsml < Core
+        autoload :DisplayTreeMethods, "plurimath/math/function/unitsml/display_tree_methods"
+
         # The parsed form is derived from the text, so only the text and the
         # input string are mapped.
         node_fields scalars: { text: :string, input_string: :string }
@@ -65,32 +67,32 @@ module Plurimath
 
         def to_asciimath_math_zone(spacing = "", last = false, indent = true,
 options:)
-          formula(options).to_asciimath_math_zone(spacing, last, indent,
-                                                  options: options)
+          Unitsml.include(DisplayTreeMethods) unless Unitsml < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing = "", last = false, indent = true,
 options:)
-          formula(options).to_latex_math_zone(spacing, last, indent,
-                                              options: options)
+          Unitsml.include(DisplayTreeMethods) unless Unitsml < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing = "", last = false, indent = true,
 options:)
-          formula(options).to_mathml_math_zone(spacing, last, indent,
-                                               options: options)
+          Unitsml.include(DisplayTreeMethods) unless Unitsml < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing = "", last = false, indent = true,
 options:)
-          formula(options).to_omml_math_zone(spacing, last, indent,
-                                             options: options)
+          Unitsml.include(DisplayTreeMethods) unless Unitsml < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath_math_zone(spacing = "", last = false, indent = true,
 options:)
-          formula(options).to_unicodemath_math_zone(spacing, last, indent,
-                                                    options: options)
+          Unitsml.include(DisplayTreeMethods) unless Unitsml < DisplayTreeMethods
+          super
         end
 
         private

@@ -16,6 +16,9 @@ Supported math representational languages:
 * https://www.asciimath.org[AsciiMath] (parsed by the
 https://github.com/plurimath/amath[amath] gem)
 * http://unicodemath.org[UnicodeMath] (https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.2.pdf[UnicodeMath v3.2])
+* OpenMath 2 and 3 XML (`openmath`) and Content MathML (`content_mathml`),
+through the published https://github.com/plurimath/openmath[openmath] gem.
+See link:docs/openmath.adoc[the supported semantic surface and typed refusals].
 * LaTeX math
 * Microsoft Office Math Markup Language (OMML) https://devblogs.microsoft.com/math-in-office/officemath/["OfficeMath"]
 
@@ -44,6 +47,9 @@ accessible for screen readers and other assistive technologies.
 `Plurimath::Catalog.entries` generates reference data for documented functions,
 including each serializer's output and separate availability notes. See
 link:docs/catalog.adoc[the Ruby catalog contract] for the entry schema and export rules.
+
+An opt-in identifier presentation profile is proposed in
+link:docs/presentation-profile.adoc[the presentation profile design].
 
 
 == Installation
@@ -302,10 +308,10 @@ and grouping symbols are applied when formatting output.
 ----
 mathml = <<~MATHML
   <math xmlns='http://www.w3.org/1998/Math/MathML'>
-    <mstyle displaystyle='true'>
+    <mrow displaystyle='true'>
       <mi>sin</mi>
       <mn>1</mn>
-    </mstyle>
+    </mrow>
   </math>
 MATHML
 formula = Plurimath::Math.parse(mathml, :mathml)
@@ -467,7 +473,7 @@ formula.to_latex
 [source,ruby]
 ----
 formula.to_mathml
-# => "<math xmlns='http://www.w3.org/1998/Math/MathML'><mstyle displaystyle='true'><mi>sin</mi><mn>1</mn></mstyle></math>"
+# => "<math xmlns='http://www.w3.org/1998/Math/MathML'><mrow displaystyle='true'><mi>sin</mi><mn>1</mn></mrow></math>"
 ----
 
 ==== UnicodeMath output conversion
@@ -1817,7 +1823,7 @@ custom_formatter = Plurimath::Formatter::Standard.new(
 )
 print formula.to_mathml(formatter: custom_formatter)
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-#   <mstyle displaystyle="true">
+#   <mrow displaystyle="true">
 #     <msup>
 #       <mi>e</mi>
 #       <mrow>
@@ -1830,7 +1836,7 @@ print formula.to_mathml(formatter: custom_formatter)
 #     <mn>+1.100</mn>
 #     <mo>=</mo>
 #     <mn>+0.200</mn>
-#   </mstyle>
+#   </mrow>
 # </math>
 ----
 ====
@@ -2278,7 +2284,7 @@ formula.to_display(:latex)
 
 formula.to_display(:mathml)
 # |_ Math zone
-#   |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mstyle displaystyle="true"><mrow><mi>sin</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></mrow></mstyle></math>"
+#   |_ "<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true"><mrow><mi>sin</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></mrow></math>"
 #      |_ "<mrow><mi>sin</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></mrow>" function apply
 #         |_ "sin" function name
 #         |_ "<mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow>" argument

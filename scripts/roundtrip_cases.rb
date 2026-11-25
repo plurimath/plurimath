@@ -39,9 +39,11 @@ module RoundtripCases
   HEADER = "# Written by plurimath scripts/roundtrip_cases.rb. Do not edit.\n"
   DOCUMENT = "plurimath docs/uncertainty.adoc"
   ASCIIMATH_DOCUMENT = "plurimath docs/asciimath.adoc"
-  TARGETS = %w[asciimath unicode mathml omml].freeze
+  TARGETS = %w[asciimath unicode mathml omml openmath].freeze
   WRITERS = { "asciimath" => :to_asciimath, "unicode" => :to_unicodemath,
-              "mathml" => :to_mathml, "omml" => :to_omml }.freeze
+              "mathml" => :to_mathml, "omml" => :to_omml,
+              "latex" => :to_latex, "html" => :to_html,
+              "openmath" => :to_openmath }.freeze
   LOCALIZED = %w[asciimath unicode].freeze
   ENGINES = {
     "ox" => [Plurimath::XmlEngine::OxEngine, :ox],
@@ -65,68 +67,68 @@ module RoundtripCases
     ["asciimath-standard",
      "Standard uncertainty calls (ustd), absolute and concise, read from " \
      "AsciiMath.",
-     [["absolute-r2",  "asciimath", "\"ustd(1.230, 0.004)\"", {}, [MATRIX]],
-      ["concise-r2",  "asciimath", "\"ustd(1.230(4))\"", {}, [MATRIX]],
-      ["concise-long-r2",  "asciimath", "\"ustd(100.02147(35))\"", {}, [MATRIX]],
-      ["negative-r2",  "asciimath", "\"ustd(-1.230, 0.004)\"", {}, [MATRIX]],
-      ["negative-concise-r2",  "asciimath", "\"ustd(-1.230(4))\"", {}, [MATRIX]],
-      ["zero-magnitude-r2",  "asciimath", "\"ustd(5, 0)\"", {}, [MATRIX]]]],
+     [["absolute-r3",  "asciimath", "\"ustd(1.230, 0.004)\"", {}, [MATRIX]],
+      ["concise-r3",  "asciimath", "\"ustd(1.230(4))\"", {}, [MATRIX]],
+      ["concise-long-r3",  "asciimath", "\"ustd(100.02147(35))\"", {}, [MATRIX]],
+      ["negative-r3",  "asciimath", "\"ustd(-1.230, 0.004)\"", {}, [MATRIX]],
+      ["negative-concise-r3",  "asciimath", "\"ustd(-1.230(4))\"", {}, [MATRIX]],
+      ["zero-magnitude-r3",  "asciimath", "\"ustd(5, 0)\"", {}, [MATRIX]]]],
     ["asciimath-expanded",
      "Expanded uncertainty calls (uexp) with and without a coverage " \
      "probability, read from AsciiMath.",
-     [["k-r2",  "asciimath", "\"uexp(10.0, 0.3, 2)\"", {}, [MATRIX]],
-      ["k-p-r2",  "asciimath", "\"uexp(10.0, 0.3, 2, 0.95)\"", {}, [MATRIX]],
-      ["negative-r2",  "asciimath", "\"uexp(-10.0, 0.3, 2)\"", {}, [MATRIX]]]],
+     [["k-r3",  "asciimath", "\"uexp(10.0, 0.3, 2)\"", {}, [MATRIX]],
+      ["k-p-r3",  "asciimath", "\"uexp(10.0, 0.3, 2, 0.95)\"", {}, [MATRIX]],
+      ["negative-r3",  "asciimath", "\"uexp(-10.0, 0.3, 2)\"", {}, [MATRIX]]]],
     ["asciimath-coverage-interval",
      "Coverage interval calls (ucov) with each interval choice, read from " \
      "AsciiMath.",
-     [["unspecified-r2",  "asciimath", "\"ucov(1.024, 0.983, 1.088, 0.95)\"", {},
+     [["unspecified-r3",  "asciimath", "\"ucov(1.024, 0.983, 1.088, 0.95)\"", {},
        [MATRIX]],
-      ["shortest-r2",  "asciimath", "\"ucov(1.024, 0.983, 1.088, 0.95, shortest)\"",
+      ["shortest-r3",  "asciimath", "\"ucov(1.024, 0.983, 1.088, 0.95, shortest)\"",
        {}, [MATRIX]],
-      ["symmetric-r2",  "asciimath",
+      ["symmetric-r3",  "asciimath",
        "\"ucov(1.024, 0.983, 1.088, 0.95, symmetric)\"", {}, [MATRIX]],
-      ["negative-r2",  "asciimath", "\"ucov(-1.024, 0.983, 1.088, 0.95)\"", {},
+      ["negative-r3",  "asciimath", "\"ucov(-1.024, 0.983, 1.088, 0.95)\"", {},
        [MATRIX]]]],
     ["asciimath-shared-exponent",
      "Calls with a shared decimal exponent. The exponent is applied to the " \
      "decimal text on reading, so every writer emits the shifted numbers.",
-     [["standard-r2",  "asciimath", "\"ustd((3.85, 0.23)e4)\"", {},
+     [["standard-r3",  "asciimath", "\"ustd((3.85, 0.23)e4)\"", {},
        [ASCIIMATH_DOCUMENT, "Shared exponents"]],
-      ["concise-r2",  "asciimath", "\"ustd(680(41)e-3)\"", {},
+      ["concise-r3",  "asciimath", "\"ustd(680(41)e-3)\"", {},
        [ASCIIMATH_DOCUMENT, "Shared exponents"]],
-      ["expanded-r2",  "asciimath", "\"uexp((3.85, 0.23)e+4, 2, 0.95)\"", {},
+      ["expanded-r3",  "asciimath", "\"uexp((3.85, 0.23)e+4, 2, 0.95)\"", {},
        [ASCIIMATH_DOCUMENT, "Shared exponents"]],
-      ["interval-r2",  "asciimath",
+      ["interval-r3",  "asciimath",
        "\"ucov((1.024, 0.983, 1.088)e-3, 0.95, shortest)\"", {},
        [ASCIIMATH_DOCUMENT, "Shared exponents"]]]],
     ["asciimath-units",
      "Calls with a UnitsML unit. MathML, OMML and UnicodeMath read the unit " \
      "back as its rendered formula, not as a Unitsml node.",
-     [["expanded-g-r2",  "asciimath",
+     [["expanded-g-r3",  "asciimath",
        '"uexp(100.02147, 0.00079, 2, "unitsml(g)")"', {}, [UNITS]],
-      ["standard-kg-r2",  "asciimath", '"ustd(1.2, 0.1, "unitsml(kg)")"', {},
+      ["standard-kg-r3",  "asciimath", '"ustd(1.2, 0.1, "unitsml(kg)")"', {},
        [UNITS]],
-      ["standard-m-per-s-r2",  "asciimath", '"ustd(1.2, 0.1, "unitsml(m*s^-1)")"',
+      ["standard-m-per-s-r3",  "asciimath", '"ustd(1.2, 0.1, "unitsml(m*s^-1)")"',
        {}, [UNITS]],
-      ["standard-kg-m2-r2",  "asciimath", '"ustd(1.2, 0.1, "unitsml(kg*m^2)")"',
+      ["standard-kg-m2-r3",  "asciimath", '"ustd(1.2, 0.1, "unitsml(kg*m^2)")"',
        {}, [UNITS]],
-      ["standard-um-r2",  "asciimath", '"ustd(1.2, 0.1, "unitsml(um)")"', {},
+      ["standard-um-r3",  "asciimath", '"ustd(1.2, 0.1, "unitsml(um)")"', {},
        [UNITS]],
-      ["concise-g-r2",  "asciimath", '"ustd(1.230(4), "unitsml(g)")"', {},
+      ["concise-g-r3",  "asciimath", '"ustd(1.230(4), "unitsml(g)")"', {},
        [UNITS]],
-      ["interval-m-r2",  "asciimath",
+      ["interval-m-r3",  "asciimath",
        '"ucov(1.024, 0.983, 1.088, 0.95, shortest, "unitsml(m)")"', {},
        [UNITS]]]],
     ["asciimath-locale",
      "AsciiMath calls read under a locale whose decimal mark is a comma. " \
      "The quoted channel is locale-independent: its '.' decimals and ',' " \
      "separators are the string literal's, never the locale's.",
-     [["fr-dot-r2",  "asciimath", "\"ustd(1.230, 0.004)\"", { "locale" => "fr" },
+     [["fr-dot-r3",  "asciimath", "\"ustd(1.230, 0.004)\"", { "locale" => "fr" },
        [ASCIIMATH_DOCUMENT, "Locale and decimal commas"]],
-      ["fr-comma-r2",  "asciimath", "\"ustd(1,5)\"", { "locale" => "fr" },
+      ["fr-comma-r3",  "asciimath", "\"ustd(1,5)\"", { "locale" => "fr" },
        [ASCIIMATH_DOCUMENT, "Locale and decimal commas"]],
-      ["fr-comma-pair-r2",  "asciimath", "\"ustd(1,230, 0,004)\"",
+      ["fr-comma-pair-r3",  "asciimath", "\"ustd(1,230, 0,004)\"",
        { "locale" => "fr" },
        [ASCIIMATH_DOCUMENT, "Locale and decimal commas"]]]],
     ["asciimath-invalid",
@@ -137,62 +139,62 @@ module RoundtripCases
     ["unicode-markers",
      "UnicodeMath intent forms, read from UnicodeMath, including units " \
      "written as \\mup and \\mup\"...\".",
-     [["standard-r2",  "unicode",
+     [["standard-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.230,0.004)"1.230(0.004))', {}, [UNICODE]],
-      ["concise-r2",  "unicode",
+      ["concise-r3",  "unicode",
        'ⓘ("standard-uncertainty:concise(1.230,0.004)"1.230(4))', {},
        [UNICODE]],
-      ["expanded-p-r2",  "unicode",
+      ["expanded-p-r3",  "unicode",
        'ⓘ("expanded-uncertainty(10.0,0.3,2,0.95)"(10.0±0.3), k=2, p=0.95)',
        {}, [UNICODE]],
-      ["expanded-spaced-r2",  "unicode",
+      ["expanded-spaced-r3",  "unicode",
        'ⓘ("expanded-uncertainty(10.0,0.3,2)"(10.0 ± 0.3), k=2)', {},
        [UNICODE]],
-      ["interval-shortest-r2",  "unicode",
+      ["interval-shortest-r3",  "unicode",
        'ⓘ("coverage-interval:shortest(1.024,0.983,1.088,0.95)"' \
        "1.024, [0.983, 1.088], p=0.95)", {}, [UNICODE]],
-      ["negative-r2",  "unicode",
+      ["negative-r3",  "unicode",
        'ⓘ("standard-uncertainty(-1.230,0.004)"〖-1.230〗(0.004))', {},
        [UNICODE]],
-      ["unit-g-r2",  "unicode",
+      ["unit-g-r3",  "unicode",
        'ⓘ("expanded-uncertainty(100.02147,0.00079,2,$unit)"' \
        '(100.02147±0.00079)ⓐ(unit \mupg), k=2)', {}, [MATRIX]],
-      ["unit-kg-r2",  "unicode",
+      ["unit-kg-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mupkg))',
        {}, [MATRIX]],
-      ["unit-kg-quoted-r2",  "unicode",
+      ["unit-kg-quoted-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mup"kg"))',
        {}, [MATRIX]],
-      ["unit-m-per-s-r2",  "unicode",
+      ["unit-m-per-s-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"' \
        '1.2(0.1)ⓐ(unit \mupm⋅\mups^(-1)))', {}, [MATRIX]],
-      ["unit-um-r2",  "unicode",
+      ["unit-um-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"1.2(0.1)ⓐ(unit \mupµm))',
        {}, [MATRIX]],
-      ["unit-kg-m2-r2",  "unicode",
+      ["unit-kg-m2-r3",  "unicode",
        'ⓘ("standard-uncertainty(1.2,0.1,$unit)"' \
        '1.2(0.1)ⓐ(unit \mupkg ⋅ \mupm^(2)))', {}, [MATRIX]]]],
     ["mathml-markers",
      "MathML mrow intent forms, read from MathML.",
-     [["standard-r2",  "mathml",
+     [["standard-r3",  "mathml",
        "#{MATHML_OPEN}<mrow intent=\"standard-uncertainty(1.230,0.004)\">" \
        "<mn>1.230</mn><mrow><mo>(</mo><mn>0.004</mn><mo>)</mo></mrow>" \
        "</mrow>#{MATHML_CLOSE}", {}, [MATHML]],
-      ["concise-r2",  "mathml",
+      ["concise-r3",  "mathml",
        "#{MATHML_OPEN}<mrow intent=\"standard-uncertainty:concise" \
        "(1.230,0.004)\"><mn>1.230</mn><mrow><mo>(</mo><mn>4</mn><mo>)</mo>" \
        "</mrow></mrow>#{MATHML_CLOSE}", {}, [MATHML]],
-      ["expanded-r2",  "mathml",
+      ["expanded-r3",  "mathml",
        "#{MATHML_OPEN}<mrow intent=\"expanded-uncertainty(10.0,0.3,2)\">" \
        "<mrow><mo>(</mo><mn>10.0</mn><mo>&#xb1;</mo><mn>0.3</mn><mo>)</mo>" \
        "</mrow><mo>,</mo><mi>k</mi><mo>=</mo><mn>2</mn></mrow>" \
        "#{MATHML_CLOSE}", {}, [MATHML]],
-      ["unit-kg-r2",  "mathml",
+      ["unit-kg-r3",  "mathml",
        "#{MATHML_OPEN}<mrow intent=\"standard-uncertainty(1.2,0.1,$unit)\">" \
        "<mn>1.2</mn><mrow><mo>(</mo><mn>0.1</mn><mo>)</mo></mrow>" \
        "<mrow arg=\"unit\"><mi mathvariant=\"normal\">kg</mi></mrow></mrow>" \
        "#{MATHML_CLOSE}", {}, [MATRIX]],
-      ["unit-kg-m2-r2",  "mathml",
+      ["unit-kg-m2-r3",  "mathml",
        "#{MATHML_OPEN}<mrow intent=\"standard-uncertainty(1.2,0.1,$unit)\">" \
        "<mn>1.2</mn><mrow><mo>(</mo><mn>0.1</mn><mo>)</mo></mrow>" \
        "<mo rspace=\"thickmathspace\">&#x2062;</mo><mrow arg=\"unit\">" \
@@ -261,6 +263,11 @@ module RoundtripCases
     result["loss"] = loss(formula, back) unless result["lossless"]
     result
   rescue Plurimath::Math::ParseError => e
+    if output.nil?
+      return { "refusal" => { "category" => "unsupported_expression",
+                              "byte_offset" => nil } }
+    end
+
     { "output" => output, "lossless" => false,
       "loss" => "reading the output back raises #{e.class.name}" }
   end

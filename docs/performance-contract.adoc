@@ -87,6 +87,77 @@ ruby scripts/check_suite_budget.rb suite --rspec-json rspec.json -- \
 `measure_require.rb --baseline FILE --enforce` exit 1 when a gate check fails.
 The workflows pass both.
 
+== Parser dependency loading
+
+On MRI, `require "plurimath"` registers autoloads for Parslet, Parsanol
+and HTMLEntities. Parsing, slice conversion and entity decoding load them
+on first use. A host that loaded a dependency first keeps the same module
+or class. Opal keeps its explicit requires for bundle construction.
+
+A focused before/after probe at `b0a695cb`, using Ruby 4.0.1, Parsanol
+1.5.9 and Leptris 1.9.429.0, reduced cold loaded features from 73 to 23
+with Ox, and measured 62 after the change with Oga. The 50 deferred files
+belong to the parser and entity libraries. Five representative inputs
+(AsciiMath, LaTeX, UnicodeMath, MathML and HTML), each written in all six
+formats, retained identical bytes. These are focused local checks; GHA
+runs the full suite and conformance corpora with the current dependencies.
+
+The require feature ceilings are now 23 (Ox) and 62 (Oga). The existing
+first-use and timing budgets stay in place, so the performance workflow
+also checks the deferred cost. Cold-process specs cover deferral, host
+load order, the first conversion and parser rejection.
+
+== Optional stage boundaries
+
+`scripts/measure_optional_stages.rb` prepares the catalog, formatter and
+renderer staging requested in #537/#541 without choosing new gem names or
+moving public constants. It runs seven operations
+in separate cold processes for each of Ox and Oga:
+
+* require the facade;
+* parse `x^2 + 3.14` and write all six output formats without a formatter;
+* validate one catalog metadata record;
+* render representative symbol and function catalog entries;
+* format `1234567.891` as text with the existing number formatter;
+* normalize an image format through the renderer bridge, without calling lasem;
+* write an intent-enabled derivative as MathML.
+
+The `require-footprint` job saves `optional-stages-ox.json` and
+`optional-stages-oga.json` beside its existing reports. Each records the source
+revision, Ruby version, loaded plurimath paths, pending top-level autoloads,
+operation results and any boundary violations. These same probes can be run
+before and after an extraction to compare file surfaces and output bytes.
+There is no timing threshold or speedup claim for these small probes.
+
+The probe exits 1 if require or ordinary conversion loads the catalog,
+catalog documentation methods, formatter, renderer bridge, native lasem backend
+or intent processing; if metadata validation loads formatting or rendering; if text formatting loads the catalog or
+rendering; or if renderer dispatch loads catalog, formatter or native lasem.
+Cold-process specs also check that metadata validation and text formatting
+leave the math facade deferred, and exercise the failure exit with an eager
+catalog, catalog-documentation or intent-stage preload. Actual image rendering
+remains covered by renderer specs.
+
+Formula's MathML intent post-processing lives in
+`math/formula/intent_processing.rb`. Ordinary parsing and all six default
+writers leave that module unloaded; the first intent-enabled MathML write
+loads it into Formula. The two protected dispatch methods retain their
+signatures, and the moved helpers keep protected visibility. Repeated writes
+and Formula subclasses use the same stage. This is an internal source split;
+public constants, writer options and defaults stay the same.
+
+Function and symbol catalog methods live in `documentation/catalog_methods.rb`
+and `symbol_documentation/catalog_methods.rb`. Extending the existing
+`Documentation` and `SymbolDocumentation` modules leaves those implementations
+unloaded. The first catalog method includes the implementation in its shared
+module, preserving existing classes, inherited metadata and overrides using
+`super`. The cold-process probe renders representative symbol and function
+entries and rejects loading either implementation during ordinary conversion.
+
+This is an initial physical writer and catalog split. It does not mark the
+catalog and formatter/renderer staging checkbox complete. The existing require,
+first-conversion and suite budgets continue to cover overall costs.
+
 == The engine loop
 
 Every example used to run twice, once with the Ox engine and once with the Oga
@@ -102,6 +173,24 @@ an example makes that example count as XML-touching.
 Tag a group or example with `engine_loop: :always` to force the Oga pass. Set
 `ENGINE_LOOP_TRACE=1` to print where each example first reached the XML layer.
 Shared-corpus examples still run on Ox only.
+
+The per-format parser specs under `spec/plurimath/asciimath`,
+`spec/plurimath/latex` and `spec/plurimath/unicode_math` are tagged
+`engine_loop: :once` by the spec helper and run on Ox only, whatever they
+touch. The parsers live in the stage gems (amath, latexmath, umath), and each
+stage gem's suite replays its pinned plurimath-testsuite generation. The XML
+engines stay covered in plurimath by the facade, integration, MathML and OMML
+specs, which keep both passes. Before this change, 192 of the 2,055 examples
+in those three folders ran a second time on Oga (asciimath 120, latex 7,
+unicode_math 65).
+
+The folders stay in plurimath because they test plurimath code, not the stage
+gems. They compare plurimath's own model, built by the Mapper and Utility
+classes from the stage gem's output. A script recorded every input these
+specs pass to the stage gems, 1,542 inputs counted once per spec file, and
+looked for each one in the stage gem's suite at the version plurimath pins.
+760 were found there, 669 of them UnicodeMath shared examples; 782 were not. No spec file is
+a copy of a stage gem's tests, so none was dropped.
 
 Parsing-only specs make up most of the saving. The 1,350 UnicodeMath
 expectation examples took 674 s of the 1,621 s of example time in performance
@@ -252,11 +341,11 @@ The require footprint has no absolute number in #537.
   `require`, loads more of its own files on first use, has fewer autoloads
   pending after `require` than the baseline, or a median wall time is over
   three times the baseline plus 500 ms. The baseline is
-  `scripts/require_baseline.json`. Its counts were measured on `main` at
+  `scripts/require_baseline.json`. Its original counts were measured on `main` at
   `85fd8deb` with the UnicodeMath change (#555) merged, so they match `main`
   once that lands; its wall times come from performance run 42176576146 on
   `main` at `c511801b`, before first use loaded amath. The counts are exact:
-  the `require` feature count was 73 (ox) and 112 (oga) in each of the 12
+  the earlier `require` feature count was 73 (ox) and 112 (oga) in each of the 12
   performance runs from 34eb4dbe to 5d9ab96b. The wall time has only a loose
   bound because it varies about twofold between runs. The five samples in
   one run stay within about 10% of each other, but the median moves with the
@@ -267,13 +356,33 @@ The require footprint has no absolute number in #537.
   the same pull request.
 
 | `suite-timing`
-| an example fails, or the suite takes longer than 1850 s. The target stays
-  600 s. The ceiling is 1.25 times the 1442 s measured in performance run
-  42230833245 at `71c0bc02`, rounded up to the next 50 s. Before the
-  engine-loop change, `main` took 1100 s to 1755 s on this runner for the
-  same code, so the ceiling leaves room for that spread. It
-  moves down as the staged libraries land.
+| an example fails, or the suite takes longer than 600 s. This ceiling
+  adopts https://github.com/plurimath/plurimath/issues/541[#541]'s local
+  full-suite target of under 10 minutes, using the fixed `ubuntu-22.04`
+  runner as a proxy. Recent completed performance runs on that runner took
+  303.6 s (44611807258), 435.1 s (44602758128), 460.5 s (44599034712), and
+  573.5 s (44608625351). The slowest leaves little room for runner variation.
+  Lower the ceiling further as #537's staging work frees room.
 
 | `ci-legs`
 | a leg of the `rake` run on `main` took longer than 1800 s, or has no time.
 |===
+
+== Display-tree staging
+
+The `Formula#to_display` entrypoint and the five language tree writers on
+`Formula`, `UnaryFunction`, `BinaryFunction`, `TernaryFunction`, and
+`Symbols::Symbol` load their implementation modules on first tree use.
+Ordinary conversion, including MathML intent processing, leaves these modules
+unloaded. Existing public signatures and subclass `super` calls are preserved.
+`spec/plurimath/math/formula/lazy_display_tree_spec.rb` checks that boundary in
+fresh Ox and Oga processes, repeated tree calls, and conversion after tree use.
+
+Against main at `60105962170cee51371035e5a9b1dd222deacf47`, the eight-input,
+six-writer conversion probe loads 11,773 fewer bytes of plurimath source with
+either engine; the cold `require "plurimath"` file list and source bytes are
+unchanged. This is a source-loading measurement, not a time or memory claim.
+The same probe preserves all 96 default outputs and 16 intent outputs across
+both engines. Specialized node tree methods and other formatter/renderer code
+remain in their existing files; this boundary does not complete #537's physical
+staging work.

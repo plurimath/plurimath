@@ -10,9 +10,24 @@ if Object.const_defined?(:Lutaml)
 else
   autoload :Lutaml, "lutaml/model"
 end
-require "parslet"
-require "parsanol"
-require "htmlentities"
+# Parsing and entity decoding belong to first use, like the stage models.
+# Keep Opal's build-time requires explicit. A namespace already defined by a
+# partial dependency load needs its entrypoint (autoload cannot replace it).
+if RUBY_ENGINE == "opal" || Object.const_defined?(:Parslet)
+  require "parslet"
+else
+  autoload :Parslet, "parslet"
+end
+if RUBY_ENGINE == "opal" || Object.const_defined?(:Parsanol)
+  require "parsanol"
+else
+  autoload :Parsanol, "parsanol"
+end
+if RUBY_ENGINE == "opal" || Object.const_defined?(:HTMLEntities)
+  require "htmlentities"
+else
+  autoload :HTMLEntities, "htmlentities"
+end
 
 # Select an XML engine
 require "plurimath/xml_engine"
@@ -20,6 +35,8 @@ require "plurimath/xml_engine"
 module Plurimath
   autoload :NativeKernel, "plurimath/native_kernel" unless RUBY_ENGINE == "opal"
   autoload :Asciimath, "plurimath/asciimath"
+  autoload :Openmath, "plurimath/openmath"
+  autoload :ContentMathml, "plurimath/content_mathml"
   autoload :Pma, "plurimath/pma"
   autoload :BaseNumberPrefix, "plurimath/base_number_prefix"
   autoload :Catalog, "plurimath/catalog"
@@ -36,6 +53,7 @@ module Plurimath
   autoload :Html, "plurimath/html"
   autoload :Latex, "plurimath/latex"
   autoload :ParseError, "plurimath/math"
+  autoload :PresentationProfile, "plurimath/presentation_profile"
   autoload :InvalidTypeError, "plurimath/math"
   autoload :Math, "plurimath/math"
   autoload :Mathml, "plurimath/mathml"
@@ -113,6 +131,24 @@ default_adapter =
 
 if RUBY_ENGINE == "opal"
   Plurimath.mml_adapter(default_adapter)
+elsif !Object.autoload?(:Lutaml) &&
+    defined?(Lutaml::Model::Config) &&
+    Lutaml::Model::Config.xml_adapter_type &&
+    Lutaml::Model::Config.xml_adapter_type != :ox
+  # A host application has explicitly pinned a non-ox lutaml adapter.
+  # Arming our :ox default would overwrite the host's choice process-
+  # wide when mml loads (the write lands on Lutaml::Model::Config
+  # .xml_adapter_type, the same setting every lutaml-model library
+  # reads - plurimath#588). Leave it: mml delegates to
+  # Lutaml::Model::Config.xml_adapter_type on CRuby, so mml parsing
+  # follows the host's adapter. Hosts that want ox anyway can set
+  # Lutaml::Model::Config.xml_adapter_type = :ox or require
+  # plurimath before configuring lutaml.
+  #
+  # Object.autoload? is checked first because defined?(Lutaml::Model)
+  # resolves Lutaml, which fires the autoload above and loads all of
+  # lutaml-model at require time. A pending autoload means the host has
+  # not loaded lutaml-model, so it cannot have pinned an adapter.
 else
   Plurimath.default_mml_adapter = default_adapter
 end

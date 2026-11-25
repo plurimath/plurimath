@@ -113,10 +113,8 @@ Plurimath::Math.parse('<math display="inline"><mi>x</mi></math>', :mathml).to_ma
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mi>x</mi>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mi>x</mi>
 </math>
 ----
 // END GENERATED example read-inline
@@ -178,14 +176,12 @@ Plurimath::Math.parse('<math><mrow intent="absolute-value(x)"><mo>|</mo><mi>x</m
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mrow intent=":fenced">
-      <mo>|</mo>
-      <mi>x</mi>
-      <mo>|</mo>
-    </mrow>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mrow intent=":fenced">
+    <mo>|</mo>
+    <mi>x</mi>
+    <mo>|</mo>
+  </mrow>
 </math>
 ----
 // END GENERATED example intent-read
@@ -197,8 +193,8 @@ read as described in <<uncertainty>>.
 == Writing
 
 `Formula#to_mathml` returns one `math` element in the MathML namespace with
-`display="block"`, holding one `mstyle` whose `displaystyle` attribute is set
-from the `display_style:` option. The output is indented by two spaces.
+`display="block"` and a `displaystyle` attribute set from the
+`display_style:` option. The output is indented by two spaces.
 
 // BEGIN GENERATED writer-options
 `Plurimath::Math::Formula#to_mathml` in `lib/plurimath/math/formula.rb` takes these keyword options:
@@ -213,11 +209,13 @@ from the `display_style:` option. The output is indented by two spaces.
 |`split_on_linebreak:` |`false`
 |`display_style:` |`displaystyle`
 |`unary_function_spacing:` |`true`
+|`profile:` |`nil`
+|`context:` |`{}`
 |===
 // END GENERATED writer-options
 
 * `display_style:` defaults to the display style the formula was read with;
-  it only changes the `mstyle` attribute.
+  it only changes the `displaystyle` attribute on `math`.
 * `intent:` adds `intent` attributes (see <<intent>>).
 * `split_on_linebreak:` writes one `math` element per line of the formula
   instead of one element with a line break, joined with no separator. The
@@ -226,7 +224,7 @@ from the `display_style:` option. The output is indented by two spaces.
 * `unitsml:` is passed to the UnitsML renderer (see
   link:unitsml.adoc[UnitsML in Plurimath]).
 * `unary_function_spacing:` set to false leaves out the empty
-  `<mo rspace="thickmathspace"/>` that is otherwise written before a unary
+  `<mo rspace="0.2778em"/>` that is otherwise written before a unary
   function such as `sin` when it follows another term (see the last two
   examples).
 
@@ -238,13 +236,11 @@ Plurimath::Math.parse("x^2", :asciimath).to_mathml
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <msup>
-      <mi>x</mi>
-      <mn>2</mn>
-    </msup>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
 </math>
 ----
 // END GENERATED example write
@@ -257,13 +253,11 @@ Plurimath::Math.parse("x^2", :asciimath).to_mathml(display_style: false)
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="false">
-    <msup>
-      <mi>x</mi>
-      <mn>2</mn>
-    </msup>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="false">
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
 </math>
 ----
 // END GENERATED example write-inline
@@ -276,19 +270,15 @@ Plurimath::Math.parse("a = b \\\\ c = d", :latex).to_mathml(split_on_linebreak: 
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mi>a</mi>
-    <mo>=</mo>
-    <mi>b</mi>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mi>a</mi>
+  <mo>=</mo>
+  <mi>b</mi>
 </math>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mi>c</mi>
-    <mo>=</mo>
-    <mi>d</mi>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mi>c</mi>
+  <mo>=</mo>
+  <mi>d</mi>
 </math>
 ----
 // END GENERATED example linebreak
@@ -301,17 +291,15 @@ Plurimath::Math.parse("2 sin x", :asciimath).to_mathml
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mn>2</mn>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mn>2</mn>
+  <mrow>
+    <mo rspace="0.2778em"/>
     <mrow>
-      <mo rspace="thickmathspace"/>
-      <mrow>
-        <mi>sin</mi>
-        <mi>x</mi>
-      </mrow>
+      <mi>sin</mi>
+      <mi>x</mi>
     </mrow>
-  </mstyle>
+  </mrow>
 </math>
 ----
 // END GENERATED example unary-spacing
@@ -324,14 +312,12 @@ Plurimath::Math.parse("2 sin x", :asciimath).to_mathml(unary_function_spacing: f
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mn>2</mn>
-    <mrow>
-      <mi>sin</mi>
-      <mi>x</mi>
-    </mrow>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mn>2</mn>
+  <mrow>
+    <mi>sin</mi>
+    <mi>x</mi>
+  </mrow>
 </math>
 ----
 // END GENERATED example unary-spacing-off
@@ -353,14 +339,12 @@ Plurimath::Math.parse("abs(x)", :asciimath).to_mathml(intent: true)
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mrow intent="absolute-value(x)">
-      <mo>|</mo>
-      <mi>x</mi>
-      <mo>|</mo>
-    </mrow>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mrow intent="absolute-value(x)">
+    <mo>|</mo>
+    <mi>x</mi>
+    <mo>|</mo>
+  </mrow>
 </math>
 ----
 // END GENERATED example intent-abs
@@ -373,23 +357,21 @@ Plurimath::Math.parse("sum_(i=1)^n i", :asciimath).to_mathml(intent: true)
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mrow intent=":sum($l,n,$naryand)">
-      <munderover>
-        <mo>&#x2211;</mo>
-        <mrow arg="l">
-          <mi>i</mi>
-          <mo>=</mo>
-          <mn>1</mn>
-        </mrow>
-        <mi>n</mi>
-      </munderover>
-      <mrow arg="naryand">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mrow intent=":sum($l,n,$naryand)">
+    <munderover>
+      <mo>&#x2211;</mo>
+      <mrow arg="l">
         <mi>i</mi>
+        <mo>=</mo>
+        <mn>1</mn>
       </mrow>
+      <mi>n</mi>
+    </munderover>
+    <mrow arg="naryand">
+      <mi>i</mi>
     </mrow>
-  </mstyle>
+  </mrow>
 </math>
 ----
 // END GENERATED example intent-sum
@@ -462,7 +444,7 @@ The mml model has 150 more element classes, which the translator has no rule for
 
 The second table lists the elements that `Formula#to_mathml` writes for
 each construct, in document order and without repeats. The `math` element
-and its `mstyle` are left out, since every output has them.
+is left out, since every output has it.
 
 // BEGIN GENERATED elements-written
 [cols="2,2l,4l",options="header"]
@@ -483,11 +465,11 @@ and its `mstyle` are left out, since every output has them.
 |Absolute value |abs(x) |mrow mo mi
 |Matrix |[[a, b], [c, d]] |mrow mo mtable mtr mtd mi
 |Text |"if" |mtext
-|Font |bb(x) |mstyle mi
+|Font |bb(x) |mrow mi
 |Accent |hat(x) |mover mi mo
 |Overline |bar(x) |mover mi mo
 |Brace with label |overbrace(x)(n) |mover mi mo mrow
-|Colour |color(red)(x) |mstyle mi
+|Colour |color(red)(x) |mrow mi
 |Line break |a \\ b |mi mo
 |===
 // END GENERATED elements-written
@@ -509,20 +491,18 @@ Plurimath::Math.parse("ustd(1.230, 0.004)", :asciimath).to_mathml
 
 [source,xml]
 ----
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true">
-    <mi>u</mi>
-    <mi>s</mi>
-    <mi>t</mi>
-    <mi>d</mi>
-    <mrow>
-      <mo>(</mo>
-      <mn>1.230</mn>
-      <mo>,</mo>
-      <mn>0.004</mn>
-      <mo>)</mo>
-    </mrow>
-  </mstyle>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block" displaystyle="true">
+  <mi>u</mi>
+  <mi>s</mi>
+  <mi>t</mi>
+  <mi>d</mi>
+  <mrow>
+    <mo>(</mo>
+    <mn>1.230</mn>
+    <mo>,</mo>
+    <mn>0.004</mn>
+    <mo>)</mo>
+  </mrow>
 </math>
 ----
 // END GENERATED example uncertainty
@@ -541,8 +521,8 @@ reader, which reaches the caller of `Plurimath::Math.parse` as a
 * The uncertainty marker follows our reading of the MathML 4 intent grammar
   (section 5.1). It has not been checked with a MathML 4 validator or a
   screen reader (#524).
-* The output always has `display="block"` and an `mstyle` with
-  `displaystyle`; inline layout is expressed only through `displaystyle`.
+* The output always has `display="block"` and a `displaystyle`
+  attribute on `math`; inline layout is expressed only through `displaystyle`.
 
 [[round-trip]]
 == Round trips
@@ -591,7 +571,7 @@ raises Plurimath::Math::ParseOptionError
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `9767c37a8d7bb21a0694780ecfcbc4f1fbd9eb39` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `167ee6c0953320ee9b68c810e7cf29a18fd23d6e` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===

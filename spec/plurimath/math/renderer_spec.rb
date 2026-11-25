@@ -27,7 +27,7 @@ RSpec.describe Plurimath::Math::Renderer do
     end
 
     it "raises an actionable unavailable error when lasem is absent" do
-      allow(described_class).to receive(:available?).and_return(false)
+      allow(described_class::Lasem).to receive_messages(available?: false, load_error: nil)
       expect { described_class.render("<math/>", format: :svg) }
         .to raise_error(Plurimath::Errors::RenderingUnavailable,
                         /\A\[plurimath\].*lasem-doctor/)
@@ -48,7 +48,7 @@ RSpec.describe Plurimath::Math::Renderer do
       end
 
       before do
-        allow(described_class).to receive(:available?).and_return(true)
+        allow(described_class::Lasem).to receive(:available?).and_return(true)
         stub_const("Lasem", fake_lasem)
       end
 
@@ -72,6 +72,45 @@ RSpec.describe Plurimath::Math::Renderer do
         expect(err.message).to match(/\A\[plurimath\] Failed to render/)
         expect(err.cause).to be_a(ArgumentError)
       end
+    end
+
+    describe "engines" do
+      it "raises UnsupportedRenderEngine for an unknown engine" do
+        expect { described_class.render("<math/>", format: :svg, engine: :sizzle) }
+          .to raise_error(Plurimath::Errors::UnsupportedRenderEngine,
+                          /\A\[plurimath\] Unsupported render engine :sizzle\. Known engines are: :lasem, :logifos\./)
+      end
+
+      it "accepts engine names case-insensitively" do
+        expect(described_class.normalize_engine("Lasem")).to eq(:lasem)
+        expect(described_class.normalize_engine(:LOGIFOS)).to eq(:logifos)
+      end
+
+      it "checks the selected engine's own formats" do
+        allow(described_class::Logifos).to receive(:available?).and_return(true)
+        expect { described_class.render("<math/>", format: :png, engine: :logifos) }
+          .to raise_error(Plurimath::Errors::UnsupportedRenderFormat,
+                          /Supported formats are: :svg\./)
+      end
+
+      it "raises the engine-aware unavailable error for logifos" do
+        allow(described_class::Logifos).to receive_messages(available?: false, load_error: nil)
+        expect { described_class.render("<math/>", format: :svg, engine: :logifos) }
+          .to raise_error(Plurimath::Errors::RenderingUnavailable, /logifos native library/)
+      end
+    end
+  end
+
+  describe ".available_engines" do
+    it "lists every engine whose backend reports availability" do
+      allow(described_class::Lasem).to receive(:available?).and_return(true)
+      allow(described_class::Logifos).to receive(:available?).and_return(false)
+      expect(described_class.available_engines).to eq(%i[lasem])
+    end
+
+    it "is empty under Opal regardless of backends" do
+      stub_const("RUBY_ENGINE", "opal")
+      expect(described_class.available_engines).to eq([])
     end
   end
 

@@ -17,7 +17,8 @@
 # options. A case whose targets record a refusal must fail to parse. Any
 # other case must parse to the recorded model, when one is recorded, and for
 # each target Formula#to_<target> must write the recorded output byte for
-# byte, and reading that output back must give the recorded lossless flag
+# byte (OpenMath uses the specs' XML equivalence convention), and reading
+# that output back must give the recorded lossless flag
 # and, for a lossy target, the recorded loss.
 #
 # Prints the lossless, lossy, refused and differing counts. A pin failure,
@@ -27,6 +28,7 @@ require "digest"
 require "open3"
 require "optparse"
 require "yaml"
+require "canon"
 require_relative "roundtrip_cases"
 
 module ReplayStageRoundtrips
@@ -41,7 +43,9 @@ module ReplayStageRoundtrips
   REPOSITORY = "https://github.com/plurimath/plurimath-testsuite"
   LANGUAGE = "roundtrip"
   CASE_SCHEMA = "plurimath-stage/roundtrip/1"
-  TARGETS = RoundtripCases::TARGETS
+  # Stage generations also record presentation-only LaTeX and HTML outcomes.
+  # Keep the uncertainty generator's target set unchanged.
+  TARGETS = %w[asciimath unicode mathml omml latex html openmath].freeze
 
   Pin = Struct.new(:commit, :generation, :digest, keyword_init: true)
 
@@ -125,11 +129,22 @@ module ReplayStageRoundtrips
       doc.fetch("cases")
     end
     # Append-only supersessions (the text-unitsml-valid-r2 pattern): a row
-    # whose id has an -r2 sibling is kept for history and superseded by that
-    # sibling; only the sibling replays.
-    superseded = rows.select { |r| r["id"].include?("-r2") }
-                     .to_h { |r| [r["id"].sub("-r2", ""), true] }
-    rows.reject { |r| superseded.key?(r["id"]) }
+    # whose id has a later -rN sibling (-r2 for a bare id, -r3 for an -r2
+    # id, and so on) is kept for history and superseded by that sibling;
+    # only the latest revision replays.
+    latest = Hash.new(0)
+    rows.each do |r|
+      base, number = revision(r["id"])
+      latest[base] = [latest[base], number].max
+    end
+    rows.select { |r| revision(r["id"]).then { |base, number| latest[base] == number } }
+  end
+
+  # [base id, revision]: "g.case" is revision 1 of itself, "g.case-r3" is
+  # revision 3 of "g.case".
+  def revision(id)
+    match = id.match(/\A(.+)-r(\d+)\z/)
+    match ? [match[1], Integer(match[2])] : [id, 1]
   end
 
   def refusal?(kase)
@@ -160,7 +175,13 @@ module ReplayStageRoundtrips
     if kase.key?("model") && RoundtripCases.model(formula) != kase["model"]
       diffs << "model differs"
     end
-    TARGETS.each do |name|
+    names = kase.fetch("expected").keys
+    required = %w[asciimath unicode mathml omml]
+    unless (names - TARGETS).empty? && (required - names).empty?
+      return ["unknown or missing roundtrip targets"]
+    end
+
+    names.each do |name|
       diffs.concat(target_differences(formula, name, kase["expected"][name],
                                       opts))
     end
@@ -168,8 +189,18 @@ module ReplayStageRoundtrips
   end
 
   def target_differences(formula, name, expected, opts)
+    if expected.key?("refusal")
+      actual = RoundtripCases.target(formula, name, opts)
+      return actual == expected ? [] : ["#{name}: refusal differs"]
+    end
+
     output = formula.public_send(RoundtripCases::WRITERS.fetch(name))
-    return ["#{name}: output differs"] unless output == expected["output"]
+    matches = if name == "openmath"
+                Canon::Comparison.equivalent?(output, expected["output"], format: :xml)
+              else
+                output == expected["output"]
+              end
+    return ["#{name}: output differs"] unless matches
 
     read = RoundtripCases::LOCALIZED.include?(name) ? opts : {}
     actual = begin
@@ -191,9 +222,16 @@ module ReplayStageRoundtrips
     kases.each do |kase|
       if refusal?(kase)
         counts["refused"] += 1
+        counts["source_refused"] += 1
       else
         kase["expected"].each_value do |target|
-          counts[target["lossless"] ? "lossless" : "lossy"] += 1
+          outcome = if target.key?("refusal")
+                      "refused"
+                    else
+                      target["lossless"] ? "lossless" : "lossy"
+                    end
+          counts[outcome] += 1
+          counts["target_refused"] += 1 if outcome == "refused"
         end
       end
     end
@@ -208,6 +246,8 @@ module ReplayStageRoundtrips
     end
     { "cases" => kases.size, "lossless" => counts["lossless"],
       "lossy" => counts["lossy"], "refused" => counts["refused"],
+      "source_refused" => counts["source_refused"],
+      "target_refused" => counts["target_refused"],
       "differing" => differing }
   end
 
@@ -236,7 +276,8 @@ module ReplayStageRoundtrips
       warn "#{d['engine']} #{d['id']}: #{d['differences'].join('; ')}"
     end
     puts "cases #{result['cases']}: targets lossless #{result['lossless']}, " \
-         "lossy #{result['lossy']}; cases refused #{result['refused']}; " \
+         "lossy #{result['lossy']}; sources refused #{result['source_refused']}; " \
+         "targets refused #{result['target_refused']}; " \
          "differing #{result['differing'].size}"
     result["differing"].empty? ? 0 : 1
   rescue Error => e
