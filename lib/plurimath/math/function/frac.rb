@@ -54,6 +54,7 @@ module Plurimath
             update_derivative(frac_tag, mathml_value[0],
                               mathml_value[1])
           end
+          frac_tag = options[:presentation_profile]&.layout&.mathml_fraction(frac_tag, self) || frac_tag
           intentify(frac_tag, intent, func_name: :frac, options: intent_names)
         end
 
@@ -68,7 +69,7 @@ module Plurimath
           XmlHelper.update_nodes(
             f_element,
             [
-              fpr_element,
+              options[:presentation_profile]&.layout&.omml_fraction(fpr_element, self) || fpr_element,
               omml_parameter(parameter_one, display_style, tag_name: "num",
                                                            options: options),
               omml_parameter(parameter_two, display_style, tag_name: "den",

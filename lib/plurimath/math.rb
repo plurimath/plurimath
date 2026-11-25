@@ -17,6 +17,7 @@ module Plurimath
     autoload :Renderer, "#{__dir__}/math/renderer"
     autoload :AmbiguousDecimalError, "#{__dir__}/errors/ambiguous_decimal_error"
     autoload :Symbols, "#{__dir__}/math/symbols"
+    autoload :Openmath, "#{__dir__}/openmath"
     autoload :SymbolIndex, "#{__dir__}/math/symbol_index"
     autoload :SymbolTable, "#{__dir__}/math/symbol_table"
 
@@ -29,10 +30,13 @@ module Plurimath
       unicode: UnicodeMath,
       asciimath: Asciimath,
       pma: Pma,
+      openmath: Plurimath::Openmath,
+      content_mathml: Plurimath::ContentMathml,
     }.freeze
     # Types Plurimath reads but has no writer for.
     INPUT_ONLY_TYPES = %i[pma].freeze
-    SUPPORTED_PARSE_OPTIONS = %i[locale].freeze
+    SUPPORTED_PARSE_OPTIONS = %i[locale version].freeze
+    VERSIONED_PARSE_TYPES = %i[openmath content_mathml].freeze
     LOCALIZED_PARSE_TYPES = %i[asciimath html latex unicode].freeze
 
     module_function
@@ -42,11 +46,14 @@ module Plurimath
 
       type = type.to_sym
       unknown_options = options.keys - SUPPORTED_PARSE_OPTIONS
-      raise_unknown_parse_options!(unknown_options) unless unknown_options.empty?
+      raise_unknown_parse_options!(unknown_options, type: type) unless unknown_options.empty?
 
       if options.key?(:locale) && !localized_parse_type?(type)
         raise_unsupported_parse_option!(type,
                                         :locale)
+      end
+      if options.key?(:version) && !VERSIONED_PARSE_TYPES.include?(type)
+        raise_unsupported_parse_option!(type, :version)
       end
       options = normalize_parse_options(options)
 
@@ -82,17 +89,17 @@ module Plurimath
     end
 
     def parse_with_configuration(text, type, options)
-      return parse_formula(text, type) unless options.key?(:locale)
+      return parse_formula(text, type, **options.slice(:version)) unless options.key?(:locale)
 
       Plurimath.with_configuration do |config|
         config.locale = options.fetch(:locale)
-        parse_formula(text, type)
+        parse_formula(text, type, **options.slice(:version))
       end
     end
 
-    def parse_formula(text, type)
+    def parse_formula(text, type, **options)
       klass = klass_from_type(type)
-      formula = klass.new(text).to_formula
+      formula = klass.new(text, **options).to_formula
       # A unit on its own parses to a bare Unitsml node; wrap it so every
       # format returns a Formula.
       formula = Formula.new([formula]) unless formula.is_a?(Formula)
@@ -116,10 +123,10 @@ module Plurimath
       LOCALIZED_PARSE_TYPES.include?(type)
     end
 
-    def raise_unknown_parse_options!(options)
+    def raise_unknown_parse_options!(options, type: nil)
       raise ParseOptionError.unknown_options(
         options,
-        supported_options: SUPPORTED_PARSE_OPTIONS,
+        supported_options: VERSIONED_PARSE_TYPES.include?(type) ? %i[version] : %i[locale],
       )
     end
 
@@ -127,7 +134,7 @@ module Plurimath
       raise ParseOptionError.unsupported_options(
         type,
         [option],
-        supported_types: LOCALIZED_PARSE_TYPES,
+        supported_types: option == :version ? VERSIONED_PARSE_TYPES : LOCALIZED_PARSE_TYPES,
       )
     end
 

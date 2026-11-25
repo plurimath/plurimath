@@ -63,7 +63,9 @@ module Plurimath
             validate_mathml_fields(parameter_two, intent, options: options),
             validate_mathml_fields(parameter_three, intent, options: options),
           ]
-          subsup_tag = XmlHelper.update_nodes(ox_element(tag_name), new_arr)
+          layout = options[:presentation_profile]&.layout
+          element = layout&.mathml_limits(self, layout.nary_kind(self)) || ox_element(tag_name)
+          subsup_tag = XmlHelper.update_nodes(element, new_arr)
           masked_tag(subsup_tag) if self.options[:mask]
           return subsup_tag unless parameter_four
 
@@ -176,8 +178,10 @@ module Plurimath
                                                   attributes: { "m:val": first_value })
           end
 
+          layout = options[:presentation_profile]&.layout
+          location = self.options[:type] || layout&.limits(self, layout.nary_kind(self)) || "subSup"
           narypr << XmlHelper.ox_element("limLoc", namespace: "m",
-                                                   attributes: { "m:val": (self.options[:type] || "subSup").to_s })
+                                                   attributes: { "m:val": location.to_s })
           hide_tags(narypr, parameter_two, "sub")
           hide_tags(narypr, parameter_three, "sup")
           narypr

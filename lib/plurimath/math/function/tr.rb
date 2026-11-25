@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Function
       class Tr < UnaryFunction
+        autoload :DisplayTreeMethods, "plurimath/math/function/tr/display_tree_methods"
+
         node_fields :parameter_one, collections: %i[parameter_one],
                                     scalars: { hide_function_name: :boolean }
 
@@ -73,51 +75,30 @@ module Plurimath
 
         def to_asciimath_math_zone(spacing, last = false, indent = true,
 options:)
-          [
-            "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_asciimath_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Tr.include(DisplayTreeMethods) unless Tr < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing, last = false, indent = true, options:)
-          [
-            "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_latex_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Tr.include(DisplayTreeMethods) unless Tr < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing, last = false, indent = true, options:)
-          [
-            "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_mathml_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Tr.include(DisplayTreeMethods) unless Tr < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing, last = false, indent = true,
 display_style:, options:)
-          [
-            "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_omml_math_zone(
-              gsub_spacing(spacing,
-                           last), last, indent, display_style: display_style, options: options
-            ),
-          ]
+          Tr.include(DisplayTreeMethods) unless Tr < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath_math_zone(spacing, last = false, indent = true,
 options:)
-          [
-            "#{spacing}\"tr\" function apply\n",
-            Formula.new(parameter_one).to_unicodemath_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Tr.include(DisplayTreeMethods) unless Tr < DisplayTreeMethods
+          super
         end
 
         def remove_hline(first_value)

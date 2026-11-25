@@ -165,6 +165,8 @@ taken from `Plurimath::Math::Formula::OMML_NAMESPACES`:
 |`split_on_linebreak:` |`false`
 |`formatter:` |`nil`
 |`unitsml:` |`{}`
+|`profile:` |`nil`
+|`context:` |`{}`
 |===
 // END GENERATED writer-options
 
