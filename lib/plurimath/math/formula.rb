@@ -377,18 +377,22 @@ options:)
       #
       # +format+ is the output image format, one of :svg, :png, :pdf, :ps.
       #
-      # Remaining keyword options are split between the two stages:
+      # Remaining keyword options are split between the stages:
       #   * to_mathml options (forwarded to #to_mathml): :intent, :formatter,
       #     :unitsml, :split_on_linebreak, :display_style,
       #     :unary_function_spacing. When :display_style is omitted the
       #     formula's own displaystyle is used.
-      #   * lasem geometry options (forwarded to the renderer): :ppi, :zoom,
-      #     :width, :height, :offset_x, :offset_y. Omit them for lasem defaults.
+      #   * the render engine (:engine, default :lasem), plus that engine's
+      #     own options: lasem geometry (:ppi, :zoom, :width, :height,
+      #     :offset_x, :offset_y — omit them for lasem defaults), or for
+      #     logifos :library_path and :fonts (required) plus :font_size_px,
+      #     :display, :color, :limits.
       # Unrecognized keyword options are ignored.
       #
       # Raises a Plurimath::Errors rendering error (RenderingUnavailable,
-      # UnsupportedRenderFormat, or RenderingFailed) when lasem / its native
-      # extension is unavailable, the format is unsupported, or rendering fails.
+      # UnsupportedRenderFormat, UnsupportedRenderEngine, or RenderingFailed)
+      # when the selected engine is unknown or unavailable, the format is
+      # unsupported for it, or rendering fails.
       # A malformed formula surfaces as Plurimath::Math::ParseError from
       # #to_mathml, not as a rendering error. Note: :split_on_linebreak emits
       # multiple <math> roots,
@@ -398,7 +402,7 @@ options:)
         Renderer.render(
           mathml,
           format: format,
-          **opts.slice(*Renderer::LASEM_OPTIONS),
+          **opts.except(*Renderer::MATHML_OPTIONS),
         )
       end
       # Attributes end

@@ -61,20 +61,25 @@ module Plurimath
     end
 
     # Parse +text+ of +type+ and render the resulting formula to a binary image
-    # (one of :svg, :png, :pdf, :ps) via the optional `lasem` gem. Parse options
-    # (e.g. :locale) are routed to .parse; the rest go to Formula#render. Raises a
-    # Plurimath::Errors rendering error (RenderingUnavailable, UnsupportedRenderFormat,
-    # or RenderingFailed) when lasem/its native extension is unavailable, the format
-    # is unsupported, or rendering fails, and Plurimath::Math::ParseError when +text+
-    # cannot be parsed (raised during parsing, before rendering).
+    # (one of :svg, :png, :pdf, :ps) through the selected render engine
+    # (:engine, default :lasem — the optional `lasem` gem; :logifos renders
+    # through the optional `logifos` gem and needs its library_path: and
+    # fonts: options). Parse options (e.g. :locale) are routed to .parse; the
+    # rest go to Formula#render. Raises a Plurimath::Errors rendering error
+    # (RenderingUnavailable, UnsupportedRenderFormat, UnsupportedRenderEngine,
+    # or RenderingFailed) when the engine is unavailable, the format is
+    # unsupported, or rendering fails, and Plurimath::Math::ParseError when
+    # +text+ cannot be parsed (raised during parsing, before rendering).
     def render(text, type, format: :svg, **options)
       parse_options = options.slice(*SUPPORTED_PARSE_OPTIONS)
       render_options = options.except(*SUPPORTED_PARSE_OPTIONS)
       parse(text, type, **parse_options).render(format: format, **render_options)
     end
 
-    # True when image rendering is available (the `lasem` gem and its native
-    # extension are present; always false under Opal). Never raises.
+    # True when image rendering is available with the default engine (the
+    # `lasem` gem and its native extension; always false under Opal). Never
+    # raises. See Renderer.available_engines for every engine that renders
+    # on this runtime.
     def render_available?
       return false if RUBY_ENGINE == "opal"
 

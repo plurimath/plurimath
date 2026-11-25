@@ -2,20 +2,26 @@
 
 module Plurimath
   module Math
-    # Internal bridge to the optional `lasem` gem, which renders MathML to
-    # SVG/PNG/PDF/PostScript through a native extension.
+    # Backend registry for image rendering: a MathML document renders to an
+    # image through the selected engine. The default engine is `:lasem`
+    # (via the optional `lasem` gem); `:logifos` renders through the
+    # optional `logifos` gem and its native library.
     #
     # This is NOT part of the public API: reach rendering via Plurimath::Math.render
-    # or Plurimath::Math::Formula#render. Renderer is the single place `lasem`
-    # (native, Opal-incompatible) is required, so the rest of the library stays
-    # decoupled from it. Opal excludes the guarded native require when compiling
-    # this autoloaded bridge, and available? is always false under Opal.
+    # or Plurimath::Math::Formula#render. Renderer is the single place any
+    # rendering gem (native, Opal-incompatible) is required, so the rest of
+    # the library stays decoupled from them. Opal excludes the guarded
+    # native requires when compiling these autoloaded backends, and every
+    # backend's available? is always false under Opal.
     #
-    # Not thread-safe: the underlying Lasem native render keeps static parser
-    # state and the +@load_error+ diagnostic is shared module state, so callers
+    # Not thread-safe: the lasem native render keeps static parser state and
+    # the backends record load diagnostics in module state, so callers
     # should not render concurrently.
     module Renderer
-      # Output image formats accepted by lasem.
+      autoload :Lasem, "#{__dir__}/renderer/lasem"
+      autoload :Logifos, "#{__dir__}/renderer/logifos"
+
+      # Output image formats accepted across all engines.
       OUTPUT_FORMATS = %i[svg png pdf ps].freeze
 
       # Keyword options forwarded to Formula#to_mathml (the serialization step).
@@ -24,48 +30,40 @@ module Plurimath
         unary_function_spacing
       ].freeze
 
-      # Geometry options forwarded straight to Lasem.render. The names match
-      # lasem's own kwargs; nil values are dropped so lasem applies its defaults.
+      # Keyword options accepted by the lasem backend (geometry forwarded to
+      # Lasem.render; nil values are dropped so lasem applies its defaults).
       LASEM_OPTIONS = %i[ppi zoom width height offset_x offset_y].freeze
+
+      # Engines by name, in registration order.
+      ENGINES = {
+        lasem: Renderer::Lasem,
+        logifos: Renderer::Logifos,
+      }.freeze
 
       module_function
 
-      # Render a MathML document to a binary image string. Raises a
-      # Plurimath::Errors rendering error (UnsupportedRenderFormat,
+      # Render a MathML document to a binary image string through the
+      # selected engine. Raises a Plurimath::Errors rendering error
+      # (UnsupportedRenderFormat, UnsupportedRenderEngine,
       # RenderingUnavailable, or RenderingFailed) on any problem.
-      def render(mathml, format:, **opts)
+      def render(mathml, format:, engine: :lasem, **opts)
         format = normalize_format(format)
-        ensure_available!
-        render_with_backend(mathml, format, opts)
+        backend = normalize_engine(engine)
+        ensure_supported!(backend, format, engine)
+        ensure_available!(backend, engine)
+        backend.render(mathml, format: format, **opts)
       end
 
-      # Only the backend call is wrapped here, so the UnsupportedRenderFormat /
-      # RenderingUnavailable errors raised above are not re-wrapped.
-      def render_with_backend(mathml, format, opts)
-        Lasem.render(
-          mathml,
-          input: :mathml,
-          output: format,
-          **opts.slice(*LASEM_OPTIONS).compact,
-        )
-      rescue StandardError => e
-        # Catches Lasem::RenderError/DependencyError AND Lasem::OptionError, which
-        # is an ArgumentError living OUTSIDE Lasem::Error (lasem-ruby errmodel-1),
-        # so we deliberately rescue StandardError rather than Lasem::Error.
-        raise Errors::RenderingFailed.new(format, e)
-      end
-      private_class_method :render_with_backend
-
-      # True only when this is a non-Opal runtime, the `lasem` gem loads, and its
-      # native extension reports itself available. Never raises.
+      # True when the default engine (lasem) renders here. Never raises.
       def available?
-        return false if RUBY_ENGINE == "opal"
+        available_engines.include?(:lasem)
+      end
 
-        @load_error = nil
-        load_lasem && Lasem.native_available?
-      rescue StandardError => e
-        @load_error = e
-        false
+      # The engine names that render on this runtime. Never raises.
+      def available_engines
+        return [] if RUBY_ENGINE == "opal"
+
+        ENGINES.filter_map { |name, backend| name if backend.available? }
       end
 
       def normalize_format(format)
@@ -75,20 +73,23 @@ module Plurimath
         raise Errors::UnsupportedRenderFormat.new(format, OUTPUT_FORMATS)
       end
 
-      def ensure_available!
-        return if available?
+      def normalize_engine(engine)
+        name = engine.to_s.downcase.to_sym
+        return ENGINES.fetch(name) if ENGINES.key?(name)
 
-        raise Errors::RenderingUnavailable.new(@load_error)
+        raise Errors::UnsupportedRenderEngine.new(engine, ENGINES.keys)
       end
 
-      # Lazily require the optional gem. Only ever reached on the non-Opal path.
-      # Returns true on success, false on LoadError (recorded for diagnostics).
-      def load_lasem
-        require "lasem" unless RUBY_ENGINE == "opal"
-        true
-      rescue LoadError => e
-        @load_error = e
-        false
+      def ensure_supported!(backend, format, _engine)
+        return if backend.formats.include?(format)
+
+        raise Errors::UnsupportedRenderFormat.new(format, backend.formats)
+      end
+
+      def ensure_available!(backend, engine)
+        return if backend.available?
+
+        raise Errors::RenderingUnavailable.new(backend.load_error, engine: engine)
       end
     end
   end
