@@ -11,5 +11,6 @@ module Plurimath
     autoload :UnsupportedBase, "#{__dir__}/errors/unsupported_base"
     autoload :UnsupportedLocale, "#{__dir__}/errors/unsupported_locale"
     autoload :UnsupportedRenderFormat, "#{__dir__}/errors/unsupported_render_format"
+    autoload :UnsupportedRenderEngine, "#{__dir__}/errors/unsupported_render_engine"
   end
 end

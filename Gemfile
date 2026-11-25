@@ -16,6 +16,13 @@ gem "leptris" # third XML engine under test (spec_helper runs each example per e
 # working. For local dev against an in-progress checkout:
 #   bundle config set --local local.lasem /path/to/lasem-ruby
 gem "lasem", github: "plurimath/lasem-ruby", branch: "main", submodules: true
+# The logifos render engine (`Formula#render(engine: :logifos)`): MathML to
+# SVG through the logifos native library the caller supplies with
+# library_path: and fonts:. Git-pinned until `logifos` ships to RubyGems;
+# intentionally NOT a gemspec runtime dependency so logifos-less installs
+# keep working. For local dev against an in-progress checkout:
+#   bundle config set --local local.logifos /path/to/logifos-ruby
+gem "logifos", github: "logifos/logifos-ruby", ref: "5a79ddfc85462d1763963a63a827072be9fdb242"
 # gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "oga"
 # spec_helper selects the Nokogiri adapter directly.
