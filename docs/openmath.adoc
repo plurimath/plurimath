@@ -1,0 +1,78 @@
+= OpenMath and Content MathML
+
+`Plurimath::Math.parse(xml, :openmath, version: 2)` validates and parses
+OpenMath XML through published `openmath` 0.2.1 or later in the 0.2 series.
+Version 2 is the default; `version: 3` selects the V3 models.
+`formula.to_openmath(version: 2)` writes the shared Formula tree.
+
+Mapped arithmetic, fractions, powers, absolute values, extrema, floor,
+ceiling, comparisons, pi, variables, strings and finite numeric literals
+convert to the existing Formula nodes. Application symbols must have a
+binding in the gem's published CD table. The adapter supports a subset of
+that table; unmapped applications raise
+`Plurimath::Openmath::UnsupportedError`, a `Math::ParseError` subclass.
+Nested operations keep their grouping. Invalid XML, unknown XML fields,
+incorrect arity and custom inherited CD bases also refuse explicitly.
+
+The mapped surface renders to presentation MathML, AsciiMath, LaTeX,
+UnicodeMath, OMML and HTML. Each of those notations can be parsed and
+written to OpenMath when its Formula has a supported semantic mapping.
+The writer uses the shared operator-precedence parser. Unsupported nodes,
+including uncertainty and UnitsML constructs, raise a typed error instead
+of becoming variables or disappearing.
+
+Unbound standalone symbols retain their CD and explicit CD base in
+OpenMath and Content MathML. Their presentation and evaluation refuse;
+a plain presentation identifier cannot preserve that identity. Binding
+containers and OME errors likewise retain their complete semantic XML,
+and refuse presentation and scalar evaluation. An unchanged sourced
+Formula preserves its original OpenMath tree; editing the Formula rebuilds
+output from its current nodes.
+
+The six mapped comparisons `relation1/eq`, `relation1/neq`, `relation1/gt`,
+`relation1/lt`, `relation1/geq` and `relation1/leq` parse into Formula nodes
+and render to the presentation formats listed above. Writing them back to
+OpenMath works only for an unchanged Formula retaining its original
+OpenMath source. A fresh Formula or an edited comparison raises
+`Plurimath::Openmath::UnsupportedError` when written to OpenMath.
+Comparison evaluation is not defined by the existing numeric Formula
+evaluator: both the default mode and `mode: :strict` raise
+`Plurimath::Errors::Evaluation::UnsupportedExpressionError`.
+These limits apply to OpenMath versions 2 and 3.
+
+`Plurimath::Math.parse(xml, :content_mathml, version: 2)` and
+`formula.to_content_mathml(version: 2)` delegate to the gem's Content
+MathML reader and writer. These share the OpenMath models for `csymbol`,
+`apply`, `lambda` and `bvar`; no second content parser is introduced here.
+The published gem's strict symbol spelling uses `cd` and `name`
+attributes, for example `<csymbol cd="arith1" name="plus"/>`.
+Non-strict operator elements such as `<plus/>` are also accepted by the gem.
+
+Mapped numeric expressions use the existing Formula evaluator, including its
+`mode: :strict`, guard digits, accuracy boundaries and typed errors.
+An adapter mapping does not add the gem's extra evaluation domains to
+Plurimath. A refusal raised by Formula evaluation can be serialized with
+`error.to_openmath(version: 2)`: an OME containing the error class and
+message. Importing that OME retains it and refuses scalar evaluation.
+
+The VALID_TYPES-derived CLI accepts `openmath` and `content_mathml` as
+input and output formats. For example:
+
+[source,sh]
+----
+plurimath convert --input '1 + 2' --output-format openmath
+plurimath convert --input '1 + 2' --output-format content_mathml
+----
+
+The local roundtrip generator includes the OpenMath target and records
+explicit refusals for unsupported uncertainty constructs. Existing pinned
+four-target generations remain replayable. Shared corpus adoption needs a
+new testsuite generation accepting `openmath`, cross-notation rows and
+refusals, followed by a coordinated submodule and snapshot-pin update.
+The current integration does not change that shared repository or pin.
+
+The roundtrip replayer compares OpenMath output using the specs' Canon XML
+equivalence convention: self-closing and expanded empty elements are equal.
+Element names, namespaces, attributes, text and child order remain checked,
+as do the Formula model, readback loss flags and typed refusals. Other targets
+retain their byte comparisons; recorded output bytes remain unchanged.

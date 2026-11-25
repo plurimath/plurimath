@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "lutaml-model", "~> 0.8.155"
   spec.add_dependency "mml", "~> 2.4.2"
   spec.add_dependency "omml", "~> 0.2.5"
+  spec.add_dependency "openmath", "~> 0.2.1"
   spec.add_dependency "ostruct"
   spec.add_dependency "ox"
   spec.add_dependency "parsanol", "~> 1.3", ">= 1.3.116"

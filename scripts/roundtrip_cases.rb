@@ -39,9 +39,11 @@ module RoundtripCases
   HEADER = "# Written by plurimath scripts/roundtrip_cases.rb. Do not edit.\n"
   DOCUMENT = "plurimath docs/uncertainty.adoc"
   ASCIIMATH_DOCUMENT = "plurimath docs/asciimath.adoc"
-  TARGETS = %w[asciimath unicode mathml omml].freeze
+  TARGETS = %w[asciimath unicode mathml omml openmath].freeze
   WRITERS = { "asciimath" => :to_asciimath, "unicode" => :to_unicodemath,
-              "mathml" => :to_mathml, "omml" => :to_omml }.freeze
+              "mathml" => :to_mathml, "omml" => :to_omml,
+              "latex" => :to_latex, "html" => :to_html,
+              "openmath" => :to_openmath }.freeze
   LOCALIZED = %w[asciimath unicode].freeze
   ENGINES = {
     "ox" => [Plurimath::XmlEngine::OxEngine, :ox],
@@ -261,6 +263,11 @@ module RoundtripCases
     result["loss"] = loss(formula, back) unless result["lossless"]
     result
   rescue Plurimath::Math::ParseError => e
+    if output.nil?
+      return { "refusal" => { "category" => "unsupported_expression",
+                              "byte_offset" => nil } }
+    end
+
     { "output" => output, "lossless" => false,
       "loss" => "reading the output back raises #{e.class.name}" }
   end

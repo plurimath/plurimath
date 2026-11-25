@@ -16,6 +16,9 @@ Supported math representational languages:
 * https://www.asciimath.org[AsciiMath] (parsed by the
 https://github.com/plurimath/amath[amath] gem)
 * http://unicodemath.org[UnicodeMath] (https://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.2.pdf[UnicodeMath v3.2])
+* OpenMath 2 and 3 XML (`openmath`) and Content MathML (`content_mathml`),
+through the published https://github.com/plurimath/openmath[openmath] gem.
+See link:docs/openmath.adoc[the supported semantic surface and typed refusals].
 * LaTeX math
 * Microsoft Office Math Markup Language (OMML) https://devblogs.microsoft.com/math-in-office/officemath/["OfficeMath"]
 
