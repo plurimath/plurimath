@@ -34,12 +34,7 @@ RSpec.describe Plurimath::Math::Renderer::Logifos do
         skip "no grading font available (set LOGIFOS_FONT)" unless font_path && File.file?(font_path)
       end
 
-      # Plurimath always serializes display/displaystyle on the math root,
-      # and the engine's wire subset refuses them as unsupported classes
-      # (WIRE_FAILED) until the wire carries the root layout hints. Pending
-      # on that engine-side wire extension; the direct-runtime path renders
-      # documents without those attributes today.
-      it "renders a MathML document end to end", pending: "the engine wire subset refuses the root display hints plurimath serializes" do
+      it "renders a MathML document end to end" do
         svg = render_logifos("<math><mi>x</mi></math>", format: :svg)
 
         expect(svg).to include("<svg")
