@@ -4,7 +4,7 @@ source "https://rubygems.org"
 gemspec
 
 # The quoted uncertainty channel (amath#17) ships in amath 0.2.1, resolved
-# from RubyGems; the gemspec floor (amath >= 0.2.0, < 0.3) admits it.
+# from RubyGems; the gemspec floor (amath >= 0.2.2, < 0.3) admits it.
 gem "canon"
 gem "fiddle", "~> 1.1"
 # Candidate adds boxed parsing; replace this development pin after latexmath#72 is released.
