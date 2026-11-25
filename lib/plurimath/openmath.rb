@@ -9,13 +9,11 @@ module Plurimath
   # to Formula nodes; symbols outside the converter's table refuse rather
   # than lose meaning silently.
   class Openmath
-    # Refusal to discard semantics the Formula model cannot express.
-    class UnsupportedError < Math::ParseError; end
-
     autoload :Semantic, "#{__dir__}/openmath/semantic"
     autoload :Writer, "#{__dir__}/openmath/writer"
     autoload :Symbol, "#{__dir__}/openmath/symbol"
     autoload :Converter, "#{__dir__}/openmath/converter"
+    autoload :UnsupportedError, "#{__dir__}/openmath/unsupported_error"
 
     attr_accessor :text, :version
 
