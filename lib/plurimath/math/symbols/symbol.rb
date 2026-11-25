@@ -90,10 +90,24 @@ module Plurimath
           rspace = @options&.[](:rspace)
           attributes[:rspace] = rspace unless rspace.nil?
           tag_name = rspace.nil? ? "mi" : "mo"
+          attributes.merge!(mathml_style_attributes) if tag_name == "mi"
           token_tag = ox_element(tag_name, attributes: attributes)
           return token_tag if ["{:", ":}"].include?(value)
 
           value ? token_tag << value : token_tag
+        end
+
+        # Explicit style signal for MathML token output (plurimath#129).
+        # `options[:mathvariant]` is a caller-chosen style and always wins.
+        # Otherwise `options[:constant]` marks the token as a constant and
+        # renders it upright. With neither, nothing is added, so ordinary
+        # variables keep the renderer or profile default.
+        def mathml_style_attributes
+          variant = @options&.[](:mathvariant)
+          return { mathvariant: variant.to_s } unless variant.nil?
+          return { mathvariant: "normal" } if @options&.[](:constant)
+
+          {}
         end
 
         def to_latex(**)
