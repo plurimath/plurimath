@@ -123,9 +123,9 @@ bindings, which amath removes before returning the tree.
 |artifact checksum (`artifacts/asciimath.json`) |`sha256:a7da9dd3f33d83a0c62ca47ce8c6c5fc08649246444d1b83d6d809f9119c4623`
 |artifact compiler (Parsanol) |`1.5.1.0`
 |artifact entries |`dot comma arabic`
-|runtime amath gem |`0.2.1`
-|runtime artifact checksum |`sha256:ecfc0c6e99ab262d7290d9098550e60cb5c568a3dfb6bc8c0da20a13904fda62`
-|runtime grammar source hash |`sha256:08cea18f49353c14f349ea67c91d748dd449538549654ab1be060f33269769ed`
+|runtime amath gem |`0.2.2`
+|runtime artifact checksum |`sha256:a7da9dd3f33d83a0c62ca47ce8c6c5fc08649246444d1b83d6d809f9119c4623`
+|runtime grammar source hash |`sha256:ac85f55ce3162cd63821d3edc131a28e347a98ea04536feeb3b39cb5dcdbdb9b`
 |runtime artifact compiler (Parsanol) |`1.5.1.0`
 |uncertainty rules, runtime vs documented revision |`byte-identical`
 |===
