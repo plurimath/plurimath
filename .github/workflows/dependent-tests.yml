@@ -37,7 +37,7 @@ jobs:
       after-setup-ruby: |
         set -euo pipefail
         git init ../amath
-        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git 667b517bb81276bf920f6f9fea940ae342d8c9e3
+        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git f7947c1c844d0d2318aaccd95bfc8580331d6710
         git -C ../amath checkout --detach FETCH_HEAD
         printf '\ngem "amath", path: "../amath"\n' >> Gemfile
       repos-json-file: .github/workflows/dependent-repos-metanorma.json
@@ -54,7 +54,7 @@ jobs:
       after-setup-ruby: |
         set -euo pipefail
         git init ../amath
-        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git 667b517bb81276bf920f6f9fea940ae342d8c9e3
+        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git f7947c1c844d0d2318aaccd95bfc8580331d6710
         git -C ../amath checkout --detach FETCH_HEAD
         printf '\ngem "amath", path: "../amath"\n' >> Gemfile
       repos-json-file: .github/workflows/dependent-repos-metanorma-iso.json
