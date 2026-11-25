@@ -51,6 +51,7 @@ module Plurimath
   autoload :Html, "plurimath/html"
   autoload :Latex, "plurimath/latex"
   autoload :ParseError, "plurimath/math"
+  autoload :PresentationProfile, "plurimath/presentation_profile"
   autoload :InvalidTypeError, "plurimath/math"
   autoload :Math, "plurimath/math"
   autoload :Mathml, "plurimath/mathml"
