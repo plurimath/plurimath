@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Function
       class Msgroup < UnaryFunction
+        autoload :DisplayTreeMethods, "plurimath/math/function/msgroup/display_tree_methods"
+
         # --- Catalog documentation (see Plurimath::Documentation) ---
         DESCRIPTION = "Groups elementary-math rows so their positions shift together."
         REFERENCE = "https://www.w3.org/TR/mathml4/#presm_msgroup"
@@ -56,51 +58,30 @@ module Plurimath
 
         def to_asciimath_math_zone(spacing, last = false, _indent = true,
 options:)
-          [
-            "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_asciimath_math_zone(
-              gsub_spacing(spacing, last), options: options
-            ),
-          ]
+          Msgroup.include(DisplayTreeMethods) unless Msgroup < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing, last = false, indent = true, options:)
-          [
-            "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_latex_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Msgroup.include(DisplayTreeMethods) unless Msgroup < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing, last = false, indent = true, options:)
-          [
-            "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_mathml_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Msgroup.include(DisplayTreeMethods) unless Msgroup < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing, last = false, indent = true,
 display_style:, options:)
-          [
-            "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_omml_math_zone(
-              gsub_spacing(spacing,
-                           last), last, indent, display_style: display_style, options: options
-            ),
-          ]
+          Msgroup.include(DisplayTreeMethods) unless Msgroup < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath_math_zone(spacing, last = false, indent = true,
 options:)
-          [
-            "#{spacing}\"msgroup\" function apply\n",
-            Formula.new(parameter_one).to_unicodemath_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Msgroup.include(DisplayTreeMethods) unless Msgroup < DisplayTreeMethods
+          super
         end
 
         def to_unicodemath(options:)

@@ -4,6 +4,8 @@ module Plurimath
   module Math
     module Function
       class Td < BinaryFunction
+        autoload :DisplayTreeMethods, "plurimath/math/function/td/display_tree_methods"
+
         node_fields :parameter_one, :parameter_two,
                     collections: %i[parameter_one],
                     scalars: { hide_function_name: :boolean }
@@ -60,59 +62,30 @@ module Plurimath
         end
 
         def to_asciimath_math_zone(spacing, last = false, _, options:)
-          [
-            "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_asciimath_math_zone(
-              gsub_spacing(spacing, last), last, options: options
-            ),
-          ]
+          Td.include(DisplayTreeMethods) unless Td < DisplayTreeMethods
+          super
         end
 
         def to_latex_math_zone(spacing, last = false, indent = true, options:)
-          [
-            "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_latex_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Td.include(DisplayTreeMethods) unless Td < DisplayTreeMethods
+          super
         end
 
         def to_mathml_math_zone(spacing, last = false, indent = true, options:)
-          [
-            "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_mathml_math_zone(
-              gsub_spacing(spacing, last), last, indent, options: options
-            ),
-          ]
+          Td.include(DisplayTreeMethods) unless Td < DisplayTreeMethods
+          super
         end
 
         def to_omml_math_zone(spacing, last = false, indent = true,
 display_style:, options:)
-          [
-            "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_omml_math_zone(
-              gsub_spacing(spacing,
-                           last), last, indent, display_style: display_style, options: options
-            ),
-          ]
+          Td.include(DisplayTreeMethods) unless Td < DisplayTreeMethods
+          super
         end
 
-        def to_unicodemath_math_zone(spacing, last = false, _, options:)
-          [
-            "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_unicodemath_math_zone(
-              gsub_spacing(spacing, last), last, options: options
-            ),
-          ]
-        end
 
         def to_unicodemath_math_zone(spacing, last = false, _, options:)
-          [
-            "#{spacing}\"td\" function apply\n",
-            Formula.new(parameter_one).to_unicodemath_math_zone(
-              gsub_spacing(spacing, last), last, options: options
-            ),
-          ]
+          Td.include(DisplayTreeMethods) unless Td < DisplayTreeMethods
+          super
         end
 
         def omml_content(display_style, options:)

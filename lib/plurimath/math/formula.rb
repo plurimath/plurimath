@@ -452,17 +452,13 @@ options:)
       end
 
       def new_space(spacing, indent)
-        if value.any? { |val| val.class_name == "left" } && value.any? do |val|
-          val.class_name == "right"
-        end
-          return spacing
-        end
-
-        indent && wrapable?(spacing) ? "#{spacing}|_ " : spacing
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def wrapable?(spacing)
-        left_right_wrapper && !spacing.end_with?("|_ ")
+        Formula.include(DisplayTreeMethods) unless Formula < DisplayTreeMethods
+        super
       end
 
       def parse_error!(type)

@@ -16,7 +16,8 @@ RSpec.describe "Display-tree stage loading", if: RUBY_ENGINE != "opal", engine_l
       code = <<~'CODE'
         require "json"
         require "plurimath"
-        loaded = -> { $LOADED_FEATURES.grep(%r{/display_tree_methods\.rb$}) }
+        # Specialized nodes have their own first-use boundary examples.
+        loaded = -> { $LOADED_FEATURES.grep(%r{/(formula|function/(unary_function|binary_function|ternary_function)|symbols/symbol)/display_tree_methods\.rb$}) }
         cold = loaded.call
         formula = Plurimath::Math.parse("sin(x) + frac(1)(2)", :asciimath)
         writers = %i[to_asciimath to_latex to_mathml to_omml to_html to_unicodemath]

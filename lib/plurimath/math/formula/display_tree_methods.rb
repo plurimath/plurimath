@@ -105,6 +105,22 @@ module Plurimath
                                             indent, options: options)
           end
         end
+
+        protected
+
+        def new_space(spacing, indent)
+          if value.any? { |val| val.class_name == "left" } && value.any? do |val|
+            val.class_name == "right"
+          end
+            return spacing
+          end
+
+          indent && wrapable?(spacing) ? "#{spacing}|_ " : spacing
+        end
+
+        def wrapable?(spacing)
+          left_right_wrapper && !spacing.end_with?("|_ ")
+        end
       end
     end
   end
