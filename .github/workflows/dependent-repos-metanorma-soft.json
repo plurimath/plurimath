@@ -1,5 +1,5 @@
 {
-  "experimental": true,
+  "experimental": [true],
   "repo": [
     "metanorma/metanorma-document",
     "metanorma/stepmod-utils",
