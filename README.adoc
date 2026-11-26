@@ -534,6 +534,25 @@ omml = formula.to_omml
 
 
 [#image-rendering]
+=== Rendering to SVG
+
+`Formula#to_svg` returns an SVG string. Plurimath serializes the formula to
+MathML and passes it to a backend you register; it ships no renderer and has no
+dependency on one. A backend is any object with
+`render_svg(mathml, **options)` returning an SVG string.
+
+[source,ruby]
+----
+Plurimath::Math::SvgRenderer.backend = MyRenderer.new
+Plurimath::Math.svg_available? # => true
+svg = Plurimath::Math.parse("x^2", :asciimath).to_svg(font_size: 18)
+----
+
+The MathML options listed under "Rendering to images" are used for the MathML
+step; other options go to the backend unchanged. With no backend registered,
+`Plurimath::Errors::SvgBackendUnavailable` is raised; a backend failure raises
+`Plurimath::Errors::RenderingFailed`.
+
 === Rendering to images
 
 `Formula#render` produces a binary image (`:svg`, `:png`, `:pdf`, or `:ps`) by
