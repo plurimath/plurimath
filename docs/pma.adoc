@@ -54,13 +54,13 @@ Plurimath), *proposed* (described in an open issue, not built), or *open*
 https://github.com/plurimath/plurimath/issues/541[#541]
 
 |Constructors `ustd`, `uexp`, `ucov`
-|proposed
+|implemented
 |amath#16 task 3; the same call forms are implemented in dialect L
 (https://github.com/plurimath/plurimath/pull/499[#499])
 
 |Constructor `+unit(...)+` and trailing unit attachment
-|proposed
-|amath#16 task 3
+|implemented
+|amath#16 task 3; merged in https://github.com/plurimath/plurimath/pull/558[#558]
 
 |Quantity assertion `+unit(J::energy)+`
 |proposed
@@ -71,21 +71,21 @@ https://github.com/plurimath/plurimath/issues/541[#541]
 |amath#16 task 3, https://github.com/plurimath/plurimath/issues/524[#524]
 
 |Measured literal `+(v +/- u)+`, a standard uncertainty
-|proposed
-|amath#16 task 3, #524 item 4
+|implemented
+|amath#16 task 3, #524 item 4; merged in https://github.com/plurimath/plurimath/pull/551[#551] and https://github.com/plurimath/plurimath/pull/558[#558]
 
 |Shared exponent `+(3.85 +/- 0.23)e4+`
-|proposed
+|implemented
 |amath#16 task 3, #524 item 1,
-https://github.com/plurimath/amath/issues/13[amath#13]
+https://github.com/plurimath/amath/issues/13[amath#13]; merged in https://github.com/plurimath/plurimath/pull/526[#526] and https://github.com/plurimath/plurimath/pull/558[#558]
 
 |Relative uncertainty `+(10.3 +/- 2%)+`
-|proposed, partly open
-|amath#16 task 3, #524 item 2
+|implemented, partly open
+|amath#16 task 3, #524 item 2; merged in https://github.com/plurimath/plurimath/pull/558[#558]
 
 |Distribution tags `+~rect+`, `+~triang+`, `+~arcsine+`
-|proposed
-|amath#16 task 3, #524 item 3
+|implemented
+|amath#16 task 3, #524 item 3; merged in https://github.com/plurimath/plurimath/pull/551[#551] and https://github.com/plurimath/plurimath/pull/558[#558]
 
 |Fenced `±` shorthand such as `+(10.3 ± 0.2)+`
 |not in version 1

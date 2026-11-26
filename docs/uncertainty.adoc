@@ -55,6 +55,12 @@ https://github.com/plurimath/plurimath/pull/499[#499]
 |https://github.com/plurimath/plurimath/pull/526[#526],
 https://github.com/plurimath/amath/pull/15[amath#15]
 
+|The `:pma` input type: `(v +/- u)`, relative `%`, `~rect`/`~triang`/`~arcsine`
+tags and the shared exponent on a measured literal (see link:pma.adoc[pma])
+|implemented
+|https://github.com/plurimath/plurimath/pull/551[#551],
+https://github.com/plurimath/plurimath/pull/558[#558]
+
 |Everything listed under <<open-decisions>>
 |proposed or undecided
 |https://github.com/plurimath/plurimath/issues/524[#524] and the issues named
