@@ -22,3 +22,53 @@ jobs:
         git -C ../amath checkout --detach FETCH_HEAD
         printf '\ngem "amath", path: "../amath"\n' >> Gemfile
       repos-json-file: .github/workflows/dependent-repos-ruby.json
+
+  # Metanorma gate: html2doc (direct gemspec dependent) must pass. The rest of
+  # the stack runs report-only below. One OS and one Ruby to keep Actions time low.
+  metanorma:
+    uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
+    with:
+      command: bundle exec rspec
+      matrix_os: '["ubuntu-latest"]'
+      # Same amath pin as the rake job above; keep both in step with the Gemfile.
+      after-setup-ruby: |
+        set -euo pipefail
+        git init ../amath
+        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git f7947c1c844d0d2318aaccd95bfc8580331d6710
+        git -C ../amath checkout --detach FETCH_HEAD
+        printf '\ngem "amath", path: "../amath"\n' >> Gemfile
+      repos-json-file: .github/workflows/dependent-repos-metanorma.json
+
+  # Report-only (experimental: true in the repos file, so continue-on-error):
+  # released metanorma gems cap plurimath at ~> 0.11 while main is 0.12.0, and
+  # stepmod-utils is red on its own main. Results still show on the PR.
+  metanorma-soft:
+    uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
+    with:
+      command: bundle exec rspec
+      matrix_os: '["ubuntu-latest"]'
+      # Same amath pin as the rake job above; keep both in step with the Gemfile.
+      after-setup-ruby: |
+        set -euo pipefail
+        git init ../amath
+        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git f7947c1c844d0d2318aaccd95bfc8580331d6710
+        git -C ../amath checkout --detach FETCH_HEAD
+        printf '\ngem "amath", path: "../amath"\n' >> Gemfile
+      repos-json-file: .github/workflows/dependent-repos-metanorma-soft.json
+
+  # metanorma-iso's full rspec needs fixtures that are not in its repo
+  # (spec/examples/rice.presentation.xml, spec/fixtures/samples), so its own
+  # CI runs `rake` (default task: spec/sts). Run the same command here.
+  metanorma-iso:
+    uses: metanorma/ci/.github/workflows/dependent-rake.yml@main
+    with:
+      command: bundle exec rake
+      matrix_os: '["ubuntu-latest"]'
+      # Same amath pin as the rake job above; keep both in step with the Gemfile.
+      after-setup-ruby: |
+        set -euo pipefail
+        git init ../amath
+        git -C ../amath fetch --depth 1 https://github.com/plurimath/amath.git f7947c1c844d0d2318aaccd95bfc8580331d6710
+        git -C ../amath checkout --detach FETCH_HEAD
+        printf '\ngem "amath", path: "../amath"\n' >> Gemfile
+      repos-json-file: .github/workflows/dependent-repos-metanorma-iso.json
