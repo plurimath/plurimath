@@ -145,4 +145,44 @@ RSpec.describe Plurimath::Cli do
       end
     end
   end
+
+  describe ".convert --openmath-version" do
+    def run_convert(*args)
+      described_class.start(["convert", *args])
+    end
+
+    it "writes OpenMath 3 when asked" do
+      expect { run_convert("-i", "x+1", "-f", "asciimath", "-t", "openmath", "--openmath-version", "3") }
+        .to output(/version="3\.0"/).to_stdout
+    end
+
+    it "defaults to OpenMath 2" do
+      expect { run_convert("-i", "x+1", "-f", "asciimath", "-t", "openmath") }
+        .to output(/version="2\.0"/).to_stdout
+    end
+
+    it "reads OpenMath 3 input with the version option" do
+      om3 = '<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="3.0"><OMA><OMS cd="arith1" name="plus"/>' \
+            '<OMV name="x"/><OMI>1</OMI></OMA></OMOBJ>'
+      expect { run_convert("-i", om3, "-f", "openmath", "-t", "asciimath", "--openmath-version", "3") }
+        .to output(/x \+ 1/).to_stdout
+    end
+
+    it "writes content MathML with the version option" do
+      expect { run_convert("-i", "x+1", "-f", "asciimath", "-t", "content_mathml", "--openmath-version", "3") }
+        .to output(/<apply>/).to_stdout
+    end
+
+    it "ignores the option for formats that are not versioned" do
+      expect { run_convert("-i", "x+1", "-f", "asciimath", "-t", "latex", "--openmath-version", "3") }
+        .to output(/x \+ 1/).to_stdout
+    end
+
+    it "rejects an unsupported version" do
+      expect do
+        run_convert("-i", "x+1", "-f", "asciimath", "-t", "openmath", "--openmath-version", "4")
+      end.to raise_error(SystemExit) { |e| expect(e.status).to eq(1) }
+        .and output(/Invalid OpenMath version: 4/).to_stderr
+    end
+  end
 end

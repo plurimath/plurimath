@@ -54,6 +54,10 @@ module Plurimath
            default: "ox",
            desc: "XML engine to use for parsing and rendering (ox, oga or leptris)"
 
+    option :openmath_version,
+           type: :numeric,
+           desc: "OpenMath version (2 or 3) for the openmath and content_mathml formats, input and output (default: 2)"
+
     def convert
       Convert.new(options).call
     end

@@ -62,7 +62,11 @@ input and output formats. For example:
 ----
 plurimath convert --input '1 + 2' --output-format openmath
 plurimath convert --input '1 + 2' --output-format content_mathml
+plurimath convert --input '1 + 2' --output-format openmath --openmath-version 3
 ----
+
+`--openmath-version` (2 or 3, default 2) sets the version used to parse
+`openmath` and `content_mathml` input and to write those output formats.
 
 The local roundtrip generator includes the OpenMath target and records
 explicit refusals for unsupported uncertainty constructs. Existing pinned

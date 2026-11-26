@@ -119,6 +119,10 @@ Specifies the DisplayStyle for OMML and MathML outputs only. Boolean option
 Splits MathML and OMML output into multiple equations. Boolean option (`true`,
 `false`).
 
+`--openmath-version <2|3>`::
+Selects the OpenMath version for the `openmath` and `content_mathml` input and
+output formats. Defaults to 2.
+
 
 [example]
 .Convert an AsciiMath equation to MathML
