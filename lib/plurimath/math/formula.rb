@@ -431,6 +431,19 @@ options:)
           **opts.except(*Renderer::MATHML_OPTIONS),
         )
       end
+
+      # Render this formula to an SVG string through the registered SVG
+      # backend (Plurimath::Math::SvgRenderer.backend=). The to_mathml options
+      # (:intent, :formatter, :unitsml, :display_style, :unary_function_spacing,
+      # :split_on_linebreak) go to #to_mathml; every other option is passed to
+      # the backend unchanged.
+      #
+      # Raises Plurimath::Errors::SvgBackendUnavailable when no backend is
+      # registered and Plurimath::Errors::RenderingFailed when it fails.
+      def to_svg(**opts)
+        mathml = to_mathml(**opts.slice(*SvgRenderer::MATHML_OPTIONS).compact)
+        SvgRenderer.render(mathml, **opts.except(*SvgRenderer::MATHML_OPTIONS))
+      end
       # Attributes end
 
       protected

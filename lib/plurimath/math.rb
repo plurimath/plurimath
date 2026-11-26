@@ -15,6 +15,7 @@ module Plurimath
     autoload :ParseOptionError, "#{__dir__}/errors/parse_option_error"
     autoload :ParseError, "#{__dir__}/errors/parse_error"
     autoload :Renderer, "#{__dir__}/math/renderer"
+    autoload :SvgRenderer, "#{__dir__}/math/svg_renderer"
     autoload :AmbiguousDecimalError, "#{__dir__}/errors/ambiguous_decimal_error"
     autoload :Symbols, "#{__dir__}/math/symbols"
     autoload :Openmath, "#{__dir__}/openmath"
@@ -81,6 +82,12 @@ module Plurimath
       parse_options = options.slice(*SUPPORTED_PARSE_OPTIONS)
       render_options = options.except(*SUPPORTED_PARSE_OPTIONS)
       parse(text, type, **parse_options).render(format: format, **render_options)
+    end
+
+    # True when an SVG backend is registered (see SvgRenderer.backend=).
+    # Never raises.
+    def svg_available?
+      SvgRenderer.available?
     end
 
     # True when image rendering is available with the default engine (the

@@ -7,6 +7,7 @@ module Plurimath
     autoload :InvalidNumber, "#{__dir__}/errors/invalid_number"
     autoload :RenderingFailed, "#{__dir__}/errors/rendering_failed"
     autoload :RenderingUnavailable, "#{__dir__}/errors/rendering_unavailable"
+    autoload :SvgBackendUnavailable, "#{__dir__}/errors/svg_backend_unavailable"
     autoload :InvalidUncertainty, "#{__dir__}/errors/invalid_uncertainty"
     autoload :UnsupportedBase, "#{__dir__}/errors/unsupported_base"
     autoload :UnsupportedLocale, "#{__dir__}/errors/unsupported_locale"
