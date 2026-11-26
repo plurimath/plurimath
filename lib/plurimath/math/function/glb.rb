@@ -8,12 +8,6 @@ module Plurimath
         DESCRIPTION = "The greatest lower bound (infimum) operator."
         REFERENCE = "https://en.wikipedia.org/wiki/Infimum_and_supremum"
         EXAMPLE = -> { new(sym("x")) }
-        CATALOG_FORMAT_LIMITATIONS = {
-          latexmath: {
-            status: :limited,
-            notes: ["The operator name is emitted as plain math letters, not an operator command."],
-          },
-        }.freeze
         # --- end catalog documentation ---
 
         def validate_function_formula
@@ -21,7 +15,7 @@ module Plurimath
         end
 
         def to_latex(options:)
-          "glb{#{latex_value(options: options)}}"
+          "\\operatorname{glb}{#{latex_value(options: options)}}"
         end
 
         def to_omml_without_math_tag(display_style, options:)

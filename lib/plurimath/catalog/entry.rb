@@ -25,12 +25,25 @@ module Plurimath
 
         formats = {}
         RENDERERS.each do |format, method|
-          entry[format] = formula.public_send(method)
-          formats[format] = format_metadata(entry[format], declarations[format])
+          entry[format], formats[format] = render(formula, method, declarations[format])
         end
         entry["formats"] = formats
         Validation.validate!(entry)
         entry
+      end
+
+      def render(formula, method, declaration)
+        output = formula.public_send(method)
+        [output, format_metadata(output, declaration)]
+      rescue Math::ParseError => error
+        refusal = error.cause
+        unless declaration && declaration["status"] == "unavailable" &&
+            refusal.is_a?(Errors::UnsupportedSerialization)
+          raise
+        end
+
+        ["", { "status" => "unavailable",
+               "notes" => (declaration["notes"] + [refusal.message]).uniq }]
       end
 
       def metadata(attributes)
@@ -102,7 +115,7 @@ module Plurimath
         raise InvalidEntryError, "Catalog labels must be strings or symbols"
       end
 
-      private_class_method :metadata, :normalize_limitations,
+      private_class_method :render, :metadata, :normalize_limitations,
                            :normalize_declaration, :format_metadata, :label
     end
   end

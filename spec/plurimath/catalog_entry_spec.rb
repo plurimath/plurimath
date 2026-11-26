@@ -90,6 +90,39 @@ RSpec.describe Plurimath::Catalog::Entry do
     expect { described_class.build(**arguments) }.to raise_error(RuntimeError, "serializer defect")
   end
 
+  it "records Menclose's declared AsciiMath refusal and keeps its other writers" do
+    entry = Plurimath::Math::Function::Menclose.catalog_entry
+    expect(entry["asciimath"]).to eq("")
+    expect(entry.dig("formats", "asciimath", "status")).to eq("unavailable")
+    expect(entry.dig("formats", "asciimath", "notes"))
+      .to include('Unsupported AsciiMath enclosure: "box"')
+    expect(entry["latexmath"]).to eq('\\boxed{x}')
+    expect(entry["mathml"]).to include('notation="box"')
+    expect(entry["omml"]).to include("m:borderBox")
+  end
+
+  it "does not hide unexpected failures behind unavailable declarations" do
+    limits = { asciimath: { status: :unavailable, notes: ["Known limitation."] } }
+    allow(formula).to receive(:to_asciimath).and_wrap_original do |_method|
+      begin
+        raise NoMethodError, "serializer defect"
+      rescue NoMethodError
+        raise Plurimath::Math::ParseError.new("x", :asciimath)
+      end
+    end
+    expect { described_class.build(**arguments, limitations: limits) }
+      .to raise_error(Plurimath::Math::ParseError)
+  end
+
+  it "requires an unavailable declaration before accepting a deliberate refusal" do
+    formula = Plurimath::Math::Function::Menclose.example_formula
+    [nil, :limited].each do |status|
+      limits = status ? { asciimath: { status: status, notes: ["A limitation."] } } : {}
+      expect { described_class.build(**arguments, formula: formula, limitations: limits) }
+        .to raise_error(Plurimath::Math::ParseError)
+    end
+  end
+
   it "rejects invalid metadata before invoking the serializers" do
     allow(formula).to receive(:to_asciimath).and_call_original
     expect { described_class.build(**arguments, description: "") }

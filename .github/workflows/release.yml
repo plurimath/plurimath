@@ -28,6 +28,14 @@ jobs:
     uses: metanorma/ci/.github/workflows/rubygems-release.yml@main
     with:
       next_version: ${{ github.event.inputs.next_version }}
+      # `bundle exec rake release` builds from lib/ — the test-fixture
+      # submodules are not part of the release path. Their fetch dies
+      # on refs the release machinery requests beyond the recorded
+      # gitlinks (run 45753741006: "not our ref 7ef6a2b…" for
+      # unicodemath-tests, while generic-rake's checkout of the same
+      # pointers succeeds); skip loading them here until that is
+      # root-caused.
+      submodules: false
     secrets:
       rubygems-api-key: ${{ secrets.PLURIMATH_CI_RUBYGEMS_API_KEY }}
       pat_token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}

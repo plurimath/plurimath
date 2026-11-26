@@ -557,7 +557,7 @@ meets a node it does not support. The original error is not kept as the
 == Conformance
 
 // BEGIN GENERATED conformance
-Shared testsuite at `167ee6c0953320ee9b68c810e7cf29a18fd23d6e` (the `submodules/plurimath-testsuite` commit):
+Shared testsuite at `bcd1a578adcb7230639f6c366d034d85f933c7b2` (the `submodules/plurimath-testsuite` commit):
 
 [cols="3,1,3"]
 |===
