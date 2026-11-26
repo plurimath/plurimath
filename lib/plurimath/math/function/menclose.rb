@@ -13,12 +13,12 @@ module Plurimath
         EXAMPLE = -> { new("box", sym("x")) }
         CATALOG_FORMAT_LIMITATIONS = {
           asciimath: {
-            status: :limited,
-            notes: ["The enclosure notation is omitted; only the enclosed expression is emitted."],
+            status: :unavailable,
+            notes: ["Enclosure notations without a supported AsciiMath representation are explicitly refused."],
           },
           latexmath: {
             status: :limited,
-            notes: ["The enclosure notation is omitted; only the enclosed expression is emitted."],
+            notes: ["Box is emitted as \\boxed; other enclosure notations are explicitly refused."],
           },
         }.freeze
         # --- end catalog documentation ---
@@ -42,7 +42,7 @@ module Plurimath
         }.freeze
 
         def to_asciimath(options:)
-          parameter_two&.to_asciimath(options: options)
+          raise Plurimath::Errors::UnsupportedSerialization, "Unsupported AsciiMath enclosure: #{parameter_one.inspect}"
         end
 
         def to_mathml_without_math_tag(intent, options:)
@@ -56,7 +56,11 @@ module Plurimath
         end
 
         def to_latex(options:)
-          parameter_two&.to_latex(options: options)
+          unless parameter_one == "box"
+            raise Plurimath::Errors::UnsupportedSerialization, "Unsupported LaTeX enclosure: #{parameter_one.inspect}"
+          end
+
+          "\\boxed{#{parameter_two&.to_latex(options: options)}}"
         end
 
         def to_html(options:)

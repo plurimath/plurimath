@@ -1,6 +1,15 @@
 require "spec_helper"
 
 RSpec.describe Plurimath::Catalog do
+  # Preserve deliberate refusal diagnostics when comparing repeated renders.
+  def catalog_render(formula, method)
+    formula.public_send(method)
+  rescue Plurimath::Math::ParseError => error
+    raise unless error.cause.is_a?(Plurimath::Errors::UnsupportedSerialization)
+
+    [error.cause.class, error.cause.message]
+  end
+
   # Independently gather a class's full subtree (descendants is direct-only).
   def symbol_subtree(klass)
     Array(klass.descendants).flat_map { |d| [d, *symbol_subtree(d)] }
@@ -102,14 +111,21 @@ RSpec.describe Plurimath::Catalog do
     expect(types).to eq(%i[symbol unary])
   end
 
-  it "renders every documented example across all four formats without error" do
+  it "renders every documented example or records its declared refusal" do
     described_class.classes.each do |klass|
+      entry = klass.catalog_entry
       formula = klass.example_formula
       aggregate_failures(klass.catalog_name) do
-        expect { formula.to_asciimath }.not_to raise_error
-        expect { formula.to_latex }.not_to raise_error
-        expect { formula.to_mathml }.not_to raise_error
-        expect { formula.to_omml }.not_to raise_error
+        Plurimath::Catalog::Entry::RENDERERS.each do |format, method|
+          output = catalog_render(formula, method)
+          if output.is_a?(Array)
+            expect(entry[format]).to eq("")
+            expect(entry.dig("formats", format, "status")).to eq("unavailable")
+            expect(entry.dig("formats", format, "notes")).to include(output.last)
+          else
+            expect(entry[format]).to eq(output)
+          end
+        end
       end
     end
   end
@@ -144,15 +160,15 @@ RSpec.describe Plurimath::Catalog do
         # mutation surfaces either as a later format diverging from a fresh
         # render or as a format's own second pass diverging from its first.
         first_pass = formats.to_h do |format|
-          [format, shared.public_send("to_#{format}")]
+          [format, catalog_render(shared, "to_#{format}")]
         end
         second_pass = formats.to_h do |format|
-          [format, shared.public_send("to_#{format}")]
+          [format, catalog_render(shared, "to_#{format}")]
         end
         # A fresh formula rendered once is the mutation-free reference; both
         # passes off the shared object must still match it.
         formats.each do |format|
-          reference = klass.example_formula.public_send("to_#{format}")
+          reference = catalog_render(klass.example_formula, "to_#{format}")
           expect(first_pass[format]).to eq(reference)
           expect(second_pass[format]).to eq(reference)
         end
@@ -179,7 +195,7 @@ RSpec.describe Plurimath::Catalog do
       second_pass = formats.to_h { |f| [f, shared.public_send("to_#{f}")] }
       aggregate_failures(klass.catalog_name) do
         formats.each do |format|
-          reference = klass.example_formula.public_send("to_#{format}")
+          reference = catalog_render(klass.example_formula, "to_#{format}")
           expect(first_pass[format]).to eq(reference)
           expect(second_pass[format]).to eq(reference)
         end
