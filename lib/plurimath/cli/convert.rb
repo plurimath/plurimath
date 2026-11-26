@@ -14,7 +14,12 @@ module Plurimath
         input_format  = options[:input_format]
         output_format = options[:output_format]
         configure_xml_engine(input_format, output_format)
-        formula = Plurimath::Math.parse(text, input_format)
+        version = openmath_version
+        formula = if version && versioned?(input_format)
+                    Plurimath::Math.parse(text, input_format, version: version)
+                  else
+                    Plurimath::Math.parse(text, input_format)
+                  end
         return puts formula.to_display(output_format.to_sym) if options[:math_rendering].to_s == "true"
 
         puts convert_formula(formula, output_format)
@@ -23,6 +28,19 @@ module Plurimath
       end
 
       private
+
+      def versioned?(format)
+        Plurimath::Math::VERSIONED_PARSE_TYPES.include?(format.to_sym)
+      end
+
+      def openmath_version
+        raw = options[:openmath_version]
+        return if raw.nil?
+
+        version = raw.to_i
+        warn_and_exit("Invalid OpenMath version: #{raw} (supported: 2, 3)") unless raw == version && [2, 3].include?(version)
+        version
+      end
 
       def convert_formula(formula, output_format)
         format = output_format.to_sym
@@ -49,6 +67,9 @@ module Plurimath
         # MathML with UnitsML markup embedded (the retired asciimath2unitsml
         # output shape), via Function::Unitsml's wrapped_unitsml_xml.
         when :unitsml then formula.to_mathml(unitsml: { xml: true })
+        when :openmath, :content_mathml
+          version = openmath_version
+          version ? formula.public_send("to_#{format}", version: version) : formula.public_send("to_#{format}")
         else formula.public_send("to_#{format}")
         end
       end
