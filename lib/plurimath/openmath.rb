@@ -10,6 +10,7 @@ module Plurimath
   # than lose meaning silently.
   class Openmath
     autoload :Semantic, "#{__dir__}/openmath/semantic"
+    autoload :Evaluation, "#{__dir__}/openmath/evaluation"
     autoload :Writer, "#{__dir__}/openmath/writer"
     autoload :Symbol, "#{__dir__}/openmath/symbol"
     autoload :Converter, "#{__dir__}/openmath/converter"

@@ -105,12 +105,11 @@ module Plurimath
         end
 
         key = "#{operator.cd}/#{operator.name}"
-        unless ::Openmath::Evaluation::BindingTable.default.lookup(operator.cd, operator.name)
-          raise UnsupportedError.new(key, :openmath)
-        end
-        if operator.cdbase && operator.cdbase.delete_suffix("/") != "http://www.openmath.org/cd"
-          raise UnsupportedError.new(key, :openmath)
-        end
+        check_binding(operator, key)
+        # The pmquant quantity constructors evaluate from the retained
+        # OpenMath source (Formula#evaluate); the node keeps the application
+        # and refuses every presentation, like any unbound CD symbol.
+        return Semantic.new(node.to_xml) if operator.cd == "pmquant"
 
         operands = children.drop(1).map { |child| operand(child) }
         arity = case key
@@ -151,6 +150,18 @@ module Plurimath
             index.zero? ? [item] : [infix.new, item]
           end)
         end
+      end
+
+      def check_binding(operator, key)
+        unless ::Openmath::Evaluation::BindingTable.default.lookup(operator.cd, operator.name)
+          raise UnsupportedError.new(key, :openmath)
+        end
+
+        base = operator.cdbase&.delete_suffix("/")
+        return if base.nil? || base == "http://www.openmath.org/cd"
+        return if operator.cd == "pmquant" && base == "http://www.plurimath.org/cd"
+
+        raise UnsupportedError.new(key, :openmath)
       end
 
       def operand(node)

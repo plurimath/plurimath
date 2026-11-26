@@ -18,9 +18,13 @@ module Plurimath
       #
       # unevaluated: norm-text of subtrees left symbolic in strict mode.
       class Result
-        attr_reader :value, :boundaries, :unevaluated
+        # quantity: the uncertain quantity (Openmath::Evaluation::Uncertain)
+        # when the expression constructs one through the pmquant CD; value
+        # is then its reported value and quantity keeps the category.
+        attr_reader :value, :boundaries, :unevaluated, :quantity
 
-        def initialize(value:, boundaries: [], unevaluated: [])
+        def initialize(value:, boundaries: [], unevaluated: [], quantity: nil)
+          @quantity = quantity
           @value = value
           @boundaries = boundaries.freeze
           @unevaluated = unevaluated.freeze
@@ -37,7 +41,8 @@ module Plurimath
 
         def ==(other)
           other.is_a?(Result) && value == other.value &&
-            boundaries == other.boundaries && unevaluated == other.unevaluated
+            boundaries == other.boundaries && quantity == other.quantity &&
+            unevaluated == other.unevaluated
         end
       end
     end
