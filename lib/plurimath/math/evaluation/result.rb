@@ -8,7 +8,8 @@ module Plurimath
       # when strict mode stopped at a boundary.
       #
       # value: a Numeric (Integer/Rational exact, Float/BigDecimal past a
-      # boundary), or nil when strict mode deferred.
+      # boundary), true/false for a relation1/logic1 verdict, or nil when
+      # strict mode deferred.
       #
       # boundaries: ordered records
       #   { operation:, operands:, operand_accuracy:, action:, result: }

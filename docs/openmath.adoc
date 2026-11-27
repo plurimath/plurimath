@@ -35,9 +35,31 @@ and render to the presentation formats listed above. Writing them back to
 OpenMath works only for an unchanged Formula retaining its original
 OpenMath source. A fresh Formula or an edited comparison raises
 `Plurimath::Openmath::UnsupportedError` when written to OpenMath.
-Comparison evaluation is not defined by the existing numeric Formula
-evaluator: both the default mode and `mode: :strict` raise
-`Plurimath::Errors::Evaluation::UnsupportedExpressionError`.
+The Formula evaluator evaluates comparisons and connectives to truth values
+(pending owner confirmation that `Result#value` carries `true` or `false`
+rather than a separate field):
+
+* `relation1/eq`, `neq`, `gt`, `lt`, `geq` and `leq` compare boundary-exactly,
+  with no tolerance. Every operand is compared by its exact rational value, so
+  comparison of exact operands is exact in both modes and crosses no accuracy
+  boundary. Relations compose left to right.
+* `logic1/and`, `or`, `xor`, `implies` and `not` fold over booleans; the
+  Formula tokens are the `land`/`wedge`, `lor`/`vee`, `veebar`/`oplus`,
+  `=>`/`rightarrow` and `lnot`/`neg` symbols.
+* A verdict computed from a limited operand (a Float or guard-digit decimal)
+  records a `compare` boundary with the operands' accuracy class, so
+  `Result#exact?` is false. A verdict from exact operands is exact.
+* `mode: :strict` defers at an operand's boundary exactly as for numbers
+  (`value` nil, boundary list, unevaluated expression).
+* `relation1/approx` raises a typed `UnsupportedExpressionError` until a
+  Plurimath tolerance is defined (pending owner confirmation).
+* Mixed boolean and numeric operands (`(1 < 2) + 1`, `not 2`, `1 < 2 < 3`)
+  raise `UnsupportedExpressionError`.
+
+An equation such as `a + b = c` therefore evaluates to a truth value instead of
+raising. The OpenMath converter does not yet map `logic1`; the connectives
+evaluate from Formula tokens. Evaluation of a `pmquant` expression still
+delegates to the openmath gem.
 These limits apply to OpenMath versions 2 and 3.
 
 `Plurimath::Math.parse(xml, :content_mathml, version: 2)` and

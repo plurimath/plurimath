@@ -1,0 +1,9 @@
+# HTML rejection generation replayed by spec/conformance/html_stage_spec.rb.
+# Upgrade commit, generation and digest together with the testsuite submodule.
+---
+schema: plurimath-stage/pin/1
+repository: https://github.com/plurimath/plurimath-testsuite
+commit: bcd1a578adcb7230639f6c366d034d85f933c7b2
+language: html
+generation: 1
+snapshot_digest: sha256:5c2e1feddfa18067ac4b42401ea7fc8bd8f02f576c7a4a40805127a90d42b9ac

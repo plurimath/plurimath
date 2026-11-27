@@ -58,8 +58,10 @@ module Plurimath
 
         def evaluate
           value = evaluate_formula(@formula)
-          raise Errors::Evaluation::MathDomainError, "result is not a real number" unless value.real?
-          raise Errors::Evaluation::NonFiniteResultError unless value.finite?
+          unless boolean?(value)
+            raise Errors::Evaluation::MathDomainError, "result is not a real number" unless value.real?
+            raise Errors::Evaluation::NonFiniteResultError unless value.finite?
+          end
 
           Result.new(value: value, boundaries: @boundaries,
                      unevaluated: @unevaluated)
@@ -78,11 +80,24 @@ module Plurimath
           real_result(ExpressionParser.new(self, formula.value).parse)
         end
 
+        # Numeric context: function arguments, indices and bounds. A truth
+        # value here is a mixed boolean/numeric expression.
         def evaluate_nodes(nodes)
+          numeric!(evaluate_group(nodes))
+        end
+
+        # A parenthesised group may carry either a number or a truth value.
+        def evaluate_group(nodes)
           evaluate_formula(Formula.new(Array(nodes)))
         end
 
         def evaluate_node(node)
+          numeric!(evaluate_operand(node))
+        end
+
+        # An operand of the precedence ladder: the one place a truth value
+        # (a comparison or connective in a group) may appear.
+        def evaluate_operand(node)
           case node
           when nil
             unsupported("missing operand")
@@ -91,6 +106,26 @@ module Plurimath
           else
             real_result(node.evaluate(self))
           end
+        end
+
+        def boolean?(value)
+          [true, false].include?(value)
+        end
+
+        def numeric!(value)
+          if boolean?(value)
+            unsupported("boolean operand in a numeric expression")
+          end
+
+          value
+        end
+
+        def boolean!(value)
+          unless boolean?(value)
+            unsupported("numeric operand of a logical connective")
+          end
+
+          value
         end
 
         def value_for(name)
@@ -106,28 +141,91 @@ module Plurimath
           tokens
         end
 
-        def relation_operator?(_node)
-          false
+        # relation1: comparisons evaluate to truth values and compare
+        # boundary-exactly (no tolerance); relation1/approx has no
+        # Plurimath-defined tolerance and is refused.
+        RELATIONS = {
+          "Equal" => :==, "Ne" => :!=, "Neq" => :!=,
+          "Less" => :<, "Lt" => :<, "Greater" => :>, "Gt" => :>,
+          "Leq" => :<=, "Le" => :<=, "Geq" => :>=, "Ge" => :>=
+        }.freeze
+        APPROX_RELATIONS = %w[Approx].freeze
+
+        # logic1 connectives over the booleans.
+        CONNECTIVES = {
+          "Land" => :and, "Wedge" => :and, "Lor" => :or, "Vee" => :or,
+          "Veebar" => :xor, "Oplus" => :xor,
+          "UpcaseRightarrow" => :implies, "Rightarrow" => :implies
+        }.freeze
+        NEGATIONS = %w[Lnot Neg].freeze
+
+        def relation_operator?(node)
+          node.is_a?(Symbols::Symbol) && !node.instance_of?(Symbols::Symbol) &&
+            (RELATIONS.key?(short_name(node)) || APPROX_RELATIONS.include?(short_name(node)))
+        end
+
+        def connective(node)
+          CONNECTIVES[short_name(node)] if node.is_a?(Symbols::Symbol)
+        end
+
+        def negation?(node)
+          node.is_a?(Symbols::Symbol) && NEGATIONS.include?(short_name(node))
+        end
+
+        def logic_operator?(node)
+          !connective(node).nil? || negation?(node)
+        end
+
+        def relation(operator, left, right)
+          name = short_name(operator)
+          if APPROX_RELATIONS.include?(name)
+            unsupported("relation1/approx (tolerance not defined)")
+          end
+
+          left = numeric!(left)
+          right = numeric!(right)
+          verdict = exact_compare(left, right, RELATIONS.fetch(name))
+          unless Accuracy.exact?(left) && Accuracy.exact?(right)
+            record_boundary(operation: "compare", operands: [left, right],
+                            operand_accuracy: Accuracy.combine(left, right),
+                            action: :approximated, result: verdict)
+          end
+          verdict
+        end
+
+        def logic(operator, left, right)
+          left = boolean!(left)
+          right = boolean!(right)
+          case connective(operator)
+          when :and then left && right
+          when :or then left || right
+          when :xor then left ^ right
+          when :implies then !left || right
+          end
+        end
+
+        def logic_not(value)
+          !boolean!(value)
         end
 
         def add(left, right)
-          left + right
+          numeric!(left) + numeric!(right)
         end
 
         def subtract(left, right)
-          left - right
+          numeric!(left) - numeric!(right)
         end
 
         def multiply(left, right, implicit:)
-          left * right
+          numeric!(left) * numeric!(right)
         end
 
         def positive(value)
-          value
+          numeric!(value)
         end
 
         def negate(value)
-          -value
+          -numeric!(value)
         end
 
         def negated_mod(node)
@@ -148,6 +246,8 @@ module Plurimath
         end
 
         def divide(dividend, divisor)
+          numeric!(dividend)
+          numeric!(divisor)
           raise Errors::Evaluation::DivisionByZeroError if divisor.zero?
 
           if mode == :strict
@@ -162,12 +262,16 @@ module Plurimath
         end
 
         def modulo(dividend, divisor)
+          numeric!(dividend)
+          numeric!(divisor)
           raise Errors::Evaluation::DivisionByZeroError if divisor.zero?
 
           dividend % divisor
         end
 
         def power(base, exponent)
+          numeric!(base)
+          numeric!(exponent)
           value = base**exponent
           return value if Accuracy.exact?(value)
 
@@ -235,6 +339,8 @@ module Plurimath
         # final result, so correct asymptotic values like `1/exp(1000)` still
         # evaluate.
         def real_result(value)
+          return value if boolean?(value)
+
           raise Errors::Evaluation::MathDomainError, "result is not a real number" unless value.real?
 
           value
@@ -383,6 +489,22 @@ module Plurimath
           return value unless value.is_a?(String)
 
           mode == :strict ? Rational(value) : Float(value)
+        end
+
+        def short_name(node)
+          node.class.name.split("::").last
+        end
+
+        # Boundary-exact: every real operand is compared by its exact
+        # rational value (a Float or BigDecimal by the value it holds), so
+        # no tolerance and no Float coercion of a Rational.
+        def exact_compare(left, right, operator)
+          comparison = left.to_r <=> right.to_r
+          case operator
+          when :== then comparison.zero?
+          when :!= then !comparison.zero?
+          else comparison.public_send(operator, 0)
+          end
         end
 
         def split_on_commas(nodes)

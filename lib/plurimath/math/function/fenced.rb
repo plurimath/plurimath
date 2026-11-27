@@ -127,7 +127,7 @@ module Plurimath
         end
 
         def evaluate(evaluator)
-          evaluator.evaluate_nodes(parameter_two)
+          evaluator.evaluate_group(parameter_two)
         end
 
         def to_asciimath_math_zone(spacing, last = false, indent = true,

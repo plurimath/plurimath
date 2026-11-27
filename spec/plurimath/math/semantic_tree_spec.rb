@@ -286,7 +286,7 @@ RSpec.describe "Semantic display trees" do
     expect(math.parse("-7 mod 3", :asciimath).evaluate.value).to eq(2)
     expect(math.parse("2^3^2", :asciimath).evaluate.value).to eq(64)
     expect { math.parse("a=b", :asciimath).evaluate }.to raise_error(Plurimath::Errors::Evaluation::MissingVariableError)
-    expect { math.parse("a=b", :asciimath).evaluate(a: 1, b: 2) }.to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError, /equation/)
+    expect(math.parse("a=b", :asciimath).evaluate(a: 1, b: 2).value).to be(false)
     expect { math.parse("int_0^1 x", :asciimath).evaluate }.to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError, /Int/)
     expect { model(math::Function::Sin.new, math::Symbols::Funcapply.new, number(1)).evaluate }.to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError, /missing operand/)
     expect { math.parse("sin⁡ theta", :asciimath).evaluate }.to raise_error(Plurimath::Errors::Evaluation::MissingVariableError, /⁡/)

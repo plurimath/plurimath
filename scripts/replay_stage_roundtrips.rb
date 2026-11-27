@@ -51,7 +51,8 @@ module ReplayStageRoundtrips
 
   module_function
 
-  def load_pin(path)
+  # HTML reuses the pin checks; roundtrip callers keep the default language.
+  def load_pin(path, language: LANGUAGE)
     doc = YAML.safe_load_file(path, aliases: false)
     raise Error, "#{path}: not a mapping" unless doc.is_a?(Hash)
 
@@ -64,7 +65,7 @@ module ReplayStageRoundtrips
           "#{path}: repository is not #{REPOSITORY}")
     check(doc["commit"].is_a?(String) && doc["commit"].match?(/\A\h{40}\z/),
           "#{path}: commit is not a 40-hex commit")
-    check(doc["language"] == LANGUAGE, "#{path}: language is not #{LANGUAGE}")
+    check(doc["language"] == language, "#{path}: language is not #{language}")
     check(doc["generation"].is_a?(Integer) && doc["generation"] >= 1,
           "#{path}: generation is not a positive integer")
     check(doc["snapshot_digest"].is_a?(String) &&
@@ -99,17 +100,17 @@ module ReplayStageRoundtrips
   end
 
   # The generation directory once the checkout matches +pin+.
-  def verify(testsuite, pin)
+  def verify(testsuite, pin, language: LANGUAGE)
     actual = head(testsuite)
     check(actual == pin.commit,
           "pin commit #{pin.commit} is not the checkout's HEAD #{actual}")
     ledger = YAML.safe_load_file(
-      File.join(testsuite, "generations", "#{LANGUAGE}.yaml"), aliases: false
+      File.join(testsuite, "generations", "#{language}.yaml"), aliases: false
     )
     entry = ledger.fetch("entries").find do |e|
       e["generation"] == pin.generation
     end
-    check(entry, "the #{LANGUAGE} ledger has no generation #{pin.generation}")
+    check(entry, "the #{language} ledger has no generation #{pin.generation}")
     check(entry["snapshot_digest"] == pin.digest,
           "pin digest #{pin.digest} is not the ledger's " \
           "#{entry['snapshot_digest']} for generation #{pin.generation}")
