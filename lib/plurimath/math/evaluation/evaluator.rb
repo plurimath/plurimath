@@ -103,6 +103,10 @@ module Plurimath
             unsupported("missing operand")
           when Formula
             evaluate_formula(node)
+          when Symbols::Top
+            true
+          when Symbols::Bot
+            false
           else
             real_result(node.evaluate(self))
           end
