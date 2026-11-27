@@ -33,6 +33,8 @@ module Plurimath
         "arith1/product" => Math::Function::Prod,
       }.freeze
 
+      INTEGER_OPERATIONS = %w[arith1/root integer1/quotient integer1/remainder].freeze
+
       UNARY_FUNCTIONS = {
         "arith1/abs" => Math::Function::Abs,
         "rounding1/floor" => Math::Function::Floor,
@@ -103,6 +105,18 @@ module Plurimath
         raise UnsupportedError.new(node.to_xml, :openmath)
       end
 
+      def integer_operation(key, operands)
+        case key
+        when "arith1/root"
+          # arith1/root(x, n): the n-th root of x; Root takes (index, radicand).
+          Math::Function::Root.new(operands.last, operands.first)
+        when "integer1/quotient"
+          Math::Function::Floor.new(Math::Function::Frac.new(*operands))
+        else
+          Math::Function::Mod.new(*operands)
+        end
+      end
+
       def application(node)
         children = ::Openmath::Evaluation::Evaluator.ordered_children(node)
         operator = children.first
@@ -136,13 +150,8 @@ module Plurimath
           operands.first
         when "nums1/rational"
           Math::Function::Frac.new(*operands)
-        when "arith1/root"
-          # arith1/root(x, n): the n-th root of x; Root takes (index, radicand).
-          Math::Function::Root.new(operands.last, operands.first)
-        when "integer1/quotient"
-          Math::Function::Floor.new(Math::Function::Frac.new(*operands))
-        when "integer1/remainder"
-          Math::Function::Mod.new(*operands)
+        when *INTEGER_OPERATIONS
+          integer_operation(key, operands)
         when *UNARY_FUNCTIONS.keys
           UNARY_FUNCTIONS.fetch(key).new(operands.first)
         when "arith1/max", "arith1/min"

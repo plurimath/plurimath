@@ -6,7 +6,7 @@ require "spec_helper"
 # and product; nums1 based_integer; integer1 quotient and remainder) convert
 # to Formula nodes the existing numeric evaluator computes, so the common
 # accuracy modes, strict mode and typed errors apply unchanged.
-RSpec.describe Plurimath::Openmath, "numeric operations", engine_loop: :always do
+RSpec.describe Plurimath::Openmath, engine_loop: :always do
   def openmath(body, version: 2)
     Plurimath::Math.parse(%(<OMOBJ xmlns="http://www.openmath.org/OpenMath">#{body}</OMOBJ>),
                           :openmath, version: version)
@@ -23,6 +23,18 @@ RSpec.describe Plurimath::Openmath, "numeric operations", engine_loop: :always d
   def lambda_over(variable, body)
     %(<OMBIND><OMS cd="fns1" name="lambda"/><OMBVAR><OMV name="#{variable}"/></OMBVAR>#{body}</OMBIND>)
   end
+
+  let(:based_integers) do
+    { [16, "ff"] => 255, [2, "1011"] => 11, [36, "z"] => 35, [10, "-42"] => -42, [8, "17"] => 15 }
+  end
+  let(:floored_divisions) do
+    {
+      ["quotient", 7, 2] => 3, ["quotient", -7, 2] => -4, ["quotient", 7, -2] => -4,
+      ["remainder", 7, 2] => 1, ["remainder", -7, 2] => 1, ["remainder", 7, -2] => -1
+    }
+  end
+  let(:identity_operands) { [[17, 5], [-17, 5], [17, -5], [0, 3]] }
+  let(:divisions) { %w[quotient remainder] }
 
   [2, 3].each do |version|
     context "OpenMath version #{version}" do
@@ -54,9 +66,7 @@ RSpec.describe Plurimath::Openmath, "numeric operations", engine_loop: :always d
       end
 
       it "decodes nums1/based_integer to the integer value" do
-        {
-          [16, "ff"] => 255, [2, "1011"] => 11, [36, "z"] => 35, [10, "-42"] => -42, [8, "17"] => 15
-        }.each do |(base, digits), expected|
+        based_integers.each do |(base, digits), expected|
           formula = openmath(oma("nums1", "based_integer", "<OMI>#{base}</OMI>", "<OMSTR>#{digits}</OMSTR>"),
                              version: version)
           expect(formula.evaluate.value).to eq(expected)
@@ -65,10 +75,7 @@ RSpec.describe Plurimath::Openmath, "numeric operations", engine_loop: :always d
       end
 
       it "evaluates integer1/quotient as the floored quotient and remainder as the floored modulus" do
-        {
-          ["quotient", 7, 2] => 3, ["quotient", -7, 2] => -4, ["quotient", 7, -2] => -4,
-          ["remainder", 7, 2] => 1, ["remainder", -7, 2] => 1, ["remainder", 7, -2] => -1
-        }.each do |(name, left, right), expected|
+        floored_divisions.each do |(name, left, right), expected|
           formula = openmath(oma("integer1", name, "<OMI>#{left}</OMI>", "<OMI>#{right}</OMI>"),
                              version: version)
           expect(formula.evaluate.value).to eq(expected)
@@ -77,7 +84,7 @@ RSpec.describe Plurimath::Openmath, "numeric operations", engine_loop: :always d
       end
 
       it "satisfies the quotient/remainder identity for exact operands" do
-        [[17, 5], [-17, 5], [17, -5], [0, 3]].each do |left, right|
+        identity_operands.each do |left, right|
           quotient = openmath(oma("integer1", "quotient", "<OMI>#{left}</OMI>", "<OMI>#{right}</OMI>"),
                               version: version).evaluate.value
           remainder = openmath(oma("integer1", "remainder", "<OMI>#{left}</OMI>", "<OMI>#{right}</OMI>"),
@@ -87,7 +94,7 @@ RSpec.describe Plurimath::Openmath, "numeric operations", engine_loop: :always d
       end
 
       it "raises the typed division-by-zero error for a zero divisor" do
-        %w[quotient remainder].each do |name|
+        divisions.each do |name|
           formula = openmath(oma("integer1", name, "<OMI>7</OMI>", "<OMI>0</OMI>"), version: version)
           expect { formula.evaluate }.to raise_error(Plurimath::Errors::Evaluation::DivisionByZeroError)
         end
