@@ -40,7 +40,7 @@ module Plurimath
           raise Errors::Evaluation::DivisionByZeroError
         end
 
-        def evaluate_node(node)
+        def evaluate_operand(node)
           case node
           when Formula, Number, Symbols::Symbol, Function::Frac, Function::Power, Function::Fenced
             super
@@ -48,6 +48,12 @@ module Plurimath
             unsupported("quantity arithmetic unavailable for #{node.class}")
           end
         end
+
+        # Quantity arithmetic defines no comparisons or connectives.
+        def relation_operator?(_node) = false
+        def logic_operator?(_node) = false
+        def negation?(_node) = false
+        def connective(_node) = nil
 
         def normalize_bindings(bindings)
           quantities, scalars = bindings.partition { |_key, value| value.is_a?(::Unitsml::Quantity) }.map(&:to_h)

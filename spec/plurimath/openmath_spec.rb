@@ -73,12 +73,15 @@ RSpec.describe Plurimath::Openmath, engine_loop: :always do
           expect { formula.to_openmath(version: version) }.to raise_error(Plurimath::Openmath::UnsupportedError)
         end
 
-        it "refuses scalar evaluation with or without retained source in either mode" do
+        it "evaluates to the truth value in either mode, with or without retained source" do
+          verdict = { "eq" => false, "neq" => true, "gt" => false, "lt" => true, "geq" => false, "leq" => true }.fetch(name)
           formula = comparison_formula(%(<OMA><OMS cd="relation1" name="#{name}"/><OMI>2</OMI><OMI>3</OMI></OMA>), version: version)
           [formula, Plurimath::Math::Formula.new(formula.value)].each do |candidate|
-            expect { candidate.evaluate }.to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
-            expect { candidate.evaluate({}, mode: :strict) }
-              .to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
+            [candidate.evaluate, candidate.evaluate({}, mode: :strict)].each do |result|
+              expect(result.value).to be(verdict)
+              expect(result).to be_exact
+              expect(result.boundaries).to be_empty
+            end
           end
         end
       end

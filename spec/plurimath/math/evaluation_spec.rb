@@ -560,10 +560,10 @@ RSpec.describe Plurimath::Math::Formula do
           "unsupported expression: unmatched parenthesis",
         [Plurimath::Math::Symbols::Paren::Lround.new,
          Plurimath::Math::Number.new("2"),
-         Plurimath::Math::Symbols::Equal.new,
+         Plurimath::Math::Symbols::Approx.new,
          Plurimath::Math::Number.new("2"),
          Plurimath::Math::Symbols::Paren::Rround.new] =>
-          "unsupported expression: equation",
+          "unsupported expression: relation1/approx (tolerance not defined)",
         [Plurimath::Math::Number.new("2"),
          Plurimath::Math::Number.new("3")] =>
           "unsupported expression: number `3`",
@@ -722,11 +722,9 @@ RSpec.describe Plurimath::Math::Formula do
     end
 
     context "when raising for unsupported expressions" do
-      it "raises for an equation instead of solving" do
-        expect { evaluate("a+b=c", :asciimath, a: 2, b: 3, c: 5) }.to raise_error(
-          Plurimath::Errors::Evaluation::UnsupportedExpressionError,
-          "unsupported expression: equation",
-        )
+      it "evaluates an equation as a comparison instead of solving" do
+        expect(evaluate("a+b=c", :asciimath, a: 2, b: 3, c: 5)).to be(true)
+        expect(evaluate("a+b=c", :asciimath, a: 2, b: 3, c: 6)).to be(false)
       end
 
       it "raises for an unsupported semantic node" do

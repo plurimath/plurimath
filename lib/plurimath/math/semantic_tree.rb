@@ -60,6 +60,24 @@ module Plurimath
           (node.instance_of?(Symbols::Symbol) && %w[= < > <= >= != ≤ ≥ ≠].include?(node.value))
       end
 
+      # logic1 connectives are evaluator-only; display backends treat the
+      # operators as ordinary unsupported tokens.
+      def logic_operator?(_node)
+        false
+      end
+
+      def negation?(_node)
+        false
+      end
+
+      def connective(_node)
+        nil
+      end
+
+      def evaluate_operand(node)
+        evaluate_node(node)
+      end
+
       def relation(operator, left, right)
         view("relation #{label(operator)}", left, right,
              source: sequence(left, operator, right))

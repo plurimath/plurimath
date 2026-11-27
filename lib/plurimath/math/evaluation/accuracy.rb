@@ -30,7 +30,7 @@ module Plurimath
 
         def of(value)
           case value
-          when Integer, Rational then EXACT
+          when Integer, Rational, true, false then EXACT
           when Float then FLOAT
           when BigDecimal then :"limited_#{value.precision}"
           end
