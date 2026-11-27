@@ -90,6 +90,10 @@ module Plurimath
           raise ArgumentError, "bindings must be a Hash-like object"
         end
 
+        if Plurimath::Openmath::Evaluation.applies?(self)
+          return Plurimath::Openmath::Evaluation.evaluate(self, hash)
+        end
+
         Evaluation::Evaluator.new(self, hash,
                                   mode: mode || :approximate,
                                   guard_digits: guard_digits).evaluate
