@@ -347,7 +347,10 @@ The require footprint has no absolute number in #537.
   `scripts/require_baseline.json`. Its original counts were measured on `main` at
   `85fd8deb` with the UnicodeMath change (#555) merged, so they match `main`
   once that lands; its wall times come from performance run 42176576146 on
-  `main` at `c511801b`, before first use loaded amath. The counts are exact:
+  `main` at `c511801b`, before first use loaded amath. The first-use file
+  counts (55 ox, 57 oga) and pending autoloads after `require` (33 ox, 36
+  oga) were tightened to `main` at `9c64e27d`; performance runs 45995660887,
+  45995720069 and 45997433025 gave the same values. The counts are exact:
   the earlier `require` feature count was 73 (ox) and 112 (oga) in each of the 12
   performance runs from 34eb4dbe to 5d9ab96b. The wall time has only a loose
   bound because it varies about twofold between runs. The five samples in
