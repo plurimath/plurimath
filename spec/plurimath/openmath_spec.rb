@@ -86,6 +86,99 @@ RSpec.describe Plurimath::Openmath, engine_loop: :always do
         end
       end
     end
+
+    context "with logic1 in OpenMath version #{version}" do
+      def logic(body, version:, **bindings)
+        openmath(body, version: version).evaluate(bindings)
+      end
+
+      def op(name, *args)
+        %(<OMA><OMS cd="logic1" name="#{name}"/>#{args.join}</OMA>)
+      end
+
+      let(:logic_tables) do
+        {
+          "and" => [false, false, false, true], "or" => [false, true, true, true],
+          "xor" => [false, true, true, false], "implies" => [true, true, false, true]
+        }
+      end
+      let(:yes) { '<OMS cd="logic1" name="true"/>' }
+      let(:no) { '<OMS cd="logic1" name="false"/>' }
+
+      it "evaluates the constants" do
+        expect(logic(yes, version: version).value).to be(true)
+        expect(logic(no, version: version).value).to be(false)
+      end
+
+      it "evaluates the truth tables of and, or, xor and implies" do
+        # rows: (false,false) (false,true) (true,false) (true,true)
+        logic_tables.each do |name, table|
+          [[no, no], [no, yes], [yes, no], [yes, yes]].zip(table).each do |(left, right), verdict|
+            result = logic(op(name, left, right), version: version)
+            expect(result.value).to be(verdict), "#{name}(#{left}, #{right})"
+            expect(result).to be_exact
+          end
+        end
+      end
+
+      it "evaluates not" do
+        expect(logic(op("not", yes), version: version).value).to be(false)
+        expect(logic(op("not", no), version: version).value).to be(true)
+      end
+
+      it "folds n-ary and, or and xor" do
+        expect(logic(op("and", yes, yes, yes), version: version).value).to be(true)
+        expect(logic(op("and", yes, yes, no), version: version).value).to be(false)
+        expect(logic(op("or", no, no, yes), version: version).value).to be(true)
+        expect(logic(op("or", no, no, no), version: version).value).to be(false)
+        expect(logic(op("xor", yes, yes, yes), version: version).value).to be(true)
+        expect(logic(op("xor", yes, yes, no), version: version).value).to be(false)
+      end
+
+      it "nests connectives without precedence leaking between levels" do
+        less = %(<OMA><OMS cd="relation1" name="lt"/><OMV name="x"/><OMI>2</OMI></OMA>)
+        body = op("implies", op("or", no, op("and", less, yes)), op("not", less))
+        expect(logic(body, version: version, x: 1).value).to be(false)
+        expect(logic(body, version: version, x: 3).value).to be(true)
+        expect(logic(op("not", op("not", yes)), version: version).value).to be(true)
+        expect(logic(op("implies", no, op("implies", yes, no)), version: version).value).to be(true)
+      end
+
+      it "parses to the connective tokens the Evaluator folds and renders in every target" do
+        formula = openmath(op("and", yes, no), version: version)
+        expect(formula.value.map(&:class)).to eq(
+          [Plurimath::Math::Symbols::Top, Plurimath::Math::Symbols::Land, Plurimath::Math::Symbols::Bot],
+        )
+        presentation_formats.each { |format| expect(formula.public_send(format)).not_to be_empty }
+      end
+
+      it "refuses a connective applied to a number" do
+        expect { logic(op("and", "<OMI>1</OMI>", yes), version: version) }
+          .to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
+        expect { logic(op("not", "<OMI>0</OMI>"), version: version) }
+          .to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
+      end
+
+      it "refuses malformed arity" do
+        [op("not"), op("not", yes, yes), op("and"), op("and", yes), op("or"), op("or", yes),
+         op("xor", yes), op("implies", yes), op("implies", yes, yes, yes)].each do |body|
+          expect { openmath(body, version: version) }
+            .to raise_error(Plurimath::Math::ParseError), body
+        end
+      end
+
+      it "refuses logic1 symbols outside the mapping" do
+        [op("equivalent", yes, yes), '<OMS cd="logic1" name="maybe"/>'].each do |body|
+          expect { logic(body, version: version) }.to raise_error(StandardError)
+        end
+      end
+
+      it "refuses a constant under a foreign cdbase" do
+        body = '<OMS cd="logic1" name="true" cdbase="http://example.org/cd"/>'
+        expect { logic(body, version: version) }
+          .to raise_error(Plurimath::Errors::Evaluation::UnsupportedExpressionError)
+      end
+    end
   end
 
   it "renders openmath-parsed formulas in every target" do
