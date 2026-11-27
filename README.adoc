@@ -2660,6 +2660,12 @@ corpora fail the run. The golden bytes were recorded with Ox, so these specs
 run once with Ox. Existing native specs still run with Ox and Oga. The native
 filesystem/YAML adapter is excluded from Opal test discovery.
 
+The HTML rejection stage is also pinned independently in
+`spec/fixtures/html-pin.yml`. `spec/conformance/html_stage_spec.rb` verifies
+the testsuite commit and the generation's ledger and snapshot digest before
+replaying its preprocessing, public refusals and rejection positions. This
+uses the existing facade as the HTML consumer.
+
 Portable parser and renderer expectations also live in the pinned repository's
 `fixtures/` directory. Native specs select shared case IDs instead of embedding
 expected trees, constructor graphs or output strings. The authored datasets
