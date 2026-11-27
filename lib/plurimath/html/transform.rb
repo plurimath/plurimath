@@ -3,6 +3,8 @@
 module Plurimath
   class Html
     class Transform < Parsanol::Transform
+      # Rules are indexed by Hash-pattern keys (see TransformKeyIndex).
+      include Plurimath::TransformKeyIndex
       include Plurimath::BaseNumberPrefix::Transform
 
       rule(text: simple(:text))      { Math::Function::Text.new(text) }

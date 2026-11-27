@@ -6,6 +6,9 @@ module Plurimath
       # The rule table that builds Formula objects from the capture tree of a
       # umath model node (see Mapper#captures).
       class Rules < Parsanol::Transform
+        # Rules are indexed by Hash-pattern keys (see TransformKeyIndex).
+        include Plurimath::TransformKeyIndex
+
         include Plurimath::BaseNumberPrefix::Transform
 
         rule(td: simple(:td)) { Math::Function::Td.new([td]) }
