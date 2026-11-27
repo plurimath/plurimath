@@ -14,6 +14,7 @@ on:
       - "Gemfile"
       - "plurimath.gemspec"
       - "scripts/measure_require.rb"
+      - "scripts/require_baseline.json"
       - "scripts/measure_optional_stages.rb"
       - "scripts/check_suite_budget.rb"
       - ".github/workflows/performance.yml"
