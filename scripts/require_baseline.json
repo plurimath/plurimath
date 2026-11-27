@@ -2,11 +2,11 @@
   "engines": {
     "oga": {
       "autoload": {
-        "pending_after_require": 32
+        "pending_after_require": 36
       },
       "first_use": {
         "allocated_objects": 1934195,
-        "plurimath_lib_files": 61,
+        "plurimath_lib_files": 57,
         "rss_growth_kb": 128772,
         "wall_ms": 933.6
       },
@@ -20,11 +20,11 @@
     },
     "ox": {
       "autoload": {
-        "pending_after_require": 29
+        "pending_after_require": 33
       },
       "first_use": {
         "allocated_objects": 1933130,
-        "plurimath_lib_files": 59,
+        "plurimath_lib_files": 55,
         "rss_growth_kb": 133864,
         "wall_ms": 917.8
       },
@@ -38,5 +38,5 @@
     }
   },
   "schema": "plurimath-perf/require-baseline/1",
-  "source": "counts: measure_require.rb on main at 85fd8deb with #555 (feat/541-e2 at 0b492508) merged; wall times: performance run 42176576146 (push to main at c511801b), ubuntu-22.04, Ruby 4.0.1, median of 5 cold processes; require feature ceilings reduced by the 50 deferred parser/entity files, measured on parent b0a695cb and this change with Ruby 4.0.1, parsanol 1.5.9, leptris 1.9.429.0; other baselines retained; allocated objects and RSS growth: performance run 45982307861 (push to main at 2b0c2a86), ubuntu-22.04, Ruby 4.0.1, median of 5 cold processes"
+  "source": "counts: measure_require.rb on main at 85fd8deb with #555 (feat/541-e2 at 0b492508) merged; wall times: performance run 42176576146 (push to main at c511801b), ubuntu-22.04, Ruby 4.0.1, median of 5 cold processes; require feature ceilings reduced by the 50 deferred parser/entity files, measured on parent b0a695cb and this change with Ruby 4.0.1, parsanol 1.5.9, leptris 1.9.429.0; other baselines retained; allocated objects and RSS growth: performance run 45982307861 (push to main at 2b0c2a86), ubuntu-22.04, Ruby 4.0.1, median of 5 cold processes; first-use own lib files and pending autoloads after require: tightened to main at 9c64e27d, identical in performance runs 45995660887, 45995720069 and 45997433025"
 }
