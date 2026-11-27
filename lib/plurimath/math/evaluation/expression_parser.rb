@@ -20,7 +20,7 @@ module Plurimath
         end
 
         def parse
-          result = parse_relation
+          result = parse_logic
           evaluator.unsupported(current) unless eof?
 
           result
@@ -29,6 +29,42 @@ module Plurimath
         private
 
         attr_reader :evaluator, :tokens
+
+        # logic1 ladder, loosest first: implies (right-associative), or,
+        # xor, and, not; each operand is a relation. Backends without
+        # connectives report logic_operator? false and never enter it.
+        def parse_logic
+          result = parse_disjunction
+          if connective?(:implies)
+            operator = next_token
+            result = evaluator.logic(operator, result, parse_logic)
+          end
+          result
+        end
+
+        def parse_disjunction
+          fold_connective(:or) { fold_connective(:xor) { fold_connective(:and) { parse_negation } } }
+        end
+
+        def fold_connective(kind)
+          result = yield
+          while connective?(kind)
+            operator = next_token
+            result = evaluator.logic(operator, result, yield)
+          end
+          result
+        end
+
+        def parse_negation
+          return parse_relation unless !eof? && evaluator.negation?(current)
+
+          advance
+          evaluator.logic_not(parse_negation)
+        end
+
+        def connective?(kind)
+          !eof? && evaluator.connective(current) == kind
+        end
 
         def parse_relation
           result = parse_additive
@@ -118,14 +154,14 @@ module Plurimath
           return bind_log_argument(node) if log_argument?(node)
 
           node = bind_nary_body(node) if nary_body?(node)
-          evaluator.evaluate_node(node)
+          evaluator.evaluate_operand(node)
         end
 
         # A non-close token before the close paren is reported as itself;
         # "unmatched parenthesis" is reserved for true end-of-input.
         def parse_group
           advance
-          result = parse_relation
+          result = parse_logic
           evaluator.unsupported(current || "unmatched parenthesis") unless close_paren?(current)
 
           advance
@@ -178,7 +214,8 @@ module Plurimath
         end
 
         def operand_start?(node)
-          return false if node.nil? || node.operator? || evaluator.relation_operator?(node)
+          return false if node.nil? || node.operator? || evaluator.relation_operator?(node) ||
+            evaluator.logic_operator?(node)
 
           !close_paren?(node)
         end
