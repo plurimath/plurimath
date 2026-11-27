@@ -59,6 +59,7 @@ module Plurimath
   autoload :Mathml, "plurimath/mathml"
   autoload :NumberFormatter, "plurimath/number_formatter"
   autoload :Omml, "plurimath/omml"
+  autoload :TransformKeyIndex, "plurimath/transform_key_index"
   autoload :UnicodeMath, "plurimath/unicode_math"
   autoload :Unitsml, "plurimath/unitsml"
   autoload :Utility, "plurimath/utility"

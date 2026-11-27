@@ -6,39 +6,8 @@ module Plurimath
       # The rule table that builds Formula objects from the capture tree of a
       # umath model node (see Mapper#captures).
       class Rules < Parsanol::Transform
-        # Parsanol::Transform tries every rule, in order, on every node of
-        # the tree. This table has over 500 rules, and nearly all of them
-        # are Hash patterns, which match only a Hash with exactly their keys.
-        # So for each key list met, the rules that could match it are listed
-        # once, in the table's order, and only those are tried. A pattern
-        # that is not a Hash (or one this class did not see defined) is
-        # tried on every node, as before. The first rule that matches is the
-        # same as with the full scan.
-        module KeyIndex
-          def rule(expression, &transformer)
-            rules = super
-            pattern_keys[rules.first.first] = expression.keys.freeze if expression.is_a?(Hash)
-            rules
-          end
-
-          def pattern_keys
-            @pattern_keys ||= {}.compare_by_identity
-          end
-
-          # The class rules that can match a node with the keys +keys+
-          # (nil for a node that is not a Hash), in precedence order.
-          def candidate_rules(keys)
-            rules = class_rules
-            index = @candidate_rules
-            index = @candidate_rules = {} if index.nil? || @indexed_rules_size != rules.size
-            @indexed_rules_size = rules.size
-            index[keys] ||= rules.select do |pattern, _|
-              expected = pattern_keys[pattern]
-              expected.nil? || (!keys.nil? && expected.size == keys.size && expected.all? { |key| keys.include?(key) })
-            end.freeze
-          end
-        end
-        extend KeyIndex
+        # Rules are indexed by Hash-pattern keys (see TransformKeyIndex).
+        include Plurimath::TransformKeyIndex
 
         include Plurimath::BaseNumberPrefix::Transform
 
@@ -4113,20 +4082,6 @@ module Plurimath
             [pre_sub],
             [pre_sup],
           )
-        end
-
-        private
-
-        # Parsanol::Transform#attempt_transformation over the candidate
-        # rules only. Instance rules (none here) keep the full scan.
-        def attempt_transformation(node, ctx)
-          return super unless @instance_rules.empty?
-
-          self.class.candidate_rules(node.is_a?(Hash) ? node.keys : nil).each do |pattern, block|
-            bindings = pattern.match(node, ctx)
-            return call_on_match(bindings, block) if bindings
-          end
-          handle_unmatched(node)
         end
       end
     end
