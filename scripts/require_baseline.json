@@ -5,12 +5,16 @@
         "pending_after_require": 32
       },
       "first_use": {
+        "allocated_objects": 1934195,
         "plurimath_lib_files": 61,
+        "rss_growth_kb": 128772,
         "wall_ms": 933.6
       },
       "require": {
+        "allocated_objects": 20637,
         "loaded_features": 62,
         "plurimath_lib_files": 4,
+        "rss_growth_kb": 3720,
         "wall_ms": 49.7
       }
     },
@@ -19,16 +23,20 @@
         "pending_after_require": 29
       },
       "first_use": {
+        "allocated_objects": 1933130,
         "plurimath_lib_files": 59,
+        "rss_growth_kb": 133864,
         "wall_ms": 917.8
       },
       "require": {
+        "allocated_objects": 2412,
         "loaded_features": 23,
         "plurimath_lib_files": 4,
+        "rss_growth_kb": 592,
         "wall_ms": 24.8
       }
     }
   },
   "schema": "plurimath-perf/require-baseline/1",
-  "source": "counts: measure_require.rb on main at 85fd8deb with #555 (feat/541-e2 at 0b492508) merged; wall times: performance run 42176576146 (push to main at c511801b), ubuntu-22.04, Ruby 4.0.1, median of 5 cold processes; require feature ceilings reduced by the 50 deferred parser/entity files, measured on parent b0a695cb and this change with Ruby 4.0.1, parsanol 1.5.9, leptris 1.9.429.0; other baselines retained"
+  "source": "counts: measure_require.rb on main at 85fd8deb with #555 (feat/541-e2 at 0b492508) merged; wall times: performance run 42176576146 (push to main at c511801b), ubuntu-22.04, Ruby 4.0.1, median of 5 cold processes; require feature ceilings reduced by the 50 deferred parser/entity files, measured on parent b0a695cb and this change with Ruby 4.0.1, parsanol 1.5.9, leptris 1.9.429.0; other baselines retained; allocated objects and RSS growth: performance run 45982307861 (push to main at 2b0c2a86), ubuntu-22.04, Ruby 4.0.1, median of 5 cold processes"
 }

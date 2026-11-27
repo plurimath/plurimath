@@ -37,11 +37,15 @@
 #
 # The gate compares the counts exactly. Wall time on a shared runner varies
 # about twofold between runs of the same code, so it only has a loose bound
-# that catches a gross slowdown:
+# that catches a gross slowdown. Allocated objects barely move between runs
+# (under 0.1%), and RSS growth moves by a few percent, so memory has a
+# tolerance that absorbs dependency patch releases but not a real growth:
 #   own lib files loaded by require and by first use   at most the baseline
 #   pending autoloads after require                    at least the baseline
 #   loaded features after require                      at most the baseline
 #   require and first-use wall time (median)           at most baseline * 3 + 500 ms
+#   require and first-use allocated objects (median)   at most baseline * 1.1 + 1000
+#   require and first-use RSS growth KB (median)       at most baseline * 1.5 + 2048
 # A change that loads more on purpose updates the baseline file in the same
 # pull request, which makes the growth visible in review.
 #
@@ -280,6 +284,10 @@ module MeasureRequire
     ["require loaded features", %w[require loaded_features], :at_most, :exact],
     ["require wall ms", %w[require wall_ms], :at_most, :time],
     ["first use wall ms", %w[first_use wall_ms], :at_most, :time],
+    ["require allocated objects", %w[require allocated_objects], :at_most, :allocations],
+    ["first use allocated objects", %w[first_use allocated_objects], :at_most, :allocations],
+    ["require RSS growth KB", %w[require rss_growth_kb], :at_most, :rss],
+    ["first use RSS growth KB", %w[first_use rss_growth_kb], :at_most, :rss],
   ].freeze
 
   def load_baseline(path, engine)
@@ -294,6 +302,8 @@ module MeasureRequire
     case allowance
     when :exact then base
     when :time then ((base * 3) + 500).round(1)
+    when :allocations then ((base * 1.1) + 1000).round
+    when :rss then ((base * 1.5) + 2048).round
     end
   end
 

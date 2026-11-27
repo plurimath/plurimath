@@ -340,7 +340,10 @@ The require footprint has no absolute number in #537.
 | plurimath loads more of its own `lib/` files or more features on
   `require`, loads more of its own files on first use, has fewer autoloads
   pending after `require` than the baseline, or a median wall time is over
-  three times the baseline plus 500 ms. The baseline is
+  three times the baseline plus 500 ms, a median allocated-object count is
+  over 1.1 times the baseline plus 1000, or a median RSS growth is over 1.5
+  times the baseline plus 2048 KB. Both memory figures are checked for the
+  `require` and for first use. The baseline is
   `scripts/require_baseline.json`. Its original counts were measured on `main` at
   `85fd8deb` with the UnicodeMath change (#555) merged, so they match `main`
   once that lands; its wall times come from performance run 42176576146 on
@@ -352,8 +355,14 @@ The require footprint has no absolute number in #537.
   runner: first use took 537 ms to 1056 ms in six runs before amath loaded
   on first use, and 1305 ms to 2369 ms in six runs after it. The bound
   (3253 ms for ox, 3301 ms for oga) is above all of those and still catches a
-  gross slowdown. A change that loads more on purpose updates the baseline in
-  the same pull request.
+  gross slowdown. The memory baselines come from performance run 45982307861
+  on `main` at `2b0c2a86`. In the five successful `main` runs from 8c9d6779 to
+  2b0c2a86, the require allocated 2403 to 2412 objects (ox) and 20637 (oga),
+  first use allocated 1,933,074 to 1,934,225 objects, and first-use RSS
+  growth was 128,752 KB to 133,864 KB. The memory tolerance absorbs that
+  spread and small dependency changes, and still catches a growth of about 10% in
+  first-use allocations. A change that loads more on purpose updates the
+  baseline in the same pull request.
 
 | `suite-timing`
 | an example fails, or the suite takes longer than 600 s. This ceiling
