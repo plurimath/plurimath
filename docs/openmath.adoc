@@ -45,7 +45,12 @@ rather than a separate field):
   boundary. Relations compose left to right.
 * `logic1/and`, `or`, `xor`, `implies` and `not` fold over booleans; the
   Formula tokens are the `land`/`wedge`, `lor`/`vee`, `veebar`/`oplus`,
-  `=>`/`rightarrow` and `lnot`/`neg` symbols.
+  `=>`/`rightarrow` and `lnot`/`neg` symbols. The OpenMath converter maps
+  these symbols to `land`, `lor`, `veebar`, `UpcaseRightarrow` and `lnot`, and
+  `logic1/true` and `false` to `top` and `bot`. `and`, `or` and `xor` take two
+  or more operands, `implies` exactly two and `not` one; any other arity
+  refuses. (The openmath gem accepts a single operand for `and` and `or`;
+  here that refuses, because a lone operand would skip the boolean check.)
 * A verdict computed from a limited operand (a Float or guard-digit decimal)
   records a `compare` boundary with the operands' accuracy class, so
   `Result#exact?` is false. A verdict from exact operands is exact.
@@ -57,8 +62,7 @@ rather than a separate field):
   raise `UnsupportedExpressionError`.
 
 An equation such as `a + b = c` therefore evaluates to a truth value instead of
-raising. The OpenMath converter does not yet map `logic1`; the connectives
-evaluate from Formula tokens. Evaluation of a `pmquant` expression still
+raising. Evaluation of a `pmquant` expression still
 delegates to the openmath gem.
 These limits apply to OpenMath versions 2 and 3.
 

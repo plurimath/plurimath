@@ -25,6 +25,16 @@ module Plurimath
         "relation1/lt" => Math::Symbols::Less,
         "relation1/geq" => Math::Symbols::Geq,
         "relation1/leq" => Math::Symbols::Leq,
+        "logic1/and" => Math::Symbols::Land,
+        "logic1/or" => Math::Symbols::Lor,
+        "logic1/xor" => Math::Symbols::Veebar,
+        "logic1/implies" => Math::Symbols::UpcaseRightarrow,
+      }.freeze
+
+      # logic1 constants: the truth values the Evaluator reads from top/bot.
+      LOGIC_CONSTANTS = {
+        "true" => Math::Symbols::Top,
+        "false" => Math::Symbols::Bot,
       }.freeze
 
       UNARY_FUNCTIONS = {
@@ -69,9 +79,11 @@ module Plurimath
 
           Math::Number.new(value.to_s)
         when ::Openmath::V2::Oms, ::Openmath::V3::Oms
-          if node.cd == "nums1" && node.name == "pi" &&
-              (node.cdbase.nil? || node.cdbase.delete_suffix("/") == "http://www.openmath.org/cd")
+          standard = node.cdbase.nil? || node.cdbase.delete_suffix("/") == "http://www.openmath.org/cd"
+          if node.cd == "nums1" && node.name == "pi" && standard
             Math::Symbols::Pi.new
+          elsif node.cd == "logic1" && LOGIC_CONSTANTS.key?(node.name) && standard
+            LOGIC_CONSTANTS.fetch(node.name).new
           else
             Symbol.new(node.name, cd: node.cd, cdbase: node.cdbase)
           end
@@ -113,7 +125,8 @@ module Plurimath
 
         operands = children.drop(1).map { |child| operand(child) }
         arity = case key
-                when "arith1/unary_minus", "nums1/integer", *UNARY_FUNCTIONS.keys then 1
+                when "arith1/unary_minus", "nums1/integer", "logic1/not", *UNARY_FUNCTIONS.keys then 1
+                when "logic1/and", "logic1/or", "logic1/xor" then 2..Float::INFINITY
                 when "arith1/plus", "arith1/times", "arith1/max", "arith1/min" then 1..Float::INFINITY
                 else 2
                 end
@@ -122,6 +135,8 @@ module Plurimath
         case key
         when "arith1/unary_minus"
           Math::Formula.new([Math::Symbols::Minus.new, operands.first])
+        when "logic1/not"
+          Math::Formula.new([Math::Symbols::Lnot.new, operands.first])
         when "arith1/power"
           Math::Function::Power.new(*operands)
         when "nums1/integer"
