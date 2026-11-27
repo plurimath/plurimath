@@ -27,6 +27,12 @@ module Plurimath
         "relation1/leq" => Math::Symbols::Leq,
       }.freeze
 
+      # arith1/sum and arith1/product fold a lambda over an integer interval.
+      ITERATIONS = {
+        "arith1/sum" => Math::Function::Sum,
+        "arith1/product" => Math::Function::Prod,
+      }.freeze
+
       UNARY_FUNCTIONS = {
         "arith1/abs" => Math::Function::Abs,
         "rounding1/floor" => Math::Function::Floor,
@@ -111,13 +117,11 @@ module Plurimath
         # and refuses every presentation, like any unbound CD symbol.
         return Semantic.new(node.to_xml) if operator.cd == "pmquant"
 
+        return based_integer(node, children.drop(1)) if key == "nums1/based_integer"
+        return iteration(key, children.drop(1)) if ITERATIONS.key?(key)
+
         operands = children.drop(1).map { |child| operand(child) }
-        arity = case key
-                when "arith1/unary_minus", "nums1/integer", *UNARY_FUNCTIONS.keys then 1
-                when "arith1/plus", "arith1/times", "arith1/max", "arith1/min" then 1..Float::INFINITY
-                else 2
-                end
-        raise UnsupportedError.new(key, :openmath) unless arity === operands.size
+        raise UnsupportedError.new(key, :openmath) unless arity(key) === operands.size
 
         case key
         when "arith1/unary_minus"
@@ -132,6 +136,13 @@ module Plurimath
           operands.first
         when "nums1/rational"
           Math::Function::Frac.new(*operands)
+        when "arith1/root"
+          # arith1/root(x, n): the n-th root of x; Root takes (index, radicand).
+          Math::Function::Root.new(operands.last, operands.first)
+        when "integer1/quotient"
+          Math::Function::Floor.new(Math::Function::Frac.new(*operands))
+        when "integer1/remainder"
+          Math::Function::Mod.new(*operands)
         when *UNARY_FUNCTIONS.keys
           UNARY_FUNCTIONS.fetch(key).new(operands.first)
         when "arith1/max", "arith1/min"
@@ -149,6 +160,77 @@ module Plurimath
           Math::Formula.new(operands.flat_map.with_index do |item, index|
             index.zero? ? [item] : [infix.new, item]
           end)
+        end
+      end
+
+      # nums1/based_integer(base, digits): the integer the digit string
+      # spells in the base (2..36), converted to its decimal literal.
+      def based_integer(node, arguments)
+        raise UnsupportedError.new("nums1/based_integer", :openmath) unless arguments.size == 2
+
+        base, digits = arguments
+        unless base.is_a?(::Openmath::V2::Omi) || base.is_a?(::Openmath::V3::Omi)
+          raise UnsupportedError.new(node.to_s, :openmath)
+        end
+        unless digits.is_a?(::Openmath::V2::Omstr) || digits.is_a?(::Openmath::V3::Omstr)
+          raise UnsupportedError.new(node.to_s, :openmath)
+        end
+
+        radix = convert(base).value.to_i
+        text = digits.value.join.strip
+        unless radix.between?(2, 36) && text.match?(/\A[+-]?[0-9a-z]+\z/i)
+          raise UnsupportedError.new(node.to_s, :openmath)
+        end
+
+        Math::Number.new(Integer(text, radix).to_s)
+      rescue ArgumentError
+        raise UnsupportedError.new(node.to_s, :openmath)
+      end
+
+      # arith1/sum(interval1/interval(a, b), lambda(i, body)): the bounded
+      # Sum/Prod the numeric evaluator iterates. Other domains refuse.
+      def iteration(key, arguments)
+        raise UnsupportedError.new(key, :openmath) unless arguments.size == 2
+
+        domain, closure = arguments
+        unless domain.is_a?(::Openmath::V2::Oma) || domain.is_a?(::Openmath::V3::Oma)
+          raise UnsupportedError.new(key, :openmath)
+        end
+
+        head, low, high, *extra = ::Openmath::Evaluation::Evaluator.ordered_children(domain)
+        unless head.respond_to?(:cd) && head.cd == "interval1" && head.name == "interval" &&
+            high && extra.empty?
+          raise UnsupportedError.new(key, :openmath)
+        end
+
+        check_binding(head, "interval1/interval")
+        name, body = lambda_parts(closure, key)
+        lower = Math::Formula.new([Math::Symbols::Symbol.new(name), Math::Symbols::Equal.new, convert(low)])
+        ITERATIONS.fetch(key).new(lower, convert(high), convert(body))
+      end
+
+      def lambda_parts(node, key)
+        unless node.is_a?(::Openmath::V2::Ombind) || node.is_a?(::Openmath::V3::Ombind)
+          raise UnsupportedError.new(key, :openmath)
+        end
+
+        binder = node.oms_value.first
+        variables = node.ombvar_value.first
+        body = ::Openmath::Evaluation::Evaluator.ordered_children(node).drop(2)
+        names = variables ? ::Openmath::Evaluation::Evaluator.ordered_children(variables) : []
+        unless binder&.cd == "fns1" && binder.name == "lambda" && body.size == 1 &&
+            names.size == 1 && (names.first.is_a?(::Openmath::V2::Omv) || names.first.is_a?(::Openmath::V3::Omv))
+          raise UnsupportedError.new(key, :openmath)
+        end
+
+        [names.first.name, body.first]
+      end
+
+      def arity(key)
+        case key
+        when "arith1/unary_minus", "nums1/integer", *UNARY_FUNCTIONS.keys then 1
+        when "arith1/plus", "arith1/times", "arith1/max", "arith1/min" then 1..Float::INFINITY
+        else 2
         end
       end
 

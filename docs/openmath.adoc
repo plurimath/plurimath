@@ -48,6 +48,16 @@ The published gem's strict symbol spelling uses `cd` and `name`
 attributes, for example `<csymbol cd="arith1" name="plus"/>`.
 Non-strict operator elements such as `<plus/>` are also accepted by the gem.
 
+Beyond the arithmetic core, the converter maps these numeric-only symbols
+to Formula nodes the existing evaluator computes: `arith1/root(x, n)` (a
+`Root` node; perfect roots evaluate as floats, not as the gem's exact
+roots), `arith1/sum` and `arith1/product` over `interval1/interval` with a
+single-variable `fns1/lambda`, `nums1/based_integer` (decoded to its decimal
+value, bases 2 to 36), `integer1/quotient` (floored) and `integer1/remainder`
+(floored modulus). Other sum or product domains, `rounding1/round` and
+`integer1/factorial` refuse, because the Formula evaluator has no matching
+node.
+
 Mapped numeric expressions use the existing Formula evaluator, including its
 `mode: :strict`, guard digits, accuracy boundaries and typed errors.
 An adapter mapping does not add the gem's extra evaluation domains to
