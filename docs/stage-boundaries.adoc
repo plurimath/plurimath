@@ -1,0 +1,114 @@
+= Stage gem boundaries
+:toc:
+
+Plurimath reads AsciiMath, LaTeX and UnicodeMath through three stage gems:
+`amath`, `latexmath` and `umath`. This page says which layer of that reading
+path owns what. It records the boundary set by
+https://github.com/parsanol/parsanol-ruby/issues/432[parsanol-ruby#432]
+(bindings carry AST construction only) and by
+https://github.com/lutaml/lutaml-model/issues/1033[lutaml-model#1033]
+(lutaml-model carries data, writers stay in each target), as seen from
+Plurimath, which consumes both. Its roadmap position is in
+https://github.com/plurimath/plurimath/issues/541[#541].
+
+The rules every stage gem follows are in amath's
+https://github.com/plurimath/amath/blob/main/docs/stage-contract.adoc[`docs/stage-contract.adoc`].
+This page does not repeat them. The same split for the core formula tree is
+in link:core-model-contract.adoc[the core model contract].
+
+== The reading path
+
+Each stage gem reads text in the same order, and Plurimath takes over only
+at the end.
+
+. The compiled parse artifact parses the text into a capture tree. The
+  artifact is compiled by Parsanol from the gem's PARG grammar, for example
+  `artifacts/asciimath.json` in amath or `artifacts/latex.json` in
+  latexmath.
+. The gem applies its declared Ruby binding artifact to that tree, for
+  example `artifacts/asciimath.bindings.ruby.json`. The result is a plain
+  attribute hash.
+. lutaml-model builds the gem's typed model from that hash:
+  `Amath::Model::Document`, `Latexmath::Model::Document` or
+  `Umath::Model::Document`.
+. Plurimath's mapper for the format (`Plurimath::Asciimath::Mapper`,
+  `Plurimath::Latex::Mapper` or `Plurimath::UnicodeMath::Mapper`) turns the
+  typed model into a `Plurimath::Math::Formula`.
+. The writer methods on the formula tree (`to_asciimath`, `to_latex`,
+  `to_mathml`, `to_omml`, `to_unicodemath`, `to_html`) produce output.
+
+The first three steps happen inside the stage gem and do not refer to any
+Plurimath class. The last two happen inside Plurimath.
+
+== What a binding artifact carries
+
+A binding artifact is the declared mapping from grammar captures to model
+fields, and nothing more. Each record names a capture, the field path it
+fills, the value type, the cardinality, and optionally a preprocessing step.
+The preprocessing tables themselves are not in the binding artifact; they
+are read from the parse artifact it is paired with.
+
+Parsanol emits one binding artifact per target from the same compiled
+grammar. Each one carries its target, a binding version, the grammar name and
+version, the grammar source hash and a checksum. The released amath and
+latexmath gems ship `ruby`, `rs`, `ts` and `python` binding artifacts; the
+released umath gem ships the `ruby` one. Plurimath only runs the Ruby target.
+
+A binding artifact does not say what a construct means. It does not know
+that `\frac{a}{b}` is a fraction or that `ustd(...)` is a standard
+uncertainty. It only says which capture lands in which field, so that every
+target builds the same tree from the same parse.
+
+== Where meaning lives
+
+The meaning of a construct is decided in two places.
+
+The first is the stage gem's typed model. Its classes and their attributes,
+declared with lutaml-model, are what a parse result is: which kinds of node
+exist and which fields each one has. This is the part that lutaml-model#1033
+will let the gems export to other targets.
+
+The second is Plurimath's mapper and its rule tables. They decide which
+`Plurimath::Math` class each model node becomes, for example which function
+class a LaTeX command maps to, or which symbol class an AsciiMath name
+becomes. That decision is Plurimath's and stays in Plurimath; the stage
+gems do not know the formula tree exists.
+
+So a change to what a construct means belongs in the stage model or in
+Plurimath's mapper. It never belongs in a binding record. A binding record
+should only change when a grammar capture changes, and then for every target
+at once, because all of them are emitted from the same grammar.
+
+== Data and writers
+
+lutaml-model declares data. It does not carry writer behaviour, and no
+writer is generated from it.
+
+In the stage gems this means the typed models are data only. None of the
+three gems writes math back out; Plurimath does not call any of them to
+produce output.
+
+In Plurimath this means the per-format writers stay as Ruby code on the
+formula tree. When the core tree moves to lutaml-model under
+https://github.com/plurimath/plurimath/issues/337[#337], the writer methods
+and everything they call stay where they are. The core model contract
+describes that migration in detail.
+
+Other targets follow the same split. A Rust or TypeScript port of a stage
+uses the generated binding artifact for its target and its own
+materialization of the model, and writes its own writers in its own
+language.
+
+== Verification
+
+The stage gems check their artifacts before they use them, and Plurimath
+relies on that rather than checking them again. A stage gem verifies each
+binding artifact's kind, checksum, target and binding version, and checks
+that its grammar source hash matches the parse artifact it is paired with.
+If any check fails, loading stops with an artifact error; the gem does not
+fall back to another grammar or to an unchecked artifact.
+
+Plurimath pins the stage gems by version in `plurimath.gemspec`, and the
+`Gemfile` may pin a gem to a revision during development. Plurimath does not
+load binding artifacts itself, so it has no binding pins of its own; a new
+binding artifact reaches Plurimath only through a new stage gem version.
