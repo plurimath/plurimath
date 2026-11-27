@@ -1,0 +1,394 @@
+{
+  "description": "Local adapter regression vectors; exact scalar fields are class/text pairs, not a public evaluation wire profile. Requests explicitly pin CD bases.",
+  "cases": [
+    {
+      "id": "standard-rational",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>3</OMI></OMA><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>10</OMI></OMA></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Rational",
+          "text": "1/3"
+        },
+        "quantity": {
+          "category": "standard",
+          "magnitude": {
+            "class": "Rational",
+            "text": "1/10"
+          }
+        }
+      }
+    },
+    {
+      "id": "standard-zero",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMI>0</OMI><OMI>0</OMI></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Integer",
+          "text": "0"
+        },
+        "quantity": {
+          "category": "standard",
+          "magnitude": {
+            "class": "Integer",
+            "text": "0"
+          }
+        }
+      }
+    },
+    {
+      "id": "standard-negative-value",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMI>-2</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Integer",
+          "text": "-2"
+        },
+        "quantity": {
+          "category": "standard",
+          "magnitude": {
+            "class": "Integer",
+            "text": "1"
+          }
+        }
+      }
+    },
+    {
+      "id": "standard-trailing-base-slash",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd/\" cd=\"pmquant\" name=\"ustd\"/><OMI>2</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Integer",
+          "text": "2"
+        },
+        "quantity": {
+          "category": "standard",
+          "magnitude": {
+            "class": "Integer",
+            "text": "1"
+          }
+        }
+      }
+    },
+    {
+      "id": "expanded-required",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMI>10</OMI><OMI>2</OMI><OMI>2</OMI></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Integer",
+          "text": "10"
+        },
+        "quantity": {
+          "category": "expanded",
+          "magnitude": {
+            "class": "Integer",
+            "text": "2"
+          },
+          "coverage_factor": {
+            "class": "Integer",
+            "text": "2"
+          },
+          "coverage_probability": null
+        }
+      }
+    },
+    {
+      "id": "expanded-rational",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>3</OMI></OMA><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>10</OMI></OMA><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>3</OMI><OMI>2</OMI></OMA><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>19</OMI><OMI>20</OMI></OMA></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Rational",
+          "text": "1/3"
+        },
+        "quantity": {
+          "category": "expanded",
+          "magnitude": {
+            "class": "Rational",
+            "text": "1/10"
+          },
+          "coverage_factor": {
+            "class": "Rational",
+            "text": "3/2"
+          },
+          "coverage_probability": {
+            "class": "Rational",
+            "text": "19/20"
+          }
+        }
+      }
+    },
+    {
+      "id": "coverage-defaults",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ucov\"/><OMI>1</OMI><OMI>0</OMI><OMI>2</OMI></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Integer",
+          "text": "1"
+        },
+        "quantity": {
+          "category": "coverage",
+          "lower": {
+            "class": "Integer",
+            "text": "0"
+          },
+          "upper": {
+            "class": "Integer",
+            "text": "2"
+          },
+          "coverage_probability": null,
+          "interval_kind": "symmetric"
+        }
+      }
+    },
+    {
+      "id": "coverage-rational",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ucov\"/><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>3</OMI></OMA><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>4</OMI></OMA><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>2</OMI></OMA><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>19</OMI><OMI>20</OMI></OMA><OMSTR>shortest</OMSTR></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Rational",
+          "text": "1/3"
+        },
+        "quantity": {
+          "category": "coverage",
+          "lower": {
+            "class": "Rational",
+            "text": "1/4"
+          },
+          "upper": {
+            "class": "Rational",
+            "text": "1/2"
+          },
+          "coverage_probability": {
+            "class": "Rational",
+            "text": "19/20"
+          },
+          "interval_kind": "shortest"
+        }
+      }
+    },
+    {
+      "id": "coverage-equal-endpoints",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ucov\"/><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Integer",
+          "text": "1"
+        },
+        "quantity": {
+          "category": "coverage",
+          "lower": {
+            "class": "Integer",
+            "text": "1"
+          },
+          "upper": {
+            "class": "Integer",
+            "text": "1"
+          },
+          "coverage_probability": null,
+          "interval_kind": "symmetric"
+        }
+      }
+    },
+    {
+      "id": "value-rational",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"value\"/><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>3</OMI></OMA><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>1</OMI><OMI>10</OMI></OMA></OMA></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Rational",
+          "text": "1/3"
+        },
+        "quantity": null
+      }
+    },
+    {
+      "id": "value-scalar",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"value\"/><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>2</OMI><OMI>3</OMI></OMA></OMA></OMOBJ>",
+      "expected": {
+        "value": {
+          "class": "Rational",
+          "text": "2/3"
+        },
+        "quantity": null
+      }
+    },
+    {
+      "id": "variable-bound",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMV name=\"x\"/><OMI>1</OMI></OMA></OMOBJ>",
+      "bindings": {
+        "x": 7
+      },
+      "expected": {
+        "value": {
+          "class": "Integer",
+          "text": "7"
+        },
+        "quantity": {
+          "category": "standard",
+          "magnitude": {
+            "class": "Integer",
+            "text": "1"
+          }
+        }
+      }
+    },
+    {
+      "id": "variable-missing",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMV name=\"x\"/><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::MissingVariableError",
+        "message": "missing value for variable `x`"
+      }
+    },
+    {
+      "id": "ustd-arity-1",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong arity for ustd: expected 2..2, got 1"
+      }
+    },
+    {
+      "id": "ustd-arity-3",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong arity for ustd: expected 2..2, got 3"
+      }
+    },
+    {
+      "id": "uexp-arity-2",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMI>1</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong arity for uexp: expected 3..4, got 2"
+      }
+    },
+    {
+      "id": "uexp-arity-5",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong arity for uexp: expected 3..4, got 5"
+      }
+    },
+    {
+      "id": "ucov-arity-2",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ucov\"/><OMI>1</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong arity for ucov: expected 3..5, got 2"
+      }
+    },
+    {
+      "id": "ucov-arity-6",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ucov\"/><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong arity for ucov: expected 3..5, got 6"
+      }
+    },
+    {
+      "id": "value-arity-0",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"value\"/></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong arity for value: expected 1..1, got 0"
+      }
+    },
+    {
+      "id": "value-arity-2",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"value\"/><OMI>1</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong arity for value: expected 1..1, got 2"
+      }
+    },
+    {
+      "id": "standard-negative-magnitude",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMI>1</OMI><OMI>-1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for standard uncertainty magnitude: Integer"
+      }
+    },
+    {
+      "id": "expanded-zero-factor",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMI>1</OMI><OMI>1</OMI><OMI>0</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for coverage factor: Integer"
+      }
+    },
+    {
+      "id": "expanded-negative-factor",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMI>1</OMI><OMI>1</OMI><OMI>-1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for coverage factor: Integer"
+      }
+    },
+    {
+      "id": "expanded-probability-0",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMI>1</OMI><OMI>1</OMI><OMI>2</OMI><OMI>0</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for coverage probability: Integer"
+      }
+    },
+    {
+      "id": "expanded-probability-1",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMI>1</OMI><OMI>1</OMI><OMI>2</OMI><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for coverage probability: Integer"
+      }
+    },
+    {
+      "id": "coverage-inverted",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ucov\"/><OMI>1</OMI><OMI>2</OMI><OMI>0</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for coverage interval: Array"
+      }
+    },
+    {
+      "id": "coverage-unknown-kind",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ucov\"/><OMI>1</OMI><OMI>0</OMI><OMI>2</OMI><OMA><OMS cdbase=\"http://www.openmath.org/cd\" cd=\"nums1\" name=\"rational\"/><OMI>19</OMI><OMI>20</OMI></OMA><OMSTR>widest</OMSTR></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for interval kind: String"
+      }
+    },
+    {
+      "id": "ustd-string-operand",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ustd\"/><OMSTR>x</OMSTR><OMI>1</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for arithmetic: String"
+      }
+    },
+    {
+      "id": "uexp-string-operand",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"uexp\"/><OMI>1</OMI><OMI>1</OMI><OMSTR>x</OMSTR></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for arithmetic: String"
+      }
+    },
+    {
+      "id": "ucov-string-operand",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"ucov\"/><OMI>1</OMI><OMSTR>x</OMSTR><OMI>2</OMI></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for arithmetic: String"
+      }
+    },
+    {
+      "id": "value-string-operand",
+      "request": "<OMOBJ xmlns=\"http://www.openmath.org/OpenMath\"><OMA><OMS cdbase=\"http://www.plurimath.org/cd\" cd=\"pmquant\" name=\"value\"/><OMSTR>x</OMSTR></OMA></OMOBJ>",
+      "refusal": {
+        "class": "Plurimath::Errors::Evaluation::UnsupportedExpressionError",
+        "message": "unsupported expression: wrong operand type for arithmetic: String"
+      }
+    }
+  ]
+}

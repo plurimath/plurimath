@@ -1,0 +1,52 @@
+= Evaluating OpenMath quantities
+
+An unchanged Formula parsed from OpenMath can evaluate applications of the
+`pmquant` content dictionary through the published `openmath` gem's binding
+table. This path is available for OpenMath versions 2 and 3.
+
+[source,ruby]
+----
+xml = <<~XML
+  <OMOBJ xmlns="http://www.openmath.org/OpenMath">
+    <OMA>
+      <OMS cdbase="http://www.plurimath.org/cd" cd="pmquant" name="ustd"/>
+      <OMI>10</OMI>
+      <OMI>1</OMI>
+    </OMA>
+  </OMOBJ>
+XML
+result = Plurimath::Math.parse(xml, :openmath).evaluate
+result.value              # => 10
+result.quantity.category  # => :standard
+result.quantity.magnitude # => 1
+----
+
+The supported constructors are `ustd(value, magnitude)`,
+`uexp(value, magnitude, coverage_factor[, coverage_probability])`, and
+`ucov(value, lower, upper[, coverage_probability[, interval_kind]])`.
+The interval kind defaults to `symmetric`; `shortest` is also accepted.
+`value(quantity)` extracts the reported value and returns a scalar Result
+whose `quantity` is nil. Integer and rational operands retain their numeric
+classes in quantity fields. Use `nums1/rational` applications with integer
+operands to express exact fractions.
+
+Evaluation bindings supply `OMV` variables. Missing variables raise
+`Plurimath::Errors::Evaluation::MissingVariableError`. Wrong arities and
+unsupported operand types raise
+`Plurimath::Errors::Evaluation::UnsupportedExpressionError`, retaining the
+gem's diagnostic in the message. Unknown application symbols and unsupported
+CD bases refuse during parsing. These refusals do not expose all the gem's
+individual error classes through the Formula API.
+
+This path uses the retained OpenMath source. It does not use the ordinary
+scalar evaluator's `mode` or `guard_digits` options, or implement the
+serialized quantity request profile. Editing the Formula invalidates its
+retained source; it no longer evaluates through this path. Quantity
+applications preserve their OpenMath XML but refuse presentation conversion.
+
+The local `spec/fixtures/evaluation/openmath-pmquant.json` regression vectors
+pin explicit symbol CD bases, exact numeric field classes and text, and
+refusal class names and diagnostics. Their replay spec exercises both
+OpenMath versions. This fixture is an adapter regression format; it does
+not define a public evaluation request or response wire profile, or complete
+the shared evaluator-reference corpus acceptance criteria of issue #583.
